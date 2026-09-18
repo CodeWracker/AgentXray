@@ -26,6 +26,7 @@ import tempfile
 
 EVAL = pathlib.Path(__file__).resolve().parent.parent
 JSON_KEYS = {"image", "findings", "impression", "limitations"}
+ALLOWED_KEYS = {"image", "findings", "impression", "limitations", "differential_diagnosis", "localized_lesions"}
 # contrato da v2; a v1 só exige o que o próprio prompt v1 pedia e não tem reprodução
 REQUIRED_V1 = {
     "single": ["analyze_image.py"],
@@ -61,8 +62,8 @@ def check_json(analysis: pathlib.Path, image_name: str) -> list[str]:
     except json.JSONDecodeError as e:
         return [f"JSON inválido: {e}"]
     errors = []
-    if not isinstance(data, dict) or set(data) != JSON_KEYS:
-        errors.append(f"campos do JSON diferentes de {sorted(JSON_KEYS)}: {sorted(data) if isinstance(data, dict) else type(data).__name__}")
+    if not isinstance(data, dict) or not JSON_KEYS.issubset(set(data)) or not set(data).issubset(ALLOWED_KEYS):
+        errors.append(f"campos do JSON diferentes do esperado: {sorted(data) if isinstance(data, dict) else type(data).__name__}")
     elif data["image"] != image_name:
         errors.append(f'"image" = {data["image"]!r}, esperado {image_name!r}')
     return errors
