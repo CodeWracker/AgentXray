@@ -1,0 +1,88 @@
+{
+  "otsu_threshold": 65,
+  "limb_area_px": 28890,
+  "components": {
+    "tibia": {
+      "box": [
+        150,
+        20,
+        260,
+        250
+      ],
+      "area_px": 14449,
+      "principal_axis_angle_deg": 88.33,
+      "centroid": [
+        190.8,
+        120.1
+      ]
+    },
+    "fibula": {
+      "box": [
+        110,
+        40,
+        175,
+        250
+      ],
+      "area_px": 4027,
+      "principal_axis_angle_deg": 81.81,
+      "centroid": [
+        156.9,
+        94.8
+      ]
+    },
+    "talus": {
+      "box": [
+        140,
+        255,
+        235,
+        330
+      ],
+      "area_px": 4469,
+      "principal_axis_angle_deg": 162.98,
+      "centroid": [
+        194.7,
+        285.0
+      ]
+    },
+    "calcaneus": {
+      "box": [
+        95,
+        300,
+        200,
+        405
+      ],
+      "area_px": 751,
+      "principal_axis_angle_deg": 174.23,
+      "centroid": [
+        174.8,
+        309.6
+      ]
+    },
+    "metatarsals": {
+      "box": [
+        200,
+        300,
+        330,
+        380
+      ],
+      "area_px": 2573,
+      "principal_axis_angle_deg": -173.82,
+      "centroid": [
+        279.8,
+        311.3
+      ]
+    }
+  },
+  "congruence": {
+    "tibia_centroid": [
+      190.8,
+      120.1
+    ],
+    "talus_centroid": [
+      194.7,
+      285.0
+    ],
+    "dx_talus_minus_tibia_px": 3.9,
+    "note": "small |dx| => talus under tibial plafond; large |dx| => possible talar displacement. Coarse only (oblique plantar-flexed pose)."
+  }
+}

@@ -1,0 +1,5 @@
+{
+  "note": "trained on pediatric wrist trauma radiographs (GRAZPEDWRI-DX); foot is OOD",
+  "detections": [],
+  "n_detections": 0
+}

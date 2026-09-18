@@ -49,6 +49,8 @@ def library_versions() -> dict:
 def render(template: str, values: dict) -> str:
     for key, value in values.items():
         template = template.replace("{{" + key + "}}", value)
+    # o prompt multiagente da v1 tinha o nome do modelo para ser preenchido à mão
+    template = template.replace("<MODEL HERE>", values["MODEL_NAME"])
     if "{{" in template:
         raise SystemExit("placeholder sem valor no prompt renderizado")
     return template
@@ -56,7 +58,7 @@ def render(template: str, values: dict) -> str:
 
 def prompt_parts(version: str, mode: str, harness: str | None) -> list[pathlib.Path]:
     base = PROMPTS / version
-    parts = [base / f"{mode}.md", *sorted((base / "_shared").glob("*.md"))]
+    parts = [base / f"{mode}.md", *sorted((base / "_shared").glob("*.md"))]  # a v1 não tem _shared
     if harness:
         parts.append(base / "_harness" / f"{harness}.md")
         extra = base / "_harness" / f"{harness}-{mode}.md"
@@ -66,7 +68,8 @@ def prompt_parts(version: str, mode: str, harness: str | None) -> list[pathlib.P
 
 
 def create_run(mode: str, model: str, images: list[pathlib.Path], version: str = "v2",
-               root: pathlib.Path = EVAL / "results", harness: str | None = None, label: str = "") -> pathlib.Path:
+               root: pathlib.Path = EVAL / "results", harness: str | None = None, label: str = "",
+               results_name: str | None = None) -> pathlib.Path:
     # confere os pesos antes de gastar uma rodada com um ambiente divergente
     verify = subprocess.run([sys.executable, str(EVAL / "tools" / "setup_models.py"), "--verify"], capture_output=True, text=True)
     if verify.returncode != 0:
@@ -76,7 +79,8 @@ def create_run(mode: str, model: str, images: list[pathlib.Path], version: str =
     import torchxrayvision
 
     stamp = datetime.datetime.now().strftime("%Y%m%d-%H%M%S") + (f"-{label}" if label else "")
-    run_dir = (root / version / MODES[mode] / model / stamp).resolve()
+    # results_name separa condições com o mesmo prompt, ex.: v1-runner (v1 no runner) e v2-ablation
+    run_dir = (root / (results_name or version) / MODES[mode] / model / stamp).resolve()
     run_dir.mkdir(parents=True)
 
     copied = []
@@ -103,6 +107,7 @@ def create_run(mode: str, model: str, images: list[pathlib.Path], version: str =
         "model": model,
         "harness": harness,
         "prompt_version": version,
+        "condition": results_name or version,
         "prompt_sha256": hashlib.sha256(prompt.encode()).hexdigest(),
         "prompt_sources": [str(p.relative_to(EVAL)) for p in parts],
         "images": copied,

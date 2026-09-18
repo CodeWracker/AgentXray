@@ -1,0 +1,44 @@
+[
+  {
+    "tool": "cv2.createCLAHE (OpenCV)",
+    "used_for": "Contrast-limited adaptive histogram equalization to enhance bone detail for visual inspection",
+    "trusted": true,
+    "reason": "Deterministic image enhancement; output visually inspected and consistent with original"
+  },
+  {
+    "tool": "cv2.equalizeHist (OpenCV)",
+    "used_for": "Global histogram equalization — tried for comparison",
+    "trusted": false,
+    "reason": "Introduced severe blocky artifacts that could mimic fracture lines; not used for interpretation"
+  },
+  {
+    "tool": "prithivMLmods/Bone-Fracture-Detection (siglip2-based classifier)",
+    "used_for": "Fracture detection classification",
+    "trusted": false,
+    "reason": "Not peer-reviewed; training dataset unknown for foot/ankle body region; predicted 'Fractured' at 78.6% but no fracture visible on visual inspection; output did not support final interpretation"
+  },
+  {
+    "tool": "microsoft/BiomedCLIP-PubMedBERT_256-vit_base_patch16_224 (open_clip)",
+    "used_for": "Zero-shot biomedical image classification with foot/ankle prompts",
+    "trusted": false,
+    "reason": "Near-uniform scores (~0.05-0.06) across all prompts; no meaningful discrimination; not diagnostic"
+  },
+  {
+    "tool": "wanglab/medsam-vit-base (transformers SamModel)",
+    "used_for": "Segmentation of key bone regions (calcaneus, talus, distal tibia/fibula, metatarsals)",
+    "trusted": false,
+    "reason": "Segmentation boundaries did not correspond to actual bone edges; masks extended into soft tissue or missed bone; not useful for structural assessment"
+  },
+  {
+    "tool": "torchxrayvision (all models)",
+    "used_for": "Not used — evaluated and excluded",
+    "trusted": false,
+    "reason": "All trained exclusively on chest radiographs; image is a lateral foot/ankle radiograph"
+  },
+  {
+    "tool": "YOLOv8 GRAZPEDWRI-DX",
+    "used_for": "Not used — evaluated and excluded",
+    "trusted": false,
+    "reason": "Trained on pediatric wrist radiographs; image is a foot/ankle radiograph"
+  }
+]

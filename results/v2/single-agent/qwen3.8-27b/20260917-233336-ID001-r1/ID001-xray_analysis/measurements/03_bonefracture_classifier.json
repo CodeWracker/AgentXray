@@ -1,0 +1,22 @@
+{
+  "full_image": {
+    "Fractured": 0.7861012816429138,
+    "Not Fractured": 0.21389874815940857,
+    "__argmax__": "Fractured"
+  },
+  "crop_leg_only": {
+    "Fractured": 0.5715003609657288,
+    "Not Fractured": 0.42849963903427124,
+    "__argmax__": "Fractured"
+  },
+  "crop_foot_only": {
+    "Fractured": 0.9936709403991699,
+    "Not Fractured": 0.006328996736556292,
+    "__argmax__": "Fractured"
+  },
+  "sanity_uniform_gray": {
+    "Fractured": 0.9985129237174988,
+    "Not Fractured": 0.0014871207531541586,
+    "__argmax__": "Fractured"
+  }
+}

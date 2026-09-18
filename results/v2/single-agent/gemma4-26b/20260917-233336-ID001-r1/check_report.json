@@ -1,0 +1,14 @@
+{
+  "ID001-xray_analysis": {
+    "errors": [],
+    "reproduce": {
+      "ok": false,
+      "outputs": 0,
+      "missing": [],
+      "extra": [
+        "measurements/fracture_detection.json"
+      ],
+      "different": []
+    }
+  }
+}

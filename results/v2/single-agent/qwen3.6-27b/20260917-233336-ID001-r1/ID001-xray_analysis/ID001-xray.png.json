@@ -1,0 +1,6 @@
+{
+  "image": "ID001-xray.png",
+  "findings": "Lateral radiograph of the foot and ankle. Bony alignment appears preserved. The visualized distal tibia and fibula, talus, calcaneus, midfoot tarsals, and metatarsals show no clearly visible acute fracture, dislocation, or gross cortical disruption on this single lateral view. Joint spaces appear maintained.",
+  "impression": "No definite acute fracture or dislocation identified on this single lateral foot and ankle radiograph. A subtle fracture cannot be excluded given the single-view limitation.",
+  "limitations": "Single lateral view only — AP and oblique projections are not available, limiting evaluation of fractures that may be occult on lateral view (e.g., lateral malleolus, navicular). Moderate image resolution. All pretrained AI models attempted (bone-fracture classifier, BiomedCLIP, MedSAM) were either not validated for this anatomy or produced unreliable results and could not support the interpretation. Note: an unvalidated bone-fracture classifier predicted 'Fractured' at 78.6% confidence, but this was not corroborated by visual inspection."
+}

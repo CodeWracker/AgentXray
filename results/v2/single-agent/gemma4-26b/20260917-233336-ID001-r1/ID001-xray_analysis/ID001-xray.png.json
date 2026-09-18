@@ -1,0 +1,6 @@
+{
+  "image": "ID001-xray.png",
+  "findings": "Lateral radiograph of the ankle and foot shows an area of cortical irregularity at the distal aspect of the fibula, which may represent a non-displaced fracture. The distal tibia and joint spaces appear grossly intact.",
+  "impression": "Possible non-displaced distal fibular fracture. Correlation with additional views (AP/Mortise) is recommended.",
+  "limitations": "The assessment is limited to a single lateral projection. Subtle fractures or those in different planes may not be fully characterized. The bone-fracture-detection model output is used as supporting evidence only and is not a definitive clinical diagnosis."
+}

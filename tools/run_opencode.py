@@ -112,8 +112,9 @@ def export_sessions(run_dir: pathlib.Path, ids: list[str]) -> None:
 
 
 def run_one(mode: str, model: str, image: pathlib.Path, provider: str, timeout_min: int, label: str,
-            max_nudges: int) -> pathlib.Path:
-    run_dir = create_run(mode, model, [image], harness="opencode", label=label)
+            max_nudges: int, version: str = "v2", results_name: str | None = None) -> pathlib.Path:
+    run_dir = create_run(mode, model, [image], version=version, harness="opencode", label=label,
+                         results_name=results_name)
     (run_dir / "opencode.json").write_text(json.dumps(opencode_config(provider, model, run_dir), indent=2) + "\n")
     prompt = (run_dir / "PROMPT.md").read_text()
 
@@ -173,12 +174,16 @@ def main() -> int:
     parser.add_argument("--repeat", type=int, default=1)
     parser.add_argument("--timeout", type=int, default=120, help="minutos por sessão, somando as retomadas")
     parser.add_argument("--max-nudges", type=int, default=5, help="retomadas automáticas se faltar o JSON final")
+    parser.add_argument("--version", default="v2", help="versão dos prompts (v1 ou v2)")
+    parser.add_argument("--results-name", help="pasta da condição em results/ (padrão: v2, ou v1-runner para a v1)")
     args = parser.parse_args()
+    results_name = args.results_name or ("v1-runner" if args.version == "v1" else None)
 
     for rep in range(1, args.repeat + 1):
         for image in args.images:
             label = f"{image.stem.split('-')[0]}-r{rep}"
-            run_one(args.mode, args.model, image.resolve(), args.provider, args.timeout, label, args.max_nudges)
+            run_one(args.mode, args.model, image.resolve(), args.provider, args.timeout, label, args.max_nudges,
+                    args.version, results_name)
     return 0
 
 

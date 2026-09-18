@@ -1,0 +1,28 @@
+{
+  "densenet121_chest_pathologies": {
+    "Atelectasis": 0.501063346862793,
+    "Consolidation": 0.46182093024253845,
+    "Infiltration": 0.08914197981357574,
+    "Pneumothorax": 0.19401554763317108,
+    "Edema": 0.5208606719970703,
+    "Emphysema": 0.5095369219779968,
+    "Fibrosis": 0.06951931864023209,
+    "Effusion": 0.24779197573661804,
+    "Pneumonia": 0.5138829946517944,
+    "Pleural_Thickening": 0.05219843611121178,
+    "Cardiomegaly": 0.43149399757385254,
+    "Nodule": 0.13317865133285522,
+    "Mass": 0.3208610713481903,
+    "Hernia": 0.2674041986465454,
+    "Lung Lesion": 0.3037683367729187,
+    "Fracture": 0.5295856595039368,
+    "Lung Opacity": 0.40830475091934204,
+    "Enlarged Cardiomediastinum": 0.52150559425354
+  },
+  "autoencoder_recon_error": {
+    "global_mean": 35.48770523071289,
+    "global_max": 1294.739990234375,
+    "global_p95": 111.12281799316406,
+    "note": "chest-trained AE on a foot image: high global error expected (OOD), not interpretable as anomaly"
+  }
+}

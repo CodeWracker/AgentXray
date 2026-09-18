@@ -1,0 +1,14 @@
+[
+  {
+    "tool": "transformers.AutoModelForImageClassification",
+    "used_for": "detecting potential bone fractures",
+    "trusted": true,
+    "reason": "Specialized model for the task, though findings are verified visually."
+  },
+  {
+    "tool": "transformers.AutoImageProcessor",
+    "used_for": "preprocessing image for the classifier",
+    "trusted": true,
+    "reason": "Standard preprocessing for the model used."
+  }
+]

@@ -1,0 +1,43 @@
+{
+  "created_at": "2026-09-17T23:33:36-03:00",
+  "mode": "single",
+  "model": "qwen3.6-27b",
+  "harness": "opencode",
+  "prompt_version": "v2",
+  "prompt_sha256": "2dba1373a88df23903bf8e04f3c5d5d454a9a8b5a8227da2f92aae623030fbbe",
+  "prompt_sources": [
+    "prompts/v2/single.md",
+    "prompts/v2/_shared/environment.md",
+    "prompts/v2/_shared/reproducibility.md",
+    "prompts/v2/_harness/opencode.md"
+  ],
+  "images": [
+    {
+      "file": "ID001-xray.png",
+      "sha256": "d2ff28b4f228afcf9cedcd299c9d1097de239131c421f4a703c4e9ba1cb4bacf"
+    }
+  ],
+  "repo_commit": "d1fd20b1fa1ccda51edfc897deff34884001ecbf",
+  "repo_dirty": true,
+  "models_lock_sha256": "1324f94edfa79de039870538a3a863943c903a5db20a414af0130cbf7291c64e",
+  "uv_lock_sha256": "f99eae270e087accdc12106c161a5480c765c3b76c9abae90b5a259fb939ee0e",
+  "platform": "Linux-6.17.0-14-generic-x86_64-with-glibc2.39",
+  "libraries": {
+    "python": "3.11.14",
+    "numpy": "2.4.6",
+    "scipy": "1.17.1",
+    "opencv-python-headless": "5.0.0.93",
+    "scikit-image": "0.26.0",
+    "pillow": "12.3.0",
+    "pywavelets": "1.9.0",
+    "simpleitk": "2.5.6",
+    "torch": "2.14.0+cpu",
+    "torchvision": "0.29.0+cpu",
+    "timm": "1.0.29",
+    "transformers": "5.17.0",
+    "open_clip_torch": "3.3.0",
+    "ultralytics": "8.4.155",
+    "torchxrayvision": "1.5.4"
+  },
+  "python_command": "/home/ralph/projects/ufsc/pablo-xray-tests/llm-xray-evaluation/tools/py"
+}

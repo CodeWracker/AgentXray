@@ -1,0 +1,31 @@
+{
+  "body_region": {
+    "a radiograph of the foot": 0.45119142532348633,
+    "a lateral radiograph of the foot and ankle": 0.48515135049819946,
+    "a radiograph of the lower leg and foot": 0.4465939402580261,
+    "a radiograph of the hand": 0.28389209508895874,
+    "a radiograph of the wrist": 0.32072070240974426,
+    "a chest radiograph": 0.2549853026866913,
+    "a radiograph of the knee": 0.32624149322509766,
+    "a lateral projection radiograph": 0.36910390853881836,
+    "an anteroposterior projection radiograph": 0.35306036472320557
+  },
+  "fracture_probe": {
+    "a radiograph showing a fracture of the bone": 0.366828978061676,
+    "a radiograph of a broken bone": 0.325008749961853,
+    "a normal radiograph without fracture": 0.41210973262786865,
+    "a radiograph of healthy bone": 0.35097649693489075,
+    "a radiograph of an intact foot": 0.44902485609054565
+  },
+  "body_region_softmax_t50": {
+    "a radiograph of the foot": 0.2257689217505735,
+    "a lateral radiograph of the foot and ankle": 0.44528321127279663,
+    "a radiograph of the lower leg and foot": 0.2059353541541436,
+    "a radiograph of the hand": 0.007952810604720407,
+    "a radiograph of the wrist": 0.016611538558597958,
+    "a chest radiograph": 0.004461074040638347,
+    "a radiograph of the knee": 0.018550808334634888,
+    "a lateral projection radiograph": 0.04371807667102302,
+    "an anteroposterior projection radiograph": 0.03171820461287173
+  }
+}

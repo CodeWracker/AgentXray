@@ -1,0 +1,8 @@
+[
+  {
+    "tool": "transformers.AutoModelForImageClassification",
+    "used_for": "bone fracture detection",
+    "trusted": false,
+    "reason": "Model reported a fracture with 0.75 confidence, but visual inspection of the original image does not clearly show a cortical break or obvious fracture line in the radius or ulna."
+  }
+]

@@ -1,0 +1,36 @@
+{
+  "exit_code": 0,
+  "timed_out": false,
+  "nudges": 2,
+  "attempts": [
+    {
+      "exit_code": 0,
+      "ended_at_s": 123.6
+    },
+    {
+      "exit_code": 0,
+      "ended_at_s": 150.4
+    },
+    {
+      "exit_code": 0,
+      "ended_at_s": 188.5
+    }
+  ],
+  "final_json_written": true,
+  "elapsed_s": 188.5,
+  "check_passed": false,
+  "check_output": "[FALHA] ID002-xray_analysis\n    - reprodução: {\"ok\": false, \"outputs\": 1, \"missing\": [\"measurements/fracture_detection.json\"], \"extra\": [], \"different\": []}\n",
+  "main_session": "ses_f4d9eca94ffe8jSYYHmTDJFmb7",
+  "child_sessions": [],
+  "tokens_main_session": {
+    "input": 346621,
+    "output": 5534,
+    "reasoning": 0
+  },
+  "tool_calls": {
+    "bash": 8,
+    "read": 2,
+    "write": 9,
+    "edit": 1
+  }
+}

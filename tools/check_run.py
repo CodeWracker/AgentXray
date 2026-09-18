@@ -26,6 +26,11 @@ import tempfile
 
 EVAL = pathlib.Path(__file__).resolve().parent.parent
 JSON_KEYS = {"image", "findings", "impression", "limitations"}
+# contrato da v2; a v1 só exige o que o próprio prompt v1 pedia e não tem reprodução
+REQUIRED_V1 = {
+    "single": ["analyze_image.py"],
+    "agents": ["planning/processing_plan.txt"],
+}
 REQUIRED = {
     "single": ["provenance/first_look.md", "provenance/decisions.md", "provenance/tools.json", "scripts/reproduce.py"],
     "agents": [
@@ -117,6 +122,7 @@ def main() -> int:
     manifest_path = run_dir / "run_manifest.json"
     manifest = json.loads(manifest_path.read_text()) if manifest_path.exists() else None
     mode = manifest["mode"] if manifest else None
+    required = (REQUIRED_V1 if manifest and manifest.get("prompt_version") == "v1" else REQUIRED) if manifest else {}
 
     report = {}
     for analysis in sorted(run_dir.rglob("*_analysis")):
@@ -128,7 +134,7 @@ def main() -> int:
 
         entry = {"errors": check_json(analysis, image_name)}
         if mode:
-            entry["errors"] += [f"ausente: {rel}" for rel in REQUIRED[mode] if not (analysis / rel).exists()]
+            entry["errors"] += [f"ausente: {rel}" for rel in required[mode] if not (analysis / rel).exists()]
             entry["errors"] += check_tools(analysis)
             if not args.no_reproduce and (analysis / "scripts" / "reproduce.py").exists():
                 entry["reproduce"] = check_reproduce(analysis, args.timeout)
