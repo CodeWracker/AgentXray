@@ -112,7 +112,7 @@ def create_run(mode: str, model: str, images: list[pathlib.Path], version: str =
         "prompt_sources": [str(p.relative_to(EVAL)) for p in parts],
         "images": copied,
         "repo_commit": git("rev-parse", "HEAD"),
-        "repo_dirty": bool(git("status", "--porcelain", "--", ".")),
+        "repo_dirty": bool(git("status", "--porcelain", "--", ".", ":!results")),  # resultados em andamento não contam
         "models_lock_sha256": sha256(EVAL / "models.lock.json"),
         "uv_lock_sha256": sha256(EVAL / "uv.lock"),
         "platform": platform.platform(),

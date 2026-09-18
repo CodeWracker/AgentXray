@@ -1,0 +1,45 @@
+{
+  "model": "microsoft/BiomedCLIP-PubMedBERT_256-vit_base_patch16_224",
+  "all_prompts_scores": {
+    "lateral X-ray of a foot with fracture": 0.05974283814430237,
+    "lateral X-ray of an ankle with fracture": 0.059522125869989395,
+    "radiograph of a foot showing abnormality": 0.05752971023321152,
+    "foot X-ray with bone lesion": 0.058208055794239044,
+    "ankle radiograph with joint effusion": 0.06009715422987938,
+    "foot radiograph with soft tissue swelling": 0.05921200290322304,
+    "fractured calcaneus X-ray": 0.05796922370791435,
+    "fractured talus radiograph": 0.05732632800936699,
+    "fractured distal fibula": 0.055385541170835495,
+    "avulsion fracture foot X-ray": 0.05790971592068672,
+    "stress fracture foot radiograph": 0.05916640907526016,
+    "fractured metatarsal X-ray": 0.05345555394887924,
+    "normal lateral foot X-ray": 0.061628181487321854,
+    "normal lateral ankle radiograph": 0.06219537928700447,
+    "normal foot radiograph without abnormality": 0.059992581605911255,
+    "healthy foot X-ray lateral view": 0.05967188626527786,
+    "unremarkable ankle X-ray": 0.060987357050180435
+  },
+  "positive_findings_scores": {
+    "lateral X-ray of a foot with fracture": 0.05974283814430237,
+    "lateral X-ray of an ankle with fracture": 0.059522125869989395,
+    "radiograph of a foot showing abnormality": 0.05752971023321152,
+    "foot X-ray with bone lesion": 0.058208055794239044,
+    "ankle radiograph with joint effusion": 0.06009715422987938,
+    "foot radiograph with soft tissue swelling": 0.05921200290322304,
+    "fractured calcaneus X-ray": 0.05796922370791435,
+    "fractured talus radiograph": 0.05732632800936699,
+    "fractured distal fibula": 0.055385541170835495,
+    "avulsion fracture foot X-ray": 0.05790971592068672,
+    "stress fracture foot radiograph": 0.05916640907526016,
+    "fractured metatarsal X-ray": 0.05345555394887924
+  },
+  "negative_normal_scores": {
+    "normal lateral foot X-ray": 0.05974283814430237,
+    "normal lateral ankle radiograph": 0.059522125869989395,
+    "normal foot radiograph without abnormality": 0.05752971023321152,
+    "healthy foot X-ray lateral view": 0.058208055794239044,
+    "unremarkable ankle X-ray": 0.06009715422987938
+  },
+  "top_match": "normal lateral ankle radiograph",
+  "note": "Zero-shot classification, not diagnostic. Prompt-dependent results."
+}

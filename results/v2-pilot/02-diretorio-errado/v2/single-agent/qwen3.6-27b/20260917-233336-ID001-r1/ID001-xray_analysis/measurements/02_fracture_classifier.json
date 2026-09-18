@@ -1,0 +1,15 @@
+{
+  "model": "prithivMLmods/Bone-Fracture-Detection",
+  "base_model": "google/siglip2-base-patch16-224",
+  "labels": {
+    "0": "Fractured",
+    "1": "Not Fractured"
+  },
+  "predicted_class": "Fractured",
+  "predicted_index": 0,
+  "probabilities": {
+    "Fractured": 0.7861012816429138,
+    "Not Fractured": 0.21389874815940857
+  },
+  "note": "Model not peer-reviewed. Training dataset unknown for body region. Must validate against visual findings."
+}

@@ -53,6 +53,8 @@ def opencode_config(provider: str, model: str, run_dir: pathlib.Path) -> dict:
         "small_model": full,
         "autoupdate": False,
         "share": "disabled",
+        # sem snapshots git por passo: são lentos e não fazem parte da tarefa
+        "snapshot": False,
         "agent": {
             "build": {"model": full, "steps": AGENT_STEPS},
             "analyst": {
@@ -106,9 +108,12 @@ def export_sessions(run_dir: pathlib.Path, ids: list[str]) -> None:
     out = run_dir / "sessions"
     out.mkdir(exist_ok=True)
     for sid in ids:
-        proc = subprocess.run(["opencode", "export", sid], capture_output=True, text=True)
-        if proc.returncode == 0:
-            (out / f"{sid}.json").write_text(proc.stdout)
+        # direto para arquivo: por pipe, o opencode encerra antes de esvaziar a saída e o JSON sai truncado
+        target = out / f"{sid}.json"
+        with open(target, "w") as f:
+            proc = subprocess.run(["opencode", "export", sid], stdout=f, stderr=subprocess.DEVNULL)
+        if proc.returncode != 0:
+            target.unlink()
 
 
 def run_one(mode: str, model: str, image: pathlib.Path, provider: str, timeout_min: int, label: str,
@@ -126,13 +131,15 @@ def run_one(mode: str, model: str, image: pathlib.Path, provider: str, timeout_m
     attempts = []
     message = prompt
     while True:
-        cmd = ["opencode", "run", "--model", f"{provider}/{model}", "--format", "json", "--auto"]
+        cmd = ["opencode", "run", "--model", f"{provider}/{model}", "--format", "json", "--auto", "--dir", str(run_dir)]
         session = summarize(events)["main_session"] if events.exists() else None
         cmd += ["--session", session] if session else ["--title", run_dir.name]
         with open(events, "a") as out, open(run_dir / "opencode_stderr.log", "a") as err:
             try:
-                proc = subprocess.run([*cmd, message], cwd=run_dir, stdout=out, stderr=err,
-                                      timeout=max(deadline - time.time(), 1))
+                # o opencode usa o PWD herdado, não o cwd do processo: sem isso a sessão abre no diretório
+                # do runner e o opencode.json da rodada (subagente, permissões) não é carregado
+                proc = subprocess.run([*cmd, message], cwd=run_dir, env={**os.environ, "PWD": str(run_dir)},
+                                      stdout=out, stderr=err, timeout=max(deadline - time.time(), 1))
                 attempts.append({"exit_code": proc.returncode, "ended_at_s": round(time.time() - started, 1)})
             except subprocess.TimeoutExpired:
                 attempts.append({"exit_code": None, "timed_out": True, "ended_at_s": round(time.time() - started, 1)})

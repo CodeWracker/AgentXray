@@ -1,0 +1,42 @@
+{
+  "calcaneus_region": {
+    "box": [
+      67,
+      281,
+      156,
+      431
+    ],
+    "mask_pixels": 4158,
+    "mask_fraction": 0.024553861416541672
+  },
+  "talus_region": {
+    "box": [
+      82,
+      204,
+      156,
+      308
+    ],
+    "mask_pixels": 3193,
+    "mask_fraction": 0.0188553341758099
+  },
+  "distal_tibia_fibula": {
+    "box": [
+      82,
+      9,
+      149,
+      249
+    ],
+    "mask_pixels": 5095,
+    "mask_fraction": 0.030087042789148588
+  },
+  "metatarsal_region": {
+    "box": [
+      156,
+      249,
+      317,
+      385
+    ],
+    "mask_pixels": 10420,
+    "mask_fraction": 0.06153228378075138
+  }
+}

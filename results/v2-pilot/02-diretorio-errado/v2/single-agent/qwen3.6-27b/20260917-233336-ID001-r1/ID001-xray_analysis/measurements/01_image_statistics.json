@@ -1,0 +1,16 @@
+{
+  "original_shape": [
+    454,
+    373
+  ],
+  "original_min": 0.0,
+  "original_max": 237.0,
+  "original_mean": 36.543060302734375,
+  "original_std": 37.25529861450195,
+  "clahe_mean": 59.70365886785322,
+  "clahe_std": 48.74454187796456,
+  "gamma_mean": 11.791971277060624,
+  "gamma_std": 26.040113529555107,
+  "histeq_mean": 134.24611732470385,
+  "histeq_std": 70.27961867725553
+}

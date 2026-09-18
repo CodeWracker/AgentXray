@@ -1,0 +1,17 @@
+{
+  "model": "qwen3.6-27b",
+  "session_directory_is_run_dir": true,
+  "session_directory": "/home/ralph/projects/ufsc/pablo-xray-tests/llm-xray-evaluation/.sandbox/tmp/selftest-qwen3.6-27b-zw44q3az",
+  "outside_read_attempted": true,
+  "outside_read_denied": false,
+  "project_python_works": true,
+  "subagents": [
+    {
+      "agent": "analyst",
+      "model": "qwen3.6-27b"
+    }
+  ],
+  "subagent_file_written": true,
+  "subagent_same_model": true,
+  "passed": false
+}

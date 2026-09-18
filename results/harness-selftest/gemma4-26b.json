@@ -1,0 +1,12 @@
+{
+  "model": "gemma4-26b",
+  "session_directory_is_run_dir": true,
+  "session_directory": "/home/ralph/projects/ufsc/pablo-xray-tests/llm-xray-evaluation/.sandbox/tmp/selftest-gemma4-26b-sjiwhs8t",
+  "outside_read_attempted": true,
+  "outside_read_denied": false,
+  "project_python_works": false,
+  "subagents": [],
+  "subagent_file_written": false,
+  "subagent_same_model": false,
+  "passed": false
+}
