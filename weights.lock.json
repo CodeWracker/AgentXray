@@ -1,0 +1,70 @@
+{
+  "torchxrayvision": "1.5.4",
+  "weights": {
+    "densenet121-res224-all": {
+      "file": "nih-pc-chex-mimic_ch-google-openi-kaggle-densenet121-d121-tw-lr001-rot45-tr15-sc15-seed0-best.pt",
+      "sha256": "56524913dd16a906422e8d8b66a7a5c46be1d82eb7ac012d8103776f1aa68899",
+      "bytes": 28382008
+    },
+    "densenet121-res224-nih": {
+      "file": "nih-densenet121-d121-tw-lr001-rot45-tr15-sc15-seed0-best.pt",
+      "sha256": "31a5475c6b1383a7edbfcaf96af9ce302eb9969cfe28b6b8b5859afc6f274fdf",
+      "bytes": 28382096
+    },
+    "densenet121-res224-pc": {
+      "file": "pc-densenet121-d121-tw-lr001-rot45-tr15-sc15-seed0-best.pt",
+      "sha256": "a9148ef62ae4e7a31a9bed8cef22811f39681cd61e4390398936efc6280af521",
+      "bytes": 28381804
+    },
+    "densenet121-res224-chex": {
+      "file": "chex-densenet121-d121-tw-lr001-rot45-tr15-sc15-seed0-best.pt",
+      "sha256": "1a914ae802170187a4852e594708206c12468eeeefd66aa4e8e26141649d61a4",
+      "bytes": 28381998
+    },
+    "densenet121-res224-rsna": {
+      "file": "kaggle-densenet121-d121-tw-lr001-rot45-tr15-sc15-seed0-best.pt",
+      "sha256": "906a59f48cf09638b745d66848a6c6f9d741368c66244717a81207329d140268",
+      "bytes": 28381974
+    },
+    "densenet121-res224-mimic_nb": {
+      "file": "mimic_nb-densenet121-d121-tw-lr001-rot45-tr15-sc15-seed0-best.pt",
+      "sha256": "a15dc8e9d0880d7b8184b450f03c5c0204897fa0d9ac3a3a5c638038028a65e5",
+      "bytes": 28381970
+    },
+    "densenet121-res224-mimic_ch": {
+      "file": "mimic_ch-densenet121-d121-tw-lr001-rot45-tr15-sc15-seed0-best.pt",
+      "sha256": "23b13a04459684ffa41247d068207a7657b4e1b4dec2b02431f5026bd75b1189",
+      "bytes": 28382012
+    },
+    "resnet50-res512-all": {
+      "file": "pc-nih-rsna-siim-vin-resnet50-test512-e400-state.pt",
+      "sha256": "7724248ef6972be85a3e0d2fabe0a561634e11eb776d51b3999682c19fc596d9",
+      "bytes": 94471272
+    },
+    "resnet-ae-101-elastic": {
+      "file": "nihpcrsnamimic_ch-resnet101-2-ae-test2-elastic-e250.pt",
+      "sha256": "877ded430383a2bbce756737b316d76de42defed3079eebf2cce305f7be34df9",
+      "bytes": 125341920
+    },
+    "chestx_det-pspnet": {
+      "file": "pspnet_chestxray_best_model_4.pth",
+      "sha256": "019b167eac6b729fc1bb92bbbc185fc1730aaa65819f4e3fe718186cadc044fc",
+      "bytes": 272988989
+    },
+    "chestx_anatomy-unet-resnet50": {
+      "file": "baseline_models_cxas_UNet_ResNet50_default_repack.pth",
+      "sha256": "44c0161a9a375b8bbe6df747c73959defce8c91c3b507ce575f5a1d5addee030",
+      "bytes": 293894593
+    },
+    "xinario-view": {
+      "file": "xinario_chestViewSplit_resnet-50.pt",
+      "sha256": "d2d63da3758006d85b962f439c8f59a10228babe8b2fcc158bfa59be7dab5bd6",
+      "bytes": 102548915
+    },
+    "jfhealthcare-densenet121": {
+      "file": "baseline_models_jfhealthcare-DenseNet121_pre_train.pth",
+      "sha256": "d2f2d704bcd0bbfbf3dc5cd34dd930215adf39dd9afda22ab4223b5b22bb546b",
+      "bytes": 50731121
+    }
+  }
+}
