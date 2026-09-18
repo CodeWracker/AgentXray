@@ -1,0 +1,7 @@
+# ambiente, sandbox (caches, temporários, sessões do opencode), pesos e credenciais: locais, fora do git
+.venv/
+.sandbox/
+models/
+.env
+__pycache__/
+*.pyc
