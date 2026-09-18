@@ -5,3 +5,9 @@ models/
 .env
 __pycache__/
 *.pyc
+inputs/nih_chestxray/
+data/
+*.tar.gz
+*.tar
+*.zip
+
