@@ -32,7 +32,7 @@ import sys
 import time
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
-from new_run import EVAL, MODELS_DIR, create_run  # noqa: E402
+from new_run import EVAL, create_run  # noqa: E402
 
 AGENT_STEPS = 400
 # mensagem de retomada quando a sessão termina sem o JSON final; neutra quanto ao conteúdo da análise
@@ -43,10 +43,8 @@ NUDGE = (
 
 
 def opencode_config(provider: str, model: str, run_dir: pathlib.Path) -> dict:
-    import torchxrayvision
-
     full = f"{provider}/{model}"
-    txv = pathlib.Path(torchxrayvision.__file__).parent
+    results = EVAL / "results"
     return {
         "$schema": "https://opencode.ai/config.json",
         "model": full,
@@ -67,17 +65,17 @@ def opencode_config(provider: str, model: str, run_dir: pathlib.Path) -> dict:
             "general": {"model": full},
             "explore": {"model": full},
         },
+        # a última regra que casa vence: o geral primeiro, as exceções depois
         "permission": {
             "question": "deny",
             "webfetch": "deny",
             "websearch": "deny",
-            "external_directory": {
-                "*": "deny",
-                f"{EVAL / 'tools'}/*": "allow",
-                f"{txv}/*": "allow",
-                f"{MODELS_DIR}/*": "allow",
-                f"{os.environ['TMPDIR']}/*": "allow",
-            },
+            # fora do repositório da avaliação só o que a tarefa precisa
+            "external_directory": {"*": "deny", "/tmp/*": "allow"},
+            # dentro do repositório, os resultados de outras rodadas contaminariam a análise
+            **{tool: {"*": "allow", f"*{results}*": "deny", f"{results}/**": "deny", f"{results}/*": "deny", f"{run_dir}/*": "allow", f"{run_dir}/**": "allow"} for tool in ["read", "list", "glob"]},
+            "edit": {"*": "deny", f"{run_dir}/*": "allow", f"{os.environ['TMPDIR']}/*": "allow", "/tmp/*": "allow"},
+            "bash": {"*": "allow", f"*{results}*": "deny", "*../*": "deny", f"*{run_dir}*": "allow"},
         },
     }
 
