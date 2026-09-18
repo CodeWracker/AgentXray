@@ -1,0 +1,42 @@
+{
+  "ID001-xray.png": {
+    "body_region": "lower_extremity",
+    "anatomical_structures": [
+      "ankle",
+      "foot",
+      "distal_tibia",
+      "distal_fibula",
+      "calcaneus",
+      "talus"
+    ],
+    "fracture_reference": null,
+    "fracture_evident": false,
+    "notes": "Single lateral projection of ankle and foot. Fracture status unconfirmed without specialist review."
+  },
+  "ID002-xray.png": {
+    "body_region": "lower_extremity",
+    "anatomical_structures": [
+      "knee",
+      "tibia",
+      "fibula",
+      "lower_leg"
+    ],
+    "fracture_reference": null,
+    "fracture_evident": false,
+    "notes": "Single lateral projection of knee and lower leg. Fracture status unconfirmed without specialist review."
+  },
+  "ID003-xray.png": {
+    "body_region": "upper_extremity",
+    "anatomical_structures": [
+      "forearm",
+      "radius",
+      "ulna",
+      "elbow",
+      "wrist"
+    ],
+    "fracture_reference": true,
+    "fracture_evident": true,
+    "fracture_location": "forearm_diaphysis",
+    "notes": "Single projection of upper extremity with evident forearm diaphysis fracture."
+  }
+}
