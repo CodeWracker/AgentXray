@@ -1,8 +1,8 @@
 """Confere se uma rodada cumpriu o contrato e se os resultados são reprodutíveis.
 
 Uso:
-    uv run python tools/check_run.py results/v2/single-agent/qwen3.8-27b/20260918-101500-ID001
-    uv run python tools/check_run.py results/v1/single-agent/sonnet5      # rodadas v1: só o JSON
+    tools/py tools/check_run.py results/v2/single-agent/qwen3.8-27b/20260918-101500-ID001
+    tools/py tools/check_run.py results/v1/single-agent/sonnet5      # rodadas v1: só o JSON
 
 Para cada `*_analysis/` da rodada:
   1. o JSON final existe, é válido, tem exatamente os quatro campos e o nome da imagem certo;
@@ -17,13 +17,14 @@ tratadas como legado e só têm o JSON verificado).
 import argparse
 import hashlib
 import json
+import os
 import pathlib
 import shutil
 import subprocess
 import sys
 import tempfile
 
-BENCH = pathlib.Path(__file__).resolve().parent.parent
+EVAL = pathlib.Path(__file__).resolve().parent.parent
 JSON_KEYS = {"image", "findings", "impression", "limitations"}
 REQUIRED = {
     "single": ["provenance/first_look.md", "provenance/decisions.md", "provenance/tools.json", "scripts/reproduce.py"],
@@ -77,14 +78,14 @@ def check_tools(analysis: pathlib.Path) -> list[str]:
 
 def check_reproduce(analysis: pathlib.Path, timeout: int) -> dict:
     expected = derived_outputs(analysis)
-    with tempfile.TemporaryDirectory() as tmp:
+    with tempfile.TemporaryDirectory(dir=os.environ["TMPDIR"]) as tmp:
         clone = pathlib.Path(tmp) / analysis.name
         shutil.copytree(analysis, clone)
         for rel in expected:
             (clone / rel).unlink()
         try:
             proc = subprocess.run(
-                [str(BENCH / "tools" / "py"), "scripts/reproduce.py"],
+                [str(EVAL / "tools" / "py"), "scripts/reproduce.py"],
                 cwd=clone, capture_output=True, text=True, timeout=timeout,
             )
         except subprocess.TimeoutExpired:

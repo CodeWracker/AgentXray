@@ -1,0 +1,38 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "model": "DGX-UFSC/qwen3.8-27b",
+  "small_model": "DGX-UFSC/qwen3.8-27b",
+  "autoupdate": false,
+  "share": "disabled",
+  "agent": {
+    "build": {
+      "model": "DGX-UFSC/qwen3.8-27b",
+      "steps": 400
+    },
+    "analyst": {
+      "mode": "subagent",
+      "model": "DGX-UFSC/qwen3.8-27b",
+      "steps": 400,
+      "description": "Independent radiograph analyst. Runs the same model as the orchestrator. Use for every sub-agent of the council.",
+      "prompt": "You are one independent analyst of a single-model council. Follow the task description exactly, write the files it asks for, and report back briefly."
+    },
+    "general": {
+      "model": "DGX-UFSC/qwen3.8-27b"
+    },
+    "explore": {
+      "model": "DGX-UFSC/qwen3.8-27b"
+    }
+  },
+  "permission": {
+    "question": "deny",
+    "webfetch": "deny",
+    "websearch": "deny",
+    "external_directory": {
+      "*": "deny",
+      "/home/ralph/projects/ufsc/pablo-xray-tests/bench/tools/*": "allow",
+      "/home/ralph/projects/ufsc/pablo-xray-tests/bench/.venv/lib/python3.11/site-packages/torchxrayvision/*": "allow",
+      "/home/ralph/.cache/xray-bench/*": "allow",
+      "/tmp/*": "allow"
+    }
+  }
+}

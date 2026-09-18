@@ -1,0 +1,57 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "autoupdate": false,
+  "share": "disabled",
+  "provider": {
+    "DGX-UFSC": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "DGX-UFSC",
+      "options": {
+        "baseURL": "{env:DGX_UFSC_BASE_URL}",
+        "apiKey": "{env:DGX_UFSC_API_KEY}",
+        "streaming": true
+      },
+      "models": {
+        "qwen3.8-27b": {
+          "name": "qwen3.8-27b",
+          "attachment": true,
+          "modalities": {
+            "input": [
+              "text",
+              "image"
+            ],
+            "output": [
+              "text"
+            ]
+          }
+        },
+        "qwen3.6-27b": {
+          "name": "qwen3.6-27b",
+          "attachment": true,
+          "modalities": {
+            "input": [
+              "text",
+              "image"
+            ],
+            "output": [
+              "text"
+            ]
+          }
+        },
+        "gemma4-26b": {
+          "name": "gemma4-26b",
+          "attachment": true,
+          "modalities": {
+            "input": [
+              "text",
+              "image"
+            ],
+            "output": [
+              "text"
+            ]
+          }
+        }
+      }
+    }
+  }
+}

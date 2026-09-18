@@ -1,15 +1,16 @@
 """Baixa e trava (sha256 + revisão) todos os pesos de modelos oferecidos aos agentes.
 
 Uso:
-    uv run python tools/setup_models.py            # baixa o que falta e grava/atualiza o lock
-    uv run python tools/setup_models.py --verify   # só confere se os pesos em cache batem com o lock
+    XRAY_ONLINE=1 tools/py tools/setup_models.py   # baixa o que falta e grava/atualiza o lock
+    tools/py tools/setup_models.py --verify        # só confere se os pesos baixados batem com o lock
 
-Três origens:
-  * torchxrayvision: cache padrão da biblioteca (~/.torchxrayvision/models_data), porque alguns
-    baseline models ignoram `cache_dir` e sempre usam esse caminho;
-  * Hugging Face: snapshots com revisão fixada em ~/.cache/xray-bench/hf/<repo>, carregados depois
-    por caminho local, sem rede;
-  * arquivos avulsos (release do GitHub) em ~/.cache/xray-bench/files.
+Tudo fica em llm-xray-evaluation/models/ (fora do git), em três origens:
+  * torchxrayvision: models/torchxrayvision/models_data; alguns baseline models ignoram `cache_dir` e
+    sempre usam ~/.torchxrayvision, por isso tools/py troca o HOME do Python para o sandbox, onde um
+    link aponta para cá;
+  * Hugging Face: arquivos com revisão fixada em models/hf/<repo>, carregados depois por caminho local,
+    sem rede; o BiomedBERT, que o BiomedCLIP carrega por nome, fica no cache em models/hf-hub;
+  * arquivos avulsos (release do GitHub) em models/files.
 
 O `models.lock.json` versionado garante que todas as rodadas usem exatamente os mesmos arquivos.
 Modelos do torchxrayvision que predizem raça, sexo e idade ficam de fora de propósito: não têm
@@ -23,11 +24,10 @@ import pathlib
 import sys
 import urllib.request
 
-BENCH = pathlib.Path(__file__).resolve().parent.parent
-LOCK_PATH = BENCH / "models.lock.json"
-HOME = pathlib.Path.home()
-TXV_CACHE = HOME / ".torchxrayvision" / "models_data"
-BENCH_CACHE = HOME / ".cache" / "xray-bench"
+EVAL = pathlib.Path(__file__).resolve().parent.parent
+LOCK_PATH = EVAL / "models.lock.json"
+MODELS = EVAL / "models"
+TXV_CACHE = MODELS / "torchxrayvision" / "models_data"
 
 # nome lógico -> construtor que dispara o download no cache do torchxrayvision
 TXV_MODELS = {
@@ -82,7 +82,7 @@ def sha256(path: pathlib.Path) -> str:
 
 
 def entry(path: pathlib.Path, **extra) -> dict:
-    return {"path": "~/" + str(path.relative_to(HOME)), "sha256": sha256(path), "bytes": path.stat().st_size, **extra}
+    return {"path": str(path.resolve().relative_to(EVAL)), "sha256": sha256(path), "bytes": path.stat().st_size, **extra}
 
 
 def fetch_txv() -> dict:
@@ -93,10 +93,9 @@ def fetch_txv() -> dict:
         print(f"-> {name}", flush=True)
         model = build(xrv)
         local = getattr(model, "weights_filename_local", None)
-        if not local:
-            # o autoencoder não guarda o caminho no objeto; o nome do arquivo vem do URL
-            local = TXV_CACHE / pathlib.Path(xrv.autoencoders.model_urls[model.weights]["weights_url"]).name
-        out[f"txv/{name}"] = entry(pathlib.Path(local))
+        # o autoencoder não guarda o caminho no objeto; o nome do arquivo vem do URL
+        filename = pathlib.Path(local).name if local else pathlib.Path(xrv.autoencoders.model_urls[model.weights]["weights_url"]).name
+        out[f"txv/{name}"] = entry(TXV_CACHE / filename)
     return out
 
 
@@ -106,31 +105,31 @@ def fetch_hf() -> dict:
     out = {}
     for repo, (revision, files) in HF_MODELS.items():
         print(f"-> {repo}@{revision[:10]}", flush=True)
-        target = BENCH_CACHE / "hf" / repo
+        target = MODELS / "hf" / repo
         # o classificador da comunidade só publica os pesos finais em subpastas de checkpoint
         remap = {"model.safetensors": "checkpoint-1108/model.safetensors",
                  "config.json": "checkpoint-1108/config.json",
                  "preprocessor_config.json": "checkpoint-1108/preprocessor_config.json"}
         for name in files:
             remote = remap.get(name, name) if repo.startswith("prithivMLmods/") else name
-            downloaded = pathlib.Path(hf_hub_download(repo, remote, revision=revision, cache_dir=BENCH_CACHE / "hub"))
             dest = target / name
-            dest.parent.mkdir(parents=True, exist_ok=True)
             if not dest.exists():
-                dest.write_bytes(downloaded.read_bytes())
+                downloaded = pathlib.Path(hf_hub_download(repo, remote, revision=revision, local_dir=target / ".download"))
+                dest.parent.mkdir(parents=True, exist_ok=True)
+                downloaded.replace(dest)
             out[f"hf/{repo}/{name}"] = entry(dest, revision=revision)
 
     for repo, files in HF_BY_NAME.items():
         print(f"-> {repo}", flush=True)
         for name in files:
-            downloaded = pathlib.Path(hf_hub_download(repo, name, cache_dir=BENCH_CACHE / "hub"))
+            downloaded = pathlib.Path(hf_hub_download(repo, name, cache_dir=MODELS / "hf-hub"))
             revision = downloaded.parent.name  # .../snapshots/<commit>/<arquivo>
             out[f"hf/{repo}/{name}"] = entry(downloaded, revision=revision)
 
     # com `local-dir:`, o open_clip procura o tokenizer dentro da própria pasta do BiomedCLIP
-    biomedclip = BENCH_CACHE / "hf" / "microsoft/BiomedCLIP-PubMedBERT_256-vit_base_patch16_224"
+    biomedclip = MODELS / "hf" / "microsoft/BiomedCLIP-PubMedBERT_256-vit_base_patch16_224"
     for name in ["config.json", "vocab.txt", "tokenizer_config.json"]:
-        source = pathlib.Path(hf_hub_download("microsoft/BiomedNLP-BiomedBERT-base-uncased-abstract", name, cache_dir=BENCH_CACHE / "hub"))
+        source = pathlib.Path(hf_hub_download("microsoft/BiomedNLP-BiomedBERT-base-uncased-abstract", name, cache_dir=MODELS / "hf-hub"))
         dest = biomedclip / name
         if not dest.exists():
             dest.write_bytes(source.read_bytes())
@@ -142,7 +141,7 @@ def fetch_files() -> dict:
     out = {}
     for name, url in FILES.items():
         print(f"-> {name}", flush=True)
-        dest = BENCH_CACHE / "files" / name
+        dest = MODELS / "files" / name
         if not dest.exists():
             dest.parent.mkdir(parents=True, exist_ok=True)
             urllib.request.urlretrieve(url, dest)
@@ -153,7 +152,7 @@ def fetch_files() -> dict:
 def verify(lock: dict) -> int:
     bad = 0
     for name, item in lock["weights"].items():
-        path = pathlib.Path(item["path"]).expanduser()
+        path = EVAL / item["path"]
         if not path.exists():
             print(f"FALTANDO  {name}: {path}")
             bad += 1

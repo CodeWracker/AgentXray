@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
-# Interpretador da bancada: ambiente travado pelo uv.lock, sem rede para modelos, caches fixos.
-# Uso: bench/tools/py script.py [args...]   (funciona a partir de qualquer diretório)
+# Interpretador da avaliação: ambiente travado pelo uv.lock, modelos offline, tudo confinado ao projeto.
+# Uso: llm-xray-evaluation/tools/py script.py [args...]   (funciona a partir de qualquer diretório)
 set -euo pipefail
-BENCH="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-export HF_HUB_OFFLINE=1
-export TRANSFORMERS_OFFLINE=1
-export HF_HUB_CACHE="$HOME/.cache/xray-bench/hub"
-export YOLO_OFFLINE=1
-export YOLO_CONFIG_DIR="$HOME/.cache/xray-bench/ultralytics"
-export XRAY_BENCH_MODELS="$HOME/.cache/xray-bench"
+source "$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)/env.sh"
+# XRAY_ONLINE=1 libera downloads (só para tools/setup_models.py)
+if [ "${XRAY_ONLINE:-0}" != 1 ]; then
+    export HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1 YOLO_OFFLINE=1
+fi
 export PYTHONHASHSEED=0
 export CUBLAS_WORKSPACE_CONFIG=:4096:8
-exec uv run --quiet --project "$BENCH" python "$@"
+UV="$(command -v uv)"
+# HOME só muda para o processo Python: qualquer biblioteca que grave em ~ grava no sandbox
+exec env HOME="$SANDBOX/home" "$UV" run --quiet --frozen --project "$EVAL" python "$@"

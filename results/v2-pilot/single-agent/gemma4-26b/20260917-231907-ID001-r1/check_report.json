@@ -1,0 +1,9 @@
+{
+  "ID001-xray_analysis": {
+    "errors": [
+      "JSON final ausente: ID001-xray.png.json",
+      "ausente: provenance/tools.json",
+      "ausente: scripts/reproduce.py"
+    ]
+  }
+}

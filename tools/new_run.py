@@ -1,9 +1,8 @@
 """Prepara um diretório de rodada isolado, com o prompt renderizado e um manifesto de proveniência.
 
 Uso:
-    uv run python tools/new_run.py --mode single --model sonnet5
-    uv run python tools/new_run.py --mode agents --model qwen3.8-27b --images inputs/ID003-xray.png
-    uv run python tools/new_run.py --mode single --model sonnet5 --root /tmp/xray-runs   # fora do repo
+    tools/py tools/new_run.py --mode single --model sonnet5
+    tools/py tools/new_run.py --mode agents --model qwen3.8-27b --images inputs/ID003-xray.png
 
 Cria `<root>/<versão>/<modo>/<modelo>/<timestamp>/` com cópias das imagens, `PROMPT.md` (o texto exato
 a ser entregue ao agente) e `run_manifest.json` (hashes do prompt, das imagens, dos pesos, commit do
@@ -21,11 +20,11 @@ import shutil
 import subprocess
 import sys
 
-BENCH = pathlib.Path(__file__).resolve().parent.parent
-PROMPTS = BENCH / "prompts"
+EVAL = pathlib.Path(__file__).resolve().parent.parent
+PROMPTS = EVAL / "prompts"
 MODES = {"single": "single-agent", "agents": "multi-agent-single-model"}
-MODELS_DIR = pathlib.Path.home() / ".cache" / "xray-bench"
-PYTHON = BENCH / "tools" / "py"
+MODELS_DIR = EVAL / "models"
+PYTHON = EVAL / "tools" / "py"
 
 
 def sha256(path: pathlib.Path) -> str:
@@ -34,7 +33,7 @@ def sha256(path: pathlib.Path) -> str:
 
 def git(*args: str) -> str:
     try:
-        return subprocess.run(["git", *args], cwd=BENCH, capture_output=True, text=True, check=True).stdout.strip()
+        return subprocess.run(["git", *args], cwd=EVAL, capture_output=True, text=True, check=True).stdout.strip()
     except (subprocess.CalledProcessError, FileNotFoundError):
         return ""
 
@@ -67,9 +66,9 @@ def prompt_parts(version: str, mode: str, harness: str | None) -> list[pathlib.P
 
 
 def create_run(mode: str, model: str, images: list[pathlib.Path], version: str = "v2",
-               root: pathlib.Path = BENCH / "results", harness: str | None = None, label: str = "") -> pathlib.Path:
+               root: pathlib.Path = EVAL / "results", harness: str | None = None, label: str = "") -> pathlib.Path:
     # confere os pesos antes de gastar uma rodada com um ambiente divergente
-    verify = subprocess.run([sys.executable, str(BENCH / "tools" / "setup_models.py"), "--verify"], capture_output=True, text=True)
+    verify = subprocess.run([sys.executable, str(EVAL / "tools" / "setup_models.py"), "--verify"], capture_output=True, text=True)
     if verify.returncode != 0:
         print(verify.stdout, file=sys.stderr)
         raise SystemExit("pesos ausentes ou divergentes; rode tools/setup_models.py")
@@ -105,12 +104,12 @@ def create_run(mode: str, model: str, images: list[pathlib.Path], version: str =
         "harness": harness,
         "prompt_version": version,
         "prompt_sha256": hashlib.sha256(prompt.encode()).hexdigest(),
-        "prompt_sources": [str(p.relative_to(BENCH)) for p in parts],
+        "prompt_sources": [str(p.relative_to(EVAL)) for p in parts],
         "images": copied,
         "repo_commit": git("rev-parse", "HEAD"),
         "repo_dirty": bool(git("status", "--porcelain", "--", ".")),
-        "models_lock_sha256": sha256(BENCH / "models.lock.json"),
-        "uv_lock_sha256": sha256(BENCH / "uv.lock"),
+        "models_lock_sha256": sha256(EVAL / "models.lock.json"),
+        "uv_lock_sha256": sha256(EVAL / "uv.lock"),
         "platform": platform.platform(),
         "libraries": library_versions(),
         "python_command": str(PYTHON),
@@ -127,8 +126,8 @@ def main() -> int:
     parser.add_argument("--mode", choices=MODES, required=True)
     parser.add_argument("--model", required=True, help="nome do modelo avaliado, ex.: sonnet5, qwen3.8-27b")
     parser.add_argument("--version", default="v2", help="versão dos prompts em prompts/<versão>/")
-    parser.add_argument("--images", nargs="+", type=pathlib.Path, default=sorted((BENCH / "inputs").glob("*.png")))
-    parser.add_argument("--root", type=pathlib.Path, default=BENCH / "results", help="onde criar a rodada")
+    parser.add_argument("--images", nargs="+", type=pathlib.Path, default=sorted((EVAL / "inputs").glob("*.png")))
+    parser.add_argument("--root", type=pathlib.Path, default=EVAL / "results", help="onde criar a rodada (dentro do projeto)")
     parser.add_argument("--harness", help="acrescenta prompts/<versão>/_harness/<harness>.md, ex.: opencode")
     args = parser.parse_args()
 

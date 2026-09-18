@@ -1,0 +1,20 @@
+{
+  "exit_code": 0,
+  "timed_out": false,
+  "elapsed_s": 79.4,
+  "check_passed": false,
+  "check_output": "[FALHA] ID001-xray_analysis\n    - JSON final ausente: ID001-xray.png.json\n    - ausente: provenance/tools.json\n    - ausente: scripts/reproduce.py\n",
+  "main_session": "ses_f4db084b1ffe6Phv4vdH1xI9mt",
+  "child_sessions": [],
+  "tokens_main_session": {
+    "input": 163065,
+    "output": 2486,
+    "reasoning": 0
+  },
+  "tool_calls": {
+    "bash": 4,
+    "read": 1,
+    "write": 4,
+    "edit": 1
+  }
+}
