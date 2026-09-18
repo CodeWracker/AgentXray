@@ -1,0 +1,509 @@
+[
+  {
+    "image": "00022416_019.png",
+    "finding_labels": [
+      "Atelectasis",
+      "Consolidation",
+      "Effusion",
+      "Infiltration"
+    ],
+    "view_position": "AP",
+    "patient_id": "22416",
+    "patient_age": "51",
+    "patient_gender": "M"
+  },
+  {
+    "image": "00006304_004.png",
+    "finding_labels": [
+      "Atelectasis",
+      "Cardiomegaly"
+    ],
+    "view_position": "AP",
+    "patient_id": "6304",
+    "patient_age": "66",
+    "patient_gender": "F"
+  },
+  {
+    "image": "00001075_047.png",
+    "finding_labels": [
+      "Atelectasis",
+      "Cardiomegaly"
+    ],
+    "view_position": "PA",
+    "patient_id": "1075",
+    "patient_age": "59",
+    "patient_gender": "F"
+  },
+  {
+    "image": "00013249_045.png",
+    "finding_labels": [
+      "Cardiomegaly",
+      "Infiltration"
+    ],
+    "view_position": "AP",
+    "patient_id": "13249",
+    "patient_age": "14",
+    "patient_gender": "M"
+  },
+  {
+    "image": "00011702_072.png",
+    "finding_labels": [
+      "Cardiomegaly",
+      "Infiltration"
+    ],
+    "view_position": "AP",
+    "patient_id": "11702",
+    "patient_age": "25",
+    "patient_gender": "F"
+  },
+  {
+    "image": "00010447_027.png",
+    "finding_labels": [
+      "Cardiomegaly",
+      "Effusion",
+      "Infiltration"
+    ],
+    "view_position": "AP",
+    "patient_id": "10447",
+    "patient_age": "63",
+    "patient_gender": "F"
+  },
+  {
+    "image": "00007322_007.png",
+    "finding_labels": [
+      "Consolidation"
+    ],
+    "view_position": "AP",
+    "patient_id": "7322",
+    "patient_age": "68",
+    "patient_gender": "F"
+  },
+  {
+    "image": "00022416_056.png",
+    "finding_labels": [
+      "Consolidation",
+      "Effusion"
+    ],
+    "view_position": "AP",
+    "patient_id": "22416",
+    "patient_age": "52",
+    "patient_gender": "M"
+  },
+  {
+    "image": "00004911_016.png",
+    "finding_labels": [
+      "Consolidation",
+      "Nodule"
+    ],
+    "view_position": "PA",
+    "patient_id": "4911",
+    "patient_age": "48",
+    "patient_gender": "F"
+  },
+  {
+    "image": "00019651_003.png",
+    "finding_labels": [
+      "Edema",
+      "Mass"
+    ],
+    "view_position": "PA",
+    "patient_id": "19651",
+    "patient_age": "24",
+    "patient_gender": "F"
+  },
+  {
+    "image": "00022084_000.png",
+    "finding_labels": [
+      "Edema",
+      "Pneumonia"
+    ],
+    "view_position": "PA",
+    "patient_id": "22084",
+    "patient_age": "48",
+    "patient_gender": "F"
+  },
+  {
+    "image": "00029469_012.png",
+    "finding_labels": [
+      "Edema",
+      "Effusion",
+      "Infiltration",
+      "Pneumonia"
+    ],
+    "view_position": "AP",
+    "patient_id": "29469",
+    "patient_age": "59",
+    "patient_gender": "M"
+  },
+  {
+    "image": "00029588_004.png",
+    "finding_labels": [
+      "Cardiomegaly",
+      "Consolidation",
+      "Effusion"
+    ],
+    "view_position": "AP",
+    "patient_id": "29588",
+    "patient_age": "46",
+    "patient_gender": "M"
+  },
+  {
+    "image": "00007632_013.png",
+    "finding_labels": [
+      "Effusion",
+      "Pneumothorax"
+    ],
+    "view_position": "PA",
+    "patient_id": "7632",
+    "patient_age": "50",
+    "patient_gender": "F"
+  },
+  {
+    "image": "00022098_007.png",
+    "finding_labels": [
+      "Effusion",
+      "Infiltration"
+    ],
+    "view_position": "PA",
+    "patient_id": "22098",
+    "patient_age": "46",
+    "patient_gender": "F"
+  },
+  {
+    "image": "00003803_002.png",
+    "finding_labels": [
+      "Effusion",
+      "Emphysema",
+      "Infiltration",
+      "Pneumothorax"
+    ],
+    "view_position": "PA",
+    "patient_id": "3803",
+    "patient_age": "47",
+    "patient_gender": "F"
+  },
+  {
+    "image": "00003072_028.png",
+    "finding_labels": [
+      "Effusion",
+      "Emphysema",
+      "Fibrosis",
+      "Nodule",
+      "Pneumothorax"
+    ],
+    "view_position": "PA",
+    "patient_id": "3072",
+    "patient_age": "51",
+    "patient_gender": "M"
+  },
+  {
+    "image": "00008911_026.png",
+    "finding_labels": [
+      "Emphysema"
+    ],
+    "view_position": "AP",
+    "patient_id": "8911",
+    "patient_age": "63",
+    "patient_gender": "M"
+  },
+  {
+    "image": "00005089_007.png",
+    "finding_labels": [
+      "Fibrosis"
+    ],
+    "view_position": "PA",
+    "patient_id": "5089",
+    "patient_age": "34",
+    "patient_gender": "F"
+  },
+  {
+    "image": "00005609_025.png",
+    "finding_labels": [
+      "Fibrosis"
+    ],
+    "view_position": "PA",
+    "patient_id": "5609",
+    "patient_age": "39",
+    "patient_gender": "M"
+  },
+  {
+    "image": "00013659_029.png",
+    "finding_labels": [
+      "Fibrosis",
+      "Infiltration",
+      "Pleural_Thickening"
+    ],
+    "view_position": "AP",
+    "patient_id": "13659",
+    "patient_age": "64",
+    "patient_gender": "F"
+  },
+  {
+    "image": "00021463_005.png",
+    "finding_labels": [
+      "Atelectasis",
+      "Edema",
+      "Effusion",
+      "Hernia",
+      "Infiltration"
+    ],
+    "view_position": "AP",
+    "patient_id": "21463",
+    "patient_age": "63",
+    "patient_gender": "F"
+  },
+  {
+    "image": "00000003_004.png",
+    "finding_labels": [
+      "Hernia"
+    ],
+    "view_position": "PA",
+    "patient_id": "3",
+    "patient_age": "77",
+    "patient_gender": "F"
+  },
+  {
+    "image": "00020915_000.png",
+    "finding_labels": [
+      "Hernia"
+    ],
+    "view_position": "PA",
+    "patient_id": "20915",
+    "patient_age": "65",
+    "patient_gender": "M"
+  },
+  {
+    "image": "00010120_019.png",
+    "finding_labels": [
+      "Atelectasis",
+      "Infiltration"
+    ],
+    "view_position": "PA",
+    "patient_id": "10120",
+    "patient_age": "51",
+    "patient_gender": "M"
+  },
+  {
+    "image": "00029159_015.png",
+    "finding_labels": [
+      "Effusion",
+      "Infiltration"
+    ],
+    "view_position": "AP",
+    "patient_id": "29159",
+    "patient_age": "52",
+    "patient_gender": "F"
+  },
+  {
+    "image": "00026194_000.png",
+    "finding_labels": [
+      "Infiltration",
+      "Nodule"
+    ],
+    "view_position": "PA",
+    "patient_id": "26194",
+    "patient_age": "10",
+    "patient_gender": "F"
+  },
+  {
+    "image": "00022726_011.png",
+    "finding_labels": [
+      "Mass",
+      "Nodule"
+    ],
+    "view_position": "PA",
+    "patient_id": "22726",
+    "patient_age": "45",
+    "patient_gender": "F"
+  },
+  {
+    "image": "00017403_002.png",
+    "finding_labels": [
+      "Atelectasis",
+      "Mass"
+    ],
+    "view_position": "AP",
+    "patient_id": "17403",
+    "patient_age": "51",
+    "patient_gender": "F"
+  },
+  {
+    "image": "00014822_025.png",
+    "finding_labels": [
+      "Mass"
+    ],
+    "view_position": "AP",
+    "patient_id": "14822",
+    "patient_age": "62",
+    "patient_gender": "F"
+  },
+  {
+    "image": "00013648_018.png",
+    "finding_labels": [
+      "No Finding"
+    ],
+    "view_position": "PA",
+    "patient_id": "13648",
+    "patient_age": "33",
+    "patient_gender": "M"
+  },
+  {
+    "image": "00027726_005.png",
+    "finding_labels": [
+      "No Finding"
+    ],
+    "view_position": "PA",
+    "patient_id": "27726",
+    "patient_age": "58",
+    "patient_gender": "M"
+  },
+  {
+    "image": "00030557_000.png",
+    "finding_labels": [
+      "No Finding"
+    ],
+    "view_position": "PA",
+    "patient_id": "30557",
+    "patient_age": "39",
+    "patient_gender": "F"
+  },
+  {
+    "image": "00013670_049.png",
+    "finding_labels": [
+      "Consolidation",
+      "Nodule"
+    ],
+    "view_position": "AP",
+    "patient_id": "13670",
+    "patient_age": "55",
+    "patient_gender": "M"
+  },
+  {
+    "image": "00000733_000.png",
+    "finding_labels": [
+      "Nodule"
+    ],
+    "view_position": "PA",
+    "patient_id": "733",
+    "patient_age": "65",
+    "patient_gender": "M"
+  },
+  {
+    "image": "00029159_003.png",
+    "finding_labels": [
+      "Nodule"
+    ],
+    "view_position": "PA",
+    "patient_id": "29159",
+    "patient_age": "51",
+    "patient_gender": "F"
+  },
+  {
+    "image": "00010007_062.png",
+    "finding_labels": [
+      "Effusion",
+      "Infiltration",
+      "Pleural_Thickening"
+    ],
+    "view_position": "AP",
+    "patient_id": "10007",
+    "patient_age": "57",
+    "patient_gender": "M"
+  },
+  {
+    "image": "00021463_004.png",
+    "finding_labels": [
+      "Hernia",
+      "Infiltration",
+      "Pleural_Thickening"
+    ],
+    "view_position": "PA",
+    "patient_id": "21463",
+    "patient_age": "62",
+    "patient_gender": "F"
+  },
+  {
+    "image": "00018253_048.png",
+    "finding_labels": [
+      "Atelectasis",
+      "Effusion",
+      "Infiltration",
+      "Pleural_Thickening"
+    ],
+    "view_position": "AP",
+    "patient_id": "18253",
+    "patient_age": "71",
+    "patient_gender": "F"
+  },
+  {
+    "image": "00014731_016.png",
+    "finding_labels": [
+      "Emphysema",
+      "Mass",
+      "Pneumonia",
+      "Pneumothorax"
+    ],
+    "view_position": "PA",
+    "patient_id": "14731",
+    "patient_age": "54",
+    "patient_gender": "M"
+  },
+  {
+    "image": "00011237_112.png",
+    "finding_labels": [
+      "Edema",
+      "Infiltration",
+      "Pneumonia"
+    ],
+    "view_position": "AP",
+    "patient_id": "11237",
+    "patient_age": "56",
+    "patient_gender": "F"
+  },
+  {
+    "image": "00013391_005.png",
+    "finding_labels": [
+      "Infiltration",
+      "Pneumonia"
+    ],
+    "view_position": "PA",
+    "patient_id": "13391",
+    "patient_age": "45",
+    "patient_gender": "F"
+  },
+  {
+    "image": "00017747_053.png",
+    "finding_labels": [
+      "Emphysema",
+      "Pneumothorax"
+    ],
+    "view_position": "PA",
+    "patient_id": "17747",
+    "patient_age": "31",
+    "patient_gender": "M"
+  },
+  {
+    "image": "00008295_022.png",
+    "finding_labels": [
+      "Atelectasis",
+      "Effusion",
+      "Pneumothorax"
+    ],
+    "view_position": "AP",
+    "patient_id": "8295",
+    "patient_age": "55",
+    "patient_gender": "M"
+  },
+  {
+    "image": "00007750_008.png",
+    "finding_labels": [
+      "Atelectasis",
+      "Effusion",
+      "Pneumothorax"
+    ],
+    "view_position": "PA",
+    "patient_id": "7750",
+    "patient_age": "55",
+    "patient_gender": "M"
+  }
+]
