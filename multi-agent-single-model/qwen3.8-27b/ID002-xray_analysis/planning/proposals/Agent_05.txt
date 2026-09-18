@@ -1,0 +1,30 @@
+AGENT: Agent_05
+MODEL: qwen3.8-27b
+IMAGE: ID002-xray.png
+PROPOSALS:
+Proposal 1:
+  QUESTION: Is the small ill-defined density focus in the proximal ulna (olecranon / olecranon fossa region) a true bony or osteochondral fragment, a subtle fracture fragment, an apophysis/ossification center, or normal overlapping anatomy?
+  METHOD: Localized contrast enhancement — CLAHE (contrast-limited adaptive histogram equalization, e.g., 8x8 tiles, clip limit ~2-3) or a carefully windowed histogram stretch — applied to a cropped, magnified (2x-4x) region covering the olecranon, olecranon fossa, and adjacent distal humerus.
+  WHY IT MAY HELP: The focus has only a small contrast difference from surrounding trabecular bone at native display levels; local adaptive equalization expands the local contrast range exactly where the finding is, making cortical margins, fragment borders, and lucency/continuity of the trabecular pattern distinguishable without globally washing out the rest of the image.
+  EXPECTED INFORMATION: Whether the focus has a sharp sclerotic border (favoring a detached fragment or ossification center) or blends into the olecranon cortex; whether there is an accompanying lucent fracture line; the relationship of the focus to the olecranon fossa and the posterior margin of the proximal ulna.
+  POSSIBLE ARTIFACTS: CLAHE amplifies sensor noise and can create false high-contrast "edges" that mimic fragment borders; tile-boundary banding can appear as artificial linear structures; excessive clipping can saturate the cortical margin of the olecranon and erase the very interface of interest.
+  COMPARISON WITH ORIGINAL: View the enhanced crop directly beside the same region of the original at identical zoom; any "fragment border" that is not supported by a visible density transition in the original should be treated as an artifact. Do not make a positive call on the enhanced image alone.
+  PRIORITY: high
+
+Proposal 2:
+  QUESTION: Is there a subtle cortical disruption (hairline fracture) in the olecranon, radial head, or distal humeral condyle that is not perceptible on the native image?
+  METHOD: Edge-enhancement pass over the elbow region — unsharp masking (moderate radius/amount) plus a gradient-based edge detector (e.g., Canny or Sobel, with threshold tuned to the local noise floor) — applied to the cropped elbow (distal humerus + proximal forearm), with the raw and filtered outputs overlaid.
+  WHY IT MAY HELP: Hairline fractures manifest primarily as a break in an otherwise smooth high-contrast cortical line; edge maps exaggerate continuity/discontinuity of cortical boundaries far more sensitively than raw grayscale, and an overlay highlights where the detected edge line deviates from a smooth cortical arc.
+  EXPECTED INFORMATION: A focal gap, step-off, or double-cortical-line sign along the olecranon cortex, radial head rim, or humeral condyle; alternatively, a smooth uninterrupted cortical arc that argues against fracture.
+  POSSIBLE ARTIFACTS: Noise-driven spurious edges in soft tissue and at trabecular boundaries; edge halos around high-density cortices that can be misread as fracture lines; detector/rounding-mask artifacts at the image boundary; edges from superimposed anatomy (e.g., radial head overlapping ulna on this near-lateral projection) that are not fractures.
+  COMPARISON WITH ORIGINAL: Every candidate edge must be verified on the unprocessed original: a real fracture line must correspond to an actual dark/absent segment of the cortical arc, not merely to a strong gradient in the edge map. Trace the cortex with a straight-line reference on the original to confirm the interruption is real.
+  PRIORITY: high
+
+Proposal 3:
+  QUESTION: Are the radiocapitellar and humeroulnar joints congruent, and is there a small joint effusion or osteochondral fragment within the joint?
+  METHOD: Magnified, straightened joint-space analysis: crop the elbow joint, re-orient the radial shaft axis to vertical (affine alignment), then measure the joint-space widths (radiocapitellar and trochlear) and draw the radiocapitellar line (midline of the radial shaft) to test that it passes through the center of the capitellum; optionally a mild bone-window level setting to better visualize the articular surfaces.
+  WHY IT MAY HELP: On a non-ideal lateral with superimposition of radial head and ulna, small malalignments or a subluxed radial head are hard to judge by eye; aligning the radial axis normalizes the projection geometry so congruity criteria (radiocapitellar line through capitellum center, smooth congruent humeroulnar arc) can be applied quantitatively rather than impressionistically.
+  EXPECTED INFORMATION: Confirmation of normal radiocapitellar alignment or detection of a few-millimeter subluxation; a uniform vs. widened joint space (suggesting effusion); a well-defined fragment sitting in the joint space.
+  POSSIBLE ARTIFACTS: Interpolation artifacts from resampling/rotation can blur fine cortical detail; the alignment math is only valid if the projection is (approximately) lateral — if the original is oblique, the "abnormal" radiocapitellar line may be a projection effect rather than true subluxation; over-sharpening during windowing can create false joint-space widening.
+  COMPARISON WITH ORIGINAL: Draw the reference lines (radial axis, radiocapitellar line, capitellum center) directly on the original image as well, and require agreement between the aligned and the original geometry before concluding malalignment; treat any discrepancy as a projection/positioning artifact until otherwise proven.
+  PRIORITY: medium

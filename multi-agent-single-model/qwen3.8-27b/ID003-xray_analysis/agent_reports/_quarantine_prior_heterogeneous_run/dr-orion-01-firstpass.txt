@@ -1,0 +1,49 @@
+AGENT: dr-orion
+MODEL: QN 3.8-27B
+IMAGE: ID003-xray.png
+IMAGE TYPE: Lateral (near-true-lateral, slight obliquity) projection of the upper limb
+centered on the elbow, including distal humerus, entire forearm (radius + ulna),
+wrist, and a semi-fisted hand. Elbow flexed ~90 deg; humerus runs horizontally
+into the field from the right (shoulder off-image). No visible R/L marker, so
+laterality is NOT determinable from this single image. No open physes apparent
+in visualized epiphyses (distal humerus, radial head, carpal ossification
+complete) -> likely skeletally mature / adult.
+STRUCTURES OF INTEREST:
+- Elbow joint (distal humerus, olecranon, radial head): x ~0.50-0.58, y ~0.15-0.25
+- Mid-forearm (radius and ulna shafts): x ~0.48-0.55, y ~0.30-0.50
+- Wrist / carpal row / distal radius-ula: x ~0.45-0.55, y ~0.57-0.68
+- Hand in semi-fist (metacarpals, phalanges): x ~0.28-0.65, y ~0.65-0.95
+- Humerus shaft entering upper right: x ~0.55-1.0, y ~0.13-0.20
+- Extra soft-tissue/curved bony density at right edge (torso/shoulder, likely
+  contralateral or same shoulder girdle): x ~0.90-1.0, y ~0.30-1.00
+POSSIBLE FINDINGS:
+- Mid-forearm (x ~0.51-0.54, y ~0.36-0.42): subtle irregularity where the radial
+  and ulnar cortices meet; possible old/healing midshaft fracture or small callus
+  vs pure rotational superimposition artifact. NOT certain on this single view.
+- Ulnar hand (x ~0.55-0.65, y ~0.82-0.92): dense overlap of 4th/5th metacarpal
+  bases with ulnar carpal bones; no definite fracture line seen, but this region
+  cannot be properly cleared due to the semi-fist position.
+- Elbow: no definite fracture line, cortical step-off, or dislocation identified;
+  humeroulnar and humeroradial joints appear congruent.
+- No obvious periosteal reaction, large lucency/sclerosis, or marked soft-tissue
+  swelling identified elsewhere.
+- Bottom line: no confident acute finding; the mid-forearm is the main uncertainty.
+LIMITATIONS:
+- Single oblique/lateral view: carpal bones not assessable (needs PA + ulnar/radial
+  deviation); semi-fisted hand causes major metacarpal/phalangeal superimposition.
+- No PA elbow view available to assess fat-pad sign or subtle radial head fracture.
+- Forearm slightly rotated (radius/ulna not perfectly superimposed as on true lateral).
+- Laterality unknown (no visible marker); shoulder and proximal humerus off-image.
+- Humerus slightly over-penetrated; hand region dense/under-penetrated from overlap.
+- Cannot assess DRUJ/TFCC, scaphoid, or metacarpal details from this geometry.
+ADDITIONAL PROCESSING WOULD HELP: yes. Contrast/windowing adjustments (local
+CLAHE or level/width windows) on the mid-forearm and on the carpal/hand region;
+edge-enhancement of the radial/ulnar cortical contours at mid-forearm; zoom crops
+(200-400%) of elbow, wrist, and hand to resolve the overlap.
+USEFUL ALTERNATIVE VISUALIZATIONS:
+- Histogram-equalized / CLAHE-enhanced full image
+- Crops: elbow (x 0.40-0.70, y 0.10-0.30); mid-forearm (x 0.40-0.60, y 0.30-0.50);
+  wrist (x 0.35-0.65, y 0.55-0.72); hand (x 0.20-0.70, y 0.60-1.00)
+- Measurements: elbow flexion angle; radial line alignment (forearm -> radial head);
+  cortical thickness profile along radius/ulna at the mid-forearm irregularity
+- If DICOM source: bone-window and soft-tissue-window re-renderings

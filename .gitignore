@@ -1,0 +1,8 @@
+# arquivo redundante: é só um zip do próprio conteúdo do repositório
+xray-tests-lmm.zip
+
+# ambiente e caches locais
+.venv/
+__pycache__/
+*.pyc
+.cache/

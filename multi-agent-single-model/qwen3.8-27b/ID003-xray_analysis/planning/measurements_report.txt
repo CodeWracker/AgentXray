@@ -1,0 +1,15 @@
+
+[64] Histograms / saturation fractions
+  full image: pixels >=250 = 0.145%; pixels ==255 = 0.001%  hand (x.40-.66 y.68-.95): pixels >=250 = 1.651%; pixels ==255 = 0.010%  mid-forearm (x.44-.60 y.30-.50): pixels >=250 = 0.000%; pixels ==255 = 0.000%  lower-right (x.45-.90 y.80-1.00): pixels >=250 = 0.756%; pixels ==255 = 0.000%
+
+[22] Canny (mid-forearm crop, sigma=1.5): thresholds lo=15.8 hi=39.4
+
+[60/61/62/63] Mid-forearm quantitative battery
+  cortex tracking: 331/384 rows with exactly 4 peaks (window x 538-845)  transverse dip at focal rows (y_px, min_gray, local_base, depth, half-width_px, x_min):    y=616: min=30, base=134, depth=104, width=57px, x_min=620    y=632: min=30, base=142, depth=112, width=55px, x_min=620    y=648: min=29, base=140, depth=112, width=64px, x_min=620    y=664: min=26, base=131, depth=105, width=59px, x_min=620  same metrics at distal control rows (noise floor):    y=720: min=24, base=118, depth=94, width=66px, x_min=621    y=752: min=24, base=120, depth=96, width=78px, x_min=623  focal-minus-control: max dip depth = 30.8 gray units at x=681 (amplified x4 in image)  bone 1 (image left): proximal axis +1.21 deg, distal axis -4.01 deg (from vertical), |deviation| = 5.22 deg, fit RMS prox 0.71px / dist 0.67px  bone 2 (image right): proximal axis +4.08 deg, distal axis -6.73 deg (from vertical), |deviation| = 10.81 deg, fit RMS prox 0.99px / dist 0.40px  sensitivity (segments shifted +/-6 px): max |deviation| change = 11.10 deg  step-off cortex k=0 at y=640: +6.39 px  step-off cortex k=1 at y=640: +7.48 px  step-off cortex k=2 at y=640: +4.12 px  step-off cortex k=3 at y=640: -3.79 px  NOTE: angles are image-plane apparent values (oblique projection); 1-2 deg within fit error.  width at focal y~0.40: soft=162px bone=73px | proximal y~0.33: soft=180px bone=54px | distal y~0.45: soft=131px bone=42px  sharpness (variance of Laplacian, relative; reported as numbers only):    lesion (x.45-.60 y.33-.47): 32.6    elbow (x.47-.63 y.13-.28): 84.6    distal radius (x.45-.58 y.55-.65): 60.6
+
+[70] Carpal ossification center census (marker hypotheses, normalized coords)
+  1: (0.5250, 0.6175) C1 rounded center, smooth margin  2: (0.5230, 0.6375) C2 rounded center, smooth margin  3: (0.5250, 0.6625) C3 larger center, smooth margin  4: (0.5390, 0.6200) C4 small/uncertain  5: (0.4875, 0.6150) distal ulnar epiphysis (partial)
+[71] Elbow ossification center census (marker hypotheses)
+  1: (0.5550, 0.1750) capitellum  2: (0.5730, 0.1875) radial head epiphysis  3: (0.5420, 0.1800) distal humeral epiphysis (medial)  4: (0.5140, 0.1875) olecranon  5: (0.5470, 0.1960) medial epicondyle (uncertain)
+[72] Distal radial physis width (3 perpendicular lines, native px)
+  line 1 at x=0.506: physis band FWHM = 33px, local gray min=53 max=125; shaft width at y=0.600 = 61px; ratio physis/shaft = 0.541  line 2 at x=0.525: physis band FWHM = 19px, local gray min=57 max=161; shaft width at y=0.600 = 61px; ratio physis/shaft = 0.311  line 3 at x=0.541: physis band FWHM = 29px, local gray min=48 max=136; shaft width at y=0.600 = 61px; ratio physis/shaft = 0.475

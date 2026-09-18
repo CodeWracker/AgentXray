@@ -1,0 +1,269 @@
+AGENT: Agent_01
+MODEL:
+qwen3.8-27b
+IMAGE: ID003-xray.png
+PHASE: independent processing proposals
+
+These proposals derive solely from my own first-pass inspection of the
+original image. Priority is the suspected subtle mid-forearm finding, then
+the superimposed/super-penetrated regions (elbow, wrist, hand).
+
+================================================================
+PROPOSAL 1 - Whole-image percentile contrast stretch (baseline normalization)
+================================================================
+- ANALYSIS: Percentile-based (e.g., 1.0-99.5%) linear contrast stretch /
+  histogram normalization of the full grayscale image, producing a
+  contrast-optimized reference version.
+- QUESTION: What is the best global dynamic range for viewing bone and
+  soft tissue in this image, removing the influence of the very dark
+  background and the very bright torso tissue on the right?
+- RATIONALE: The image spans from near-black background to saturated bright
+  torso tissue; a percentile stretch reallocates display range to the
+  examined limb and gives all later analyses a common, reproducible base.
+- EXPECTED INFORMATION: Improved overall bone/soft-tissue separation across
+  the limb; a consistent baseline for comparing all subsequent processed
+  outputs.
+- ARTIFACT RISKS: Clipping of true densities at either end; can exaggerate
+  noise in dark background regions; no new structural information is added.
+- COMPARISON: Compare side-by-side with the original; verify that no
+  structure changes appearance except in brightness/contrast, and that the
+  mid-forearm region remains visually consistent.
+- PROPOSED OUTPUT FILENAME: agent01_pct_stretch_full.png
+
+================================================================
+PROPOSAL 2 - CLAHE local adaptive histogram equalization (whole image)
+================================================================
+- ANALYSIS: CLAHE (e.g., clip limit 2.0-3.0, tile ~16x16 or 32x32) applied
+  to the full image, optionally on the percentile-stretched base.
+- QUESTION: Does local contrast enhancement reveal a cortical defect,
+  lucency, or angulation in the mid-forearm that is invisible at native
+  display, without over-amplifying background noise?
+- RATIONALE: The suspected finding is a low-contrast, subtle cortical
+  irregularity; local (not global) equalization adapts to the local gray
+  scale of the bone, increasing micro-contrast of cortical margins.
+- EXPECTED INFORMATION: Sharper cortical margins along radius and ulna
+  shafts; clearer confirmation or exclusion of the suspected transverse
+  lucency at the mid-forearm; better carpal trabecular detail.
+- ARTIFACT RISKS: Noise amplification in soft tissue and background;
+  "edge halo" and banding artifacts; can create apparent lines that do not
+  exist in the original (false-positive fracture lines).
+- COMPARISON: Overlay/flip between CLAHE output and the original; any
+  suspected new line must be traceable back to the original to be credited.
+- PROPOSED OUTPUT FILENAME: agent01_clahe_full.png
+
+================================================================
+PROPOSAL 3 - Unsharp masking / high-frequency bone enhancement (whole limb)
+================================================================
+- ANALYSIS: Unsharp masking (Gaussian blur sigma ~2-4 px, amount ~0.5-1.0)
+  or high-pass (band-pass) bone enhancement on the percentile-stretched
+  image.
+- QUESTION: Are there subtle cortical step-offs or lucencies (mid-forearm,
+  distal radius, elbow) that high-frequency enhancement can make visible?
+- RATIONALE: Cortical fractures are thin, high-frequency features against a
+  slowly varying bone background; unsharp masking suppresses low-frequency
+  tissue background and emphasizes edges.
+- EXPECTED INFORMATION: Enhanced cortical edges along the full limb; any
+  cortical interruption would stand out as a gap or break in the enhanced
+  edge contour.
+- ARTIFACT RISKS: Ringing (Gibbs-like halos) around sharp edges such as
+  joint spaces and the image border can mimic fracture lines; noise
+  amplification; over-enhancement can obscure the real line under halos.
+- COMPARISON: Compare edge continuity with the original at identical zoom;
+  verify that every "gap" in the enhanced edge map corresponds to a real
+  gray-level change in the original.
+- PROPOSED OUTPUT FILENAME: agent01_unsharp_bone.png
+
+================================================================
+PROPOSAL 4 - Crop: mid-forearm, magnified + CLAHE (TOP PRIORITY)
+================================================================
+- ANALYSIS: Crop the region x 0.42-0.64, y 0.28-0.52 (mid-forearm including
+  the suspicious zone x 0.45-0.60, y 0.33-0.47), resize 3-4x with
+  Lanczos interpolation, then apply CLAHE and percentile stretch.
+- QUESTION: Is there a definite transverse fracture line / cortical break /
+  displacement in the radius and/or ulna at the mid-diaphysis?
+- RATIONALE: Magnification raises the effective pixel count across the
+  cortex (sub-pixel features become resolvable) and local contrast
+  enhancement targets the low-contrast suspicion zone directly.
+- EXPECTED INFORMATION: Direct read of cortical continuity on both bones;
+  estimate of lucency width (px and mm if scale is known) and any
+  angulation/displacement; assessment of periosteal reaction vs soft
+  tissue.
+- ARTIFACT RISKS: Interpolation smoothing can erase a 1-2 px true fracture
+  line; CLAHE halos can create false lines; upscaling adds no real
+  information - any "finding" must exist in the native-resolution original.
+- COMPARISON: View the crop against the unprocessed original at the same
+  zoom (nearest-neighbor if needed); the fracture call is made on the
+  original, the crop only aids perception.
+- PROPOSED OUTPUT FILENAME: agent01_crop_midforearm_clahe.png
+
+================================================================
+PROPOSAL 5 - Crop: elbow complex, magnified + contrast stretch
+================================================================
+- ANALYSIS: Crop x 0.40-0.74, y 0.06-0.32 (distal humerus, olecranon,
+  radial head, proximal forearm), resize 3x, apply CLAHE.
+- QUESTION: Are there occult fractures at the distal humerus, olecranon, or
+  proximal radius/ulna that are hidden by superimposition and tangential
+  projection?
+- RATIONALE: The elbow in this image is partially superimposed and near the
+  FOV edge; magnification plus local equalization improves separation of
+  the overlapping ulna/radius/humerus cortices.
+- EXPECTED INFORMATION: Cortical continuity of olecranon, radial head/neck
+  and distal humeral condyles; joint congruence; presence/absence of
+  periarticular soft-tissue swelling.
+- ARTIFACT RISKS: Same halo/ringing and smoothing risks as Proposal 4;
+  superimposition is a geometric limitation that no contrast processing can
+  fully fix.
+- COMPARISON: Compare with original elbow at matched zoom; verify joint
+  line positions unchanged.
+- PROPOSED OUTPUT FILENAME: agent01_crop_elbow.png
+
+================================================================
+PROPOSAL 6 - Crop: wrist + carpus, magnified + CLAHE
+================================================================
+- ANALYSIS: Crop x 0.38-0.70, y 0.54-0.88 (distal radius/ulna, DRUJ,
+  carpus), resize 3x, apply CLAHE.
+- QUESTION: Is distal radius-to-carpus alignment preserved, and are
+  individual carpal bones intact (no fracture/avulsion/luxation), despite
+  the oblique hand position?
+- RATIONALE: Carpal detail is currently buried by rotation and
+  super-penetration; local equalization recovers contrast in the crowded
+  carpal row.
+- EXPECTED INFORMATION: Carpal row continuity, alignment of lunate/scaphoid
+  with radius, cortical integrity of distal radius articular margin.
+- ARTIFACT RISKS: CLAHE noise/halo artifacts in trabecular bone; oblique
+  projection means some "irregularity" is projectional, not structural;
+  interpolation smoothing as above.
+- COMPARISON: Compare with original wrist at matched zoom; assess whether
+  apparent misalignment persists without enhancement.
+- PROPOSED OUTPUT FILENAME: agent01_crop_wrist_carpals.png
+
+================================================================
+PROPOSAL 7 - Crop: hand (metacarpals + phalanges), magnified + CLAHE
+================================================================
+- ANALYSIS: Crop x 0.22-0.72, y 0.58-1.00 (entire hand), resize 2-3x,
+  apply CLAHE; optionally a second variant with stronger clip limit for
+  metacarpal bases.
+- QUESTION: Is there any cortical step-off, lucency, or malalignment in the
+  metacarpals or visible phalanges of the flexed, rotated hand?
+- RATIONALE: The hand was only partially assessable at native view due to
+  flexion/rotation; magnification + local contrast maximizes the chance to
+  inspect the shafts that ARE reasonably visible.
+- EXPECTED INFORMATION: Metacarpal shaft/cortex integrity, MCP joint
+  alignment where resolvable, phalangeal cortex continuity on the least
+  superimposed digits.
+- ARTIFACT RISKS: Heavy superimposition is geometric - enhancement cannot
+  separate overlapping bones; halo artifacts at dense overlapping cortices;
+  interpolation smoothing.
+- COMPARISON: Compare with original hand at matched zoom; only findings
+  present in the original count.
+- PROPOSED OUTPUT FILENAME: agent01_crop_hand.png
+
+================================================================
+PROPOSAL 8 - Edge-detection overlay (cortical continuity map)
+================================================================
+- ANALYSIS: Band-pass filter the percentile-stretched image (e.g.,
+  difference-of-Gaussians), run Canny edge detection with two thresholds,
+  then render the detected edges as a colored (e.g., red) overlay on top of
+  the original image.
+- QUESTION: Where exactly along the radius and ulna is the cortical edge
+  continuous vs interrupted, and does the interruption align with the
+  suspected mid-forearm line?
+- RATIONALE: An edge map turns "cortex present/absent" into an explicit
+  visual variable; a true cortical break should appear as a gap or
+  misregistered edge pair.
+- EXPECTED INFORMATION: Continuous edge traces along both forearm bones, or
+  a localized gap at the mid-forearm (supporting the suspected fracture);
+  cortical edges of metacarpals/phalanges for cross-check.
+- ARTIFACT RISKS: Canny is threshold-sensitive; may break edges on real
+  cortex (false gaps) or connect across joint spaces; halo edges from
+  over-enhancement produce spurious "cortices"; overlay can be read
+  literally when it is only a derivative.
+- COMPARISON: Every gap or break in the overlay must be verified pixel-by-
+  pixel in the original before being credited as a finding.
+- PROPOSED OUTPUT FILENAME: agent01_edge_overlay.png
+
+================================================================
+PROPOSAL 9 - Soft-tissue window (gamma + soft-tissue range stretch)
+================================================================
+- ANALYSIS: Re-map the image to a soft-tissue window: gamma ~0.4-0.6 (or
+  inverse image) with histogram stretch limited to the soft-tissue gray
+  range, applied to the forearm and hand regions; bones will wash out.
+- QUESTION: Is there soft-tissue swelling, asymmetry, or hematoma of the
+  forearm (especially over the mid-forearm suspicion) or of the hand?
+- RATIONALE: Swelling is a common indirect sign of fracture; at native view
+  the soft tissue is under-displayed because the display range is dominated
+  by bone density. A soft-tissue window redistributes range to tissue.
+- EXPECTED INFORMATION: Forearm/hand soft-tissue contour and relative
+  thickness along the limb; bulging over the mid-forearm, dorsal hand or
+  elbow would support an injury.
+- ARTIFACT RISKS: No internal bone information at all in this window (do
+  not read cortex from it); background tissue noise; the adjacent out-of-
+  focus torso on the right is uninterpretable and should be ignored.
+- COMPARISON: Compare contour against the original (soft tissue visible
+  there too); compare radial vs ulnar and proximal vs distal forearm
+  thickness within the same limb.
+- PROPOSED OUTPUT FILENAME: agent01_soft_tissue_window.png
+
+================================================================
+PROPOSAL 10 - Forearm axis tracing and angulation measurement (quantitative)
+================================================================
+- ANALYSIS: Manually/digitally trace the centerlines of the radius and
+  ulna from elbow to wrist on the percentile-stretched image; fit straight
+  lines to the proximal third and distal third of each shaft; compute the
+  deviation angle between segments (per bone) and the interosseous width
+  profile along the forearm. Output: annotated image with traces + a
+  numeric angle table.
+- QUESTION: Is there measurable angular deformity (bowing/angulation) of
+  the radius or ulna at the mid-forearm, and if so of how many degrees?
+- RATIONALE: A subtle angulated (greenstick-type or minimally displaced)
+  fracture may show more reliably as axis deviation than as a cortical
+  lucency; quantitative measurement removes the subjectivity of "looks
+  bent".
+- EXPECTED INFORMATION: Numeric angulation (degrees) per bone, location of
+  apex, interosseous width changes; if angle >2-3 deg at one level it
+  supports a fracture at that level.
+- ARTIFACT RISKS: Tracing is subjective (operator bias); normal anatomic
+  bowing of the ulna must be accounted for; tangential projection adds
+  apparent curvature; noisy edges make centerline placement unstable.
+- COMPARISON: Report absolute values but always interpret relative to the
+  original image's visible cortex; a "bend" that does not correspond to a
+  cortical change in the original is not a fracture.
+- PROPOSED OUTPUT FILENAME: agent01_axis_measurement_annotated.png
+
+================================================================
+PROPOSAL 11 - Negative (inverted) image of the hand region
+================================================================
+- ANALYSIS: Invert intensities of the hand crop (x 0.22-0.72, y 0.58-1.00)
+  and display; optionally pair with the CLAHE variant from Proposal 7.
+- QUESTION: Are cortical lucencies (which appear dark on bone) more visible
+  on the hand when the image is inverted, given human visual sensitivity
+  differences?
+- RATIONALE: Some readers perceive dark-on-bright details (fracture lines
+  are dark lines on bright bone) differently than bright-on-dark; inversion
+  is a zero-information-cost check for perceptual bias.
+- EXPECTED INFORMATION: Same information as the original crop, presented in
+  inverted polarities for a second perceptual read of metacarpal/phalangeal
+  cortices.
+- ARTIFACT RISKS: None introduced (pure polarity flip); risk is over-weighting
+  a finding seen only in one polarity - it must exist in both.
+- COMPARISON: Direct flip comparison; any line seen in only one polarity is
+  a perceptual artifact, not a finding.
+- PROPOSED OUTPUT FILENAME: agent01_hand_inverted.png
+
+================================================================
+QUANTITATIVE MEASUREMENTS (summary, tied to proposals above)
+================================================================
+- M1 (Proposal 4/10): radius and ulna diaphyseal angulation in degrees at
+  the mid-forearm; location of apex (normalized y).
+- M2 (Proposal 4): width of any confirmed cortical lucency in pixels (and
+  estimated mm if a scale can be assumed - unknown here, so report pixels
+  only).
+- M3 (Proposal 10): interosseous membrane space width profile (mm-equivalent
+  in pixels) along the forearm to detect narrowing at a suspected fracture
+  level.
+- M4 (Proposal 9): relative forearm soft-tissue thickness (ulnar vs radial,
+  mid vs distal) in pixels as a crude swelling index.
+
+NOTE: No scale/marker is visible in the image, so all quantitative values
+should be reported in normalized units or pixels, with an explicit caveat
+that absolute mm values cannot be derived without calibration.

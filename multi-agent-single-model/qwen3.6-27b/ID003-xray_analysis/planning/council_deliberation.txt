@@ -1,0 +1,42 @@
+COUNCIL DELIBERATION SUMMARY
+=============================
+Date: 2026-09-14
+Model: qwen3.6-27b (all agents)
+
+KEY DISAGREEMENTS FROM FIRST-PASS:
+1. Agent_04 did NOT identify a fracture; all other agents (01, 02, 03, 05, 06) identified a both-bone forearm fracture.
+2. Agent_05 assessed the fracture as subacute (1-3 weeks old) with callus formation and periosteal reaction.
+3. Agent_06 assessed the fracture as acute with no visible callus.
+4. Agents 02 and 06 identified the patient as pediatric with open physes; Agent 04 could not determine age.
+5. Fracture level: Agent 02 placed it at ~25-30% from proximal end; Agents 01 and 06 placed it at ~40-55%.
+
+COUNCIL RESOLUTION ON DISAGREEMENTS:
+- The fracture IS present: 5/6 agreement is strong. Agent_04 may have missed it due to the oblique projection or insufficient attention to the mid-forearm zone. The enhanced images (especially CLAHE and edge enhancement) will help resolve whether Agent_04's assessment was due to image quality or analytical error.
+- Chronicity is genuinely uncertain from a single view: Both agents 05 and 06 made detailed assessments but reached different conclusions. Enhanced periosteal/callus analysis is specifically needed.
+- Pediatric status: Agents 02, 05, 06 all noted open physes. Growth plate enhancement will confirm.
+
+PROCESSING PROPOSAL SYNTHESIS:
+-------------------------------
+HIGH-CONVERGENCE PROPOSALS (3+ agents independently proposed):
+1. Fracture zone contrast enhancement (CLAHE) — Agents 01, 02, 05, 06
+2. Edge detection for cortical delineation — Agents 01, 02, 03, 06
+3. Displacement/angulation quantification — Agents 01, 02, 03, 06
+4. Growth plate/physeal assessment — Agents 02, 03, 05, 06
+5. Soft tissue/swelling analysis — Agents 01, 02, 05, 06
+
+MODERATE-CONVERGENCE PROPOSALS (2 agents):
+6. Comminution/fragment detection — Agents 01, 02, 06
+7. Periosteal reaction/callus analysis (chronicity) — Agents 01, 05
+8. Wrist/hand regional enhancement — Agents 02, 03, 05
+
+LOW-CONVERGENCE PROPOSALS (1 agent):
+9. Interosseous space/membrane assessment — Agent 01
+10. Trabecular pattern (GLCM) analysis — Agents 02, 05
+
+EXCLUDED PROPOSALS:
+- GLCM texture analysis: Too abstract; unlikely to add clinically useful information from a single X-ray view. The texture patterns would be dominated by projection geometry rather than bone quality.
+- Full interosseous membrane assessment: The oblique projection makes quantitative interosseous space measurement unreliable. Relative assessment is possible but absolute measurement would be misleading.
+
+APPROVED PROCESSING PLAN:
+===========================
+See individual plan entries below.

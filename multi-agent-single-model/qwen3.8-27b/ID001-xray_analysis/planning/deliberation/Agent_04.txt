@@ -1,0 +1,224 @@
+AGENT: Agent_04
+MODEL: qwen3.8-27b
+IMAGE: ID001-xray.png
+
+JUSTIFIED PROPOSALS:
+The council's proposals fall into eight justified families (multiple independent
+proposers raise priority, not correctness):
+1. Local contrast enhancement + magnification of tibiotalar/subtalar joints
+   (A1P1, A2P1, A3P5, A5P1, A6P2) - the talar dome/plafond is near-saturated at
+   the global window; joint-space detail is at the resolution limit. Justified.
+2. Edge/fracture-line screening of hindfoot and midfoot (A1P5, A2P2, A3P3,
+   A4P3, A5P3, A6P1) - hairline fractures are below the raw visual threshold;
+   justified only with the unanimous original-verification rule.
+3. Quantitative angular measurement + true-lateral check (A1P3, A2P4, A3P4,
+   A4P5, A5P5, A6P4) - all six agents converged; the only way to convert
+   "looks aligned" into reproducible numbers and to quantify projection bias.
+4. Soft-tissue contour quantification (A1P4, A2P3, A4P4, A6P3) - swelling is a
+   silhouette question; dorsal/plantar internal control (A1P4) and numeric
+   heel-pad thickness (A6P3) are the strongest forms.
+5. Flat-field / de-vignetting + right-edge forefoot characterization (A2P5,
+   A3P1, A4P1, A5P4, A6P5) - the vertical gradient and the bright beam-field
+   rectangle are visible on the original; the right third is genuinely
+   underexposed. Justified, with the caveat (A2 scope note) that cropped
+   anatomy cannot be recovered - only in-frame distal metatarsals.
+6. Posterior calcaneus / Achilles insertion spur analysis (A1P2, A3P2, A5P3) -
+   justified because agents DISAGREE on whether a spur exists at all.
+7. Talar body/neck lesion workup: CLAHE + windowing (A5P1) plus edge-preserving
+   denoising (A5P2) - unique to Agent_05 but directly targets its unique first-
+   pass finding (mottled talar lucency); the denoise-persistence test
+   (structure vs grain) is well designed.
+8. Noise-floor / detection-limit estimation (A4P6) - unique; converts
+   "fracture cannot be excluded" into a quantified statement of what this image
+   can resolve.
+Not justified as a primary tool: A4P7 (PSF deconvolution) - exploratory only;
+see artifact risk and votes.
+
+REDUNDANT PROPOSALS:
+- Joint-space enhancement: A1P1 ~ A2P1 ~ A3P5 ~ A6P2 (A5P1 overlaps on talus;
+  A6P2 adds pixel/mm joint-width annotation, A2P1 adds two-clip-limit
+  bracketing - keep both differentiators).
+- Fracture-line edge screening: A1P5 ~ A2P2 ~ A3P3 ~ A4P3 ~ A6P1 (A5P3 is the
+  posterior-calcaneus/talar-dome subset). Highest redundancy in the council.
+- Angle measurement: A1P3 ~ A2P4 ~ A3P4 ~ A4P5 ~ A5P5 ~ A6P4 (A2P4 and A6P4
+  add the rotation/true-lateral proxy - keep those additions).
+- Soft tissue: A1P4 ~ A4P4 ~ A6P3 (A2P3 adjacent).
+- Flat-field: A2P5 ~ A5P4 ~ A3P1 ~ A6P5 (A4P1 adjacent via full-image CLAHE).
+- Midfoot/forefoot crop: A4P2 ~ A6P5 (A3P1 partial).
+- Spur: A1P2 ~ A3P2 ~ A5P3.
+Redundancy across 4-6 independent agents is genuine convergence on the dominant
+uncertainties (joint space, fracture exclusion, alignment, soft tissue,
+vignetting) and raises priority for all of them.
+
+MISLEADING-ARTIFACT RISK:
+- CLAHE family (family 1, 7): noise speckle mimicking subchondral cysts; tile-
+  boundary blockiness; halo/ringing at cortices. Guard: raw-image-first judgment
+  (A3P5), two-clip-limit concordance (A2P1), side-by-side matched-geometry
+  comparison (all agents).
+- Edge filters (family 2): false linear structures mimicking fracture lines;
+  symmetric halos mimicking double cortices; trabecular striations flagged as
+  "lines". Guard: every candidate line must be traceable in the unprocessed
+  original across its full length; must not cross a joint space; must not
+  merely follow trabecular flow or a cortical edge; A3P3's colored overlay and
+  A5P4's discriminant (real cortex terminates at bone; scratches run through
+  empty space/soft tissue) are the two best checks in the set.
+- Deconvolution (A4P7): HIGHEST risk - phantom streaks that resemble fracture
+  lines, strong regularization dependence. Guard: multi-regularization
+  persistence + agreement with original edge locations; otherwise skip.
+- Flat-field division (family 5): divide-by-estimation errors create curved
+  brightness artifacts mimicking periosteal reaction; can erase genuine broad
+  low-frequency soft-tissue swelling. Guard: region-by-region check that
+  anatomy is unchanged; original as arbiter (A5P4, A6P5).
+- Bone subtraction (A2P3): residual halo at bone margins mimicking
+  calcification; over-subtraction distorts the silhouette.
+- Denoising (A5P2): opposite-direction risk - over-smoothing can MASK a true
+  subtle lesion (false negative); two strengths required.
+- Magnification/resampling (A6P2): interpolation adds no resolution; Lanczos
+  ringing can mimic osteophytes; use original for final gestalt.
+- Skin-line segmentation (A6P3): the bright beam-field rectangle and streaks
+  near the limb border can break thresholding; manual correction and
+  standardized reference points required.
+- Universal guard already unanimous across all 32 proposals: a finding that
+  exists only after processing, with no counterpart in the original, is an
+  artifact, not pathology. Preserve this as the standing rule.
+
+RESOLVES UNCERTAINTY:
+- Joint-space preservation / early arthropathy: A1P1, A2P1, A3P5, A5P1, A6P2, A5P5.
+- Hairline fracture exclusion (hindfoot, midfoot, metatarsals): A1P5, A2P2,
+  A3P3, A4P2, A4P3, A5P3, A6P1; old/missed calcaneal fracture additionally via
+  Böhler's angle (A3P4, A6P4).
+- Dorsal/heel soft-tissue swelling, true vs artifact: A1P4, A2P3, A4P4, A6P3.
+- Heel spur existence and morphology (retrocalcaneal vs plantar fascia origin):
+  A1P2, A3P2, A5P3.
+- Positioning (plantarflexion, off-true-lateral rotation) and its effect on all
+  other reads: A2P4, A6P4, A1P3, A3P4, A4P5, A5P5.
+- Talar body/neck mottled lucency (structure vs superimposition vs grain):
+  A5P1, A5P2 - uniquely targeted.
+- Forefoot: what is visible within the vignette/crop and where the field edge
+  lies: A3P1, A4P2, A6P5.
+- Background streaks/gradient: compression/detector artifact vs masking:
+  A2P5, A5P4.
+- Strength of a negative finding (practical detection limit): A4P6.
+
+RESOLVES DISAGREEMENTS:
+1. HEEL SPUR PRESENCE - Agent_03's first pass asserts a posteroinferior
+   calcaneal spur; A1/A2/A5/A6 only ask whether one can be excluded.
+   A1P2 + A3P2 + A5P3 (+ A4P3 contour tracing) directly settle this: a real
+   spur must be a cortex-continuous bony projection visible in the original;
+   if it appears only under aggressive enhancement it is reclassified as
+   artifact and A3's framing is revised.
+2. POSITIONING - A2 reads the foot as plantarflexed and possibly rotated off
+   true lateral; A4 reads it as approximately neutral. A2P4's fibula/tibia
+   superimposition proxy + A6P4's talar-head superimposition check + the
+   angular family (A1P3, A3P4, A4P5, A5P5) convert both impressions into
+   numbers and quantify how much every other measurement is projection-biased.
+3. TARAL MOTTLED LUCENCY - A5's solo finding. A5P2's denoise-persistence test
+   (persists = structure; smooths out = grain) and A5P1's superimposition-path
+   check settle whether any other agent needs to be alerted.
+4. DORSAL FULLNESS - A1 suspects uncertain swelling; A6 says soft tissue was
+   only limitedly assessable. A1P4/A4P4 (contour deviation from smooth
+   reference) and A6P3 (numeric thickness) make the call quantitative.
+5. FOREFOOT CROP BOUNDARY - all agree it is truncated; A4P2/A6P5 give the
+   definitive statement of the most distal visible bone and the field-edge
+   location, ending descriptive ambiguity.
+6. ARTIFACT HANDLING ORDER - A2P5 argues characterize/correct the gradient
+   BEFORE enhancing; others enhance first then compare. Running both orders and
+   requiring concordant findings resolves it operationally.
+
+REGIONS DESERVING EXTRA INVESTIGATION:
+1. Talar body/neck - the mottled lucency flagged by A5; a single-agent finding
+   that, if real, changes the case (AVN/osteochondral lesion/stress reaction).
+   Highest value-per-effort region because it is uncorroborated.
+2. Posterior/posteroinferior calcaneus + Achilles insertion - disputed spur;
+   also Haglund-type cortical change.
+3. Right-edge zone: visible distal metatarsals, collimation/field edge, and the
+   vignette falloff - where several agents' reads are currently weakest.
+4. Tibiotalar joint / talar dome / distal tibial plafond - near-saturated
+   region; subchondral detail lost at global window.
+5. Upper leg / distal tibia-fibula in the upper fade (A4 Q5, A6P1) - least
+   examined region by the council overall.
+6. Dorsal foot soft tissue - the fullness question.
+
+MEASUREMENTS AND EXTRA VISUALIZATIONS:
+Yes - several proposed measurements add real information, not just numbers:
+- Joint-space width in pixels (A1P1) and, better, in mm via locally calibrated
+  scale (A6P2) - only quantitative check on early arthropathy available on a
+  single lateral.
+- Böhler's angle (A3P4, A6P4) - standard index that can exclude an old
+  calcaneal fracture even without a visible line.
+- Calcaneal pitch / tibiocalcaneal / tibiometatarsal / talonavicular angles
+  (A1P3, A2P4, A3P4, A4P5, A5P5, A6P4) - but must be reported jointly with the
+  true-lateral/rotation check (A2P4, A6P4); a rotated view systematically
+  biases them. Measure on native resolution (A6P4), with uncertainty bands
+  (A4P5, A6P4), and note A1P3's caveat that the first-metatarsal axis is
+  truncated at the crop.
+- Fibula/tibia shadow separation (A2P4) - unique rotation proxy; no other
+  agent proposed it.
+- Heel-pad thickness in mm with standardized reference points (A6P3) - concrete
+  number against expected norms; unique.
+- Dorsal-vs-plantar soft-tissue thickness profile (A1P4) - internal control
+  that separates focal swelling from global gradient; unique.
+- Noise floor + edge-spread detection limit (A4P6) - unique; calibrates how
+  much weight every negative fracture screen can carry. Must be measured on
+  the original, not enhanced versions.
+Useful visualizations already proposed (no new techniques invented here):
+flat-field-corrected full image (A2P5/A5P4), CLAHE with two clip limits
+(A2P1), bone-saturating soft-tissue window (A4P4), edge-map overlay on the
+original (A3P3), difference images across window settings to expose
+window-dependent streaks (A4P2).
+
+MY VOTES:
+- A1P1 hindfoot-joint CLAHE + pixel joint widths: SUPPORT - converged target; guardrails adequate.
+- A1P2 posterior calcaneus/Achilles edge for spur: SUPPORT - settles the spur disagreement.
+- A1P3 quantitative foot angles: SUPPORT - objective alignment documentation.
+- A1P4 dorsal contour + intensity profiles: SUPPORT - internal dorsal/plantar control is the right design.
+- A1P5 midfoot high-pass fracture screen: QUESTION - high false-line risk; only as a last check on top of the safer edge-map methods.
+- A2P1 talar-dome CLAHE, two clip limits: SUPPORT - bracketing across clip limits is a real guard against enhancement-only findings.
+- A2P2 unsharp/Canny fracture screen: SUPPORT - convergent family; keep original-verification strict.
+- A2P3 soft-tissue window + bone subtraction: QUESTION - windowing is sound, but the subtraction halo risk is under-weighted; drop or downweight the subtraction step.
+- A2P4 angles + off-lateral rotation quantification: SUPPORT - unique fibula/tibia superimposition proxy; settles the positioning disagreement.
+- A2P5 flat-field + streak characterization: SUPPORT - answers the before/after enhancement ordering question.
+- A3P1 de-vignetting of right half: SUPPORT - forefoot genuinely underexposed; keep the in-frame-only caveat.
+- A3P2 heel CLAHE for spur morphology: SUPPORT - convergent with A1P2/A5P3; adds fascial/bursal interface detail.
+- A3P3 edge-map overlay + median denoise: SUPPORT - overlay-on-original is the best false-edge control; watch that denoise doesn't erase a true faint line.
+- A3P4 Böhler's angle + calcaneal parameters: SUPPORT - standard fracture-exclusion index; landmark caveats already stated.
+- A3P5 joint-space mild CLAHE + zoom: SUPPORT - raw-first judgment rule is the right guard.
+- A4P1 full-image CLAHE: SUPPORT - targets the dominant documented fade; mild variant included.
+- A4P2 midfoot zoom + narrow window + right-edge ID: SUPPORT - narrow bone window maximizes where the uncertainty is; cross-check across windows is a good artifact test.
+- A4P3 hindfoot unsharp + Sobel cross-check: SUPPORT - two corroborating edge methods.
+- A4P4 bone-saturating soft-tissue contour: SUPPORT - swelling is a silhouette, not contrast, question.
+- A4P5 tibiotalar distance + hindfoot angles: SUPPORT - uncertainty bands and range reporting for blurred edges.
+- A4P6 noise-floor / detection limit: SUPPORT - converts "cannot exclude" into a calibrated statement; unique and high value.
+- A4P7 PSF deconvolution: OPPOSE (as primary tool) - phantom streaks mimicking fracture lines are the worst failure mode in this set; keep only as last-resort exploratory with multi-regularization agreement.
+- A5P1 talar CLAHE + narrow window: SUPPORT - targets the council's only uncorroborated suspected finding.
+- A5P2 edge-preserving denoise: SUPPORT - persistence-after-denoise is a clean grain-vs-structure discriminator; run two strengths.
+- A5P3 edge on posterior calcaneus/talar dome/Achilles: SUPPORT - convergent spur/osteophyte check.
+- A5P4 flat-field + scratch-vs-bone discrimination: SUPPORT - "terminates at bone vs runs through empty space" is the sharpest scratch test proposed by anyone.
+- A5P5 congruence/tilt/pitch measurement: SUPPORT - convergent; rotation caveat stated.
+- A6P1 whole-image CLAHE + high-pass: SUPPORT - convergent; keep the endpoint-anchoring rule for candidate lines.
+- A6P2 joint crops + bone window + mm annotation: SUPPORT - local scale calibration is the best quantitative joint-space method in the set.
+- A6P3 skin-line segmentation + heel-pad thickness: SUPPORT - unique numeric heel-pad value; beam-field rectangle breaks thresholding, so manual contour correction is mandatory.
+- A6P4 Böhler et al. + true-lateral check: SUPPORT - the projection check gates all angular interpretation.
+- A6P5 flat-field + right-edge metatarsal crop: SUPPORT - gives the definitive in-frame/crop-boundary statement.
+
+PRESERVED DISAGREEMENTS:
+1. Whether the posteroinferior calcaneal spur is real (A3's first-pass
+   assertion vs A1/A2/A5/A6's exclusion posture). Not forced to consensus;
+   decided only by A1P2/A3P2/A5P3 against the original, with the rule that a
+   spur visible only under aggressive enhancement is an artifact.
+2. Positioning: plantarflexed/off-true-lateral (A2) vs approximately neutral
+   (A4). Kept; the numbers will quantify it, but how far a rotated view
+   invalidates angle-based reads remains interpretive.
+3. Talar mottled lucency: true lesion (A5) vs grain/superimposition (implicit
+   in everyone else's silence). Kept open until A5P1/A5P2 run; do not report
+   it as a finding on the raw scan alone.
+4. Dorsal fullness: true swelling (A1's suspicion) vs exposure/scan artifact
+   (A1's own alternative, A2/A6's "limited"). Kept open pending A1P4/A4P4/A6P3.
+5. Order of artifact handling: correct-then-enhance (A2P5) vs
+   enhance-then-compare (rest). Kept; both orders run, concordance required.
+6. Whether deconvolution adds anything at all (A4P7) - I oppose its use as a
+   primary tool; the blur-recoverability question stays open as a last resort.
+7. How much a negative fracture screen means at this resolution (A4P6's
+   detection-limit framing vs others' "cannot be excluded") - a statistical
+   disagreement about the strength of negatives; resolved only by A4P6's
+   numbers, if they can be made.

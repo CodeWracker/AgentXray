@@ -1,0 +1,64 @@
+AGENT: Agent_01
+MODEL: qwen3.8-27b
+
+JUSTIFIED PROPOSALS:
+- Agent_05 P1 (justified, most important): the only proposal that frames the actual differential of the focal density in the proximal ulna/olecranon region (detached fragment vs fracture fragment vs ossification center/apophysis vs superimposition). On re-inspection this region genuinely contains a small ill-defined focus whose nature is undetermined at native contrast; localized CLAHE at 2-4x is the right tool.
+- Agent_01 P1 / Agent_02 P1 / Agent_06 P1 (justified, but subsumed by A5-P1): magnified local-enhancement review of the elbow ROI addressing the suspected proximal-ulna lucent line. Sound method, correct ROI, adequate artifact caveats.
+- Agent_06 P2 (justified): posterior humeral line plus radiocapitellar line drawn on the original. The posterior humeral line is the only alignment criterion in the set that is explicitly pediatric-appropriate; the image shows visible ossification centers (capitellum, likely radial head), so this is the correct screening pair.
+- Agent_01 P2 / Agent_03 P4 (justified): rotation-independent congruence checks (radiocapitellar line through capitellum center, humeroulnar joint-space congruence). Cheap, quantitative, no processing artifacts if drawn on the original.
+- Agent_03 P1 (justified): fat pad sign with concrete CLAHE parameters (8x8 tiles, clip ~2.0) and explicit downgrading rule for halo artifacts. Highest-value soft-tissue question: a positive sail sign implies intra-articular injury even if all bone looks normal.
+- Agent_04 P3 (partially justified): quantifying whether the view is a true lateral. The non-resampling part (measuring humerus/radius/ulna axes and radial-ulnar separation) is valuable; the rotate-and-re-orient part carries resampling risk and should be de-prioritized or done on the original geometry only.
+- Agent_03 P3 (justified with caveat): quantitative soft-tissue width profile. The posterior periarticular fullness is visible to the eye in the original; a width profile documents it reproducibly. Caveat: the arm border fades into a black-clipped background, so width measurement there is unreliable; use the forearm (well against background) as reference, not the upper-arm border.
+- Agent_01 P3 / Agent_03 P2 / Agent_04 P2 / Agent_05 P2 (justified as secondaries, low marginal value): edge-enhancement cortical tracing. All four are the same idea and all carry the correct guardrail (verify every candidate line in the original before reporting). Useful only if the CLAHE review is equivocal; do not treat edge-map findings as primary evidence.
+- Agent_02 P2 / Agent_04 P5 (marginally justified): distal radius/ulna/wrist at the truncated image edge. Both correctly flag truncation as "unassessable, not abnormal" and A2-P2/A6-P3 add physis/ossification-center read (age proxy). Low diagnostic yield; keep as a flagged, not cleared, region.
+- Agent_04 P1 / Agent_01 P4 / Agent_02 P3 (justified, subsumed by A3-P1): soft-tissue windowing for effusion; A3-P1 is the more complete version (specific parameters + artifact rules).
+- Agent_05 P3 (partially justified): the radiocapitellar-line and joint-space measurement is sound, but the affine straightening of the radial axis introduces resampling artifacts and is only valid if the projection is already approximately lateral; do not use the straightened image as primary evidence.
+- Agent_04 P4 (justified, duplicates A3-P3): soft-tissue thickness profiling; same content, same caveats.
+
+REDUNDANT PROPOSALS:
+- Group A (magnified CLAHE elbow review): A5-P1 ~= A1-P1 ~= A2-P1 ~= A6-P1. A5-P1 is the superset (adds the fragment-vs-ossific-center differential); the others can be folded into it.
+- Group B (alignment overlays): A1-P2 ~= A3-P4 ~= A6-P2 ~= (measurement part of) A5-P3 ~= (joint part of) A4-P3. A6-P2 is the most complete (adds posterior humeral line).
+- Group C (soft-tissue/fat pad window): A3-P1 ~= A4-P1 ~= A1-P4 ~= A2-P3. A3-P1 is the most complete.
+- Group D (edge enhancement): A1-P3 ~= A3-P2 ~= A4-P2 ~= A5-P2. Identical method class, identical verification protocol.
+- Group E (soft-tissue width profiling): A3-P3 ~= A4-P4.
+- Group F (distal forearm/wrist): A2-P2 ~= A4-P5 ~= (crop part of) A6-P3.
+
+MISLEADING OR RISKY PROPOSALS:
+- Agent_06 P3 (riskiest in the set): global histogram equalization to counter "vignetting." On re-inspection the dark surround is a black-clipped background, not a true exposure gradient; global equalization will amplify background noise into phantom soft-tissue structures and wash out the bright cortices it is supposed to preserve. Acceptable only for the peripheral age-estimation read, and any global-equalization finding must be independently confirmed. Should not be a primary diagnostic tool.
+- Agent_05 P3 / Agent_04 P3 (straightening variants): affine resampling can blur or fabricate fine cortical detail; an "abnormal" radiocapitellar line on a re-oriented oblique image may be a projection artifact, as both proposals themselves concede.
+- Agent_02 P2 / Agent_04 P5: structures at the truncated field edge can be misread as fractures or missing bone; without the "unassessable" discipline they create false confidence in a cleared wrist.
+- Agent_03 P3 / Agent_04 P4: width profiling cannot separate true swelling from habitus, positioning, or arm compression, and the clipped-background border biases edge detection; results are descriptive only.
+- Group D edge maps: false edges from trabecular pattern, superimposition, and noise are expected; several agents' proposals risk the overlay being mistaken for the data. All include original-image verification, which makes them tolerable but not primary.
+- No proposal is reckless to the point of exclusion, but A6-P3's global equalization is the one I would explicitly downgrade from "medium" to "supportive-only."
+
+PRIORITY RANKING:
+1. A5-P1 (with A1-P1/A2-P1/A6-P1 folded in) - CLAHE 2-4x zoom on the proximal ulna focus: resolves the single most consequential question (fragment vs fracture vs ossific center vs superimposition) at the site of maximum diagnostic uncertainty.
+2. A6-P2 (with A1-P2/A3-P4) - posterior humeral line + radiocapitellar line on the original: objective, processing-free dislocation-vs-fracture screen, appropriate for a pediatric elbow.
+3. A3-P1 (with A1-P4/A2-P3/A4-P1) - fat pad sign on soft-tissue window: high-yield occult-injury indicator if the bony read is equivocal.
+4. A4-P3 (non-resampling part only) - quantify forearm rotation / true-lateral status: determines how much to trust everything in rank 2.
+5. Group D edge enhancement (A1-P3/A3-P2/A4-P2/A5-P2) - targeted cortical tracing only if ranks 1-2 leave the fracture question open; verify every line in the original.
+6. A3-P3/A4-P4 - soft-tissue width profile: documents the visible posterior fullness quantitatively; descriptive support for the effusion hypothesis.
+7. A2-P2/A4-P5/A6-P3 (crop part) - distal forearm/wrist read with truncation flag plus ossification-center age proxy; limited yield at the field edge.
+8. A6-P3 (global equalization part) - lowest merit; supportive only, never primary evidence.
+
+DISAGREEMENTS TO PRESERVE:
+1. Nature of the proximal-ulna focus: fracture line/fragment (A1, A5 lean this way) vs ossification center/apophysis or normal superimposition (A5 raises it, others are silent). Unresolved and central.
+2. Pediatric vs adult: visible capitellar (and likely radial-head) ossification centers favor a pediatric/adolescent patient, and A6 explicitly invokes pediatric screening criteria, but no agent formally declared age; the choice of criteria (posterior humeral line) and of "normal" ossific anatomy depends on it.
+3. Projection geometry: A1/A6 treat the view as effectively a usable lateral; A4-P3/A5-P3 treat it as oblique and in doubt. Validity of the radiocapitellar and posterior humeral line tests hinges on this - keep the disagreement explicit rather than assuming.
+4. Soft-tissue fullness: all agents see periarticular fullness, but whether it is pathological swelling/effusion (A3, A4) vs positional/habitus or the normal olecranon contour at the imaging flexion angle is unresolved; fat pad sign status is unconfirmed.
+5. Global vs local enhancement: A6-P3 (global equalization) vs everyone else (local CLAHE/windowing). Keep both, with A6's demoted to supportive.
+
+ADDITIONAL REGIONS TO INVESTIGATE:
+- The posterior soft-tissue bulge (left of the joint in the image, over the olecranon/olecranon fossa): it is visible to the naked eye in the original and is the anchor for the effusion question; compare it explicitly against the same-side forearm envelope.
+- The olecranon fossa and olecranon tip: relationship of the tip to the fossa at this flexion angle; a fragment or widened joint space here would reframe the proximal-ulna focus.
+- The ossification centers (capitellum, radial head, any olecranon apophysis): positively identify each one on the original so that an apophysis is never misreported as a fragment and vice versa; simultaneously the best in-image age proxy.
+- The degree of elbow flexion (humeral shaft vs radial shaft, roughly 90 degrees as imaged): needed context before interpreting any posterior soft-tissue contour.
+
+NEW PROPOSALS (if any):
+Proposal N1 (small, addresses a gap no proposal covers):
+  QUESTION: Is the visible posterior periarticular soft-tissue fullness compatible with the normal olecranon soft-tissue envelope at the imaged flexion angle, or does it exceed it?
+  METHOD: Measure the flexion angle from the shaft axes on the original, then trace the posterior soft-tissue contour and compare its excursion to the proximal (upper-arm) and distal (forearm) envelope at the same image scale; no re-orientation, no global processing.
+  WHY IT MAY HELP: Every soft-tissue proposal asks "is there swelling/effusion" but none normalizes for elbow flexion, which is the dominant determinant of the posterior olecranon contour; this prevents a normal flexed-elbow contour from being misread as swelling (and vice versa).
+  POSSIBLE ARTIFACTS: Same border-tracing bias near the black-clipped background as A3-P3/A4-P4; single-view, no prior for comparison.
+  COMPARISON WITH ORIGINAL: Tracing done directly on the original only.
+  PRIORITY: low-medium

@@ -1,0 +1,287 @@
+Agent_05 — Proposed Image Processing Analyses
+Image: ID001-xray_original.png
+Date: 2026-09-14
+
+These proposals are driven by the specific questions raised in my first-pass review,
+primarily the abnormality in the cuboid/lateral midfoot region.
+
+======================================================================
+
+PROPOSAL 1: Adaptive Local Contrast Enhancement (CLAHE) on the
+           Lateral Midfoot Region
+
+(a) QUESTION:
+    What is the true nature of the abnormality in the cuboid bone? Is the trabecular
+    pattern genuinely disrupted, or does the abnormal appearance result from projection
+    overlap and suboptimal local contrast? Can I distinguish a sclerotic rim (suggestive
+    of a chronic cyst or benign lesion) from permeative/moth-eaten margins (suggestive of
+    an aggressive process such as infection or malignancy)?
+
+(b) WHY THIS METHOD:
+    The lateral foot X-ray has a very wide dynamic range: dense cortical bone in the
+    distal tibia is far brighter than the relatively radiolucent cuboid. Global contrast
+    stretching either blows out the dense regions or leaves the midfoot underexposed.
+    Contrast-Limited Adaptive Histogram Equalization (CLAHE) operates on small tiles
+    (patches) independently, boosting local contrast without saturating any single region.
+    It is specifically designed for medical imagery where local structures must be
+    discerned against a heterogeneous background. By focusing a CLAHE tile grid on the
+    cuboid zone, I expect the trabecular microarchitecture and lesion borders to become
+    visually resolvable.
+
+(c) EXPECTED FINDINGS:
+    - If the cuboid abnormality is a fracture, I expect to see sharp linear lucent lines
+      traversing the bone with disrupted trabecular continuity on one side vs. the other.
+    - If it is a lytic lesion, I expect a focal low-density region with either a thin
+      sclerotic rim (benign/chronic) or irregular permeative margins (aggressive).
+    - If the abnormality is a projection artifact, enhanced local contrast should reveal
+      an otherwise-normal trabecular pattern once the overlapping structures are mentally
+      separated by the improved detail.
+
+(d) POSSIBLE ARTIFACTS:
+    - CLAHE amplifies noise in low-signal regions. The darker background areas adjacent
+      to the foot will show visible noise patterns that could be mistaken for bone
+      structures. Mitigation: mask to the foot silhouette before applying CLAHE.
+    - Tile boundary artifacts: if the tile size is too small, artificial brightness
+      transitions appear at tile edges. Mitigation: use a tile size of at least
+      64x64 pixels and a clip limit of 2.0-4.0.
+    - Over-enhancement can create "halo" effects around dense cortical margins that
+      mimic cortical erosion.
+
+(e) COMPARISON WITH ORIGINAL:
+    Display CLAHE-processed image side-by-side with the original, using identical
+    geometric bounds. Mark anatomical landmarks (cuboid corners, calcaneocuboid joint
+    line) on both views. Any new structure visible only in the CLAHE view must be
+    scrutinized for whether it corresponds to a genuine anatomical feature (consistent
+    with expected bone orientation) or an amplification of noise.
+
+======================================================================
+
+PROPOSAL 2: High-Pass Filtering (Laplacian-based Unsharp
+           Masking) for Fracture Line Detection
+
+(a) QUESTION:
+    Are there linear discontinuities consistent with fracture lines in the cuboid body,
+    the anterior calcaneal process, or the sustentaculum tali region that are not apparent
+    at normal viewing contrast? Specifically, does the cuboid contain a comminuted
+    fracture pattern that is obscured by the overall density of the overlapping lateral
+    midfoot?
+
+(b) WHY THIS METHOD:
+    Fracture lines represent abrupt intensity transitions in the X-ray projection — they
+    are high-frequency spatial features. The surrounding trabecular bone produces
+    mid-frequency texture. A high-pass filter (e.g., Laplacian or bandpass filter)
+    suppresses the low-frequency background intensity variation and the mid-frequency
+    trabecular texture, leaving primarily the sharpest edges. When this high-frequency
+    residue is added back to the original (unsharp masking), fracture lines are accentuated
+    relative to the surrounding bone texture. This is particularly useful for subtle or
+    impacted fractures that do not produce a gross displacement.
+
+(c) EXPECTED FINDINGS:
+    - A true fracture line will appear as a persistent, linear bright feature in the
+      high-pass output, traversing the bone in an anatomically plausible direction.
+    - A comminuted pattern will show multiple intersecting linear features within the
+      bone body.
+    - If no fracture exists, the high-pass output will show only the normal cortical
+      outlines and random noise — no internal linear structures.
+
+(d) POSSIBLE ARTIFACTS:
+    - The most significant risk: normal trabecular struts can survive high-pass filtering
+      and appear as false-positive "fracture lines." These will be shorter, more curved,
+      and oriented parallel to normal trabecular direction. True fracture lines tend to be
+      longer, sharper, and cross trabecular patterns perpendicularly.
+    - Edge halos: every cortical boundary will produce a bright halo ring in the
+      high-pass result. These must be ignored — they are artifacts of the filter, not
+      pathology.
+    - The filter kernel size is critical. Too narrow and it catches noise; too wide and
+      it smooths away real fracture lines. I will test at least two sigma values
+      (approximately 1.0 and 2.0 pixels for a Gaussian-based Laplacian) and compare
+      results.
+
+(e) COMPARISON WITH ORIGINAL:
+    Overlay the high-pass filtered result as a semi-transparent layer on the original
+    image. A genuine fracture line should be visible both in the filter output AND
+    traceable back to a real discontinuity in the original — even if faint. Any "fracture
+    line" that exists only in the filtered image and has no counterpart in the original
+    must be dismissed as artifact.
+
+======================================================================
+
+PROPOSAL 3: Quantitative Angular Measurement of Calcaneal
+           Morphometry (Böhler Angle and Gissane Angle)
+
+(a) QUESTION:
+    Is the calcaneus structurally intact, or does it harbor a compression fracture that
+    has altered its normal geometry? The first-pass review found no obvious fracture
+    lines, but subtle calcaneal fractures can produce minimal radiographic signs other
+    than loss of normal angles. Quantitative measurement provides an objective baseline.
+
+(b) WHY THIS METHOD:
+    The calcaneus has two well-established angular landmarks visible on lateral radiograph:
+
+    Böhler angle: Formed by lines connecting (1) the highest point of the posterior
+    calcaneal facet to the highest point of the anterior-superior calcaneal angle, and
+    (2) that anterior-superior angle to the highest point of the posterior-superior
+    calcaneal angle. Normal: 20-40 degrees. A value below 20 degrees (or negative)
+    strongly suggests calcaneal body compression fracture.
+
+    Gissane angle (posterior calcaneal angle): Formed by lines along the superior
+    calcaneal surface — one anterior to the anterior process and one posterior to it.
+    Normal: 120-145 degrees (obtuse). A straightening (angle approaching 180 degrees)
+    suggests a fracture through the anterior process.
+
+    These measurements are purely geometric and require no image enhancement — just
+    accurate landmark identification on the original image.
+
+(c) EXPECTED FINDINGS:
+    - Normal angles would support the first-pass impression that the calcaneus is intact
+      and shift focus to the cuboid as the primary pathology.
+    - An abnormally low Böhler angle would indicate an occult calcaneal fracture not
+      apparent by inspection alone.
+    - A straightened Gissane angle would suggest anterior process involvement.
+
+(d) POSSIBLE ARTIFACTS:
+    - Measurement accuracy depends entirely on correct landmark identification. The
+      "highest point" of the posterior facet can be ambiguous when the posterior facet
+      has a curved rather than peaked contour. I will define landmarks using the maximum
+      superior coordinate of the respective bony prominence, and report the coordinates
+      used so the measurement is reproducible.
+    - Patient positioning (foot flexion vs. dorsiflexion) can affect the Böhler angle.
+      However, this is a fixed anatomical property and should not vary with foot
+      position.
+    - The sustentaculum tali can create confusion with the true anterior-superior angle
+      of the calcaneus.
+
+(e) COMPARISON WITH ORIGINAL:
+    These measurements are taken directly from the original, unmodified image. No
+    comparison is needed because the original IS the reference. The comparison is to
+    published normal ranges. I will annotate the original image with the measured angles
+    and the landmark points used.
+
+======================================================================
+
+PROPOSAL 4: Soft-Tissue Contour Mapping for Dorsal Midfoot
+           Swelling Assessment
+
+(a) QUESTION:
+    Is there localized soft tissue swelling over the lateral midfoot (corresponding to the
+    region of the cuboid abnormality) that would support an acute inflammatory or
+    traumatic process? Gross swelling was not noted in the first pass, but subtle regional
+    asymmetry is difficult to judge by eye on a single view.
+
+(b) WHY THIS METHOD:
+    The soft tissue silhouette of the foot is visible as a faint density gradient
+    against the black background. By thresholding to isolate the soft tissue boundary
+    and then computing a smooth reference contour (e.g., a spline fit to the expected
+    dorsal foot profile), deviations between the actual contour and the reference contour
+    can be quantified as a swelling map. Regions where the actual contour exceeds the
+    expected contour by more than a threshold (e.g., 5 mm) would indicate localized
+    swelling.
+
+    On a lateral view, the dorsal foot profile should follow a gentle arc from the ankle
+    to the toes. Localized fullness over the midfoot would stand out as a bulge in the
+    dorsal contour.
+
+(c) EXPECTED FINDINGS:
+    - If there is acute trauma or infection at the cuboid, I would expect to see dorsal
+      soft tissue thickening over the lateral midfoot corresponding to the abnormal bone
+      region.
+    - If the swelling map is flat (no regional deviation), this would suggest either a
+      chronic non-inflammatory process or that the soft tissue response has resolved.
+    - Note: absence of swelling does not rule out pathology — many bone lesions do not
+      produce visible soft tissue changes on X-ray.
+
+(d) POSSIBLE ARTIFACTS:
+    - The primary limitation is that a lateral view collapses the medial-lateral
+      dimension. Swelling that is purely lateral (outside the X-ray beam's primary path
+      through the foot) may not produce a contour change.
+    - Patient positioning (how the foot is placed on the detector) affects the dorsal
+      profile. A foot placed slightly in pronation will show different soft tissue
+      contours than a neutral foot.
+    - The threshold for "swelling" is somewhat arbitrary. I will use a 5-mm deviation
+      threshold as a starting point and report the full deviation profile, not just
+      binary presence/absence.
+    - Scattering and beam hardening near the dense distal tibia can create a density
+      gradient that interferes with soft tissue boundary detection. I will restrict the
+      analysis to the distal two-thirds of the foot, anterior to the talus.
+
+(e) COMPARISON WITH ORIGINAL:
+    Plot the measured soft tissue contour as a line overlay on the original image. Mark
+    the expected reference contour in a different color. The visual overlay makes it
+    immediately clear whether the detected "swelling" corresponds to a visible soft
+    tissue bulge or is a quantification artifact.
+
+======================================================================
+
+PROPOSAL 5: Frequency-Domain Analysis to Assess Trabecular
+           Pattern Integrity in the Cuboid vs. Calcaneus
+
+(a) QUESTION:
+    Is the trabecular bone pattern in the cuboid genuinely abnormal compared to other
+    trabecular bone in the same image? By comparing the frequency content of the cuboid
+    region to a reference region (the calcaneal body, which appears normal), I can
+    determine whether the "disrupted trabecular pattern" noted in the first pass is a
+    real structural difference or simply a consequence of local density variation.
+
+(b) WHY THIS METHOD:
+    Normal trabecular bone produces a characteristic mid-frequency texture pattern in the
+    spatial frequency domain. When trabeculae are disrupted (by fracture, osteolysis,
+    or replacement by abnormal tissue), the power spectrum changes: the characteristic
+    mid-frequency peak flattens or shifts. By computing 2D Fourier transforms (or more
+    practically, the power spectrum via 2D FFT) of small ROIs in the cuboid and the
+    calcaneus, I can compare their spectral fingerprints.
+
+    The calcaneus serves as an internal control: it is in the same image, same patient,
+    same bone type (cancellous bone), and same imaging conditions. This controls for
+    exposure, detector characteristics, and patient bone quality.
+
+(c) EXPECTED FINDINGS:
+    - If the cuboid trabecular pattern is normal (and the first-pass impression was
+      misleading due to projection overlap), the power spectrum of the cuboid ROI should
+      closely match the calcaneus ROI — similar peak frequency and similar spectral
+      slope.
+    - If there is genuine trabecular disruption, the cuboid spectrum will show reduced
+      power at the characteristic trabecular frequency and potentially elevated low-
+      frequency power (indicating replacement by more homogeneous tissue, as in a
+      lytic lesion).
+    - If there is a fracture with displacement, I would expect a localized discontinuity
+      in the spectrum rather than a global spectral change.
+
+(d) POSSIBLE ARTIFACTS:
+    - This is the most technique-sensitive proposal. ROI selection is critical: the
+      cuboid ROI must avoid cortical margins (which contribute low-frequency edges that
+      dominate the spectrum). I will erode the ROI inward by approximately 2-3 pixels
+      from the visible bone boundary.
+    - Overlapping structures cast their own trabecular patterns onto the ROI,
+      confounding the comparison. The cuboid is partially superimposed by the base of
+      the 4th and 5th metatarsals and possibly the lateral cuneiform. This is the
+      fundamental limitation: on a 2D projection, I cannot perfectly isolate the cuboid
+      signal.
+    - The FFT assumes stationarity within the ROI. A ROI containing a lesion boundary
+      (transition from normal to abnormal) violates this assumption and will produce
+      misleading spectral features. I may need to subdivide the cuboid ROI into multiple
+      sub-ROIs and compare each.
+
+(e) COMPARISON WITH ORIGINAL:
+    Plot the radial power spectra (averaged over angle) of the cuboid ROI and the
+    calcaneus ROI on the same graph. The visual comparison of spectral curves is more
+    interpretable than raw 2D FFT magnitude images. Annotate the expected trabecular
+    frequency band based on the calcaneus reference. Any departure in the cuboid
+    spectrum within this band would be the signal of interest.
+
+======================================================================
+
+SUMMARY OF PRIORITIES:
+
+  Priority 1 (highest diagnostic yield):
+    Proposal 1 — CLAHE on lateral midfoot (directly addresses the primary finding)
+    Proposal 2 — High-pass filtering for fracture line detection
+
+  Priority 2 (important quantitative baselines):
+    Proposal 3 — Calcaneal angular measurements (rules out concurrent calcaneal injury)
+    Proposal 5 — Trabecular frequency comparison (objective assessment of cuboid texture)
+
+  Priority 3 (supporting evidence):
+    Proposal 4 — Soft tissue contour mapping (indirect evidence of acute vs. chronic)
+
+======================================================================
+END OF PROPOSALS

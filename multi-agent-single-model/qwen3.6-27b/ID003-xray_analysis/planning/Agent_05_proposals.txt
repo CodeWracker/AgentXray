@@ -1,0 +1,403 @@
+AGENT_05 — IMAGE-PROCESSING PROPOSALS
+======================================
+(Independent proposals — not influenced by other agents' plans)
+
+Based on my first-pass assessment of a subacute both-bone mid-forearm fracture
+with early callus formation in a skeletally immature patient, I propose the
+following six targeted image-processing analyses.
+
+--------------------------------------------------------------------------------
+
+PROPOSAL 1: HARRIS CORNER / EDGES-ENHANCED PERIosteal REACTION MAP
+================================================================================
+
+QUESTION:
+  What is the precise longitudinal extent of the periosteal new bone formation
+  along both the radius and ulna? Can we measure how far the periosteal reaction
+  extends from the fracture line in millimeters, and is it symmetric between the
+  two bones?
+
+METHOD:
+  1. Segment the fracture zone region of interest (ROI) — approximately the
+     middle third of the forearm — using adaptive thresholding to isolate the
+     high-density cortical bone.
+  2. Apply a Canny edge detector (low threshold ~50, high threshold ~150) or
+     Sobel gradient operator to enhance linear structures.
+  3. Apply a morphological dilation followed by skeletonization to thin the
+     detected edges to 1-pixel-wide lines, making the periosteal new bone
+     margins measurable.
+  4. Use a directional filter (e.g., Gabor filter bank tuned to vertical
+     orientations) to preferentially enhance structures running longitudinally
+     along the bone shafts — this captures the periosteal reaction while
+     suppressing transverse trabecular patterns.
+  5. Measure the continuous length of enhanced signal extending from the fracture
+     line proximally and distally on both bones.
+
+WHY:
+  The periosteal reaction is relatively faint on the original image, blending
+  with the normal cortical margin. Directional filtering exploits the fact that
+  periosteal new bone forms parallel to the bone shaft, making it distinct from
+  the transverse fracture line. This separation is key to measuring the
+  longitudinal extent accurately.
+
+EXPECTED RESULT:
+  A processed image in which the periosteal reaction appears as enhanced linear
+  signal running parallel to the cortex, clearly separable from the main
+  cortical boundary. This will allow measurement of:
+  - Proximal and distal extent of periosteal reaction on each bone
+  - Asymmetry between radius and ulna
+  - Whether the reaction is continuous or interrupted (discontinuity may
+    indicate a different process superimposed on the fracture)
+
+ARTIFACT WARNING:
+  - Gabor filtering may amplify noise in regions with low signal, creating
+    false linear enhancements. Noise should be suppressed with a mild Gaussian
+    pre-filter (sigma ~1.0) before applying Gabor.
+  - Overlap between the radius and ulna in this projection may cause the edge
+    detector to conflate the two bones' periosteal reactions.
+  - The Gabor filter bank will also enhance the normal cortical margin itself;
+    post-processing must subtract or mask the primary cortex before measuring
+    the periosteal overlay.
+
+COMPARISON:
+  Side-by-side with the original image, with the processed periosteal map
+  overlaid as a semi-transparent colored layer (e.g., warm red) on the
+  grayscale original. Regions where the enhanced signal extends beyond the
+  visible cortex on the original will confirm true periosteal reaction.
+
+--------------------------------------------------------------------------------
+
+PROPOSAL 2: CALLUS DENSITY GRADIENT ANALYSIS
+================================================================================
+
+QUESTION:
+  What is the density profile of the callus relative to mature cortical bone
+  and normal medullary bone? Does the density gradient suggest early
+  fibrocartilaginous callus (lower density) versus more mature woven bone
+  (higher density)?
+
+METHOD:
+  1. Define three regions of interest along the radius (and separately for the
+     ulna):
+     a. Reference cortical bone — proximal diaphysis, normal cortex, ~20mm
+        segment
+     b. Reference medullary bone — same proximal segment, central medullary
+        cavity
+     c. Callus zone — 15mm proximal to the fracture line, 15mm distal,
+        encompassing the periosteal and endosteal reaction
+  2. Extract the mean, median, and standard deviation of pixel intensity
+     (HU-equivalent if calibrated; otherwise raw grayscale values) for each
+     ROI.
+  3. Compute the callus-to-cortex ratio (CCR) and callus-to-medulla ratio
+     (CMR).
+  4. Generate a cross-sectional density profile: for each row of pixels crossing
+     the callus zone, plot the intensity gradient from cortex, through callus,
+     to contralateral cortex.
+  5. Apply a 1D Gaussian kernel (sigma ~2 pixels) along each profile to smooth
+     acquisition noise while preserving the density transition zones.
+
+WHY:
+  The degree of mineralization in the callus correlates with healing stage.
+  Early callus (fibrocartilaginous, 1-2 weeks) is relatively radiolucent,
+  while woven bone callus (2-4 weeks) is more radiopaque. By quantifying
+  the density ratio, we can narrow the estimated age of the fracture
+  beyond subjective visual assessment.
+
+EXPECTED RESULT:
+  - A set of numeric ratios (CCR, CMR) that place the callus on a density
+    spectrum between soft tissue (very low density) and mature cortex
+    (highest density).
+  - If CCR < 0.5: early fibrocartilaginous callus (likely 1-2 weeks)
+  - If CCR 0.5-0.8: transitioning to woven bone (likely 2-3 weeks)
+  - If CCR > 0.8: mature woven or lamellar bone (likely 3-4+ weeks)
+  - Cross-sectional profiles showing the density transition at the
+    fracture-cortex interface.
+
+ARTIFACT WARNING:
+  - Beam hardening from the overlapping radius and ulna will artificially
+    elevate densities in the callus zone, potentially overstating the CCR.
+    This is a significant confounder that must be noted.
+  - The image may not be calibrated to Hounsfield units; raw grayscale
+    values are relative only. The ratios are meaningful within this single
+    image but cannot be compared across different scanners or exposure
+    settings.
+  - Partial volume averaging at the cortical edge will blur the cortex
+    intensity measurement. Use a central sub-ROI within the cortex to
+    mitigate.
+
+COMPARISON:
+  Display the three ROIs as colored overlays on the original image, with the
+  computed mean densities annotated. Show the cross-sectional density profiles
+  as line plots adjacent to the image, with arrows pointing to the
+  corresponding anatomical location.
+
+--------------------------------------------------------------------------------
+
+PROPOSAL 3: LOCAL ADAPTIVE CONTRAST ENHANCEMENT (CLAHE) ON FRACTURE ZONE
+================================================================================
+
+QUESTION:
+  Are there additional fracture fragments, subtle comminution, or butterfly
+  fragments that are invisible at the current exposure and contrast level?
+
+METHOD:
+  1. Crop a generous ROI around the fracture zone — extending ~40mm proximally
+     and distally, and encompassing the full width of both bones plus a
+     20mm soft tissue margin on each side.
+  2. Apply Contrast Limited Adaptive Histogram Equalization (CLAHE) with:
+     - Clip limit: 2.0 (to limit noise amplification)
+     - Tile grid size: 8x8 (to capture local rather than global contrast)
+  3. Before applying CLAHE, run a mild anisotropic diffusion filter (2-3
+     iterations, kappa ~30) to reduce quantum mottle while preserving edges.
+  4. Compare the enhanced image with the original crop for new visible
+     structures.
+
+WHY:
+  The fracture zone contains the most clinically relevant detail, yet the
+  global exposure is optimized for the entire image field. CLAHE redistributes
+  the local histogram to maximize contrast in the fracture region without
+  amplifying contrast in already-well-exposed areas. The pre-filtering reduces
+  the quantum mottle that would otherwise be amplified by CLAHE into
+  misleading structures.
+
+EXPECTED RESULT:
+  - Sharper visualization of the fracture line morphology on both bones
+  - Potential revelation of small butterfly fragments or comminution not
+    visible on the original
+  - Better definition of the endosteal margin reaction
+  - Clearer delineation of the fracture gap width, allowing measurement of
+    displacement in millimeters
+
+ARTIFACT WARNING:
+  - CLAHE can create false edges at the boundary between tiles (tile grid
+    artifacts). An 8x8 tile grid on a ~200x400 pixel crop minimizes this,
+    but it must be checked visually.
+  - Over-enhancement may make normal trabecular pattern variations appear
+    as fracture lines. Any newly visible "fracture" must be confirmed
+    against the original image.
+  - Anisotropic diffusion may smooth very fine fracture lines if
+    over-applied. Limit to 2-3 iterations.
+
+COMPARISON:
+  Split-view display: original crop on the left, CLAHE-enhanced crop on the
+  right. Any new finding must be visible (at least faintly) on the original;
+  the enhanced image should only improve conspicuity, not invent structure.
+
+--------------------------------------------------------------------------------
+
+PROPOSAL 4: PHYSIS (GROWTH PLATE) DETAIL OPTIMIZATION VIA SHARPENING
+================================================================================
+
+QUESTION:
+  Are the distal radial and ulnar physes normal? Is there any physeal
+  widening, irregularity, or Salter-Harris injury involving the distal
+  growth plates?
+
+METHOD:
+  1. Crop two separate ROIs: one around the distal radial physis, one around
+     the distal ulnar physis. Each ROI should include the distal metaphysis
+     (~20mm), the physis, and the epiphysis (~15mm).
+  2. Apply unsharp masking with:
+     - Gaussian blur kernel: sigma ~0.5 pixels (very tight, for fine detail)
+     - Mask amount: 1.5 (moderate sharpening)
+  3. Apply a bandpass filter (Gaussian difference of Gaussians, DoG) tuned
+     to the spatial frequency of the physis — estimated at 0.1-0.3 cycles/pixel
+     based on the visible width of the growth plate.
+     - Large Gaussian: sigma ~8 pixels
+     - Small Gaussian: sigma ~2 pixels
+     - Subtract small from large, then add the result back to the original
+       at reduced weight (0.3-0.5).
+  4. Measure the physis width at the center and at the margins. Compare
+     the width to the expected range for the estimated skeletal age.
+
+WHY:
+  The physes are critical structures in pediatric trauma. Salter-Harris
+  injuries can be subtle and missed on unprocessed images. Sharpening and
+  bandpass filtering enhance the thin radiolucent line of the growth plate
+  and the adjacent ossification front, making irregularity or widening
+  more conspicuous.
+
+EXPECTED RESULT:
+  - Clearer visualization of the physis width and contour
+  - Measurement of physeal width (normal distal radial physis in a child
+    is typically 1-3mm, varying with age)
+  - Detection of any asymmetric widening, irregular metaphyseal margin
+    (corner fracture), or epiphyseal separation
+  - Confirmation that the physes are indeed open (skeletally immature)
+
+ARTIFACT WARNING:
+  - Unsharp masking amplifies noise, especially at the physis-metaphysis
+    transition where there is already a natural density gradient. Ringing
+    artifacts may appear as false "fracture lines" at sharp transitions.
+  - The DoG filter may suppress legitimate broad-scale findings (e.g.,
+    metaphyseal lucency from pathology) by design, since it is tuned to
+    narrow spatial frequencies.
+  - Hand positioning and superimposition of carpal bones may limit the
+    quality of the distal ROI extraction.
+
+COMPARISON:
+  Overlay the sharpened physeal margin as a thin colored contour on the
+  original image. The measured width should be annotated. Any finding of
+  abnormality must be traceable to a visible feature on the original —
+  the processing aids detection but does not replace visual confirmation.
+
+--------------------------------------------------------------------------------
+
+PROPOSAL 5: SOFT TISSUE SWELLING MAP VIA LOW-FREQUENCY EXTRACTION
+================================================================================
+
+QUESTION:
+  What is the extent and severity of soft tissue swelling around the fracture
+  zone? Is there evidence of compartment swelling, and is the swelling
+  symmetric between volar and dorsal aspects?
+
+METHOD:
+  1. Extract the low-frequency component of the image using a Gaussian
+     low-pass filter (sigma ~15 pixels). This removes bone detail and
+     retains broad soft tissue density variations.
+  2. Subtract the low-frequency component from the original to isolate
+     high-frequency content (bone detail), then invert the process:
+     the low-frequency image alone represents soft tissue bulk and
+     broad density changes.
+  3. Define a soft tissue boundary mask: threshold the original image to
+     segment the limb silhouette (patient vs. background), then erode the
+     mask by ~5mm to exclude the cortical bone.
+  4. Within the soft tissue mask, compute the cross-sectional width of
+     soft tissue at regular intervals along the forearm (every 10mm).
+  5. Compare the soft tissue width at the fracture zone to the proximal
+     and distal reference segments.
+
+WHY:
+  Soft tissue swelling is a critical clinical finding that correlates with
+  injury severity, risk of compartment syndrome, and timing. The standard
+  bone window used for X-rays compresses soft tissue contrast. Low-frequency
+  extraction removes the dominant bone signal, allowing the subtler soft
+  tissue density gradients to become visible.
+
+EXPECTED RESULT:
+  - A soft tissue width profile along the forearm, showing a peak at the
+    fracture zone and baseline values proximally and distally
+  - Quantification of swelling as a percentage increase over baseline
+    (e.g., "swelling is 45% greater than proximal reference")
+  - Assessment of whether swelling is circumferential or asymmetric
+    (asymmetric swelling may suggest a more focal injury)
+  - Detection of any abnormal lucency within the soft tissue (gas, which
+    would appear as very low-density areas)
+
+ARTIFACT WARNING:
+  - The Gaussian low-pass filter with sigma=15 will blur the soft tissue
+    boundary, making the limb silhouette imprecise. The thresholding for
+    the mask should use the original image, not the filtered version.
+  - Patient positioning (hand rotation, elbow flexion) creates natural
+    variations in apparent soft tissue width that are unrelated to
+    swelling. The width measurement must be interpreted in context of
+    the projection.
+  - If a splint, cast, or bandage is present, it will confound the soft
+    tissue measurement. Check the original image for any radiopaque
+    external material.
+  - The low-frequency image may also contain beam-hardening gradients
+    that mimic soft tissue density changes.
+
+COMPARISON:
+  Display the low-frequency soft tissue map as a grayscale image alongside
+  the original, with the measured width profile overlaid as a colored line
+  tracing the soft tissue boundary. Annotate the peak swelling location and
+  percentage increase over baseline.
+
+--------------------------------------------------------------------------------
+
+PROPOSAL 6: BONE MINERAL DENSITY COMPARISON — FRACTURE ZONE VS CONTRALATERAL
+    NORMAL SEGMENTS
+================================================================================
+
+QUESTION:
+  Is there regional bone loss (osteopenia) around the fracture zone that
+  would suggest a pathological fracture rather than simple trauma? Or is
+  the bone density normal, supporting a traumatic etiology?
+
+METHOD:
+  1. Define four pairs of matched regions of interest on the radius (repeat
+     for ulna):
+     a. Zone immediately proximal to fracture (~10mm) vs. same distance
+        from a reference point in the distal diaphysis (far from injury)
+     b. Zone immediately distal to fracture (~10mm) vs. matched distal
+        reference
+     c. Mid-cortex intensity at the fracture level vs. proximal reference
+     d. Trabecular pattern density in the metaphysis proximal to the
+        fracture vs. the metaphysis distal to the fracture
+  2. For each ROI pair, compute the mean intensity and coefficient of
+     variation (CV = std/mean). A higher CV in the trabecular regions
+     suggests coarser trabecular pattern (lower bone density).
+  3. Apply a texture analysis using the Gray Level Co-occurrence Matrix
+     (GLCM) on the trabecular bone regions. Compute contrast, entropy,
+     and homogeneity metrics. Compare the GLCM metrics between the
+     fracture-adjacent zone and the reference zone.
+  4. Generate a bone mineral ratio: (fracture-zone density) /
+     (reference density), normalized to account for beam attenuation
+     differences along the path.
+
+WHY:
+  A pathological fracture (from bone tumor, osteogenesis imperfecta,
+  infection, or osteoporosis) would show reduced bone density around the
+  fracture compared to normal segments. In a pediatric patient, localized
+     osteopenia near the fracture is also a recognized phenomenon after
+     immobilization (disuse osteopenia), but this would not be present at
+     initial injury. If the bone density is normal throughout, it supports
+     a simple traumatic etiology in a normal bone.
+
+EXPECTED RESULT:
+  - Bone mineral ratio close to 1.0: normal density, traumatic fracture in
+    healthy bone
+  - Ratio significantly below 1.0: osteopenia, raising suspicion for
+    pathological process or prior immobilization
+  - GLCM entropy: higher entropy suggests coarser, less organized trabecular
+    pattern (demineralization). Normal bone has lower entropy with more
+    homogeneous trabecular architecture.
+  - If density is asymmetric (reduced on one side only), this may indicate
+    a focal lesion.
+
+ARTIFACT WARNING:
+  - Beam attenuation differs between proximal and distal segments due to
+    varying tissue thickness and bone overlap. The normalization step
+    is critical but imperfect.
+  - The fracture zone itself contains callus, which artificially increases
+    the local density. ROIs must exclude the callus zone and sample only
+    the intact bone adjacent to the fracture.
+  - GLCM analysis requires sufficient sampling area; small ROIs may give
+    unreliable texture metrics. Use at least 30x30 pixel windows.
+  - Patient age affects normal bone density and trabecular pattern;
+    reference values should be age-appropriate.
+
+COMPARISON:
+  Show the matched ROI pairs on the original image with colored overlays,
+  annotated with their mean intensities and computed ratios. Display the
+  GLCM metrics as a small bar chart comparing fracture-adjacent vs.
+  reference regions. Any density abnormality must be visually confirmed
+  on the original image.
+
+--------------------------------------------------------------------------------
+
+SUMMARY OF PROPOSED ANALYSES
+================================================================================
+
+  # | Analysis                           | Target Finding
+  --+------------------------------------+----------------------------
+  1 | Periosteal reaction map            | Longitudinal extent, symmetry
+  2 | Callus density gradient            | Healing stage estimation
+  3 | CLAHE on fracture zone             | Hidden comminution / fragments
+  4 | Physis sharpening                  | Growth plate integrity
+  5 | Soft tissue swelling map           | Swelling severity, compartment risk
+  6 | Bone density comparison            | Traumatic vs pathological etiology
+
+Priority order: Proposals 2 and 3 (callus density and fracture zone detail)
+are highest priority, as they directly inform the clinical question of
+healing stage and fracture morphology. Proposals 1 and 4 are secondary
+(periosteal extent and growth plate detail). Proposals 5 and 6 are
+tertiary (soft tissue and bone etiology assessment).
+
+All proposals include artifact warnings and comparison strategies to ensure
+that processing artifacts are not mistaken for clinical findings. Every
+processed result must be cross-referenced with the original image before
+being considered valid.
+
+--- End of Agent_05 proposals ---

@@ -1,0 +1,52 @@
+AGENT: Agent_04
+MODEL: qwen3.8-27b
+
+JUSTIFIED PROPOSALS:
+- A05-1 (CLAHE zoom on the proximal-ulna focus): the best-targeted proposal in the set. The small ill-defined focus at the olecranon/olecranon-fossa region is the key suspicious finding on re-inspection, and local adaptive equalization with side-by-side comparison to the original is the correct way to decide fragment vs ossification center vs overlapping anatomy. Justified, top priority.
+- A04-3 (my own: quantify forearm rotation before any congruity test): justified and the most rigorous of the alignment family. The radius and ulna are not in true-lateral superimposition, so rotation must be measured first or every line criterion is unreliable.
+- A06-2 (posterior humeral line + radiocapitellar line): justified; adds the posterior humeral line, the standard screen, and explicitly frames the dislocation-vs-displaced-fracture question.
+- A01-2, A03-4, A05-3 (alignment/joint-space lines): justified in intent, but subsumed by A04-3 + A06-2; each correctly flags the obliquity pitfall.
+- A03-1 / A01-4 (fat pad / effusion window): justified as an indirect sign of intra-articular injury, with the caveat that the sail sign is often hard to demonstrate on a non-ideal lateral.
+- A03-3 / A04-4 (quantitative soft-tissue width profile): justified, low-risk, and genuinely less subjective than visual inspection; supports the effusion/hematoma question.
+- A02-2 / A04-5 (truncated distal forearm/wrist): justified as a completeness check, but must be explicitly flagged "incompletely assessed" due to field-edge truncation.
+- A01-3 / A03-2 / A04-2 / A05-2 (edge enhancement): justified only as a guide to where to look; A04-2's requirement of a localized intensity profile on the original is the strongest verification protocol in the family and should be the standard for all of them.
+- A02-1 / A05-2 (edge + line check combined): justified but heavily duplicated (see below).
+- A06-3 (wrist crop + ossification-center age proxy): partially justified (see risky below).
+
+REDUNDANT PROPOSALS:
+The 21 proposals collapse into ~6 distinct analyses:
+1. Local CLAHE zoom of the elbow for fracture/fragment: A01-1, A02-1, A04-1, A05-1, A06-1. A05-1 (targeted at the specific focus) supersedes the generic crops of A01-1/A02-1/A06-1; A04-1's soft-tissue framing overlaps item 3.
+2. Alignment/congruity lines: A01-2, A03-4, A04-3, A05-3, A06-2. A04-3 (rotation quantification) + A06-2 (posterior humeral line) together cover it; A02-1's line check is a third duplication.
+3. Fat pad / soft-tissue window: A01-4, A02-3, A03-1, A04-1. Four agents proposed essentially the same windowing; A03-1 (explicit sail sign + olecranon fossa zones) is the most specific.
+4. Edge enhancement for subtle cortical fracture: A01-3, A03-2, A04-2, A05-2, A06-1 (partial). Five-fold duplication of the same high-pass/unsharp/Canny idea.
+5. Soft-tissue swelling quantification: A03-3 and A04-4 are near-identical (contour tracing + width profile).
+6. Truncated wrist region: A02-2, A04-5, A06-3 (partial) — same crop, same truncation caveat.
+
+MISLEADING OR RISKY PROPOSALS:
+- A06-3's global histogram equalization: riskiest element in the set. Global HE amplifies background noise in the large dark areas and can manufacture phantom soft-tissue structures; overcorrection washes out bright cortices. Keep only the wrist crop and the ossification-center/age purpose; replace the global HE with local windowing.
+- Edge-enhancement family (A01-3, A03-2, A04-2, A05-2): highest false-confidence risk overall. Edge detectors respond to normal trabecular borders, joint lines, superimposition edges, and noise; a "detected edge" is not a fracture. Acceptable only with the mandatory rule that every candidate line be confirmed by a density change in the unprocessed original (A04-2's intensity-profile test).
+- Alignment overlays on an oblique view (A01-2, A03-4, A05-3): risk of false-positive subluxation from projection obliquity rather than pathology. A04-3's pre-quantification of rotation is the required precondition; A05-3's resampled "straightened" view adds interpolation artifacts, so measurements should be made on the original.
+- A02-3 image inversion: minor orientation-confusion risk; low impact.
+No proposal is invalid outright, but any positive finding that exists only in a processed render must be treated as an artifact — this rule appears in every proposal and must be enforced.
+
+PRIORITY RANKING:
+1. CLAHE zoom characterization of the proximal-ulna focus (A05-1; absorbs A01-1/A02-1/A06-1) — the single most likely diagnostic question (fragment vs ossification center vs overlap).
+2. Congruency with rotation quantified first (A04-3 + A06-2; absorbs A01-2/A03-4/A05-3) — objectively excludes dislocation; criteria are invalid until rotation is known.
+3. Soft-tissue window for fat pad/effusion (A03-1/A01-4) — sensitive indirect sign of intra-articular injury when bone is inconclusive.
+4. Edge-enhanced cortical review as a guide only (A05-2/A01-3, with A04-2's profile verification) — can surface a hairline fracture but carries the highest false-positive load.
+5. Quantitative soft-tissue swelling profile (A03-3/A04-4) — low-risk, reproducible documentation supporting item 3.
+6. Truncated wrist/distal forearm review + skeletal age from ossification centers (A02-2/A04-5/A06-3 without global HE) — completeness and age context for the differential, not the primary question.
+
+DISAGREEMENTS TO PRESERVE:
+- Nature of the proximal-ulna focus: fracture fragment (A01-1, A06-1 presume) vs ossification center/apophysis vs normal overlapping anatomy (A05-1 keeps it open). This is the central unresolved question.
+- True lateral vs oblique: A04-3 measures rotation explicitly; A01-2/A03-4/A05-3 apply alignment criteria anyway. Criterion validity depends on this.
+- Skeletal maturity: A06-2 uses pediatric alignment criteria; A02-2/A06-3 propose physis/ossification-center age estimation; no agent commits to an age. The differential (pediatric supracondylar vs adult olecranon patterns) hangs on this.
+- Fat pad demonstrability: A03-1 rates the sail sign high priority; A02-3 rates soft-tissue windowing low priority — a genuine priority disagreement on the same technique.
+
+ADDITIONAL REGIONS TO INVESTIGATE:
+- Coronoid process region: the olecranon-vs-coronoid distinction for the proximal-ulna focus is only mentioned in passing (A02-1, A04-2); it deserves an explicit zoom crop.
+- Capitellum as a separate ossification center vs loose fragment: A06-2 warns of the confusion but no one proposes a dedicated capitellar zoom.
+- Proximal (above-joint) humeral soft tissues as an internal reference segment for the swelling profile, so the elbow bulge is quantified against the same limb.
+
+NEW PROPOSALS:
+- Proposal A04-N1: Measure the elbow flexion (humeroulnar) angle directly on the original image. Rationale: (a) standard congruity criteria assume ~90 degrees flexion, so the angle determines whether item 2's criteria are even valid; (b) it screens for hyperextension-type positioning/injury pattern. No existing proposal measures this — A04-3 lists it only as a measurement bias. METHOD: fit the humeral and ulnar shaft axes on the original, report the angle. ARTIFACTS: axis-fit noise, truncated proximal humerus limiting the humeral axis. COMPARISON: angles are geometry, verify visually against the unprocessed image only. PRIORITY: medium (precondition for the alignment analysis).

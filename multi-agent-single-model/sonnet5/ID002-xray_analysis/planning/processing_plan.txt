@@ -1,0 +1,381 @@
+PROCESSING PLAN — ID002-xray.png
+Synthesized by: Orchestrator, from independent first-pass reviews of Agent_01–Agent_06
+and independent council critiques of Council_Reviewer_A and Council_Reviewer_B.
+Context: university research/testing exercise on multi-agent LLM image-analysis
+pipelines. This plan and its outputs are NOT a clinical read and are not intended
+to substitute for professional radiological interpretation.
+
+================================================================================
+BASIS FOR THIS PLAN
+================================================================================
+All 6 independent first-pass agents converged on the same reading: a lateral
+radiograph of a flexed elbow extending through the forearm (radius/ulna) toward
+a partially-cropped wrist, no obvious displaced fracture, dislocation, or focal
+lesion on visual review, with residual uncertainty concentrated in two places:
+(1) whether the elbow anterior/posterior fat pads are normal or show an occult
+effusion sign, and (2) whether the cortex (especially at the radial neck,
+coronoid, and olecranon — classic occult-fracture sites) is truly continuous
+given an exposure setting that appears optimized for bone over soft tissue.
+
+Two independent council reviewers (A and B) then critiqued the combined set of
+proposals. Both converged on grouping the 6 agents' ~20 individual proposals into
+~5 underlying techniques, both promoted Agent_02's single-agent histogram/
+clipping check to a high priority despite its "minority" status, both flagged
+Group B (edge enhancement) as carrying the highest artifact risk in the set
+despite being the other 6/6-supported proposal, and both independently
+recommended dropping Agent_05's intensity-profile-sampling proposal as
+redundant/confounded. Their one disagreement was whether the unfiltered
+magnified joint crop deserves its own priority slot (Reviewer B) or should be
+folded into the contrast-enhancement step's presentation (Reviewer A) — this
+plan keeps it as a distinct, separately-inspectable output, since it costs
+almost nothing to keep separable and helps isolate which processing step
+produced any given visual impression.
+
+No agent, in Section A or Section B, proposed a global/whole-image generic
+filter (global histogram equalization, full-frame edge detection, pseudocolor/
+heatmap recoloring). Agent_01 explicitly considered and rejected these; both
+council reviewers independently affirmed that rejection as a design constraint.
+This plan does not include any such global generic filter.
+
+================================================================================
+PLANNED ANALYSES
+================================================================================
+
+--------------------------------------------------------------------------------
+ANALYSIS 1
+Output filename: images/01_elbow_joint_crop.png
+Transformation: Crop to a bounding box around the distal humerus / elbow joint
+  / proximal radius-ulna region, then upscale (bicubic) ~3x. No contrast or
+  filtering applied — pure geometric crop + resample.
+Parameters: crop box determined from visual landmark detection of the joint
+  region; upscale factor 3x; bicubic interpolation.
+Question investigated: Does closer, larger-scale framing of the joint change
+  the "unremarkable" impression from the whole-limb view, given the joint
+  occupies a small fraction of total frame pixels?
+Reason for performing: Serves as the substrate/base image for Analyses 2 and 5
+  (enhancement and edge work are more legible and easier to audit when run on
+  a legible crop rather than a postage-stamp region embedded in a large black
+  background), and stands alone as a zero-risk inspection aid.
+Agents supporting: Agent_01 (P3, proposed it). Council_Reviewer_B explicitly
+  elevated it to priority #3, calling it "the natural substrate" for later
+  steps. Council_Reviewer_A downgraded it to a "presentation layer, not a
+  standalone analysis" rather than opposing it outright.
+Agents opposing/questioning: Council_Reviewer_A (methodological point only —
+  argues it adds no new diagnostic information beyond the original pixels,
+  per Agent_01's own admission; not a safety objection).
+Possible artifacts: Interpolation blur/blockiness from upscaling can look like
+  texture or trabecular change; this is display resampling, not new data.
+Expected informational value: Low on its own; high as a base for Analyses 2/5,
+  and useful as an explicit record of "this is the same pixels, just larger."
+
+--------------------------------------------------------------------------------
+ANALYSIS 2
+Output filename: images/02_elbow_fatpad_clahe.png
+Transformation: Contrast-Limited Adaptive Histogram Equalization (CLAHE)
+  applied within a bounding box around the distal humerus and the anterior/
+  posterior joint capsule region (built from Analysis 1's crop), leaving bone
+  cortex intensity outside a soft-tissue-focused band relatively unchanged.
+Parameters: CLAHE clip limit ~2.0, tile grid 8x8, applied to the joint-region
+  crop; output shown alongside the matching original-crop for comparison.
+Question investigated: Are the anterior/posterior elbow fat pads normal, or
+  displaced/effaced/bulging in a way that would indicate an occult joint
+  effusion (and therefore possible occult fracture) not visible as a bone
+  line?
+Reason for performing: This was the single most convergent proposal in the
+  entire process — independently proposed by ALL SIX first-pass agents (as
+  "dual-range windowing," "local/adaptive contrast enhancement," "soft-tissue
+  window," "CLAHE crop," "joint-region contrast redistribution," and
+  "localized soft-tissue contrast enhancement" — functionally the same
+  operation) and endorsed by both council reviewers as the highest-value item
+  in the set, because bone and soft tissue compete for the same 8-bit display
+  range under one global contrast setting.
+Agents supporting: Agent_01, Agent_02, Agent_03, Agent_04, Agent_05, Agent_06
+  (6/6). Council_Reviewer_A (ranked #1). Council_Reviewer_B (ranked #2, just
+  under the histogram gate).
+Agents opposing/questioning: None opposed the technique itself. Both council
+  reviewers required it run only after Analysis 4 (histogram/clipping check)
+  establishes whether the target region has recoverable (non-clipped) signal.
+Possible artifacts: CLAHE can amplify noise/compression blocking into false
+  texture, and can produce halo/ringing at the bone/soft-tissue boundary that
+  looks like a soft-tissue edge; a skin fold or triceps tendon fat plane can
+  be mistaken for a true fat-pad stripe. Mitigation (enforced at inspection
+  stage): any apparent fat-pad finding must be checked for anatomic
+  plausibility (smooth crescentic shape, expected location) and must have at
+  least a faint counterpart in the unprocessed original before being reported
+  as a real finding, not an artifact.
+Expected informational value: High — directly addresses the single
+  highest-yield open question identified across all 6 independent reviews.
+
+--------------------------------------------------------------------------------
+ANALYSIS 3
+Output filename: images/03_dualrange_window.png
+Transformation: Whole-image piecewise/dual-range intensity remap — split the
+  intensity histogram into a "soft tissue" low/mid band and a "bone" high
+  band, apply a more aggressive stretch to the soft-tissue band while
+  compressing the already-saturated bone band, recombine.
+Parameters: split point set near the histogram valley between soft-tissue and
+  bone-dominated intensities (determined empirically from Analysis 4's
+  histogram); separate gamma/stretch curves per band.
+Question investigated: Same clinical question as Analysis 2 (fat-pad/effusion
+  visibility), via an alternative, whole-image (non-ROI-cropped) technique, to
+  cross-check whether the ROI-limited approach and a global piecewise approach
+  agree.
+Reason for performing: Agent_01's originally-proposed variant of the Group A
+  question; both council reviewers treated this as a secondary/comparison
+  technique for the same underlying question as Analysis 2, not a separate
+  deliverable — kept here as an optional cross-check, not the primary method.
+Agents supporting: Agent_01 (originating proposal). Council_Reviewer_A
+  ("optional secondary/comparison technique"). Council_Reviewer_B (folds it
+  into Group A, same verdict).
+Agents opposing/questioning: Council_Reviewer_A and B both prefer the
+  ROI-limited method (Analysis 2) as primary specifically because whole-image
+  remapping carries more risk of altering the already well-exposed bone
+  regions.
+Possible artifacts: Visible banding/step at the band-split boundary if not
+  smoothly blended; same halo/noise-amplification risks as Analysis 2 but
+  applied globally instead of locally.
+Expected informational value: Moderate — a useful cross-check against
+  Analysis 2, lower priority than Analysis 2 itself.
+
+--------------------------------------------------------------------------------
+ANALYSIS 4
+Output filename: images/04_intensity_histogram.png
+Transformation: Pixel-intensity histogram (matplotlib plot, not a modified
+  radiograph) of (a) the whole image and (b) the proximal/bright ROI (humerus/
+  joint region) specifically, to test for hard clipping at the maximum
+  intensity value vs. a merely-compressed-but-recoverable distribution.
+Parameters: 256-bin histograms, log-scale y-axis, ROI boundary matched to
+  Analysis 1's crop.
+Question investigated: Is the bright proximal (humerus/joint) region
+  genuinely losing information to sensor/export clipping (a hard spike at max
+  value = data is gone, no processing can recover it), or is it merely
+  visually compressed and recoverable via contrast stretching?
+Reason for performing: Raised as an explicit Section B proposal only by
+  Agent_02, but the underlying symptom (apparent overexposure/brightness
+  gradient favoring the proximal region) was independently noticed in Section
+  A by 5 of 6 agents (Agent_01, 03, 04, 05, 06) without being turned into a
+  formal test. Both council reviewers independently promoted this from
+  "single-agent minority" to top priority, arguing it is a logical
+  precondition for correctly interpreting Analyses 2 and 3: if the region is
+  hard-clipped, any "finding" Analysis 2 reveals there is stretched noise, not
+  recovered signal.
+Agents supporting: Agent_02 (originating proposal); Agent_01/03/04/05/06
+  (independently noticed the underlying symptom in Section A). Both council
+  reviewers ranked this #1 or #2, explicitly overriding a simple vote-count
+  ranking to do so.
+Agents opposing/questioning: None — both reviewers called this the
+  lowest-risk item in the entire proposal set (pure statistics, no pixel
+  modification, cannot itself manufacture a false finding).
+Possible artifacts: A clipped histogram in this PNG export does not
+  necessarily mean the original clinical acquisition was overexposed — prior
+  export/compression could have introduced clipping not present in a native
+  acquisition; this caveat is recorded alongside the result.
+Expected informational value: High as a gating/context measurement for
+  Analyses 2 and 3, even though it produces no new visual finding on its own.
+
+--------------------------------------------------------------------------------
+ANALYSIS 5
+Output filename: images/05_edge_enhancement_fullshaft.png
+Transformation: Unsharp-mask / high-pass edge enhancement applied along the
+  full visible length of the humerus, radius, and ulna shafts.
+Parameters: unsharp mask, radius ~3px, amount ~150%, threshold low, applied to
+  the whole-limb image (not ROI-restricted, since the question spans the full
+  shaft length).
+Question investigated: Is the cortex of the humerus, radius, and ulna truly
+  continuous along its entire visible length, or is there a subtle step-off,
+  buckle, or hairline lucency smoothed over by the image's apparent moderate
+  resolution/exposure?
+Reason for performing: The second unanimous proposal — independently raised
+  by all 6 agents as the direct tool for testing cortical continuity/occult
+  fracture, the second-highest-yield open question after the fat-pad
+  question.
+Agents supporting: Agent_01, Agent_02, Agent_03, Agent_04, Agent_05, Agent_06
+  (6/6). Both council reviewers rated the underlying technique "justified,"
+  though both ranked it below Analyses 2 and 4.
+Agents opposing/questioning: Both council reviewers pushed back on treating
+  this as equally safe just because of unanimous support — all 6 originating
+  agents independently flagged the identical failure mode (see artifacts,
+  below), which both reviewers treat as a strong risk signal, not noise.
+  Council_Reviewer_B explicitly ranked this 4th, below the two lower-risk
+  analyses, "because this council's own agents unanimously flagged its
+  overlap-artifact failure mode."
+Possible artifacts: This is the highest-risk analysis in the plan. Ringing/
+  overshoot along the high-contrast cortex can create a false parallel
+  fringe misreadable as a second cortical line or periosteal reaction; more
+  importantly, in THIS image the elbow is flexed with substantial anatomic
+  overlap (radial head over coronoid, radius crossing ulna), and edge
+  filtering at those superimposition boundaries can produce a line that looks
+  exactly like a fracture but is simply two normal structures' silhouettes
+  crossing. MANDATORY verification rule (per both council reviewers,
+  generalizing Agent_05's own suggestion): a candidate line is only reportable
+  if (a) it is visible at more than one filter-strength setting, (b) it has a
+  faint counterpart in the unprocessed original at the same location, and (c)
+  it is anatomically implausible as a superimposition boundary. Any candidate
+  line falling within a known overlap zone must be treated as
+  expected-artifact-until-proven-otherwise.
+Expected informational value: High if the verification rule is applied;
+  materially lower confidence, and higher false-positive risk, if a candidate
+  line is reported without it.
+
+--------------------------------------------------------------------------------
+ANALYSIS 6
+Output filename: images/06_edge_enhancement_elbow_zoom.png
+Transformation: Same unsharp-mask/edge-enhancement technique as Analysis 5,
+  but restricted to a tighter crop around the radial neck, coronoid process,
+  and olecranon specifically (the sub-region prioritization).
+Parameters: same filter parameters as Analysis 5, applied to Analysis 1's
+  joint crop instead of the whole image.
+Question investigated: Is there a subtle, non-displaced cortical fracture
+  specifically at the radial neck, coronoid, or olecranon — the classic
+  occult elbow fracture sites — that a full-shaft sweep at whole-image scale
+  might under-resolve?
+Reason for performing: Three agents (Agent_03, Agent_04, Agent_06)
+  independently named these three specific sub-sites as the highest-yield
+  locations for this technique, distinct from (and in addition to) the
+  full-shaft sweep in Analysis 5. Both council reviewers kept this
+  sub-prioritization explicitly rather than treating it as redundant with
+  Analysis 5.
+Agents supporting: Agent_03, Agent_04, Agent_06 (3/6, for the targeted
+  sub-region emphasis specifically); implicitly all 6 for the underlying
+  edge-enhancement technique. Both council reviewers retained it as a
+  distinct output from Analysis 5.
+Agents opposing/questioning: Same overlap-artifact caveat as Analysis 5
+  applies with equal or greater force here, since this crop is centered
+  exactly on the highest-overlap part of the joint.
+Possible artifacts: Same as Analysis 5, with the overlap-artifact risk
+  concentrated rather than diluted by the tighter crop; same mandatory
+  verification rule applies.
+Expected informational value: High for the specific classic fracture sites,
+  complementary to Analysis 5's whole-shaft sweep.
+
+--------------------------------------------------------------------------------
+ANALYSIS 7
+Output filename: images/07_alignment_lines_overlay.png
+Transformation: Geometric annotation only (radiocapitellar line: a line drawn
+  through the axis of the radial neck/shaft, should intersect the capitellum;
+  anterior humeral line: a line along the anterior humeral cortex, should
+  intersect the middle third of the capitellum), drawn on top of a copy of
+  the unmodified original image. No pixel intensity manipulation.
+Parameters: line endpoints selected from visually identified anatomic
+  landmarks (radial shaft axis, anterior humeral cortex, capitellum center);
+  estimated flexion angle and any apparent obliquity recorded alongside the
+  overlay.
+Question investigated: Is the radial head properly aligned with the
+  capitellum, and does the anterior humeral cortex pass through the expected
+  portion of the capitellum, as a geometric (not textural) check for subtle
+  subluxation or supracondylar injury that neither contrast nor edge
+  enhancement would catch?
+Reason for performing: Independently proposed by two agents (Agent_03 and
+  Agent_06) using the same two classic alignment constructs — both council
+  reviewers noted this is a real 2/6 convergent signal, not two unrelated
+  minority views, and both rated it higher than a raw vote count would
+  suggest specifically because it is the only proposed technique in the set
+  that adds zero pixel manipulation to the diagnostic image.
+Agents supporting: Agent_03, Agent_06. Council_Reviewer_A (ranked #4,
+  explicitly above two other 2/6-or-fewer proposals). Council_Reviewer_B
+  (ranked #5).
+Agents opposing/questioning: Both originating agents themselves, and both
+  council reviewers, flag that the elbow in this image is flexed beyond the
+  canonical ~90° these heuristics are calibrated for, and possible obliquity
+  is not excluded — a positive (malalignment) finding must be reported with
+  this positioning caveat front and center, not as a clean pass/fail.
+Possible artifacts: Not a pixel artifact — a methodological one. Applying
+  angle-sensitive alignment heuristics outside their validated positioning
+  range risks a false "malalignment" call that is actually just projection
+  foreshortening.
+Expected informational value: Moderate — a genuinely different, complementary
+  axis of information (geometric vs. textural), but its result must be
+  qualified by the positioning caveat rather than read as definitive.
+
+--------------------------------------------------------------------------------
+ANALYSIS 8
+Output filename: images/08_wrist_fragment_crop_contrast.png
+Transformation: Crop to the small cluster of bone visible at the very bottom
+  edge of the frame (partial carpal row), with an independent local
+  contrast stretch applied to that crop only.
+Parameters: crop box at the bottom-edge fragment; simple min-max contrast
+  stretch (not CLAHE, to avoid assuming a particular curve in a region with
+  little surrounding context to calibrate against).
+Question investigated: Does the small, cropped cluster of bone at the bottom
+  edge show any overt abnormality, or is it simply too incomplete to
+  interpret — and should its presence prompt a recommendation for a properly
+  centered wrist view?
+Reason for performing: Independently proposed by two agents (Agent_03: local
+  contrast stretch; Agent_04: gamma/brightness recovery — same underlying
+  proposal, two candidate techniques). Both council reviewers merged these
+  into one low-priority deliverable, valuable mainly for documentation of a
+  field-of-view limitation rather than new-finding-recovery.
+Agents supporting: Agent_03, Agent_04. Both council reviewers included it,
+  ranked low (5th/6th of the recommended set).
+Agents opposing/questioning: Both proposing agents themselves predicted the
+  most likely outcome is "confirms non-diagnostic due to cropping" — this is
+  treated as a feature (an honest negative/limitation finding), not a
+  weakness of the proposal.
+Possible artifacts: Contrast stretching at the image boundary can exaggerate
+  edge/vignette darkening into a false appearance of a lucent lesion; the
+  cropped nature of the structure makes any bone-count or alignment judgment
+  unreliable regardless of processing quality.
+Expected informational value: Low for new pathology detection; useful
+  specifically to formally document that the wrist is not adequately imaged
+  in this exposure.
+
+--------------------------------------------------------------------------------
+ANALYSIS 9
+Output filename: images/09_inverted_polarity.png
+Transformation: Full tonal inversion (negative image) of the original,
+  unmodified pixel data.
+Parameters: simple 255-minus-value inversion, no other processing.
+Question investigated: Does the "no obvious gross abnormality" impression
+  from Section A hold up under an alternative, independent visual
+  presentation of the identical pixel data?
+Reason for performing: Proposed by a single agent (Agent_05). Both council
+  reviewers treated it as a legitimate but non-priority "free" add-on: it is
+  lossless and reversible, cannot itself manufacture a finding, and costs
+  almost nothing to produce, but is not tied to a specific Section-A
+  observation the way the higher-priority analyses are.
+Agents supporting: Agent_05. Council_Reviewer_A (kept as a cheap add-on,
+  ranked 6th). Council_Reviewer_B (kept as "optional/bonus only," ranked 7th,
+  explicitly declining to treat it as a core deliverable).
+Agents opposing/questioning: Council_Reviewer_B noted its justification is "a
+  plausibility appeal" rather than tied to a concrete Section-A uncertainty.
+Possible artifacts: None from the inversion itself (lossless, reversible);
+  risk is purely interpretive — unfamiliar-looking normal structures (nutrient
+  canals, soft-tissue folds) could be misread as new findings simply because
+  they look different from the standard presentation.
+Expected informational value: Low; included as a zero-cost cross-check, not a
+  primary analysis.
+
+================================================================================
+ANALYSES CONSIDERED AND NOT INCLUDED
+================================================================================
+- Quantitative intensity-profile sampling across the shafts (Agent_05, P4):
+  both council reviewers independently recommended dropping this. Agent_05's
+  own stated caveats (confounded by bone angle relative to sampling line,
+  proximity to joint, compression/resampling artifacts) undercut its claimed
+  objectivity, and both reviewers noted it targets the same question as
+  Analysis 5/6 (cortical continuity) with more setup cost and a harder-to-
+  interpret output, while still requiring the same visual re-confirmation
+  step it was meant to reduce reliance on. Not implemented.
+- Global/whole-image generic filters (global histogram equalization, full-
+  frame edge detection, pseudocolor/heatmap recoloring): no agent proposed
+  these in Section B; Agent_01 explicitly considered and rejected them as not
+  tied to any concrete Section-A uncertainty, and both council reviewers
+  independently affirmed this rejection as a design constraint given how much
+  of the frame is empty collimated background plus one saturated bone region.
+  Not implemented.
+
+================================================================================
+EXECUTION ORDER
+================================================================================
+1. Analysis 1 (crop/upscale) — substrate for 2 and 6.
+2. Analysis 4 (histogram/clipping check) — gates interpretation of 2 and 3.
+3. Analysis 2 (ROI CLAHE fat-pad enhancement) — primary highest-priority
+   analysis.
+4. Analysis 3 (dual-range whole-image window) — secondary cross-check for 2.
+5. Analysis 5 (full-shaft edge enhancement) and Analysis 6 (targeted
+   radial-neck/coronoid/olecranon edge enhancement) — with mandatory overlap-
+   zone verification rule applied at the inspection stage, not the generation
+   stage.
+6. Analysis 7 (alignment-line overlay) — independent geometric check.
+7. Analysis 8 (wrist-fragment crop) — low-priority documentation item.
+8. Analysis 9 (inverted polarity) — free bonus check.

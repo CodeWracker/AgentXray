@@ -1,0 +1,294 @@
+# AGENT_02 — IMAGE PROCESSING PROPOSALS
+# Multi-Agent Medical Image Analysis Council
+# Model: qwen3.6-27b
+# Date: 2026-09-14
+
+## PHILOSOPHY
+I am not proposing a checklist of standard techniques. Each proposal below
+responds to a concrete observation about THIS specific image. I want to
+resolve specific uncertainties, not exercise a toolkit.
+
+
+## PROPOSAL 1 — Intensity Windowing & Cropping for Dynamic Range Recovery
+
+### (a) QUESTION
+A large fraction of this image (roughly 50%+) is near-black background.
+This means the full 8- or 16-bit dynamic range is being "wasted" on empty
+space, compressing the useful signal into a narrow band of intensity
+values. Is there subtle contrast information in the soft-tissue envelope
+and marrow spaces that is currently invisible because the histogram is
+stretched across the full range including dead background?
+
+### (b) WHY THIS METHOD
+By cropping to the anatomical bounding box and re-mapping the resulting
+intensity histogram to span the full display range, we can effectively
+"zoom in" on the pixel values that carry diagnostic information. This
+is not about making things "sharper" — it is about recovering contrast
+that exists in the data but is being compressed below the visibility
+threshold.
+
+### (c) EXPECTED FINDINGS
+- Soft tissue margins (plantar aspect, dorsum) should become more
+  distinct, allowing measurement of soft-tissue thickness for signs
+  of swelling or effusion.
+- Trabecular patterns in the calcaneus and talus should show more
+  texture, potentially revealing areas of altered bone density.
+- The sinus tarsi region (between talus and calcaneus) may show
+  internal structure currently lost in mid-gray noise.
+
+### (d) POSSIBLE ARTIFACTS
+- Noise amplification: background sensor noise that was invisible at
+  low display gain may become prominent. Must compare directly with
+  the original to distinguish real structure from amplified noise.
+- If the image is 8-bit (not 16-bit DICOM), the gain is limited —
+  there may simply not be enough bit-depth to recover meaningful
+  contrast. This itself is a finding.
+
+### (e) COMPARISON WITH ORIGINAL
+Side-by-side view, original left, processed right. I must be able to
+point to a region and say: "this was invisible before, and it is
+visible now, and it corresponds to real anatomy, not noise pattern."
+Any structure I claim to see must be consistent across at least two
+different re-mapping strategies (e.g., linear stretch vs. percentile
+clipping).
+
+
+## PROPOSAL 2 — CLAHE (Contrast Limited Adaptive Histogram Equalization)
+
+### (a) QUESTION
+The image has strong global intensity gradients: the heel region is
+overall denser (brighter) than the forefoot. A global histogram
+adjustment cannot simultaneously optimize contrast for both regions.
+Are there local contrast features — particularly at bone interfaces
+and joint margins — that are being masked by these regional intensity
+differences?
+
+### (b) WHY THIS METHOD
+CLAHE operates on small tiles of the image independently, equalizing
+contrast locally while clamping the amplification factor to prevent
+noise explosion. Unlike global equalization, it can reveal detail in
+both the dense heel region and the less dense forefoot in a single
+pass. The adaptive nature is critical here because the foot has
+inherently non-uniform radiographic density along its length.
+
+### (c) EXPECTED FINDINGS
+- Joint margins (tibiotalar, talocalcaneal, subtalar facets) should
+  show sharper definition, allowing better assessment of joint space
+  width and cortical integrity.
+- The Lisfranc junction (metatarsal-cuneiform-cuboid complex) is a
+  region of overlapping bones on lateral view — CLAHE may separate
+  superimposed structures enough to assess for subtle diastasis.
+- Cortical bone continuity along metatarsal shafts may reveal hairline
+  disruptions not visible in the original's mid-contrast range.
+
+### (d) POSSIBLE ARTIFACTS
+- Clahe boundary artifacts: tile borders can create artificial
+  intensity discontinuities. I need to use sufficiently large tile
+  sizes (at least 64x64 pixels) and check for blockiness.
+- Over-amplification in homogeneous regions: areas of uniform soft
+  tissue may develop false texture that mimics pathology. The
+  contrast-limiting parameter (clip limit) must be tuned conservatively
+  — start at 2.0 and go up only if needed.
+
+### (e) COMPARISON WITH ORIGINAL
+Three-panel comparison: original | CLAHE-tile-64 | CLAHE-tile-128.
+If a structure appears in both CLAHE versions consistently, it is
+more likely real. If it appears only at the smaller tile size, it may
+be a tiling artifact. Any claimed finding must survive the test:
+"would I still see this if I used a different tile size?"
+
+
+## PROPOSAL 3 — Unsharp Masking Targeted at Cortical Edges
+
+### (a) QUESTION
+The cortical margins of the metatarsal shafts, navicular, and cuboid
+appear slightly soft in the original. This could be genuine lack of
+sharpness (magnification blur from object-detector distance), or it
+could be that fine detail is present but falls below the edge
+detection threshold of the display. Are there micro-fractures or
+cortical step-offs that become visible only when high-frequency
+content is selectively boosted?
+
+### (b) WHY THIS METHOD
+Unsharp masking (USM) adds a scaled copy of the high-frequency
+content (original minus blurred version) back to the original.
+Unlike CLAHE, which operates on intensity distribution, USM operates
+on spatial frequency — it enhances edges without changing overall
+brightness. This is the right tool when the question is specifically
+about edge definition, not about overall contrast.
+
+### (c) EXPECTED FINDINGS
+- Hairline fractures: a cortical step-off of 1-2 pixels would be
+  invisible at native contrast but amplified by USM.
+- Periosteal reaction: thin new bone along the tibial shaft or
+  metatarsals would appear as a faint parallel line to the cortex —
+  USM should make this pop.
+- Enthesophytes (bone spurs) at the plantar calcaneal margin: the
+  transition from smooth cortex to spur may be subtle; edge
+  enhancement clarifies the boundary.
+
+### (d) POSSIBLE ARTIFACTS
+- Halo effect: USM creates dark/bright halos on either side of edges,
+  which can be mistaken for cortical disruption or fracture lines.
+  Critical test: a real fracture crosses the cortex; a halo runs
+  parallel to it.
+- Noise amplification along the same spatial frequencies as edges.
+  Solution: apply a moderate Gaussian blur before USM (kernel ~5px)
+  to suppress high-frequency noise before the enhancement step.
+
+### (e) COMPARISON WITH ORIGINAL
+Overlay mode: 50% original + 50% USM-processed. In overlay mode,
+USM halos cancel out (they appear inverted on each copy), but real
+edges reinforce. This is the most reliable way to distinguish artifact
+from anatomy.
+
+
+## PROPOSAL 4 — Soft-Tissue Envelope Measurement
+
+### (a) QUESTION
+Is there regional soft-tissue swelling that would localize pathology
+even in the absence of visible bone abnormality? The lateral view
+shows the plantar and dorsal soft-tissue contours, but measuring them
+by eye is unreliable — I need quantitative thickness profiles along
+the foot to detect focal asymmetry.
+
+### (b) WHY THIS METHOD
+By extracting the soft-tissue boundary (the outer contour where
+bone/soft-tissue transitions to air/background), I can compute a
+thickness profile: at each longitudinal position along the foot,
+measure the perpendicular distance from dorsal to plantar contour.
+Comparing this profile against expected norms for each anatomical
+region (hindfoot, midfoot, forefoot) flags focal swelling.
+
+### (c) EXPECTED FINDINGS
+- Normal: relatively uniform dorsal thickness over the midfoot,
+  increasing gradually toward the heel (Achilles insertion region)
+  and over the metatarsal heads.
+- Abnormal: focal thickening over the midfoot would suggest deep
+  space infection or hemorrhage. Plantar thickening at the calcaneal
+  insertion suggests plantar fasciitis (thickened fascia). Dorsal
+  thickening over specific MTP joints suggests synovitis.
+
+### (d) POSSIBLE ARTIFACTS
+- The soft-tissue-to-air boundary is low-contrast — simple thresholding
+  will be noisy. I should use Canny edge detection with a low threshold
+  followed by morphological closing to get a smooth contour.
+- Patient positioning affects the apparent thickness — if the foot is
+  rotated even slightly from true lateral, the profile is distorted.
+  I must verify true lateral positioning (superimposed malleoli on
+  ankle view) before trusting the measurements.
+
+### (e) COMPARISON WITH ORIGINAL
+Annotate the original image with the detected contour lines and
+thickness measurements (in mm, calibrated to the known size of the
+calcaneus or talus as internal ruler). The annotations must be
+visually plausible — if the contour cuts through the image in an
+obvious wrong place, the segmentation failed and the measurement is
+meaningless.
+
+
+## PROPOSAL 5 — Frequency Domain Analysis for Periodic Artifacts
+
+### (a) QUESTION
+Does this image contain periodic or structured noise (moire patterns,
+grid lines, scanner artifacts) that could be mistaken for pathology
+or that could be masking real features? The first-pass assessment
+noted "minimal artifacts" but visual inspection is not sensitive to
+low-amplitude periodic noise.
+
+### (b) WHY THIS METHOD
+A 2D FFT (Fast Fourier Transform) converts the image from spatial to
+frequency domain. Periodic structures — grid lines, moire, repetitive
+noise — show up as discrete bright spots in the frequency spectrum,
+even when they are imperceptible in the spatial domain. This is a
+diagnostic of the image itself, not the anatomy.
+
+### (c) EXPECTED FINDINGS
+- Clean image: FFT shows a concentrated central peak (low-frequency
+  content from the anatomy) with diffuse, radially symmetric
+  falloff. No discrete spots outside the center.
+- Grid artifact: pairs of spots symmetric about the center, at a
+  frequency corresponding to the grid spacing.
+- Moire pattern: clusters of spots at specific orientations,
+  indicating interference between the image acquisition sampling and
+  a periodic structure (digitizer screen, anti-aliasing filter, etc.)
+
+### (d) POSSIBLE ARTIFACTS
+- The FFT of any bounded image has sinc-function sidelobes from
+  windowing — these are not real periodic content. I should apply
+  a Hanning window before the FFT to suppress windowing artifacts.
+- A single strong anatomical feature (like the tibia cortex running
+  vertically) produces a horizontal line in the FFT — this is not
+  noise, it is structure. I need to distinguish anatomy-driven
+  frequency content from acquisition artifacts.
+
+### (e) COMPARISON WITH ORIGINAL
+If periodic artifacts are found, apply a notch filter in the
+frequency domain at the offending frequencies, then inverse FFT back
+to spatial domain. Compare before/after: if a previously faint
+feature becomes clearer after notch filtering, the feature was real
+and the artifact was masking it. If nothing changes meaningfully,
+the artifact was too weak to matter.
+
+
+## PROPOSAL 6 — Radiodensity Profiling Across Key Joints
+
+### (a) QUESTION
+Can I quantify the intensity transition across joint spaces to estimate
+joint space width more precisely than visual estimation? The
+tibiotalar and talocalcaneal joint spaces should appear as dark bands
+(low density) between two bright cortical lines. The width of this
+dark band, measured in calibrated units, provides an objective
+measure of joint space narrowing.
+
+### (b) WHY THIS METHOD
+Draw perpendicular intensity profiles across each joint of interest.
+The profile will show a characteristic "valley" shape: high intensity
+(cortical bone) → low intensity (joint space/cartilage) → high
+intensity (opposing cortical bone). The distance between the two
+peaks, minus the cortical thickness, gives the joint space width.
+This is more precise and reproducible than visual estimation.
+
+### (c) EXPECTED FINDINGS
+- Tibiotalar joint: normal space ~3-4mm. Profile should show a clear
+  valley with well-defined peaks on each side.
+- Talocalcaneal joint: more complex due to three articular facets.
+  Profile across the posterior facet should be clean; the middle and
+  anterior facets may show superimposition.
+- Subtalar joint: if narrowed (<2mm), suggests degenerative change
+  or coalition.
+
+### (d) POSSIBLE ARTIFACTS
+- Superimposition: on a true lateral, medial and lateral structures
+  overlap. The intensity profile may show multiple peaks if two
+  cortical surfaces are projected on top of each other.
+- Sclerosis: subchondral sclerosis increases the intensity near the
+  joint, making the transition gradual rather than sharp. This can
+  make peak detection unreliable.
+- Profile orientation: if the profile line is not perpendicular to
+  the joint surface, the measured width is artificially increased.
+
+### (e) COMPARISON WITH ORIGINAL
+Superimpose the measurement lines and peak locations on the original
+image. The annotated image should show: (1) where each profile was
+taken, (2) the measured joint space width in mm, (3) the intensity
+profile plot itself. This makes the measurement transparent and
+verifiable.
+
+
+## SUMMARY OF PRIORITIES
+
+| Priority | Proposal | Reason |
+|----------|----------|--------|
+| 1 | Intensity Windowing + Crop | Foundational — unlocks all other analyses |
+| 2 | CLAHE | Most likely to reveal hidden structural detail |
+| 3 | Soft-Tissue Envelope | Unique quantitative value, orthogonal to bone analysis |
+| 4 | Unsharp Masking | Targets specific question about cortical integrity |
+| 5 | Frequency Domain | Quality check — should be done before trusting findings |
+| 6 | Joint Space Profiling | Quantitative measure with clinical relevance |
+
+I am most interested in seeing what happens when we combine Proposal 1
+(windowing) with Proposal 2 (CLAHE). The windowing recovers global
+dynamic range, and CLAHE then optimizes local contrast within that
+expanded range. I suspect this combination will reveal features that
+neither technique alone can show.

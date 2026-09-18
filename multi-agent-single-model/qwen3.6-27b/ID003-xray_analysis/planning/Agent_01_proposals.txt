@@ -1,0 +1,467 @@
+Agent_01 — Proposed Image-Processing Analyses
+==============================================
+Image: ID003-xray.png
+Model: qwen3.6-27b
+Fracture: Both-bone forearm (radius and ulna), mid-diaphyseal region
+View: Lateral/oblique projection of left forearm and hand
+Date: 2026-09-14
+
+---
+
+PROPOSAL 1: Cortical Edge Enhancement for Fracture Line Delineation
+-------------------------------------------------------------------
+
+QUESTION:
+  What is the precise geometry of the fracture lines in both the radius and ulna?
+  Specifically: are the fractures transverse, oblique, spiral, or comminuted?
+  The current image shows the fractures but the fracture line morphology is not
+  sharply resolved, partly due to the oblique projection overlapping soft tissue
+  and partly due to moderate overall contrast.
+
+METHOD:
+  Apply a localized band-pass frequency filter to the fracture zone (approximately
+  mid-shaft of both bones). The filter should preserve mid-spatial frequencies
+  characteristic of cortical edges (roughly 1-3 cycles/mm at typical X-ray
+  resolution) while suppressing both low-frequency gradual density changes
+  (soft tissue background gradient) and high-frequency noise. Then apply a
+  non-linear contrast stretch specifically to the enhanced band, mapping the
+  edge frequencies to the full displayable intensity range. Crop tightly to the
+  diaphyseal region of both bones to maximize effective resolution.
+
+WHY:
+  Cortical bone edges represent sharp transitions in X-ray attenuation, appearing
+  as strong mid-frequency signals in the image spectrum. The surrounding soft
+  tissue and gradual density falloff contribute low-frequency content that
+  effectively "washes out" cortical detail. Isolating and amplifying the cortical
+  frequency band should make the fracture line course, any subtle spiral
+  components, and secondary fracture lines (indicating comminution) more
+  discernible.
+
+EXPECTED RESULT:
+  - Sharper delineation of the fracture line course in both bones
+  - Revelation of any spiral component that may be obscured in the original
+  - Identification of any minor comminution (small bone fragments) at the
+    fracture site
+  - Clearer visualization of whether the fracture is complete or has a greenstick
+    component on either cortex
+
+ARTIFACT WARNING:
+  - Band-pass filtering will produce characteristic "ringing" artifacts (oscillatory
+    patterns) along any strong edge, including normal cortical margins. These
+    should not be confused with actual fracture lines. Ringing appears as parallel
+    dark-bright-dark bands on either side of edges; true fracture lines will have
+    anatomical coherence.
+  - The non-linear contrast stretch may exaggerate image noise if the high-frequency
+    cutoff is set too permissive.
+  - Cropping to the fracture zone may remove contextual anatomical landmarks needed
+    for orientation.
+
+COMPARISON:
+  Overlay the enhanced image semi-transparently on the original so that original
+  anatomical context is preserved while the enhanced edges are visible. Also
+  provide a side-by-side with the uncropped original to verify that no edge
+  artifacts are being misinterpreted as fracture fragments.
+
+---
+
+PROPOSAL 2: Anatomical Axis Reconstruction for Displacement Measurement
+-----------------------------------------------------------------------
+
+QUESTION:
+  What is the magnitude and direction of translational displacement and
+  angulation deformity? This is critical for treatment planning (closed vs.
+  open reduction) and prognosis. On a lateral/oblique view alone, true
+  displacement is difficult to quantify because we cannot separate anterior-
+  posterior displacement from medial-lateral displacement.
+
+METHOD:
+  First, automatically detect the cortical boundaries of the radius and ulna
+  in the proximal and distal segments separately (above and below the fracture
+  zone). Fit smooth curves (preferably piecewise linear for the diaphysis,
+  transitioning to curved near the metaphysis) to the midlines of each segment.
+  Then:
+  a) Compute the intersection angle between proximal and distal midline axes
+     for each bone (angulation).
+  b) Measure the perpendicular gap between cortices at the fracture level
+     (translational displacement).
+  c) Measure overlap if present (shortening).
+  d) For each bone, draw the reconstructed anatomical axes on the image with
+     different colors (e.g., red for radius proximal, blue for radius distal,
+     green for ulna proximal, yellow for ulna distal) and compute the
+     interosseous space at the fracture level versus normal proximal and distal
+     reference levels.
+
+WHY:
+  Visual estimation of angulation and displacement is inherently imprecise.
+  A computational approach provides quantitative measurements that can be
+  compared against established clinical thresholds (e.g., >10 degrees
+  angulation or >50% displacement often indicates surgical management).
+  The interosseous membrane span is particularly relevant — widening or
+  narrowing at the fracture level suggests interosseous membrane disruption,
+  which has prognostic implications.
+
+EXPECTED RESULT:
+  - Quantitative angulation measurements in degrees for each bone
+  - Quantitative displacement measurements in millimeters (and as percentage
+    of bone diameter) for each bone
+  - Assessment of shortening in millimeters
+  - Interosseous space measurements at three levels: proximal normal,
+    fracture zone, distal normal
+  - Visual overlay showing the computed axes for verification
+
+ARTIFACT WARNING:
+  - The oblique projection introduces foreshortening: measured angulation and
+    displacement will be underestimates of true values. This limitation must be
+    stated explicitly; these are minimum values, not true values.
+  - Automatic cortical boundary detection may fail near the fracture zone where
+    edges are disrupted. The algorithm should clearly mark regions where the
+    fit is uncertain (e.g., by using wider confidence bands).
+  - The piecewise linear fit for the diaphysis assumes the bone shaft is
+    straight, which is not always the case — slight physiological curvature
+    may be misinterpreted as angulation.
+
+COMPARISON:
+  Display the computed axes and measurements directly overlaid on the original
+  image. Include a schematic diagram showing the measured angles and
+  displacements in a standard anatomical orientation. Compare interosseous
+  space measurements across the three levels to assess interosseous membrane
+  integrity.
+
+---
+
+PROPOSAL 3: Multi-Scale Detail Fusion for Comminution and Impacted Fragment Detection
+-------------------------------------------------------------------------------------
+
+QUESTION:
+  Are there small fracture fragments, butterfly fragments, or impacted bone
+  segments at the fracture zone that are not clearly visible at the current
+  image scale and resolution? The presence and number of fragments determines
+  whether the fracture is simple, comminuted, or segmental, which directly
+  impacts surgical approach selection and fixation strategy.
+
+METHOD:
+  Generate a detail-enhanced composite through a multi-scale approach:
+  Step 1: Create a zoomed crop of the fracture zone at 2x, 3x, and 4x the
+          original resolution (using interpolation that preserves edge
+          structure, avoiding oversmoothing).
+  Step 2: For each zoom level, apply an unsharp masking operation: subtract
+          a heavily blurred version of the image from the original to isolate
+          fine detail, then add a scaled version of this detail back to the
+          original. The key parameter is the scale factor applied to the
+          detail layer — too high introduces noise, too low has no effect.
+          Test multiple scale factors and select the one that maximizes
+          edge-to-noise ratio.
+  Step 3: Fuse the best detail layer from each zoom level into a single
+          composite that shows large-scale structure from the lower zoom and
+          fine detail from the higher zooms.
+
+WHY:
+  Standard display of X-rays compresses the dynamic range to fit on typical
+  displays, causing subtle density variations in small bone fragments to be
+  lost. The multi-scale approach ensures that large structures (fracture
+  geometry) and small structures (fragments, trabecular disruption) are both
+  visible in a single view. Impacted fragments often show as areas of
+  increased density (whiter than surrounding bone) at the fracture site,
+  and unsharp masking selectively enhances these density transitions.
+
+EXPECTED RESULT:
+  - Clear visualization of any comminution at the fracture site, including
+    small fragments that may be below the resolution threshold of the
+    original display
+  - Detection of impacted bone segments (appearing as focal areas of
+    increased radiopacity at the fracture interface)
+  - Assessment of whether the fracture extends into the metaphyseal region
+    on either end
+  - Possible identification of small periosteal fragments (bucked cortex)
+
+ARTIFACT WARNING:
+  - Unsharp masking is notorious for creating "halo" artifacts: bright edges
+    will have a dark halo on one side and a bright halo on the other. These
+    halos could be mistaken for fracture gaps or fragments. The halos are
+    purely artificial and will appear symmetrically around any strong edge.
+  - Interpolation-based zooming introduces artificial smoothness and may
+    create false fine structure that does not exist in the original data.
+    This is particularly problematic with bicubic or Lanczos interpolation.
+    Nearest-neighbor or edge-preserving interpolation should be preferred,
+    even though the result looks less "smooth."
+  - The increased sensitivity may amplify quantum noise in the X-ray, which
+    can appear as speckled pseudo-fragments. These will lack anatomical
+    coherence and will be randomly distributed.
+
+COMPARISON:
+  Provide a zoomed side-by-side comparison: original zoomed crop vs. detail-
+  enhanced zoomed crop for each magnification level. Annotate any newly
+  visible features with a marker that can be verified against the original.
+  Include a difference image (enhanced minus original) to highlight exactly
+  what the processing added or changed.
+
+---
+
+PROPOSAL 4: Soft-Tissue Envelope Analysis for Compartment Syndrome Risk
+-----------------------------------------------------------------------
+
+QUESTION:
+  Is there significant soft-tissue swelling around the fracture site that
+  might indicate bleeding, hematoma formation, or early compartment
+  syndrome? Soft-tissue findings are often overlooked in fracture analysis
+  but are critical for urgent clinical management.
+
+METHOD:
+  Isolate the soft-tissue component by subtracting a bone-only estimate from
+  the original image. To estimate the bone-only image: apply a high-pass
+  spatial filter tuned to the frequency range of bone (cortical bone edges
+  are relatively high frequency due to their sharp contrast). Threshold this
+  to create a bone mask, then use the mask to fill in non-bone areas with
+  an interpolated estimate of what the image would look like without bone
+  present (extrapolating from adjacent soft-tissue-only regions). Subtract
+  this bone-removed estimate from the original to get a soft-tissue-only
+  image. Then measure soft-tissue thickness at multiple circumferential
+  locations: proximal to the fracture, at the fracture level, and distal
+  to the fracture. Also look for the "fat stripe sign" — subcutaneous fat
+  lines that become obscured or displaced with significant swelling.
+
+WHY:
+  In a lateral/oblique view, the soft-tissue contour is visible but difficult
+  to quantify against the dark background. A dedicated soft-tissue isolation
+  makes swelling patterns more obvious. The forearm compartment syndrome risk
+  is elevated with both-bone fractures, particularly when displacement is
+  significant. Quantitative soft-tissue measurement provides objective
+  evidence beyond visual inspection.
+
+EXPECTED RESULT:
+  - Quantitative soft-tissue thickness measurements at multiple levels
+  - Visualization of the soft-tissue envelope independent of bone structure
+  - Detection of any visible fat stranding or obliteration of normal fat planes
+  - Assessment of whether swelling is localized to the fracture zone or
+    extends into adjacent compartments
+  - Indication of whether there is visible gas in the soft tissues (would
+    suggest open fracture)
+
+ARTIFACT WARNING:
+  - The bone subtraction will be imperfect, especially at the fracture zone
+    where the high-pass thresholding cannot cleanly separate bone fragments
+    from soft-tissue hematoma (both have elevated density). Expect "ghost"
+    bone artifacts in the soft-tissue image.
+  - Subcutaneous fat has low radiographic contrast. The subtraction approach
+    may not resolve fat stripes clearly if the original image does not have
+    sufficient dynamic range in the soft-tissue region.
+  - Soft-tissue thickness is highly dependent on patient positioning and
+    beam angle. The oblique projection means anterior and posterior soft
+    tissue are superimposed, making thickness measurements overestimates.
+
+COMPARISON:
+  Display the soft-tissue-only image alongside the original with the bone
+  regions highlighted. Draw measurement lines at corresponding anatomical
+  landmarks on both views to show what the soft-tissue thickness would be
+  on the original (allowing clinical correlation). Use the original image
+  as the ground truth for any clinically significant finding.
+
+---
+
+PROPOSAL 5: Joint Assessment — Distal Radioulnar Joint and Wrist Alignment
+--------------------------------------------------------------------------
+
+QUESTION:
+  Is there associated injury to the distal radioulnar joint (DRUJ) or wrist?
+  Both-bone forearm fractures can transmit force to the DRUJ, causing
+  disruption or subluxation. The Galeazzi-equivalent pattern involves
+  distal third ulna fracture with DRUJ disruption, and while this fracture
+  is more proximal, the force transmission could still affect the distal
+  structures. Also, is there any subtle wrist fracture or dislocation that
+  is obscured by the oblique projection and hand superimposition?
+
+METHOD:
+  Focus on the distal aspect of the image where the hand and distal forearm
+  converge. Perform two operations:
+  a) Selective region enhancement: crop and re-contrast the distal forearm
+     and wrist region independently, using a contrast stretch optimized for
+     the density range of joint surfaces (which is lower contrast than the
+     diaphyseal bone). This makes joint congruency more assessable.
+  b) Projection-angle estimation: use the visible anatomy (relative positions
+     of the radius, ulna, carpal bones, and metacarpals) to estimate the
+     projection angle more precisely. Knowing the angle helps interpret
+     whether apparent joint incongruity is a projection artifact or true
+     displacement. Specifically, trace the arc of the carpal row and the
+     alignment of the radiocarpal joint surface to estimate whether the
+     view is closer to true lateral, true AP, or truly oblique.
+
+WHY:
+  The DRUJ is notoriously difficult to assess on a single view, and the
+  oblique projection of this image further complicates the assessment. A
+  dedicated contrast optimization for the joint region, combined with
+  projection-angle awareness, provides the best chance of detecting DRUJ
+  disruption from a single image. Missing a DRUJ injury in a both-bone
+  forearm fracture can lead to chronic instability and loss of forearm
+  rotation.
+
+EXPECTED RESULT:
+  - Improved visualization of the DRUJ articulation surface
+  - Assessment of whether the ulnar head is properly seated in the
+    sigmoid notch of the radius
+  - Estimation of the projection angle, informing confidence in the joint
+    assessment
+  - Detection of any carpal alignment abnormalities or subtle distal
+    radius/ulna fractures
+  - Evaluation of the radiocarpal joint congruency
+
+ARTIFACT WARNING:
+  - Contrast optimization for the distal region will likely lose detail in
+    the fracture zone — this is a trade-off, not a bug. Do not interpret
+    the fracture zone from this enhanced view.
+  - The hand bones are superimposed in this view, making individual carpal
+    bone assessment unreliable. Superimposition will create apparent
+    irregularities that are projection artifacts, not fractures.
+  - Projection-angle estimation from a single view is inherently uncertain
+    and may be off by 15-20 degrees or more.
+
+COMPARISON:
+  Show the distal-enhanced view side by side with the corresponding region
+  of the original full image. Annotate the estimated DRUJ position and any
+  observed incongruity. Include a schematic showing the estimated projection
+  angle and how it affects the apparent anatomy.
+
+---
+
+PROPOSAL 6: Fracture Chronicity Assessment — Callus and Sclerotic Margin Analysis
+---------------------------------------------------------------------------------
+
+QUESTION:
+  Is this an acute fracture or a subacute/chronic injury? Are there signs
+  of attempted healing (callus formation, sclerotic margins, periosteal
+  reaction) that would suggest the fracture is not brand new? This has
+  major implications for treatment strategy.
+
+METHOD:
+  Focus on the periosteal surface adjacent to the fracture zone. Apply a
+  directional derivative filter perpendicular to the long axis of each
+  bone to specifically enhance any periosteal reaction or callus formation.
+  Periosteal new bone appears as a faint, irregular radiodensity parallel
+  to the cortical surface, typically 2-10 mm away from the cortex. Then
+  measure the periosteal-to-cortex distance at the fracture zone versus
+  reference points in the proximal and distal intact shaft. Also examine
+  the fracture line margins for sclerosis (increased density at the fracture
+  line edges), which indicates delayed union or nonunion. Create a
+  periosteal reaction map by thresholding the derivative image to highlight
+  areas where periosteal density exceeds the baseline by more than 2
+  standard deviations.
+
+WHY:
+  Acute fractures typically show clean, sharp fracture lines without
+  periosteal reaction. Callus formation begins around day 7-10 and is
+  clearly visible by 2-3 weeks. Sclerotic margins develop with prolonged
+  nonunion. This analysis provides an objective assessment of healing
+  activity that supplements visual inspection. The directional derivative
+  filter is ideal because periosteal reaction has a specific spatial
+  orientation (parallel to the cortex) that can be selectively enhanced.
+
+EXPECTED RESULT:
+  - Quantitative measurement of periosteal thickening at the fracture zone
+  - Detection of callus formation (bridging or non-bridging)
+  - Assessment of fracture margin sclerosis
+  - Timeline estimation: acute (<7 days), subacute (1-3 weeks), or
+    chronic (>3 weeks) based on periosteal findings
+  - Comparison of periosteal thickness at the fracture zone versus normal
+    reference regions
+
+ARTIFACT WARNING:
+  - Periosteal reaction can be confused with normal periosteal thickening
+    at muscle attachment sites. Reference measurements from intact regions
+    are essential for differentiation.
+  - The directional derivative filter will also enhance normal anatomical
+    features that have a similar orientation (e.g., muscle-tendon junctions
+    crossing the bone). These can be distinguished by their distance from
+    the cortex and by their anatomical consistency.
+  - In children and adolescents, normal periosteal reactions can be
+    prominent and should not be confused with fracture-related callus.
+    The patient's age (if known) should factor into interpretation.
+  - Sclerotic margins may appear as a processing artifact of the contrast
+    enhancement, especially if the contrast stretch is too aggressive.
+
+COMPARISON:
+  Show the periosteal reaction map overlaid on the original with a color
+  scale indicating the magnitude of periosteal signal. Include reference
+  measurements from the proximal and distal intact bone for context.
+  Provide a timeline assessment with a confidence interval based on the
+  strength of periosteal findings.
+
+---
+
+PROPOSAL 7: Interosseous Space and Membrane Integrity Assessment
+----------------------------------------------------------------
+
+QUESTION:
+  What is the status of the interosseous space between the radius and ulna
+  at the fracture level? Widening suggests interosseous membrane disruption,
+  which is common in both-bone fractures and has implications for forearm
+  rotational stability and fixation strategy.
+
+METHOD:
+  Define the interosseous space as the distance between the adjacent
+  cortices of the radius and ulna (the radius is lateral/anterior and the
+  ulna is medial/posterior in the standard position). Trace both adjacent
+  cortical margins over their full visible length. Compute the interosseous
+  distance at 5 mm intervals along the shaft. Plot this as a profile graph.
+  Compare the interosseous distance at the fracture level to the mean
+  distance in the proximal and distal thirds (reference regions). A
+  statistically significant widening or narrowing at the fracture level
+  compared to reference suggests membrane disruption or compression.
+
+WHY:
+  The interosseous membrane is the primary stabilizer of the radius relative
+  to the ulna, transmitting forces and maintaining forearm rotation. In
+  both-bone fractures, the membrane is almost always disrupted at the
+  fracture level, but the extent of disruption is variable and affects
+  treatment. Direct visualization of the membrane is impossible on plain
+  radiographs, but its attachment points can be inferred from the
+  interosseous space width.
+
+EXPECTED RESULT:
+  - Interosseous distance profile along the entire visible forearm
+  - Quantitative comparison of fracture-level width versus reference width
+  - Identification of the "zone of injury" — the length of shaft over
+    which the interosseous space is abnormal
+  - Assessment of whether the bones are overriding (suggesting significant
+    membrane disruption with shortening)
+
+ARTIFACT WARNING:
+  - The oblique projection significantly affects the measured interosseous
+    space. At different rotation angles, the apparent distance between
+    bones changes dramatically. The measurements from this single view
+    provide only relative information, not absolute measurements.
+  - Cortical boundary detection near the fracture zone will be unreliable,
+    creating apparent widening that is an artifact of the detection failure,
+    not actual anatomical widening.
+  - In the distal forearm, the interosseous space naturally narrows as the
+    radius and ulna approach the wrist. This anatomical variation must not
+    be confused with pathology.
+
+COMPARISON:
+  Display the interosseous distance profile as a line graph overlaid on the
+  image, with reference bands showing the normal proximal and distal ranges.
+  Mark the fracture zone clearly and indicate the degree of widening or
+  narrowing relative to the reference mean. Provide a caution note about
+  the projection-dependent nature of these measurements.
+
+---
+
+SUMMARY OF PROPOSED ANALYSES
+-----------------------------
+
+Priority 1 (Highest diagnostic yield):
+  1. Cortical Edge Enhancement (Proposal 1) — fracture geometry
+  2. Anatomical Axis Reconstruction (Proposal 2) — displacement quantification
+
+Priority 2 (Moderate diagnostic yield):
+  3. Multi-Scale Detail Fusion (Proposal 3) — comminution detection
+  4. Joint Assessment (Proposal 5) — DRUJ/wrist involvement
+  5. Fracture Chronicity Assessment (Proposal 6) — acute vs. subacute
+
+Priority 3 (Supporting information):
+  6. Soft-Tissue Envelope Analysis (Proposal 4) — compartment syndrome risk
+  7. Interosseous Space Assessment (Proposal 7) — membrane integrity
+
+All proposals include explicit artifact warnings and comparison protocols
+to prevent misinterpretation of processing artifacts as pathological findings.
+
+---
+End of Agent_01 Proposals

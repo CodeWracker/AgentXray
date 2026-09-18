@@ -1,0 +1,43 @@
+AGENT: dr-sable
+MODEL: Gema 4-26B
+IMAGE: ID003-xray.png
+IMAGE TYPE: Forearm + hand radiograph, single projection, effectively lateral (side) view of the
+elbow-forearm axis: elbow flexed with humerus entering from upper right, radius and ulna
+running vertically. Hand is clenched into a semi-fist at the inferior end, so the hand is
+neither a true PA nor open lateral. Left vs right: cannot be reliably determined on this
+lateral-type view; radial side likely faces the viewer's left but this is a guess.
+Adult: physes appear closed (olecranon and distal humeral epiphyses look fused, mature
+cortices); no open growth plates identified.
+STRUCTURES OF INTEREST:
+- Elbow joint (humerus, olecranon/corona, radial head): x 0.48-0.68, y 0.14-0.24
+- Mid-forearm shafts (radius + ulna, cortices and interosseous line): x 0.48-0.58, y 0.30-0.55
+- Distal forearm/wrist (distal radius, ulna, proximal carpals): x 0.45-0.58, y 0.58-0.68
+- Clenched hand (metacarpal heads, proximal phalanges, severe superimposition):
+  x 0.30-0.65, y 0.68-0.95
+- Overlying limb/torso at right edge (soft tissue + bony structure): x 0.90-1.00, y 0.45-0.95
+POSSIBLE FINDINGS:
+- No definite fracture line, dislocation, or cortical break is evident in the visible
+  forearm shafts; cortices appear continuous and aligned.
+- No definite lucency, sclerosis, or periosteal reaction identified in forearm or elbow.
+- Central hand region (x 0.52-0.62, y 0.82-0.92) is densely overexposed/superimposed from
+  the clenched fist; this is most likely positional superimposition, not a lesion, but it
+  cannot be confirmed as such.
+- Otherwise: no other abnormality evident on this single view.
+LIMITATIONS:
+- Clenched fist causes heavy superimposition of metacarpals, phalanges and carpals:
+  individual bones, scaphoid/lunate, and carpal alignment cannot be assessed.
+- Lateral-type projection obscures radial-ulnar relationship, distal radioulnar joint,
+  and carpal alignment; elbow joint congruence only partially assessable.
+- Right-edge structure (x>0.9) is incompletely imaged and superimposed; cannot identify it
+  or exclude pathology there.
+- Single view only: no AP or open-hand PA to compare or localize; motion blur not
+  excluded at the fist margins.
+ADDITIONAL PROCESSING WOULD HELP: yes.
+- Local window/contrast adjustment on the clenched fist and on the dense central hand
+  region to separate superimposed metacarpal/phalangeal edges.
+USEFUL ALTERNATIVE VISUALIZATIONS:
+- High-contrast crops: (1) elbow joint, (2) distal forearm + wrist, (3) hand/fist,
+  (4) right-edge structure.
+- Bordered/edge-enhanced or gamma-adjusted view of the fist to outline bone margins.
+- Measurements: radial-ulnar cortical thickness, joint spaces where visible; annotated
+  schematic of which bones are superimposed.

@@ -1,0 +1,292 @@
+AGENT_06 — IMAGE PROCESSING PROPOSALS
+======================================
+
+After independent review of the lateral foot X-ray, I am proposing the
+following specific processing analyses. These are not a standard checklist;
+each targets a concrete question I have about this image.
+
+========================================================================
+PROPOSAL 1: Directional Bandpass Filtering on the Distal Tibial Metaphysis
+========================================================================
+
+(a) QUESTION:
+    Is the faint linear density ~5–7 cm proximal to the tibial plafond a
+    real structural finding (stress fracture line) or an artifact of
+    superimposed fibula cortex and beam-hardening?
+
+(b) WHY THIS METHOD:
+    A suspected stress fracture in this region would run roughly
+    transverse (perpendicular to the long axis of the tibia). A
+    directional bandpass filter tuned to horizontal/transverse frequencies
+    at the scale of a hairline fracture (~1–3 pixels wide) will amplify
+    any true transverse linear signal while suppressing the longitudinal
+    trabecular pattern and fibular overlap that runs more vertically.
+    Using a Gabor filter bank oriented at 90° ± 20° would isolate this
+    frequency band.
+
+(c) EXPECTED FINDING:
+    - If the line persists and amplifies after directional filtering, it
+      is likely a real transverse structural discontinuity (stress fracture
+      or cortical irregularity).
+    - If it disappears or does not amplify relative to surrounding
+      trabeculae, it is likely superimposition artifact.
+
+(d) POSSIBLE ARTIFACTS:
+    - Over-sharpening will create false linear features at the edges of
+      the tibial cortex where the X-ray beam traverses perpendicular
+      boundaries. I need to mask the analysis to the bone interior, not
+      the cortex.
+    - Gabor filters at small scales introduce ringing at high-contrast
+      boundaries.
+
+(e) COMPARISON WITH ORIGINAL:
+    Overlay the filtered output (as a heat map) on the original image
+    at the ROI. A real fracture line will show consistent enhancement
+    across the cortical width, not just at the cortex boundary. Also
+    compare with a filter bank rotated to 0° (longitudinal) — if the
+    line appears stronger at 90° than at 0°, the transverse orientation
+    supports a fracture interpretation.
+
+========================================================================
+PROPOSAL 2: Texture Quantification of Calcaneal Trabecular Pattern
+========================================================================
+
+(a) QUESTION:
+    The posterior body of the calcaneus shows heterogeneous trabecular
+    density. Is this pattern within the range of normal variation, or
+    does it suggest focal pathology (impaction, sclerosis, cyst, or early
+    osteonecrosis)?
+
+(b) WHY THIS METHOD:
+    Quantitative texture analysis — specifically Gray Level Co-occurrence
+    Matrix (GLCM) features such as contrast, homogeneity, and entropy —
+    will characterize the trabecular pattern in the suspicious region
+    and compare it objectively to a reference region (anterior calcaneal
+    body or the talar body, which appears more uniform). This moves
+    beyond subjective "heterogeneous vs. normal" to measurable texture
+    metrics. If available, local Fourier spectral analysis can also
+    quantify the trabecular spacing and orientation.
+
+(c) EXPECTED FINDING:
+    - If the posterior calcaneal region shows significantly elevated
+      contrast and reduced homogeneity compared to the reference, it
+      suggests focal trabecular disruption (impaction, microfracture, or
+      degenerative sclerosis with reactive changes).
+    - If the metrics are comparable to the reference region, the
+      perceived heterogeneity is likely normal anatomic variation.
+
+(d) POSSIBLE ARTIFACTS:
+    - Beam-hardening and partial-volume effects near the dense cortical
+      boundary will artificially increase GLCM contrast. I need to
+      exclude a 3–5 pixel margin around the cortex.
+    - The posterior calcaneus receives a different effective X-ray path
+      length than the anterior body, so intensity normalization is
+      required before computing texture features.
+
+(e) COMPARISON WITH ORIGINAL:
+    Map the GLCM contrast and entropy values as a heat map over the
+    calcaneal body on the original image. Regions that light up
+    consistently (not at the cortex, not at the joint interface) are
+    the ones worth investigating. Compare the heat map visually with the
+    unprocessed image to confirm correspondence.
+
+========================================================================
+PROPOSAL 3: Hough Line Transform on the Subtalar Joint Margins
+========================================================================
+
+(a) QUESTION:
+    The posterior facet of the subtalar joint shows apparent marginal
+    irregularity. Is this true degenerative change (osteophytes,
+    subchondral sclerosis with margin remodeling) or normal anatomic
+    irregularity of the posterior facet?
+
+(b) WHY THIS METHOD:
+    The posterior facet of the subtalar joint should present as a
+    relatively smooth, gently curving surface. A probabilistic Hough
+    transform (or RANSAC line fitting) applied to the enhanced edge map
+    of the joint surface will quantify deviations from a smooth curve.
+    By fitting a low-order polynomial or spline to the detected edge
+    points and measuring residuals, I can distinguish small-scale
+    irregularities (normal trabecular edge roughness, expected < 2 px)
+    from larger deviations (> 3–4 px, suggestive of osteophyte
+    formation or margin remodeling).
+
+(c) EXPECTED FINDING:
+    - Small, uniform residuals across the joint surface: normal
+      anatomic irregularity.
+    - Localized clusters of large residuals (3+ px deviation): focal
+      osteophyte formation or margin remodeling consistent with early
+      osteoarthritic change.
+
+(d) POSSIBLE ARTIFACTS:
+    - Edge detection alone will pick up trabecular structures projecting
+      through the joint region from overlapping bones. I must restrict
+      the edge detection to a narrow band along the expected joint
+      surface (using anatomical priors to seed the search region).
+    - Noise amplification during pre-processing will create spurious
+      edge points. Median filtering before edge detection is essential.
+
+(e) COMPARISON WITH ORIGINAL:
+    Superimpose the fitted curve and outlier points on the original
+    image. Outliers should correspond to visible bony prominences or
+    irregularities. If the outliers appear where nothing is visible
+    on the original, they are artifacts and should be dismissed.
+
+========================================================================
+PROPOSAL 4: Longitudinal Arch Angle Quantification via Contour Analysis
+========================================================================
+
+(a) QUESTION:
+    What are the precise calcaneal inclination angle and
+    talocalcaneal angle? Are they consistent with a normal arch, or do
+    they indicate pes planus or pes cavus? This is important because
+    arch abnormality could explain the subtle entheseal and
+    degenerative changes I noted.
+
+(b) WHY THIS METHOD:
+    Canny edge detection followed by contour extraction of the plantar
+    calcaneal cortex and the talocalcaneal joint line, then fitting
+    straight lines to each segment. The calcaneal inclination angle is
+    measured between the plantar calcaneal cortex and the horizontal
+    plane. The talocalcaneal angle is measured between the plantar
+    calcaneal cortex and the long axis of the talus. Contour-based
+    measurement is more precise than manual line drawing because it
+    uses the actual detected edge rather than an operator-drawn proxy.
+
+(c) EXPECTED FINDING:
+    - Calcaneal inclination angle: normal range ~18–24°.
+    - Talocalcaneal angle: normal range ~25–45° (lateral view).
+    - If either angle is outside normal range, this provides mechanical
+      context for any entheseal or degenerative findings (e.g., low
+      inclination angle → increased load on the subtalar joint and
+      plantar fascia insertion).
+
+(d) POSSIBLE ARTIFACTS:
+    - The plantar calcaneal cortex may be partially obscured by the
+      calcaneal spur or soft tissue silhouette. If edge detection
+    fails at the expected insertion point of the plantar fascia, I
+      should fall back to manual landmarking.
+    - The horizontal reference plane requires knowing the weight-bearing
+      status of the image. If this is not a true weight-bearing
+      lateral, the angles may not be clinically meaningful.
+
+(e) COMPARISON WITH ORIGINAL:
+    Draw the measured angles and reference lines directly on the
+    original image for visual verification. The lines should align
+    with the cortical margins as I perceive them on the unprocessed
+    image. If the automated lines diverge from my visual assessment,
+    the edge detection likely picked up the wrong surface.
+
+========================================================================
+PROPOSAL 5: Soft Tissue Silhouette Extraction — Posterior Heel Pad
+========================================================================
+
+(a) QUESTION:
+    Is the posterior calcaneal fat pad thickness normal? Thinning of
+    the heel fat pad is associated with chronic heel pain and alters
+    load distribution, which could contribute to the calcaneal findings
+    (enthesopathy, possible subtalar degenerative change).
+
+(b) WHY THIS METHOD:
+    The soft tissue silhouette at the posterior heel has a smooth,
+    convex contour with a characteristic thickness. By thresholding at
+    a low intensity level to segment the soft tissue envelope from the
+    background, then computing the perpendicular distance between the
+    posterior soft tissue contour and the posterior calcaneal cortex,
+    I can quantify heel pad thickness at multiple points along the
+    posterior calcaneal surface. A minimum thickness of ~15 mm is
+    considered normal.
+
+(c) EXPECTED FINDING:
+    - Heel pad thickness ≥ 15 mm: normal.
+    - Heel pad thickness < 10 mm: significant thinning, consistent
+      with chronic heel pain syndrome.
+    - Localized thinning at the superior aspect of the heel pad:
+      suggestive of targeted compressive stress.
+
+(d) POSSIBLE ARTIFACTS:
+    - Scanning artifacts (the vertical banding in the dark regions)
+      may interfere with the threshold at the soft tissue periphery.
+      Morphological opening or a morphological gradient with closing
+      will smooth the silhouette before measurement.
+    - The X-ray beam geometry (source-to-image distance) affects the
+      apparent thickness. I cannot correct for this without knowing
+      the acquisition parameters, so the measurement is relative, not
+      absolute.
+
+(e) COMPARISON WITH ORIGINAL:
+    Draw the segmented soft tissue contour on the original image. The
+    contour should follow the soft tissue envelope as I see it.
+    Deviations will reveal where the thresholding failed. Compare the
+    measured thickness at the inferior pole of the calcaneus with
+    clinical norms and note whether it appears thin or normal by eye
+    on the original.
+
+========================================================================
+PROPOSAL 6: Crop-and-Enhance of the Plantar Calcaneal Inference Zone
+========================================================================
+
+(a) QUESTION:
+    Is there a true calcaneal spur (enthesophyte) at the plantar fascia
+    insertion? If so, what is its approximate size and morphology
+    (sharp/spiculated vs. blunt/rounded)?
+
+(b) WHY THIS METHOD:
+    A tight crop around the plantar calcaneal tubercle with aggressive
+    contrast stretching (piecewise linear histogram equalization
+    targeting the bone-soft-tissue transition zone) will maximize the
+    visibility of the bony prominence against the adjacent soft tissue.
+    Unlike global CLAHE, which can over-amplify noise in the soft
+    tissue, piecewise linear stretching targets only the intensity
+    range where the spur-cortex and soft tissue boundaries fall. After
+    enhancement, adaptive thresholding followed by contour tracing will
+    isolate the bony prominence from the cortical surface.
+
+(c) EXPECTED FINDING:
+    - A clearly delineated bony projection from the plantar cortex:
+      confirms enthesophyte. Size estimate from pixel dimensions
+      (assuming approximate pixel spacing from known calcaneal
+      dimensions).
+    - No discrete projection, only cortical contour: no spur, the
+      prominence I saw on the original is cortical anatomic variation.
+    - Irregular, poorly defined density blending with soft tissue:
+      ambiguous — could be early enthesopathy without frank ossification.
+
+(d) POSSIBLE ARTIFACTS:
+    - Aggressive contrast stretching will amplify scanner noise and
+      digitization banding in the soft tissue region, potentially
+      creating false spicules. I should apply mild Gaussian smoothing
+      before thresholding.
+    - The plantar fat pad has variable density on X-ray. Dense fat
+      could mimic a bony spur if thresholded incorrectly.
+
+(e) COMPARISON WITH ORIGINAL:
+    Show a side-by-side: original crop vs. enhanced crop with contour
+    overlay. The contour should trace what I can already vaguely
+    perceive on the original. If the enhanced image reveals structures
+    I cannot correlate with the original at all, they are likely
+    artifacts.
+
+========================================================================
+NOTES ON EXECUTION ORDER
+========================================================================
+
+If computational resources are limited, I recommend the following
+priority:
+
+  1. Proposal 1 (Directional bandpass on distal tibia) — highest
+     clinical stakes: distinguishing real fracture from artifact.
+  2. Proposal 6 (Plantar calcaneal spur crop-and-enhance) — directly
+     addresses the most accessible finding.
+  3. Proposal 4 (Arch angle quantification) — provides mechanical
+     context for all other findings.
+  4. Proposal 2 (Calcaneal texture analysis) — most computationally
+     intensive, but most rigorous for the trabecular heterogeneity
+     question.
+  5. Proposal 5 (Heel pad thickness) — quick to compute, moderate
+     clinical value.
+  6. Proposal 3 (Subtalar joint Hough analysis) — most fragile to
+     artifacts due to overlapping anatomy.
+
+========================================================================
+END OF AGENT_06 PROCESSING PROPOSALS

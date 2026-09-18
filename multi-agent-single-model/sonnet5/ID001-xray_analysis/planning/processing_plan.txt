@@ -1,0 +1,263 @@
+PROCESSING PLAN — ID001-xray.png
+Synthesized by the orchestrator from the independent first-pass reviews and
+processing proposals of Agent_01 through Agent_06 (all instances of
+claude-sonnet-5). This is a research/educational exercise; nothing here is a
+clinical diagnosis.
+
+===============================================================================
+COUNCIL DELIBERATION SUMMARY
+===============================================================================
+
+CONSENSUS OBSERVATIONS (multiple independent agents, same model — noted as
+consistency, NOT independent cross-model validation):
+- All 6 agents independently identified the image as a lateral plain-film
+  radiograph spanning distal tibia/fibula, ankle mortise, and hindfoot/
+  midfoot, with the forefoot partially cropped at the right edge.
+- All 6 agents state that no obviously displaced fracture, dislocation, or
+  gross destructive lesion is apparent, but all qualify this as low-confidence
+  given contrast/noise/resolution limitations and single-view-only projection.
+- All 6 agents flagged compressed mid-tone contrast and visible background
+  grain/noise as limiting factors.
+- 4/6 agents (02, 04, 05, 06) independently noted a background-region
+  artifact (a lighter rectangular/vignette area or border distinct from a
+  clean black collimated field) and flagged it as needing characterization
+  before trusting any brightness-based comparison elsewhere in the image.
+- 5/6 agents (02, 03, 04, 05, 06) specifically called out the overlapping
+  tarsal/ankle-mortise region as the highest-value target for magnification,
+  since superimposition there could hide a subtle finding.
+- Agent_02 specifically flagged a transverse lucent band crossing the distal
+  tibial metaphysis, most likely a normal physeal (growth plate) line, but
+  requiring closer inspection to rule out an irregular/discontinuous margin.
+  Agent_04 independently noted "non-uniform density along the tibial shaft"
+  in the same general area, a softer echo of the same observation.
+- 4/6 agents (03, 05, 06, and implicitly 01) described the calcaneus/talus
+  trabecular texture as coarser or more "mottled" than the tibial shaft,
+  while explicitly noting this is expected normal overlap/texture and not
+  necessarily pathological.
+
+PROPOSAL CONVERGENCE (used to set priority, not correctness):
+- Local/adaptive contrast enhancement (CLAHE): proposed independently by
+  ALL 6 agents. Highest priority.
+- Edge enhancement / unsharp masking (+ edge map): proposed independently by
+  ALL 6 agents. Highest priority.
+- ROI crop/zoom/magnification of ankle mortise + hindfoot: proposed by 5/6
+  agents (02, 03, 04, 05, 06). High priority.
+- Histogram/intensity-range analysis + linear contrast stretch: proposed
+  explicitly by Agent_05, motivated by the background-artifact question
+  raised by 4/6 agents. Elevated priority because it resolves a
+  cross-agent disagreement/uncertainty (artifact vs. real feature).
+- Noise characterization (background baseline vs. anatomic texture),
+  optionally with mild denoising for comparison: proposed by Agent_01 and
+  Agent_03 (2/6). Moderate priority — useful to calibrate confidence in the
+  CLAHE/edge outputs above, so it is retained despite lower agreement.
+- ROI crop of the distal tibial metaphyseal band specifically: motivated
+  primarily by Agent_02's specific observation, softly corroborated by
+  Agent_04. No agent opposed it; included as targeted follow-up.
+
+No agent proposed anything that another agent flagged as actively
+inappropriate or misleading; disagreement here is about priority/emphasis,
+not about validity. That absence of opposition is preserved below rather
+than manufactured.
+
+===============================================================================
+PLANNED ANALYSES
+===============================================================================
+
+1. OUTPUT: images/01_clahe_full.png
+   TRANSFORM: Contrast-Limited Adaptive Histogram Equalization (CLAHE) on the
+   full image (grayscale), clipLimit=2.5, tileGridSize=8x8.
+   QUESTION: Are there subtle cortical, joint-space, or trabecular density
+   changes hidden by the image's compressed mid-tone contrast?
+   REASON: Unanimous proposal (6/6 agents); addresses the single most common
+   quality limitation (compressed contrast) cited by every agent.
+   SUPPORTING: Agent_01, 02, 03, 04, 05, 06.
+   OPPOSING/QUESTIONING: None opposed; all six warned about the same risk
+   (see artifacts).
+   POSSIBLE ARTIFACTS: Noise amplification producing pseudo-trabecular
+   texture; halo/blotchy artifacts at high-contrast bone/background edges
+   that could be mistaken for periosteal reaction.
+   EXPECTED VALUE: High — directly targets the most-cited limitation.
+
+2. OUTPUT: images/02_unsharp_mask_full.png
+   TRANSFORM: Unsharp masking on the full image (Gaussian blur sigma=2,
+   amount=1.5) to boost high-frequency cortical edges.
+   QUESTION: Are cortical margins of the tibia, fibula, talus, and calcaneus
+   truly continuous, or is a subtle discontinuity being smoothed out by the
+   image's softness?
+   REASON: Unanimous proposal (6/6 agents).
+   SUPPORTING: Agent_01, 02, 03, 04, 05, 06.
+   OPPOSING/QUESTIONING: None opposed; all six flagged the same risk.
+   POSSIBLE ARTIFACTS: Ringing/overshoot artifacts paralleling real cortex
+   that can mimic a thin fracture line, periosteal reaction, or avulsion
+   fragment; exaggeration of normal nutrient canals/vascular grooves.
+   EXPECTED VALUE: High — complements CLAHE for cortical-continuity
+   assessment.
+
+3. OUTPUT: images/03_edge_map_sobel.png
+   TRANSFORM: Sobel gradient-magnitude edge map (full image), normalized and
+   inverted for legibility (dark edges on light background).
+   QUESTION: Same as #2, presented as an explicit boundary map rather than a
+   sharpened grayscale image, to make discontinuities easier to trace.
+   REASON: Explicitly requested as a supplementary view by Agent_01, 02, 03,
+   05 (4/6), as a companion to unsharp masking rather than a replacement.
+   SUPPORTING: Agent_01, 02, 03, 05.
+   OPPOSING/QUESTIONING: None opposed; all warned edge maps fire on normal
+   bone-overlap lines (fibula over tibia, tarsal overlap), which are not
+   pathology.
+   POSSIBLE ARTIFACTS: Strong response to noise and to normal projectional
+   overlap lines; could be misread as fracture lines if not cross-checked.
+   EXPECTED VALUE: Moderate-high — most useful in combination with #1/#2,
+   not in isolation.
+
+4. OUTPUT: images/04_roi_ankle_hindfoot_zoom.png
+   TRANSFORM: Crop to the ankle mortise + hindfoot/midfoot region (tibiotalar
+   joint through calcaneus/navicular/cuboid), bicubic upscale 3x, CLAHE
+   applied within the crop independently of the full-image version.
+   QUESTION: Is the ankle-mortise/hindfoot overlap zone hiding a subtle
+   cortical break or joint-space irregularity that is invisible at
+   whole-image scale?
+   REASON: Proposed by 5/6 agents as the single highest-value ROI given it is
+   the most anatomically complex, most overlapped region in this projection.
+   SUPPORTING: Agent_02, 03, 04, 05, 06.
+   OPPOSING/QUESTIONING: None opposed. Agent_04 cautioned that independent
+   local windowing of a small ROI can exaggerate normal overlap as if it
+   were joint-space narrowing.
+   POSSIBLE ARTIFACTS: Interpolation blur/blockiness from upscaling; local
+   CLAHE tiling artifacts; apparent joint-space change that is a windowing
+   effect, not anatomy.
+   EXPECTED VALUE: High — targets the region of greatest diagnostic
+   complexity and greatest agent consensus.
+
+5. OUTPUT: images/05_roi_tibial_metaphysis_zoom.png
+   TRANSFORM: Crop to the distal tibial metaphysis (the transverse lucent
+   band region), bicubic upscale 4x, unprocessed pixel values (no filtering)
+   to avoid conflating a real margin with a processing artifact.
+   QUESTION: Does the transverse lucent band crossing the distal tibial
+   metaphysis have smooth, symmetric, well-corticated margins (consistent
+   with a normal physis) or irregular/discontinuous margins?
+   REASON: Directly follows Agent_02's specific, well-articulated
+   observation, softly corroborated by Agent_04's independent note of
+   tibial-shaft density variation in the same general area.
+   SUPPORTING: Agent_02 (primary), Agent_04 (partial/independent echo).
+   OPPOSING/QUESTIONING: Agents 01, 03, 05, 06 did not independently flag
+   this band in their first-pass review; it is not corroborated by the
+   majority, so it is treated as a single-agent-driven follow-up, not a
+   consensus finding.
+   POSSIBLE ARTIFACTS: Upscaling interpolation blur could either mask a thin
+   irregular margin or create a falsely "smooth" appearance.
+   EXPECTED VALUE: Moderate — resolves one specific, well-reasoned but
+   minority-sourced hypothesis.
+
+6. OUTPUT: images/06_histogram_and_contrast_stretch.png
+   TRANSFORM: (a) Pixel-intensity histogram of the full image; (b) linear
+   min-max contrast stretch of the full image to the full 0-255 range.
+   QUESTION: Is the image using its full dynamic range, or is contrast
+   compressed in a way that could hide or mimic anatomic detail? Is the
+   lighter background region a smooth gradient (vignetting) or a hard-edged
+   geometric shape (collimation/second exposure/digitization artifact)?
+   REASON: Directly resolves the background-artifact question independently
+   raised by 4/6 agents, and was explicitly proposed by Agent_05 for exactly
+   this purpose.
+   SUPPORTING: Agent_05 (explicit); Agent_02, 04, 06 (implicit, via their
+   independent artifact observations).
+   OPPOSING/QUESTIONING: None opposed.
+   POSSIBLE ARTIFACTS: Stretching contrast will also amplify noise and any
+   scan/digitization banding; the background artifact will become more
+   visually prominent and must not be misread as anatomy.
+   EXPECTED VALUE: High — this is the analysis most likely to resolve a
+   genuine cross-agent point of uncertainty (artifact vs. feature) rather
+   than just re-confirming consensus.
+
+7. OUTPUT: images/07_background_artifact_map.png
+   TRANSFORM: Isolate and false-color (perceptually uniform colormap) the
+   pixel-intensity map of the background/collimated region only, with a
+   horizontal and vertical intensity profile plot through the anomalous
+   lighter region.
+   QUESTION: What is the shape, edge sharpness, and intensity profile of the
+   lighter rectangular region noted independently by 4 agents in the
+   background — is it consistent with collimation, vignetting, or a
+   digitization/scan artifact?
+   REASON: Follow-up to #6, going further to characterize the specific
+   artifact geometrically since it was raised independently by a majority of
+   agents and could otherwise bias interpretation of brightness elsewhere in
+   the image.
+   SUPPORTING: Derived from independent observations of Agent_02, 04, 05, 06.
+   OPPOSING/QUESTIONING: None — this is a quality-control step, not an
+   anatomic claim.
+   POSSIBLE ARTIFACTS: False-color mapping can make a benign gradient look
+   more "structured" than it is; must be interpreted only as a
+   background/technical-quality characterization, never as anatomy.
+   EXPECTED VALUE: Moderate — improves confidence in how much weight to give
+   brightness-based findings elsewhere, but does not by itself change any
+   anatomic conclusion.
+
+8. OUTPUT: images/08_denoise_comparison.png
+   TRANSFORM: Non-local-means denoising of the full image, shown side-by-side
+   with the original, plus a difference map (original minus denoised) to show
+   exactly what was removed.
+   QUESTION: How much of the fine texture seen in bone and background is
+   acquisition noise versus real structure? Do any candidate findings from
+   #1-#5 survive denoising (more likely real) or vanish (more likely noise)?
+   REASON: Proposed by 2/6 agents (Agent_01, Agent_03) as a calibration step
+   for interpreting the enhancement outputs above; lower agreement than
+   items 1-4 but directly useful for validating them.
+   SUPPORTING: Agent_01, Agent_03.
+   OPPOSING/QUESTIONING: None opposed, but not corroborated by the other 4
+   agents, so treated as a secondary/calibration output rather than a
+   primary analysis.
+   POSSIBLE ARTIFACTS: Denoising can blur or erase genuinely fine but real
+   detail (thin cortical margins), creating a false impression that a subtle
+   finding "isn't there."
+   EXPECTED VALUE: Moderate — supporting/calibration value for interpreting
+   items 1-5, not a standalone diagnostic view.
+
+===============================================================================
+ITERATION 1 (post-inspection follow-up)
+===============================================================================
+
+9. OUTPUT: images/09_roi_tibia_ankle_junction_zoom.png
+   TRANSFORM: Crop bridging the distal tibial shaft into the ankle mortise/
+   talar dome (y=32%-60%, x=15%-88% of original frame), bicubic upscale 4x,
+   unfiltered pixel values.
+   QUESTION: Raised during mandatory visual inspection of image #5: Agent_02
+   revised its own first-pass hypothesis after inspecting image #5, concluding
+   the lucency there is longitudinal (nutrient canal / fibular overlap), while
+   Agent_04 independently inspected the same image and described a smooth
+   transverse band (favoring a normal physis/Harris line) — a genuine
+   same-model disagreement on the same processed image. Agent_02 explicitly
+   requested a lower ROI closer to the ankle joint to help resolve it.
+   REASON: Directly follows section-12 iterative-analysis process: a specific
+   unresolved disagreement between two independent agent inspections.
+   SUPPORTING: Requested by Agent_02; relevant to Agent_04's disputed
+   observation.
+   OPPOSING/QUESTIONING: N/A (quality-control follow-up, not a proposal
+   either agent objected to).
+   POSSIBLE ARTIFACTS: Same upscaling/interpolation caveats as image #5.
+   EXPECTED VALUE: High — directly targeted at resolving a recorded
+   disagreement rather than general exploration.
+   ASSIGNED REVIEWERS: Agent_02 and Agent_04, independently (see
+   agent_reports/Agent_02-09_roi_tibia_ankle_junction_zoom.png.txt and
+   agent_reports/Agent_04-09_roi_tibia_ankle_junction_zoom.png.txt).
+
+===============================================================================
+NOT PURSUED
+===============================================================================
+- Pseudo-color/false-color mapping of the full anatomic image (suggested only
+  once, by Agent_06, as one brief idea among several): not pursued as a
+  primary output because no agent gave a specific question it would resolve
+  beyond what CLAHE/edge maps already address, and false-color intensity
+  maps of bone risk being misread as if they carried diagnostic (e.g.
+  density-quantitative) meaning they do not actually have here. Limited,
+  scoped false-color use is retained only for the background-artifact
+  characterization in #7, where it is clearly labeled as a technical/QC view.
+
+===============================================================================
+IMPLEMENTATION NOTES
+===============================================================================
+- All transforms implemented in Python (OpenCV, NumPy, Matplotlib, Pillow).
+- Source image: images/ID001-xray_original.png (unmodified copy of the
+  original), read as 8-bit grayscale for processing.
+- Scripts stored in scripts/, one script per analysis or grouped logically.
+- Every output image is generated at a resolution that keeps pixel-level
+  detail comparable to or better than the original; ROI crops are upscaled
+  only for display and are explicitly labeled as such.

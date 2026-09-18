@@ -1,0 +1,471 @@
+AGENT_04 — IMAGE PROCESSING PROPOSALS
+Multi-Agent Medical Image Analysis Council
+Model: qwen3.6-27b
+Date: 2026-09-14
+Image: ID001-xray_original.png
+
+========================================================================
+
+PREAMBLE
+--------
+This image is a lateral radiograph of the left ankle/hindfoot saved as a
+PNG, not a DICOM. That constraint matters: we cannot apply true
+window/level adjustment because the 8-bit raster has already compressed
+the original 12- or 16-bit radiographic data. Every processing technique
+proposed below works within that limitation. I am not proposing a
+comprehensive menu of filters. I am proposing the specific analyses I
+believe will answer specific unresolved questions about this study.
+
+I am particularly focused on three concerns:
+  1. Whether the calcaneus has a subtle occult fracture.
+  2. Whether the talar dome harbors an osteochondral defect.
+  3. Whether the posterior soft tissue envelope shows occult swelling
+     that would suggest injury not yet visible as a fracture line.
+
+========================================================================
+
+PROPOSAL 1 — Böhler's Angle AND Gissane's Angle Measurement
+============================================================
+
+(a) QUESTION:
+    Is the calcaneus structurally intact, or is there an occult
+    intra-articular fracture causing subtle collapse?
+
+    On visual inspection, the calcaneal silhouette appears normal.
+    However, Böhler's angle is the single most sensitive plain-film
+    indicator of calcaneal fracture. A normal calcaneus has a Böhler's
+    angle of 20–40°. Even subtle depression of the posterior facet from
+    a nondisplaced fracture can reduce this angle by 5–10° before any
+    cortical disruption becomes visible to the naked eye. Gissane's
+    angle (120–145° normal) provides a second independent measure of
+    anterior calcaneal integrity.
+
+(b) WHY THIS METHOD HELPS:
+    Angles are objective. Where the eye struggles to distinguish
+    between a normal variant and early collapse in trabecular bone,
+    the geometry of the calcaneus tells the story. Böhler's angle
+    is constructed from the highest point of the posterior facet,
+    the apex of the anterior process, and the highest point of the
+    posterior tuberosity. Any fracture depressing the posterior facet
+    reduces this angle. No filter or enhancement can do what a
+    simple measurement does here.
+
+(c) WHAT I EXPECT TO FIND:
+    Given my first-pass impression that the calcaneus looks normal,
+    I expect Böhler's angle to be within 25–35° and Gissane's angle
+    to be approximately 130°. If either falls outside range, it
+    immediately raises a red flag for occult fracture even if no
+    cortical step-off is visible.
+
+(d) POSSIBLE ARTIFACTS:
+    - Lateral positioning must be a true lateral for these angles to
+      be valid. If the foot is rotated, the calcaneal outline is
+      distorted and the angle will be inaccurate. In this image, the
+      tibia/fibula overlap suggests acceptable true lateral
+      positioning, but I should verify this before trusting the
+      measurement.
+    - Landmark identification is subjective: the "highest point" of
+      the posterior facet could vary by a few pixels between
+      observers, translating to 2–4° of inter-observer variability.
+    - The calcaneal cortex has variable thickness; selecting the
+      inner vs. outer cortex changes the angle.
+
+(e) HOW TO COMPARE WITH ORIGINAL:
+    The measurement should be performed on the original, unprocessed
+    image with no enhancement applied, to avoid introducing edge
+    artifacts that could shift landmark identification. I recommend
+    marking the three landmark points on a copy of the original image
+    so the measurement can be audited visually. The angle itself is
+    a number that needs no "comparison" — it is compared to the known
+    normal range.
+
+    CRUCIAL CHECK: Measure the overlap of the distal tibial and
+    fibular malleoli. If they are not superimposed within a few
+    millimeters, this is not a true lateral and the angles are not
+    reliable.
+
+========================================================================
+
+PROPOSAL 2 — Targeted Crop + Inverse Negative of the Talar Dome
+================================================================
+
+(a) QUESTION:
+    Is the inferior surface of the talar dome smooth and continuous,
+    or is there a subtle osteochondral defect (OCD) or subchondral
+    cyst?
+
+    The talar dome is the weight-bearing surface of the ankle joint.
+    Osteochondral lesions here are common, often occult on plain
+    radiography, and notoriously difficult to detect because the
+    dome's curvature blends into the joint space. In my first-pass,
+    I flagged this region as warranting closer attention.
+
+(b) WHY THIS METHOD HELPS:
+    Two complementary steps:
+
+    1. CROPPING to the talar dome region (approximately a 120×150
+       pixel window centered on the talar body and inferior dome)
+       allows display at higher magnification than the full image.
+       The original image is modest in resolution; displaying the
+       full image means we are looking at structures that are only
+       5–10 pixels across. Cropping and upsampling (even bilinearly)
+       makes each pixel more visible for careful inspection.
+
+    2. INVERTING the grayscale (negative) in the cropped region
+       reverses the familiar radiographic polarity: bone becomes
+       dark on a light background. This is not cosmetic — the human
+       visual system is sensitive to different types of contrast
+       reversals. A subtle hypodense area (sclerotic rim around an
+       OCD, or a small lucent subchondral cyst) that "blends in" on
+       a dark-field radiograph may become more salient on a
+       light-field inverted version. Radiologists routinely switch
+       polarity in PACS for this reason. I want to replicate that
+       experience.
+
+(c) WHAT I EXPECT TO FIND:
+    I expect the talar dome surface to be smooth with a uniform
+    cortical margin. If there is an OCD, I would look for:
+    - A small focal lucency in the subchondral bone (the "cyst"
+      appearance of a chronic OCD)
+    - A sclerotic rim surrounding that lucency
+    - Minor surface irregularity of the dome contour
+
+    If the inverted view reveals nothing the original did not, I will
+    note that the talar dome appears truly normal by both polarities.
+
+(d) POSSIBLE ARTIFACTS:
+    - Cropping and upsampling does not create new information; it
+      only redistributes existing pixels. Upsampling can create a
+      false sense of resolution. I must remember that a smooth-
+      appearing dome after upsampling could still have a defect
+      smaller than the pixel resolution.
+    - Inversion makes the dark background (which was uniform black)
+      into uniform white. Any noise, compression artifacts, or
+      JPEG artifacts in the original become more visible on white
+      background and could be mistaken for pathology. I need to
+      distinguish image artifacts from anatomical findings.
+    - The joint space, which is naturally lucent (dark) on the
+      original, becomes bright white after inversion. This could
+      create a "halo" effect that obscures the dome margin.
+
+(e) HOW TO COMPARE WITH ORIGINAL:
+    I will display the cropped, inverted region side-by-side with the
+    same crop from the original image. Any finding should be present
+    in both views. The inverted view is a hypothesis generator; the
+    original is the adjudicator. If I see something on the inverted
+    image that is not confirmed on the original, I will flag it as
+    "possibly artifact" and request further scrutiny, not dismiss it
+    outright.
+
+========================================================================
+
+PROPOSAL 3 — High-Pass Filter (Unsharp Mask) on the Distal Tibial
+                  Metaphysis
+============================================================
+
+(a) QUESTION:
+    Is there an occult stress fracture or subtle spiral fracture in
+    the distal tibial shaft, approximately 5–10 cm proximal to the
+    tibial plafond?
+
+    The distal tibia is subject to both traumatic fractures (supination-
+    external rotation injuries) and stress fractures (march fractures
+    in runners and military recruits). A nondisplaced stress fracture
+    may present as a faint transverse lucency or a subtle area of
+    periosteal thickening that is essentially invisible in the normal
+    trabecular texture. On my first-pass, I saw no periosteal reaction
+    and no obvious fracture line, but the trabecular pattern can
+    mask fine linear lucencies.
+
+(b) WHY THIS METHOD HELPS:
+    Unsharp masking (USM) is a high-pass filter: it subtracts a
+    blurred version of the image from the original, leaving behind
+    only the high-frequency content — edges and fine detail. In
+    cortical bone, fracture lines are high-frequency features: a
+    sharp transition from one density to another. Trabecular bone,
+    by contrast, is lower-frequency and somewhat uniform in texture.
+    USM suppresses the low-frequency trabecular "noise" and amplifies
+    any sharp linear structures, including fracture lines, cortical
+    defects, and periosteal reactions.
+
+    This is different from edge detection (which creates a binary or
+    pseudo-binary edge map). Unsharp masking preserves the image as a
+    radiograph — it just makes the high-frequency features more
+    prominent. A reader can still see the bone as bone, not as a
+    wireframe.
+
+(c) WHAT I EXPECT TO FIND:
+    If there is a stress fracture, I expect to see a fine linear
+    lucency in the cortex of the distal tibial shaft, typically
+    transverse to the long axis of the bone, about 5–10 cm proximal
+    to the plafond. Accompanying findings might include subtle
+    periosteal new bone formation (a thin white line parallel to the
+    cortex, on the outer surface).
+
+    More likely, given the visual impression of normal trabecular
+    pattern, I expect the USM to confirm the absence of such findings.
+    That confirmation is itself valuable — it gives me more confidence
+    in saying "no fracture in the tibial shaft."
+
+(d) POSSIBLE ARTIFACTS:
+    - Ringing: Unsharp masking can create dark halos (ringing
+      artifacts) around sharp edges, especially cortical margins.
+      These halos could be mistaken for fracture lines. I will
+      look specifically for this pattern: a halo that is perfectly
+      parallel to and immediately adjacent to the cortex is likely
+      ringing, not a fracture. A fracture line would typically
+      traverse the cortex or extend into the medullary cavity.
+    - Amplification of compression artifacts: The original PNG may
+      have JPEG-like compression blocks. USM will amplify any block
+      edges, creating a grid-like pattern that has nothing to do
+      with anatomy.
+    - Parameter sensitivity: The result depends heavily on the
+      Gaussian blur kernel size and the USM strength multiplier.
+      Too aggressive = overwhelming noise. Too mild = no benefit.
+      I recommend testing at least two settings (e.g., sigma=2 and
+      sigma=5) and not trusting either in isolation.
+
+(e) HOW TO COMPARE WITH ORIGINAL:
+    The USM image should be viewed in direct comparison with the
+    original, unprocessed crop of the distal tibia. A finding is
+    valid only if the same linear feature is visible (even if faint)
+    on the original. The USM's role is to draw attention to regions
+    that then need to be verified on the original. I will annotate
+    the original image with arrows at any locations where the USM
+    suggests a possible finding, so the council can independently
+    evaluate them.
+
+========================================================================
+
+PROPOSAL 4 — Soft Tissue Thickness Measurement at Two Standard
+                  Points
+============================================================
+
+(a) QUESTION:
+    Is there occult soft tissue swelling around the ankle and hindfoot
+    that would suggest acute injury, even in the absence of visible
+    fracture?
+
+    Soft tissue swelling is often the earliest sign of injury on
+    radiography — it can precede any visible fracture by hours to
+    days. In ankle fractures, posterior soft tissue swelling over
+    the calcaneus and anterior swelling over the distal tibia are
+    common early signs. In my first-pass, I assessed the soft tissues
+    qualitatively ("appears within normal limits"), but a qualitative
+    assessment is vulnerable to the observer's subjective sense of
+    "normal." A measurement is not.
+
+(b) WHY THIS METHOD HELPS:
+    I propose measuring soft tissue thickness at two specific points
+    using a standardized approach:
+
+    Point A — Posterior calcaneal soft tissue (Achilles region):
+      Measure the perpendicular distance from the posterior cortex
+      of the calcaneal tuberosity to the posterior skin line at the
+      level of the Achilles tendon insertion (approximately the
+      junction of the middle and distal thirds of the calcaneal
+      height).
+
+    Point B — Dorsal distal tibial soft tissue:
+      Measure the perpendicular distance from the anterior cortex of
+      the distal tibia (at the level of the plafond) to the dorsal
+      skin line.
+
+    These measurements are not diagnostic in isolation. A thick heel
+    pad is normal in some body habituses. But they establish an
+    objective baseline that can be compared to published norms:
+
+    - Posterior calcaneal soft tissue thickness: typically 15–25 mm
+      in adults (depends on body habitus, shoe wear, BMI).
+    - Anterior distal tibial soft tissue: typically 10–20 mm.
+
+    More importantly, I want to compare Point A to Point B within
+    the same image. The ratio of posterior to anterior thickness can
+    indicate whether swelling is asymmetric (e.g., posterior swelling
+    from Achilles injury or retrocalcaneal bursitis would make Point
+    A disproportionately thick relative to Point B).
+
+(c) WHAT I EXPECT TO FIND:
+    I expect both measurements to fall within normal ranges, and
+    their ratio to be approximately 1:1 to 1.5:1 (posterior slightly
+    thicker is normal due to the heel fat pad). If the posterior
+    measurement is >30 mm, or if the posterior/anterior ratio exceeds
+    2:1, that would be suspicious for localized posterior swelling.
+
+(d) POSSIBLE ARTIFACTS:
+    - Patient positioning: If the foot is plantarflexed or
+      dorsiflexed beyond neutral, the soft tissue envelope shifts
+      and measured thicknesses change. In this image, the foot
+      appears to be in approximately neutral position (the tibia and
+      talus form roughly a right angle), which is acceptable.
+    - External pressure: Shoe remnants, padding, or a positioning
+      device could artificially increase soft tissue thickness. I
+      should inspect the skin line for any evidence of external
+      compression or added material.
+    - Projectional magnification: The heel is closer to the
+      detector in a lateral view than the anterior tibia, so the
+      posterior measurement is less magnified than the anterior one.
+      This actually works in our favor — it makes any posterior
+      swelling measurement a conservative estimate.
+    - Pixel calibration: These measurements are in pixels, not
+      millimeters, unless the image has a calibration marker.
+      Without a calibration marker, the measurements are useful for
+      relative comparison (A vs. B) but not absolute comparison
+      against published norms. I should note this limitation.
+
+(e) HOW TO COMPARE WITH ORIGINAL:
+    The measurements are made directly on the original image. I will
+    draw the measurement lines on an annotated copy so the council
+    can verify the landmarks. The key comparison is the ratio of
+    Point A to Point B within this single image. If the image had
+    a known calibration marker, I would also convert to millimeters
+    and compare to published reference values.
+
+    IMPORTANT: These are soft tissue measurements. They do not
+    replace evaluation of the soft tissues visually. They supplement
+    it by providing a numerical anchor for an otherwise subjective
+    assessment.
+
+========================================================================
+
+PROPOSAL 5 — Crop + Magnification of the Anterior Calcaneal Process
+===================================================================
+
+(a) QUESTION:
+    Is there a fracture of the anterior process of the calcaneus?
+
+    Anterior process calcaneal fractures are notoriously subtle and
+    frequently missed. They can result from direct trauma, avulsion
+    by the bifurcate ligament, or as part of a lateral calcaneal
+    wall fracture pattern. In a lateral view, the anterior process
+    is a small bony projection that overlaps with the cuboid and
+    calcaneocuboid joint. A nondisplaced fracture line here can be
+    only a few pixels long and can blend into the trabecular pattern
+    of the adjacent bone.
+
+    On my first-pass, I flagged this region but could not resolve
+    definitively whether the cortex is intact. The region is simply
+    too small in the full-image view.
+
+(b) WHY THIS METHOD HELPS:
+    Straightforward cropping to the anterior calcaneal process and
+    adjacent cuboid, displayed at 3x linear magnification, is the
+    simplest and most direct approach. I do not propose any filter or
+    enhancement here because:
+
+    1. The limiting factor is resolution (how many pixels cover the
+       region), not contrast. The region is adequately exposed; we
+       just need more display pixels per anatomical pixel.
+
+    2. Enhancement filters on a small crop risk amplifying
+       compression artifacts, which could be confused with fracture
+       lines. Simple magnification without filtering is the safest
+       approach for a region where artifact risk outweighs contrast
+       benefit.
+
+    3. I can then do a careful cortical tracing exercise: mentally
+       (or digitally) trace the cortical outline of the anterior
+       process and look for any break in continuity, step-off, or
+       abrupt change in curvature.
+
+(c) WHAT I EXPECT TO FIND:
+    I expect the anterior process to have a smooth cortical outline
+    with no fracture line. The calcaneocuboid joint space should be
+    visible as a clean lucent line. If there is a fracture, I would
+    expect to see a thin lucent line extending from the articular
+    surface of the anterior process into the calcaneal body, or a
+    subtle cortical step-off at the ligament attachment site.
+
+    Given the limitations of a single lateral view, even a clean
+    appearance here does not exclude an anterior process fracture —
+    some are only visible on an axial (short-axis) view of the
+    calcaneus. But ruling in a fracture is achievable.
+
+(d) POSSIBLE ARTIFACTS:
+    - Bilinear interpolation at 3x magnification will smooth the
+      image, potentially masking a very fine fracture line that
+      spans only 1–2 pixels. I should also render a nearest-neighbor
+      interpolation version, which preserves the original pixel
+      values but gives a blocky appearance. A true fracture line
+      should be visible in both interpolation modes.
+    - Overlap of the cuboid cortex with the anterior calcaneal
+      cortex can create the illusion of a fracture line where there
+      is only a joint space. I need to follow the cortical line
+      carefully and determine whether a "line" I see is a true
+      fracture or the edge of a superimposed bone.
+
+(e) HOW TO COMPARE WITH ORIGINAL:
+    The magnified crop is simply a zoomed window into the original
+    image. No processing is applied beyond cropping and upsampling.
+    Any finding on the magnified view should be immediately locatable
+    on the full original image. I will mark the corresponding
+    location on the full image with a rectangle or arrow.
+
+    Because no filter is applied, there is essentially no risk of
+    the processing itself creating a false finding. The only risk is
+    misinterpreting a real anatomical feature (joint space, trabecula)
+    as a fracture — which is a reader error, not a processing error.
+
+========================================================================
+
+PROPOSALS I AM DELIBERATELY NOT PROPOSING
+==========================================
+
+I want to be explicit about what I considered and rejected, to
+demonstrate that these proposals are curated, not a checklist.
+
+1. CLAHE (Contrast-Limited Adaptive Histogram Equalization):
+   I considered this for the trabecular bone of the talus and
+   calcaneus. However, CLAHE is a contrast manipulation that can
+   create or enhance local structures that do not exist in the
+   original data. In a region where we are looking for subtle
+   density changes (stress fractures, osteonecrosis), CLAHE's
+   tendency to amplify local contrast means it can make normal
+   trabecular variation look pathological. The risk of false
+   positives is too high for a structure I am already closely
+   inspecting by other means. I will only use CLAHE if all other
+   methods are inconclusive and a specific region remains in doubt.
+
+2. Sobel/Canny edge detection:
+   Edge detection creates a binary or pseudo-binary representation
+   of the image. This loses the density information that is
+   essential for distinguishing a fracture line from a normal
+   trabecular septum or joint space margin. An edge detector would
+   light up every cortical margin, every trabecula, and every joint
+   space — and I would need to distinguish the fracture from the
+   noise. Unsharp masking (Proposal 3) gives me the same high-
+   frequency information but preserves the image as a radiograph,
+   which is far more interpretable.
+
+3. Deep learning / AI fracture detection:
+   I do not have access to a validated AI model in this environment,
+   and running an unvalidated model on a single image would produce
+   a result I cannot interpret or trust. I would rather invest in
+   methods whose behavior I understand and can explain.
+
+4. Phase-contrast or spectral analysis:
+   These require the original raw detector data or at minimum a
+   DICOM file with full bit depth. A PNG cannot support these
+   analyses.
+
+========================================================================
+
+SUMMARY OF PROPOSED ANALYSES
+-----------------------------
+
+Priority | Proposal | What it answers
+---------|----------|------------------------------------------
+    1    | Böhler's & Gissane's angle measurement | Calcaneal fracture (collapse)
+    2    | Talar dome crop + grayscale inversion | Osteochondral defect / subchondral cyst
+    3    | Distal tibia unsharp masking | Stress fracture / periosteal reaction
+    4    | Soft tissue thickness at 2 points | Occult swelling (early injury sign)
+    5    | Anterior calcaneal process crop + magnification | Anterior process calcaneal fracture
+
+These five proposals target the regions and questions I believe are
+most likely to be missed on a casual visual review of a single lateral
+view. They are deliberately low-complexity methods whose behavior and
+limitations I can articulate and defend.
+
+========================================================================
+END OF PROCESSING PROPOSALS — AGENT_04
+========================================================================

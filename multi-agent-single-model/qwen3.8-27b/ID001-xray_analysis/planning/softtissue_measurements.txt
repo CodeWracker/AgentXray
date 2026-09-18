@@ -1,0 +1,7 @@
+SOFT-TISSUE MEASUREMENTS (pixels; no physical scale in file)
+heel pad at y=295: skin x=133, cortex x=144, thickness=11px
+heel pad at y=305: skin x=133, cortex x=143, thickness=10px
+heel pad at y=315: skin x=133, cortex x=148, thickness=15px
+dorsal band at x=230: skin y=264, bone y=266, thickness=2px
+dorsal band at x=260: skin y=254, bone y=267, thickness=13px
+dorsal band at x=300: skin y=271, bone y=284, thickness=13px

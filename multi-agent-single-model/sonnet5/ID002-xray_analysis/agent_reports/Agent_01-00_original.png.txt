@@ -1,0 +1,21 @@
+AGENT: Agent_01
+
+MODEL:
+claude-sonnet-5
+
+IMAGE: 00_original.png
+
+PURPOSE: General first-pass characterization of the unmodified original radiograph — overall anatomy, positioning, and any grossly visible abnormality before targeted processing/cropping is applied.
+
+OBSERVATIONS: Single lateral-projection radiograph of an elbow joint and forearm. The humerus enters from the upper right, angling into the elbow joint, with the radius and ulna descending as two parallel long-bone shafts toward the bottom of the frame. At the very bottom edge, a cluster of small carpal/wrist bones begins to appear but is cropped off by the image border. Bone cortices are continuous and well-corticated throughout the visible shafts, with normal-appearing trabecular pattern in the metaphyseal/epiphyseal regions near the joint. Soft tissue forms a smooth, gradually darkening envelope around the bones with no focal masses or swelling. The left portion of the frame is black collimated background. Image quality/exposure is even, with good bone-soft tissue contrast overall, though fine trabecular detail is limited at this resolution.
+
+RELEVANT FINDINGS: No obvious fracture line, cortical step-off, displacement, or destructive lesion is visible along any of the imaged bones. A faint triangular radiolucent (dark) region is present anterior to the elbow joint, consistent with the normal anterior fat pad; it does not appear grossly elevated or bulging. No frank soft tissue swelling or effusion sign is obvious at this overview resolution.
+
+RELATION TO ORIGINAL IMAGE: N/A — this is the original image itself; all subsequent processed images will be compared back to this one.
+
+POSSIBLE ARTIFACTS: None — this is the unprocessed source image, so no processing artifacts apply. Note that overall image contrast is modest, which may mask subtle findings that only become apparent after windowing/enhancement (to be checked in the processed derivatives).
+
+CONFIDENCE:
+moderate
+
+NEXT STEP: Yes — targeted crops with contrast enhancement (as done in 02 and 08) are reasonable next steps to check the elbow fat pads and the cropped wrist fragment more closely, since the base image's overall contrast/resolution limits confident assessment of subtle soft-tissue or trabecular findings.

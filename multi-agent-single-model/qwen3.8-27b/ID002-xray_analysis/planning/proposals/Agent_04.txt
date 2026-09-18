@@ -1,0 +1,44 @@
+AGENT: Agent_04
+MODEL: qwen3.8-27b
+IMAGE: ID002-xray.png
+PROPOSALS:
+Proposal 1:
+  QUESTION: Is there an elbow joint effusion (anterior fat pad / sail sign) or periarticular fluid indicating an occult fracture?
+  METHOD: Local adaptive histogram equalization (CLAHE) or a dedicated soft-tissue window applied to a zoomed (2-4x) crop centered on the elbow (distal humerus, proximal radius/ulna, and surrounding soft tissues).
+  WHY IT MAY HELP: The fat pad sign is a low-contrast soft-tissue finding that is invisible at the current global windowing; local contrast stretching restricted to the soft-tensity range makes the anterior fat pad and joint line visible.
+  EXPECTED INFORMATION: Demonstration or exclusion of the anterior fat pad (sail sign) and posterior fat pad; possible detection of periarticular soft-tissue swelling or hematoma.
+  POSSIBLE ARTIFACTS: Amplification of sensor noise creating false hazy soft-tissue boundaries; over-stretching making normal soft-tissue fat appear displaced; CLAHE tile-boundary banding; skin-line edge enhancement mistaken for a fat pad.
+  COMPARISON WITH ORIGINAL: Any apparent fat pad or swelling must be re-checked in the unmodified original pixels: the finding must correspond to a real density/interface change, and the same region should be re-reviewed at the original contrast level.
+  PRIORITY: high
+Proposal 2:
+  QUESTION: Is there a subtle cortical fracture (cortical step-off or low-contrast lucent line) of the radial head/neck, olecranon/coronoid, or distal humerus?
+  METHOD: High-pass / unsharp masking or a sharpened bone window applied to a magnified crop of the distal humerus, radial head and olecranon; optionally multi-scale edge tracing along the cortical margins.
+  WHY IT MAY HELP: Subtle cortical step-offs and low-contrast lucent fracture lines are below the display contrast of the original image; local edge enhancement renders the cortical outline sharp enough to detect interruptions.
+  EXPECTED INFORMATION: Continuous vs interrupted cortical lines at the radial head, olecranon and distal humeral articular margins; possible visualization of a fracture line or periosteal reaction.
+  POSSIBLE ARTIFACTS: False step-offs from quantization or compression noise; false edges at normal anatomical interfaces (trabecular-cortical boundary, joint line); edge halos from unsharp masking mimicking a lucent line.
+  COMPARISON WITH ORIGINAL: Every step-off or line seen in the enhanced image must be confirmed with a localized intensity profile drawn on the original image: a true fracture shows a consistent density change across the line, not merely an edge response to noise.
+  PRIORITY: high
+Proposal 3:
+  QUESTION: Is this a true lateral, and are the elbow joints congruent (excluding subtle subluxation or proximal radioulnar diastasis)?
+  METHOD: Geometric analysis: segment the long axes of humerus, radius and ulna; measure the humeroulnar angle and the degree of radial-ulnar separation in the proximal forearm (quantifying rotation); rotate/straighten the image to a canonical orientation and assess humeroulnar, humeroradial and proximal radioulnar joint spaces (e.g., radiocapitellar line through the center of the capitellum) on the standardized view.
+  WHY IT MAY HELP: The current view appears oblique (radius and ulna side by side), which can mask or mimic joint incongruity; quantifying rotation and standardizing orientation allow a more reliable congruity check than visual inspection of a rotated oblique image.
+  EXPECTED INFORMATION: An estimate of forearm rotation relative to a true lateral; joint-space congruity measurements; detection of subtle subluxation or proximal radioulnar widening masked by rotation in the original.
+  POSSIBLE ARTIFACTS: Axis-fitting errors from noise or cropping; resampling artifacts from image rotation; measurement bias if the elbow is not flexed at exactly 90 degrees; the radiocapitellar line criterion assumes a true lateral and can give false positives on an oblique view.
+  COMPARISON WITH ORIGINAL: Compare measured alignments with the visual impression in the original; any apparent subluxation should be re-verified in the original before being called, since an oblique projection can simulate joint-space widening.
+  PRIORITY: medium
+Proposal 4:
+  QUESTION: Is there soft-tissue swelling around the elbow (trauma/hematoma) that is not obvious at the current contrast?
+  METHOD: Soft-tissue thickness profiling: trace the outer soft-tissue contour along the arm (upper arm to elbow to forearm) and plot thickness vs position; optionally background-normalize and compare periarticular soft-tissue density against non-articular segments.
+  WHY IT MAY HELP: A contour bulge is a sensitive sign of swelling, effusion or hematoma after elbow trauma even when bony detail is limited; quantitative profiling is less subjective than visual inspection of a low-contrast soft-tissue edge.
+  EXPECTED INFORMATION: A local increase in soft-tissue thickness around the elbow relative to adjacent arm segments; possible asymmetric swelling.
+  POSSIBLE ARTIFACTS: Confounding by arm compression, patient positioning and intrinsic arm circumference differences; contour partially out of field at the upper right; dark background making soft-tissue edge segmentation unreliable at the arm border.
+  COMPARISON WITH ORIGINAL: Validate any detected bulge visually in the original image (the contour deviation should be visible to the eye) and note that the anatomical side of the swelling cannot be assigned without knowing arm orientation.
+  PRIORITY: medium
+Proposal 5:
+  QUESTION: Are the partially included distal radius, distal ulna and carpal bones normal?
+  METHOD: Magnified (2-3x) crop of the inferior field edge (distal forearm and wrist) with a bone window for cortical assessment and a separate local window for carpal joint spaces.
+  WHY IT MAY HELP: These structures are small and at the field edge in the full view; subtle carpal or distal radial/ulnar lesions (fracture, distal radioulnar joint widening, carpal malalignment) could be missed at full-field scale.
+  EXPECTED INFORMATION: Assessment of distal radius/ulna cortices, distal radioulnar joint, and carpal alignment and spacing.
+  POSSIBLE ARTIFACTS: Truncation at the field edge (carpals and metacarpal bases only partially imaged); superimposition of the distal radius over the carpus in this near-lateral/oblique view; noise at the crop boundary.
+  COMPARISON WITH ORIGINAL: Any finding must be consistent with the full-field view, and structures truncated at the field edge must be explicitly flagged as incompletely assessed rather than cleared.
+  PRIORITY: low

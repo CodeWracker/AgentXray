@@ -1,0 +1,381 @@
+PROCESSING PLAN — ID002-xray.png
+Synthesized by the orchestrator from council deliberation (planning/deliberation/Agent_01..06.txt)
+All agents: qwen3.8-27b (single-model council; agreement = consistency, not cross-model validation)
+Original image preserved unmodified at: images/00_original.png (copy of ID002-xray.png)
+Global rule (unanimous): any finding seen only in a processed render is a hypothesis; it must be
+verified at the same coordinates in the original image before being reported.
+
+REJECTED (by council, with reasons):
+- Global histogram equalization of the full image (A6-P3): large black-clipped background would
+  amplify noise into phantom soft-tissue structures. Rejected by A1, A2, A3, A4, A5, A6 (self-flag).
+- Affine straightening / re-orientation (resampling) as primary analysis (A4-P3, A5-P3):
+  resampling blurs fine cortical detail; on an oblique view it can manufacture apparent
+  joint-space asymmetry. Alignment is measured on the unrotated original only.
+- Inverted / soft-tissue-bright rendering (A2-P3 variant): inversion inverts radiographic logic;
+  a standard soft-tissue window suffices. Rejected by A2 (self-flag), A3, A6.
+
+=====================================================================
+ANALYSIS 1 — Elbow ROI, native magnified reference
+=====================================================================
+OUTPUT: images/01_elbow_crop_native.png
+TRANSFORM: Crop (820,100)-(1250,520); 2x nearest-neighbor upscale (no interpolation blur).
+PARAMETERS: ROI x0=820 y0=100 x1=1250 y1=520; scale=2 (nearest).
+QUESTION: What does the elbow show at native display density when magnified (fracture line,
+  fragment, cortical step-off, joint congruity) without any contrast manipulation?
+REASON: Every enhancement below must be compared against an identically-cropped,
+  unprocessed reference to separate true structure from enhancement artifacts.
+SUPPORTED BY: All agents (verification requirement in A1-P1..A6-P1, A3-P1, A4-P2, A5-P2).
+OPPOSED BY: none.
+ARTIFACTS: none introduced (pure crop/resize).
+EXPECTED VALUE: reference channel for all other elbow analyses; may itself resolve the
+  proximal-ulna focus question.
+
+ANALYSIS 2 — Elbow ROI, local contrast enhancement (fracture-line search)
+OUTPUT: images/02_elbow_crop_clahe.png
+TRANSFORM: Same ROI as A1; CLAHE (adaptive local histogram equalization); 2x upscale.
+PARAMETERS: clip_limit=2.5, tile_grid_size=(8,8), grayscale.
+QUESTION: Is there a lucent fracture line or cortical discontinuity in olecranon/proximal
+  ulna, distal humerus, or radial head/neck that is below native display contrast?
+REASON: Suspected thin lucent line near proximal ulna (A1) and hairline-fracture search
+  (A3, A4, A5, A6). Local adaptive equalization expands local contrast exactly where
+  diagnostic uncertainty lives, without globally washing out saturated cortices.
+SUPPORTED BY: A1-P1, A2-P1, A3-P2, A4-P2, A5-P1, A6-P1 (6/6, consolidated).
+OPPOSED BY: none (all accept with artifact caveat).
+ARTIFACTS: noise amplification creating spurious "lines" in medullary cavity; CLAHE
+  tile-boundary banding; halo/darkening around dense condyles mimicking a lucent line.
+  Low clip limit (2.5) chosen to limit this.
+EXPECTED VALUE: high — primary fracture-line search channel.
+
+ANALYSIS 3 — Olecranon/proximal-ulna focus, native 4x zoom
+OUTPUT: images/03_olecranon_focus_native.png
+TRANSFORM: Crop (840,180)-(1060,440); 4x nearest-neighbor upscale.
+PARAMETERS: ROI x0=840 y0=180 x1=1060 y1=440; scale=4 (nearest).
+QUESTION: What is the small rounded density at the olecranon tip/olecranon fossa —
+  fracture fragment, ossification center/apophysis, or normal superimposition?
+  (Cortical continuity between focus and olecranon; lucent rim character.)
+REASON: The single most specific open finding (A5-P1; A1-P1). Native first: the
+  ossification-center hypothesis must be tested before enhancement can bias the read.
+SUPPORTED BY: A5-P1 (originator), A1-P1, A2 (N1), A3 (N1), A5 (N1 fusion-state check), A6-P2 caveat.
+OPPOSED BY: none.
+ARTIFACTS: none introduced (pure crop/resize).
+EXPECTED VALUE: high — targets the central lesion-vs-normal disagreement.
+
+ANALYSIS 4 — Olecranon/proximal-ulna focus, CLAHE 4x zoom
+OUTPUT: images/04_olecranon_focus_clahe.png
+TRANSFORM: Same ROI as A3; CLAHE; 4x upscale.
+PARAMETERS: clip_limit=3.0, tile_grid_size=(8,8), grayscale.
+QUESTION: Same as A3, with local contrast expanded to characterize focus borders,
+  trabecular continuity, and any accompanying lucent line.
+REASON: Focus has only small contrast difference from surrounding trabecular bone at
+  native density (A5-P1).
+SUPPORTED BY: A5-P1 (originator), A1-P1, A6-P1.
+OPPOSED BY: none (A6 notes clip limit must not erase the interface of interest; 3.0 chosen
+  as upper end of proposed 2-3 range, justified by the focus's low native contrast).
+ARTIFACTS: false high-contrast "edges" mimicking fragment borders from noise; tile banding;
+  cortical saturation erasing the focus interface.
+EXPECTED VALUE: high — discriminates fragment border (sharp sclerotic) from apophyseal
+  physis (continuous lucent cleft) vs superimposition.
+
+ANALYSIS 5 — Elbow ROI, soft-tissue window (fat pad / effusion)
+OUTPUT: images/05_elbow_softtissue_window.png
+TRANSFORM: Elbow ROI; low-gray-level histogram stretch emphasizing soft tissues (compress
+  bright bone to near-white ceiling); 2x upscale.
+PARAMETERS: stretch input range [8, 110] to full 8-bit range (soft-tissue window),
+  applied to grayscale crop. NOTE: this PNG export has a bright/compressed soft-tissue
+  channel; the periarticular zone saturates at any reasonable window, so fat-pad
+  assessment is limited (documented limitation). Window chosen to preserve the arm
+  silhouette and subcutaneous gradient.
+QUESTION: Is there a displaced anterior fat pad (sail sign) and/or visible posterior
+  (olecranon fossa) fat pad, i.e. joint effusion/hemarthrosis?
+REASON: Soft tissues are flat/under-displayed in the native render (A1, A3, A4);
+  periarticular fullness is visible (A3, A4) and a positive fat pad would indicate
+  intra-articular injury even if bone looks intact.
+SUPPORTED BY: A1-P4, A2-P3, A3-P1, A4-P1 (4/6, consolidated; A2's inversion variant dropped).
+OPPOSED BY: A6 ranked it below bone work but did not oppose; A2 rated it low priority
+  (priority disagreement preserved — kept because bone read may remain equivocal).
+ARTIFACTS: over-stretching banding/noise exaggerating normal fat planes; skin-line edge
+  mistaken for fat pad; halo around dense condyles mimicking a lucency.
+EXPECTED VALUE: moderate-high — best indirect sign of occult intra-articular injury.
+
+ANALYSIS 6 — Elbow ROI, edge-enhanced bone window (guide only)
+OUTPUT: images/06_elbow_edge_enhanced.png
+TRANSFORM: Elbow ROI; mild unsharp mask + Canny edge map blended as a colored overlay at
+  low opacity over a bone-window version of the crop; 2x upscale.
+PARAMETERS: unsharp kernel=5, amount=0.6; Canny thresholds (40,120) on 5x5 Gaussian
+  smoothed crop; overlay opacity ~35% in amber.
+QUESTION: Are there subtle cortical step-offs or hairline interruptions along the olecranon,
+  radial head rim, and distal humeral condyles?
+REASON: Edge maps exaggerate cortical continuity/discontinuity (A1-P3, A3-P2, A4-P2, A5-P2).
+SUPPORTED BY: A1-P3, A3-P2, A4-P2, A5-P2 (4/6).
+OPPOSED/QUALIFIED BY: all four self-flag high false-edge rate; A2, A6 require the hard rule
+  that every candidate edge be confirmed by a real density change in the unprocessed
+  original (A4-P2 intensity-profile protocol adopted as standard).
+ARTIFACTS: highest false-positive load in the plan: edges from trabecular pattern, joint
+  lines, superimposition boundaries, and noise; unsharp halos mimicking lucent lines.
+  Guide to where to look ONLY — never primary evidence.
+EXPECTED VALUE: moderate — surfaces hairline candidates; must be verified on 00/01/03.
+
+ANALYSIS 7 — Geometric alignment overlay on the ORIGINAL
+OUTPUT: images/07_alignment_overlay.png
+TRANSFORM: Annotated copy of the full original (no resampling, no rotation):
+  (a) posterior humeral line (line along posterior humeral cortex extended through condylar
+      level); (b) radiocapitellar line (line along radial shaft axis extended to capitellum,
+      should cross middle third of capitellum); (c) humeral and ulnar shaft axis fits;
+      (d) measured humeroulnar flexion angle; (e) radial-ulnar separation at a proximal
+      forearm reference level (obliquity quantification). Text annotations with measured
+      values.
+PARAMETERS: manual landmark placement verified visually; axes via least-squares fit to
+  manually traced cortical edge points; all drawn on unrotated original pixels.
+QUESTION: (a) Are the elbow joints congruent (dislocation/subluxation vs preserved
+  alignment)? (b) Does the radiocapitellar line cross the middle third of the capitellum?
+  (c) Does the posterior humeral line pass through the middle third of the capitellum?
+  (d) How much forearm rotation/obliquity is present (validity precondition for a-c)?
+REASON: Objective, reproducible alignment screen (A1-P2, A3-P4, A4-P3, A5-P3, A6-P2
+  consolidated); rotation quantification (A4-P3) and flexion angle (A4-N1, A1-N1) are
+  preconditions every agent flagged for trusting the line tests on this near-true-lateral
+  (oblique) view.
+SUPPORTED BY: A1-P2, A3-P4, A4-P3 (+A4-N1), A5-P3 (non-resampling part), A6-P2, A1-N1 (5/6).
+OPPOSED/QUALIFIED BY: A3, A5, A6 — criteria invalid/biased on oblique projection;
+  therefore the overlay must report the obliquity measure and qualify conclusions.
+  A6 — pediatric framing (posterior humeral line) assumes age not yet verified; line is
+  drawn but its pediatric interpretation is deferred to the maturity findings.
+ARTIFACTS: operator-dependent line placement; superimposition makes capitellum center
+  hard to localize; obliquity can mimic shifted lines. Conclusion must be re-checked by
+  eye without the overlay.
+EXPECTED VALUE: high — directly tests the dislocation/subluxation hypotheses (A1, A6).
+
+ANALYSIS 8 — Quantitative soft-tissue width profile
+OUTPUT: images/08_softtissue_profile.png
+TRANSFORM: Two-panel figure: (left) the original image (downscaled) with the traced
+  soft-t tissue contour overlaid and peak-width marker; (right) plot of soft-tissue width
+  (px) along the arm's long axis vs. distance from the elbow center, with elbow/forearm
+  reference lines.
+PARAMETERS: contour traced on the original at fixed intensity threshold on the limb
+  silhouette; width = perpendicular limb width sampled every 4 px along a line fitted
+  through the arm axis; elbow/forearm ratio computed at a fixed distance below the joint.
+QUESTION: Is there objective periarticular soft-tissue fullness/swelling at the elbow
+  relative to the forearm, and where is it maximal (posterior vs anterior)?
+REASON: Converts the visually apparent but subjective fullness (A3, A4) into a
+  reproducible measure (A3-P3, A4-P4, A1-N1 consolidated).
+SUPPORTED BY: A3-P3 (originator), A4-P4, A1-N1 (flexion-angle normalization context).
+OPPOSED/QUALIFIED BY: A2, A6 — documentation only, never diagnostic; confounded by
+  habitus, compression, truncated borders; no contralateral reference.
+ARTIFACTS: border-tracing bias near the black-clipped background (threshold choice);
+  tilted arm distorts the baseline.
+EXPECTED VALUE: low-moderate — quantitative documentation supporting/refuting the
+  effusion hypothesis; not a diagnostic criterion.
+
+ANALYSIS 9 — Distal forearm / wrist, native 2x crop
+OUTPUT: images/09_wrist_crop_native.png
+TRANSFORM: Crop (650,950)-(1150,1280); 2x nearest-neighbor upscale.
+PARAMETERS: ROI x0=650 y0=950 x1=1150 y1=1280; scale=2 (nearest).
+QUESTION: Are the distal radius/ulna cortices, distal radioulnar joint, and carpal
+  alignment intact — or is there a fracture — at the truncated inferior field edge?
+REASON: The wrist sits at the field edge and was under-assessed by all first passes
+  (A2-P2, A4-P5, A6-P3-crop-part consolidated). Native reference for A10.
+SUPPORTED BY: A2-P2, A4-P5, A6-P3 (partial) (3/6).
+OPPOSED BY: none; all require explicit "incompletely assessed" flag for structures on
+  the image border (A2, A4, A5, A6).
+ARTIFACTS: none introduced (pure crop/resize). Truncation at image border must not be
+  misread as fracture.
+EXPECTED VALUE: moderate — completeness check + skeletal-age input (carpal ossification
+  centers).
+
+ANALYSIS 10 — Distal forearm / wrist, CLAHE 2x crop
+OUTPUT: images/10_wrist_crop_clahe.png
+TRANSFORM: Same ROI as A9; CLAHE; 2x upscale.
+PARAMETERS: clip_limit=2.5, tile_grid_size=(8,8), grayscale.
+QUESTION: Same as A9 with local contrast expanded to separate subtle cortical
+  discontinuities from truncation/edge effects and to disentangle overlapping carpal
+  shadows.
+REASON: Distal bones are thinner/lower-contrast at the field edge (A2-P2, A4-P5).
+SUPPORTED BY: A2-P2, A4-P5, A6-P3 (partial, method revised from global HE to local CLAHE
+  per council decision).
+OPPOSED BY: none (global-HE variant rejected by unanimous objection; local CLAHE accepted).
+ARTIFACTS: noise amplification at field edge; over-enhancement merging adjacent carpal
+  shadows; interpolation artifacts (mitigated by nearest-neighbor upscale).
+EXPECTED VALUE: moderate — may reveal a subtle distal forearm/wrist injury missed at
+  full-field scale.
+
+ANALYSIS 11 — Mid-forearm shaft local window
+OUTPUT: images/11_forearm_shaft_window.png
+TRANSFORM: Crop (700,500)-(1150,1000); local window stretch emphasizing cortical
+  (bright) detail; 2x upscale.
+PARAMETERS: stretch input range approx [40, 200] to full 8-bit range (bone window),
+  applied to grayscale crop; scale=2 (nearest).
+QUESTION: Are the radial and ulnar diaphyseal cortices continuous throughout, with no
+  occult buckle/hairline fracture or periosteal reaction in the mid-forearm?
+REASON: No existing first-pass proposal examined the shafts themselves (A6-N1, new
+  proposal accepted into plan); a proximal-ulna fragment, if confirmed, makes a
+  low-displaced shaft injury a natural co-injury.
+SUPPORTED BY: A6-N1 (originator); accepted without opposition.
+OPPOSED BY: none.
+ARTIFACTS: window choice can exaggerate minor cortical thickness variation; must be
+  verified against the original.
+EXPECTED VALUE: low-moderate — completeness of the forearm read.
+
+=====================================================================
+REVIEW ASSIGNMENT MATRIX (planned; may be updated after inspection)
+=====================================================================
+00_original.png            : Agent_01, Agent_02, Agent_03, Agent_04, Agent_05, Agent_06 (all)
+01_elbow_crop_native.png   : Agent_01, Agent_05, Agent_06
+02_elbow_crop_clahe.png    : Agent_01, Agent_03, Agent_06
+03_olecranon_focus_native  : Agent_01, Agent_05, Agent_02
+04_olecranon_focus_clahe   : Agent_05, Agent_01, Agent_03
+05_elbow_softtissue_window : Agent_03, Agent_04
+06_elbow_edge_enhanced.png : Agent_04, Agent_02
+07_alignment_overlay.png   : Agent_01, Agent_06, Agent_03
+08_softtissue_profile.png  : Agent_03
+09_wrist_crop_native.png   : Agent_02, Agent_04, Agent_06
+10_wrist_crop_clahe.png    : Agent_02, Agent_06, Agent_04
+11_forearm_shaft_window.png: Agent_06, Agent_02
+
+Iteration rule: after round-1 inspection, any agent may propose further analyses for
+specific unresolved questions; the orchestrator will run council assessment, update this
+plan (appending ANALYSIS 12+), implement, and assign new reports.
+
+=====================================================================
+ROUND 2 (triggered by round-1 reports; deliberations in
+planning/deliberation/Agent_XX_round2.txt; proposals in
+planning/round2_proposals.txt)
+=====================================================================
+Working assumption carried from round 1: skeletally immature patient (open distal
+radial physis; olecranon-tip density consistent with apophyseal ossification
+center). Laterality indeterminate (no R/L marker on image). Single oblique/rotated
+view, field truncated at proximal carpus.
+
+OPEN QUESTIONS:
+Q1 (disputed 2:1): distal-forearm lucent cleft + small fragment near the wrist -
+   which bone carries the cleft (radius vs ulna), and is it normal physis/
+   ossification vs nondisplaced fracture?
+Q2 (contested): thin lucent line above the olecranon-tip density - apophyseal
+   physis (normal) vs nondisplaced avulsion.
+Q3: posterior-humeral-line offset uninterpretable on oblique view - limitation,
+   no in-image fix (unanimous; no new proposal).
+
+ANALYSIS 12 (P12) - status: IMPLEMENTED, GENERATED
+OUTPUT: images/12_wrist_distal_zoom_grid.png (1350x1140)
+PARAMS: 3x nearest-neighbor zoom of ROI (700,900,1150,1280) full-image coords;
+  50px full-image coordinate grid; native density (no CLAHE).
+QUESTION: Q1 - definitive bone identification by continuity tracing (radius =
+  wide bone with transverse physis and broad epiphysis above carpal bones;
+  ulna = narrow bone with small epiphysis + styloid spicule); cleft course,
+  margin character, any displacement of the fragment.
+SUPPORTED BY: all six agents (unanimous, highest priority).
+OPPOSED BY: none.
+ARTIFACTS: NN upscaling can sharpen a real lucent line into a spurious "cortex";
+  grid lines are artificial - never read as anatomy.
+EXPECTED VALUE: high - only analysis that breaks the bone-identification deadlock.
+ACTUAL: cleft located in the RIGHT (narrow) bone at full-image x~830-870,
+  y~1130-1175 (oblique course); left (wide) bone shows a normal transverse
+  distal radial physis. See round-2 reports.
+
+ANALYSIS 13 (P13) - status: IMPLEMENTED, GENERATED
+OUTPUT: images/13_olecranon_focus_zoom_grid.png (780x810)
+PARAMS: 3x NN zoom of ROI (840,150,1100,420); 50px full-image grid; native density.
+QUESTION: Q2 - precise landmark placement; full course of the olecranon cleft
+  and character of its margins; relationship of the tip density to the
+  proximal olecranon body.
+SUPPORTED BY: all six agents (moderate value, partly redundant with 03/04;
+  grid + anchors are the added value).
+OPPOSED BY: none.
+ARTIFACTS: as P12 (NN sharpening, grid lines).
+EXPECTED VALUE: moderate - anchors P15's olecranon profiles; confirms/refutes
+  the cortical-notch concern.
+ACTUAL: cleft at ~(945-995, 252-270), tip density at ~(950-990, 265-305);
+  margins smooth, no definite step-off. See round-2 reports.
+
+ANALYSIS 14 (P14) - status: REJECTED (not generated)
+REASON: redundant with image 10 (same ROI, 2x + CLAHE clip 2.5 already
+  delineated cleft + fragment without resolving Q1); 2x->3x adds only
+  interpolation and noise amplification (10's speckle documented). Council:
+  unanimous to reject (A2 "drop", A4 "redundant - drop", A5 "lowest priority").
+REMAINING UNCERTAINTY IS ANATOMIC (which bone) AND GEOMETRIC (single oblique,
+  truncated view), not local contrast.
+
+ANALYSIS 15 (P15) - status: IMPLEMENTED, GENERATED (regenerated after
+  orchestrator re-targeted the wrist profile lines to the P12-located cleft)
+OUTPUT: images/15_intensity_profiles.png (matplotlib figure, 3 panels)
+PARAMS: bilinearly-interpolated pixel-intensity profiles on the ORIGINAL
+  unresampled image. Panel A: 3 parallel vertical profiles across the
+  olecranon cleft (x=955/968/982, y=233->297) + control (x=930, olecranon
+  body). Panel B: 3 parallel profiles perpendicular to the wrist cleft
+  (center (850,1152), cleft direction (0.55,0.83), perpendicular
+  (0.83,-0.55), offsets -10/0/+10 along cleft, length 64px). Panel C: control
+  across the open distal RADIAL physis (x=785/800/815, y=1095->1150) - the
+  internal control demanded by the council.
+QUESTION: Q1 + Q2 - objective density evidence: normal physis = smooth narrow
+  lucent band with dense parallel margins; fracture cleft = irregular,
+  offset, or asymmetric.
+SUPPORTED BY: all six agents (highest-yield quantitative proposal; only
+  processing-independent evidence).
+OPPOSED BY: none.
+MODIFICATIONS APPLIED: (council) profile lines placed from P12/P13 grid
+  coordinates, run after them; open distal radial physis as internal control;
+  3 parallel profiles per site; report band width + margin-density shape.
+  (Orchestrator) first wrist-line placement (905,1150) missed the cleft and
+  ran into black background; re-targeted to (850,1152) after P12 + ASCII
+  intensity map, then regenerated.
+ARTIFACTS: interpolation along oblique lines; profiles are 1-D - cannot show
+  2-D offset by themselves; endpoint values can be off-bone (soft tissue/
+  background) if the line is mis-placed.
+EXPECTED VALUE: high.
+ACTUAL (printed minima, 0-255 scale): olecranon cleft profiles show a broad
+  mid-band dip (min 168-171 at y~265-297) with dense flanks; control
+  (olecranon body) shows irregular cortical dips, different morphology. Wrist
+  cleft: intensity FALLS PROGRESSIVELY toward the distal end (endpoints
+  107-129 -> minima 39-91) - a gradual broad falloff, NOT a narrow dip with
+  dense shoulders; radial-physis control shows mid-band minima (93-108) with
+  dense flanks (endpoints 105-187). The cleft's profile shape is LESS
+  physis-like than the control; this argues against a simple normal-
+  ossification-center read but does not prove fracture. See round-2 reports.
+
+ANALYSIS 16 (P16) - status: IMPLEMENTED, GENERATED
+OUTPUT: images/16_olecranon_tip_native_1to1.png (920x720)
+PARAMS: side-by-side panel - LEFT: olecranon-tip region (840,180,1060,440)
+  from 00_original.png at 1:1 native pixel scale (no upscaling, no CLAHE);
+  RIGHT: matching 4x NN view (= image 03).
+QUESTION: Q2 artifact gate - is the thin lucent line + any cortical notch
+  present at native resolution, or is it exaggerated by 3x/4x NN resampling?
+SUPPORTED BY: A5 (originator, "1:1 native verification"), A4 (soft-tissue
+  variant of P16 - soft-tissue window already covered by image 05, so the
+  native-resolution panel was kept as the operative P16).
+OPPOSED BY: none.
+ARTIFACTS: none beyond native sampling; the 4x panel reproduces 03's NN
+  sharpening by design (that is the comparison point).
+EXPECTED VALUE: moderate-high - artifact gate for Q2.
+ACTUAL: cleft visible at 1:1 native scale (thin, smooth); 4x view does not
+  create new lines. See round-2 reports.
+
+ANALYSIS 17 (P17) - status: IMPLEMENTED, GENERATED
+OUTPUT: images/17_forearm_continuity_strip_grid.png (800x1760)
+PARAMS: 2x NN of full-length strip ROI (720,400,1120,1280) - elbow to wrist
+  in one frame - with 50px full-image grid; native density.
+QUESTION: shaft continuity (round-1 A6-N1) - are the radial and ulnar
+  diaphyseal cortices continuous from the unambiguous proximal anchors
+  (radial head / olecranon) all the way to the distal bones, with no occult
+  buckle/hairline fracture or periosteal reaction; also lets the reader trace
+  each bone from a known identity to the wrist, supporting Q1.
+SUPPORTED BY: A6 (originator), A2, A4, A5 (accept with grid + full-strip
+  modification).
+OPPOSED BY: none.
+ARTIFACTS: 2x NN sharpening; long strip = slight geometric mismatch with
+  single-view obliquity along its length; grid lines are artificial.
+EXPECTED VALUE: moderate - completeness of the forearm read + continuity
+  tracing for Q1.
+ACTUAL: see round-2 reports.
+
+=====================================================================
+ROUND-2 REVIEW ASSIGNMENT MATRIX
+=====================================================================
+12_wrist_distal_zoom_grid.png     : Agent_02, Agent_04, Agent_06
+13_olecranon_focus_zoom_grid.png  : Agent_01, Agent_03, Agent_05
+15_intensity_profiles.png         : Agent_02, Agent_03, Agent_05
+16_olecranon_tip_native_1to1.png  : Agent_01, Agent_04
+17_forearm_continuity_strip_grid.png: Agent_02, Agent_06
+
+Round-2 report rules (same as round 1): each agent reads ONLY its assigned
+images + 00_original.png + its own first-pass and round-2 deliberation files
+(never other agents' reports), writes
+agent_reports/Agent_XX-<image_filename>.txt in the standard format, and ends
+with a CONFIDENCE level and a NEXT STEP.

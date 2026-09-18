@@ -1,0 +1,112 @@
+PROCESSING PLAN
+================
+Image: ID003-xray.png
+Date: 2026-09-14
+
+================================================================================
+ANALYSIS 1: Fracture Zone CLAHE Enhancement
+================================================================================
+OUTPUT FILE: images/01_fracture_zone_clahe.png
+METHOD: CLAHE (clip=3.0, 8x8 tiles) on cropped ROI of mid-forearm fracture zone
+QUESTION: What is the precise fracture line morphology? Is there hidden comminution?
+REASON: 4 agents independently proposed local contrast enhancement for the fracture zone
+SUPPORTING AGENTS: Agent_01 (Proposal 1), Agent_02 (Proposal 7 - fracture zone), Agent_05 (Proposal 3), Agent_06 (Proposal 1)
+OPPOSING AGENTS: None
+ARTIFACTS: CLAHE may amplify noise creating false fragments; edge halos may exaggerate cortical step
+EXPECTED VALUE: HIGH - May reveal fracture line course, hidden comminution, and help resolve Agent_04 disagreement
+
+================================================================================
+ANALYSIS 2: Cortical Edge Detection Overlay
+================================================================================
+OUTPUT FILE: images/02_cortical_edge_overlay.png
+METHOD: Canny edge detection with Gaussian pre-smoothing (sigma=1.5) on fracture ROI, overlaid on original
+QUESTION: What is the precise cortical continuity/discontinuity pattern at both fracture sites?
+REASON: 4 agents proposed edge-based cortical delineation
+SUPPORTING AGENTS: Agent_01 (Proposal 1), Agent_02 (Proposal 1), Agent_03, Agent_06 (Proposal 2)
+OPPOSING AGENTS: None
+ARTIFACTS: Double edges at anterior/posterior cortex; soft tissue edges as false positives; projection asymmetry
+EXPECTED VALUE: HIGH - Quantitative cortical disruption assessment, supports/disproves Agent_04 opinion
+
+================================================================================
+ANALYSIS 3: Displacement Measurement with Axis Overlay
+================================================================================
+OUTPUT FILE: images/03_displacement_measurement.png
+METHOD: Automated cortical boundary detection + piecewise linear axis fitting for both bones proximal and distal to fracture
+QUESTION: What is the angulation and translational displacement at each fracture?
+REASON: 4 agents independently proposed quantitative displacement measurement
+SUPPORTING AGENTS: Agent_01 (Proposal 2), Agent_02 (Proposal 1), Agent_03 (Proposal 1), Agent_06 (Proposal 2)
+OPPOSING AGENTS: None
+ARTIFACTS: Oblique projection causes underestimation; cortical detection fails near fracture zone; physiological curvature may be misinterpreted as angulation
+EXPECTED VALUE: HIGH - Provides quantitative measurements for clinical decision support
+
+================================================================================
+ANALYSIS 4: Zoomed Fracture Zone Detail
+================================================================================
+OUTPUT FILE: images/04_fracture_zone_zoomed.png
+METHOD: 3x zoomed crop of the fracture zone with mild sharpening (unsharp mask, radius=2, amount=0.5)
+QUESTION: What fine details exist at the fracture site at higher magnification?
+REASON: Multiple agents noted need for magnification of fracture zone
+SUPPORTING AGENTS: Agent_01 (Proposal 3), Agent_06 (Proposal 1)
+OPPOSING AGENTS: None
+ARTIFACTS: Interpolation artifacts; sharpening may create halos around fragments
+EXPECTED VALUE: MODERATE - Visual inspection aid; may reveal fine comminution or cortical detail
+
+================================================================================
+ANALYSIS 5: Growth Plate / Physis Region Enhancement
+================================================================================
+OUTPUT FILE: images/05_growth_plate_enhanced.png
+METHOD: CLAHE on distal forearm ROI showing distal radial and ulnar physes
+QUESTION: Are the growth plates open? Does the fracture approach either physis?
+REASON: 4 agents proposed growth plate assessment
+SUPPORTING AGENTS: Agent_02 (Proposal 6), Agent_03 (Proposal 5), Agent_05 (Proposal 4), Agent_06 (Proposal 3)
+OPPOSING AGENTS: None
+ARTIFACTS: CLAHE may create false lines at physis; could confuse physeal line with fracture line
+EXPECTED VALUE: HIGH - Pediatric vs adult classification critical for treatment; fracture-to-physis distance important
+
+================================================================================
+ANALYSIS 6: Soft Tissue Swelling Profile
+================================================================================
+OUTPUT FILE: images/06_soft_tissue_profile.png
+METHOD: Soft tissue envelope isolation via bone masking + thickness measurement along forearm length
+QUESTION: Is there significant soft tissue swelling at the fracture site?
+REASON: 4 agents proposed soft tissue analysis
+SUPPORTING AGENTS: Agent_01 (Proposal 4), Agent_02, Agent_05 (Proposal 5), Agent_06 (Proposal 5)
+OPPOSING AGENTS: None
+ARTIFACTS: Bone subtraction imperfect; oblique projection superimposes anterior/posterior soft tissue
+EXPECTED VALUE: MODERATE - Supports clinical assessment of compartment syndrome risk
+
+================================================================================
+ANALYSIS 7: Wrist/Hand Regional Enhancement
+================================================================================
+OUTPUT FILE: images/07_wrist_hand_enhanced.png
+METHOD: CLAHE on distal wrist and hand region, separately optimized from the rest of the image
+QUESTION: Are there associated wrist or hand fractures obscured by the current exposure and hand position?
+REASON: 3 agents proposed wrist/hand regional enhancement
+SUPPORTING AGENTS: Agent_02 (Proposal 3), Agent_03 (Proposal 3), Agent_05
+OPPOSING AGENTS: None
+ARTIFACTS: Hand superimposition creates apparent irregularities; contrast optimization may lose fracture zone detail
+EXPECTED VALUE: MODERATE - May reveal carpal or metacarpal injuries
+
+================================================================================
+ANALYSIS 8: Periosteal Reaction / Chronicity Assessment
+================================================================================
+OUTPUT FILE: images/08_periosteal_chronicity.png
+METHOD: Directional derivative filter perpendicular to bone axis + enhanced display of periosteal region
+QUESTION: Is there periosteal reaction or callus formation suggesting subacute healing?
+REASON: Resolves disagreement between Agent_05 (subacute) and Agent_06 (acute)
+SUPPORTING AGENTS: Agent_01 (Proposal 6), Agent_05 (Proposals 1, 2)
+OPPOSING AGENTS: Agent_06 saw no callus (first-pass)
+ARTIFACTS: Directional filter enhances any linear structure parallel to cortex; normal periosteal thickening at muscle attachments; pediatric periosteum naturally more prominent
+EXPECTED VALUE: HIGH - Directly addresses the acute vs subacute disagreement
+
+================================================================================
+ANALYSIS 9: Full-Image Bone Window Optimization
+================================================================================
+OUTPUT FILE: images/09_full_bone_window.png
+METHOD: Global histogram optimization for bone detail - gamma correction (gamma=0.8) + mild contrast stretch
+QUESTION: What does the full image look like with optimal bone visualization?
+REASON: Provides reference for comparing all localized enhancements
+SUPPORTING AGENTS: Agent_01, Agent_03
+OPPOSING AGENTS: None
+ARTIFACTS: Global adjustment may underexpose or overexpose some regions
+EXPECTED VALUE: MODERATE - Reference view for the full extremity

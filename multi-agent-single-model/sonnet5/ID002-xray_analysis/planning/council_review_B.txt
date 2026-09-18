@@ -1,0 +1,283 @@
+REVIEWER: Council_Reviewer_B
+ROLE: Independent council-deliberation critique of Section B processing proposals
+       (Agents_01-06). Written without seeing any other reviewer's critique.
+CONTEXT: University research/testing exercise on a single lateral elbow/forearm
+         radiograph. Not a real clinical consult.
+
+================================================================================
+PRELIMINARY NOTE ON THE UNDERLYING IMAGE
+================================================================================
+All six Section-A reads converge on the same picture, which is worth stating
+plainly before judging the processing proposals it spawned: a lateral elbow +
+forearm view, grossly unremarkable bones on visual read, no orthogonal view,
+wrist and proximal humerus cropped out of frame, and — repeated independently
+by every single agent — an exposure/dynamic-range problem in which bone
+cortex, black collimated background, and low-contrast peri-articular soft
+tissue are all fighting for the same 0-255 display range. That convergence
+matters: it means the processing proposals below are not six agents chasing
+six different hunches, they are six agents chasing the same two or three
+hunches with minor implementation variation. I've grouped accordingly.
+
+================================================================================
+1. WELL-JUSTIFIED ANALYSES — GROUPED, WITH ATTRIBUTION
+================================================================================
+
+GROUP A — ROI-limited adaptive contrast enhancement of the peri-elbow soft
+tissue (fat-pad assessment)
+  Proposed independently by ALL SIX agents:
+    Agent_01 P1 (dual-range windowing), Agent_02 P2 (local CLAHE),
+    Agent_03 P1 (soft-tissue window/local stretch), Agent_04 P1 (CLAHE crop),
+    Agent_05 P1 (joint-region contrast redistribution), Agent_06 P1 (localized
+    soft-tissue contrast enhancement).
+  Verdict: Well justified. This is a 6/6 convergence on both the target
+  (anterior/posterior fat pads as the indirect sign of occult fracture) and
+  the mechanism (bone monopolizes dynamic range, soft tissue gets compressed
+  into an unreadable band). Every agent ties it to a concrete Section-A
+  observation rather than a generic "let's enhance contrast" impulse. This is
+  the single highest-value proposal in the entire set.
+
+GROUP B — Cortical/unsharp edge enhancement of bone margins
+  Proposed independently by ALL SIX agents:
+    Agent_01 P2, Agent_02 P3, Agent_03 P2 (radial neck/coronoid focused),
+    Agent_04 P2, Agent_05 P2, Agent_06 P2 (radial neck/olecranon/coronoid
+    focused).
+  Verdict: Justified in principle — hairline non-displaced fractures are
+  gradient discontinuities and this is the correct tool class for finding
+  them. But see Section 3 below: this group also carries the highest,
+  most consistently self-reported artifact risk of anything proposed, so
+  "well justified" does not mean "safe to run without guardrails."
+
+GROUP D — Magnified/upscaled crop of the elbow joint complex, no filtering
+  Proposed by: Agent_01 P3 only.
+  Verdict: Well justified on its own low-risk merits even though only one
+  agent raised it. It adds no processing artifacts (pure geometric
+  resampling, explicitly flagged by Agent_01 as an inspection aid, not a new
+  data source) and is the natural substrate on which Group A and Group B
+  should actually be run — enhancing a postage-stamp-sized joint region
+  embedded in a huge black background is worse practice than enhancing a
+  cropped, legible version of it first.
+
+================================================================================
+2. REDUNDANT PROPOSALS — MERGE OR DROP
+================================================================================
+- Group A's six variants (dual-range windowing / CLAHE / local histogram
+  stretch / contrast redistribution) are the same underlying technique
+  (ROI-restricted, adaptive intensity remapping) described with different
+  vocabulary. Ship ONE analysis: "adaptive/local contrast enhancement
+  restricted to a bounding box around the distal humerus and anterior/
+  posterior joint capsule." No reason to run six near-identical variants.
+
+- Group B's six variants (unsharp mask / high-pass / Laplacian / gradient
+  overlay) are likewise one technique family. Merge into ONE analysis, but
+  keep the sub-region prioritization that Agent_03, Agent_04 and Agent_06
+  independently converged on: radial neck, coronoid, olecranon first, full
+  shaft length second (this sub-prioritization is itself a redundant signal
+  worth keeping, since three agents landed on the same fracture-prone
+  sub-sites independently).
+
+- Agent_03 P4 (wrist-fragment contrast stretch) and Agent_04 P3 (wrist-
+  fragment gamma recovery) are the same proposal — a localized brightness/
+  contrast pass on the cropped carpal sliver at the bottom edge. Merge into
+  one analysis (see Section 6 for priority — I rank it low).
+
+- Agent_03 P3 and Agent_06 P3 (radiocapitellar line / anterior humeral line
+  overlay) are the same proposal, independently reasoned to the same two
+  classic alignment constructs. Merge into one analysis.
+
+- Group D (crop) and Group A (contrast enhancement) are related but should
+  NOT be merged into a single deliverable — they have different risk
+  profiles (D: essentially zero artifact risk; A: real artifact risk from
+  contrast stretching) and collapsing them would make it harder to isolate
+  which step, if either, produced a given visual finding. Run D first, then
+  A on the cropped output, but report them as two distinguishable steps.
+
+================================================================================
+3. PROPOSALS THAT RISK MISLEADING ARTIFACTS — IMPLEMENT CAUTIOUSLY
+================================================================================
+- GROUP B (cortical edge enhancement) is the analysis I'd flag most strongly
+  here, and I want to push back a little on how it tends to get treated just
+  because "everyone proposed it." Every single one of the six agents,
+  independently, named the SAME specific failure mode: in a lateral elbow
+  view the radial head overlaps the coronoid and the radius crosses in front
+  of the ulna, and unsharp/high-pass filtering at those superimposition
+  boundaries produces exactly the kind of thin, sharp line that gets misread
+  as a fracture. Ringing/halo overshoot along the (very high-contrast)
+  cortex was also raised by nearly everyone as a source of a fake "second
+  cortical line" that could be misread as periosteal reaction. Six
+  independent agents landing on the identical risk is not noise — it's a
+  reliable signal that this technique's false-positive mode is real and
+  well-characterized. It should ship with a mandatory rule, not just a
+  general "compare to original" caveat: any candidate line falling within a
+  known anatomic overlap zone (radial head/coronoid, radius/ulna crossing)
+  should be flagged as expected-artifact-until-proven-otherwise, not treated
+  as a neutral candidate finding.
+
+- GROUP A (local contrast/CLAHE) carries a real but lower risk: noise
+  amplification and halo artifacts at the bone/soft-tissue boundary can
+  fabricate a fat-pad-like stripe. I judge this risk as more manageable than
+  Group B's, because a true fat-pad sign has a specific, checkable anatomic
+  signature (smooth crescentic shape, expected location adjacent to the
+  distal humerus) that an artifact is less likely to accidentally reproduce
+  than a straight line mimicking a fracture is. Still needs the
+  side-by-side/raw-image cross-check every agent proposed.
+
+- Merged alignment-line proposal (Agent_03 + Agent_06): the risk here isn't
+  a pixel artifact, it's a methodological mismatch. Agent_03 explicitly
+  notes the joint looks flexed beyond the canonical ~90° used to calibrate
+  these heuristics, and possibly slightly oblique. Running radiocapitellar-
+  line/anterior-humeral-line geometry on a projection outside its validated
+  angle range risks a false "malalignment" call that's actually just
+  foreshortening. This should run with the estimated flexion angle and
+  obliquity reported alongside the measurement, exactly as Agent_03
+  proposed — not as a bare pass/fail geometric verdict.
+
+================================================================================
+4. PROPOSALS I RECOMMEND NOT IMPLEMENTING (OR NOT PRIORITIZING)
+================================================================================
+- Agent_05 P4 — quantitative intensity-profile sampling across the shafts.
+  I disagree with treating this as a priority deliverable. Its stated
+  purpose is to replace a "visual judgment" with something more objective,
+  but a perpendicular intensity profile on a single oblique projection is
+  confounded by overlapping soft-tissue thickness, the bone's angle relative
+  to the sampling line, and local resampling/compression — Agent_05's own
+  writeup concedes all three confounds. Worse, Agent_05's own comparison
+  protocol requires re-locating any "outlier" back on the original image and
+  visually judging whether it's real — meaning the technique doesn't
+  actually reduce reliance on visual judgment, it just adds an indirection
+  step before arriving back at one. Given that Group B (edge enhancement)
+  already targets the same underlying question (focal cortical thinning/
+  discontinuity) more directly, I'd drop this rather than run it as a
+  parallel track. If resources are unlimited, it's harmless to include as a
+  tertiary confirmatory step, but I would not budget priority effort to it.
+
+- Agent_05 P3 — inverted-polarity rendering. I'd decline to elevate this to
+  a "real" analysis. The justification offered ("radiographic interpretation
+  is known to be somewhat polarity-dependent... forces a fresh look") is a
+  plausibility appeal, not something tied to a specific Section-A
+  observation the way Group A and Group B are. Agent_05's own artifact note
+  effectively concedes it: inversion "introduces no new data and cannot
+  manufacture true pathology," and any inverted-view observation still has
+  to be re-confirmed on the original before it counts. That's a fine,
+  cheap, harmless thing to glance at, but it is not evidence-generating in
+  the way the other proposals are, and I would not count it among the
+  substantive deliverables. Keep it as an optional, unbudgeted "if time
+  allows" bonus check, not a ranked analysis.
+
+- I want to explicitly endorse something several agents did NOT propose.
+  Agent_01 stated outright that it deliberately excluded whole-image
+  histogram equalization, full-frame edge detection, and pseudocolor mapping
+  because they weren't tied to any concrete Section-A uncertainty. I agree
+  with that restraint, and no other agent proposed those either. If anything
+  in a later synthesis step drifts toward "let's also run a generic global
+  enhancement pass for completeness," I'd push back on that — it wasn't
+  earned by anything in Section A across any of the six independent reads,
+  and generic global filters are exactly the kind of change most likely to
+  manufacture artifacts without answering a specific question.
+
+================================================================================
+5. MINORITY (SINGLE-AGENT) PROPOSALS — DO THEY DESERVE INCLUSION?
+================================================================================
+- Agent_01: dual-range windowing/crop. The windowing half folds into Group A
+  (justified, keep). The crop half (Group D) I already elevated above to a
+  first-priority, essentially-free step despite being singly-sourced — its
+  justification doesn't depend on other agents agreeing; it's a low-risk
+  inspection aid whose value is self-evident from Agent_01's own reasoning.
+  Keep both.
+
+- Agent_02: histogram/clipping check. This is the minority proposal I think
+  the rest of the council (hypothetically) would most undervalue by raw vote
+  count, and I want to explicitly elevate it. It's the ONLY proposal in the
+  entire six-agent set that is pure measurement with no pixel remapping at
+  all — it cannot itself introduce an artifact, and it answers a question
+  that is logically prior to every contrast-enhancement proposal in Group A:
+  if the brightest region is genuinely clipped (hard spike at max value),
+  no amount of local contrast stretching recovers real signal there, and
+  anything Group A "reveals" in that zone is stretched noise, not recovered
+  detail. Despite being raised by only one agent, I'd run this FIRST, not
+  last. See Section 6.
+
+- Agent_03 / Agent_06: alignment-line geometry (2/6 agents — technically not
+  a singleton, but raised by a minority). Justified as a genuinely different
+  axis of information (geometric vs. textural) that only a true lateral
+  projection supports well. Worth keeping, with the flexion/obliquity caveat
+  from Section 3.
+
+- Agent_03 / Agent_04: wrist-fragment crop (2/6 agents). Both proposing
+  agents themselves predict the likely outcome is "confirms non-diagnostic
+  due to cropping" — which is itself useful (it converts a silent omission
+  into an explicit, honest limitation statement and supports recommending a
+  properly centered wrist series) but is not a hidden-finding-recovery tool.
+  Worth including for documentation value, ranked low.
+
+- Agent_05: inverted polarity and intensity-profile sampling — addressed in
+  Section 4; I don't think either earns inclusion as a priority item on its
+  own merits, despite giving Agent_05 credit for flagging real confounds
+  honestly in both write-ups.
+
+================================================================================
+6. PRIORITY RANKING OF THE FINAL RECOMMENDED SET
+================================================================================
+1. Histogram/clipping check on the proximal (brightest) ROI vs. whole image
+   (Agent_02). Run FIRST. Zero artifact risk, cheap, and it's a precondition
+   gate that tells you whether Group A's contrast enhancement will be
+   recovering real signal or amplifying clipped noise in that zone. I am
+   deliberately ranking a single-agent, non-glamorous "just measure the
+   histogram" proposal above the 6/6-supported enhancement proposals below
+   it — that's a genuine departure from what a straight vote count would
+   produce, and I think it's the right call: you should know whether the
+   data is there before you spend effort trying to reveal it.
+
+2. ROI-limited adaptive contrast enhancement of the peri-elbow soft tissue /
+   fat pads (merged Group A — Agents 01,02,03,04,05,06). Highest clinical
+   yield, 6/6 convergence, directly targets the one finding category
+   (occult effusion) that this single projection is best positioned to add
+   confidence about.
+
+3. Magnified crop of the elbow joint complex, unfiltered (Agent_01 P3). Runs
+   before/alongside #2 as its substrate; essentially free and low-risk.
+
+4. Cortical/unsharp edge enhancement of bone margins, prioritizing radial
+   neck / coronoid / olecranon (merged Group B — all six agents). Ranked
+   below #1-3 despite equal agent support, specifically because this
+   council's own agents unanimously flagged its overlap-artifact failure
+   mode — that consensus on the RISK, not just the technique, is why I hold
+   it to a stricter bar (mandatory overlap-zone exclusion rule from Section
+   3) and rank it fourth rather than second.
+
+5. Alignment-line geometry overlay: radiocapitellar line + anterior humeral
+   line (merged — Agent_03, Agent_06). Genuinely complementary axis of
+   information, but downgraded relative to #2/#4 because of the flexion-
+   angle/obliquity caveat both proposing agents raised themselves.
+
+6. Localized contrast/gamma recovery of the cropped wrist fragment (merged —
+   Agent_03, Agent_04). Low priority; expected value is mostly documentation
+   of a field-of-view limitation rather than new pathology detection, by the
+   proposing agents' own admission.
+
+7. Inverted-polarity rendering (Agent_05 P3). Optional/bonus only — cheap
+   enough to include if time allows, but I do not rank it as earning
+   dedicated priority given its weak tie to any concrete Section-A finding.
+
+8. NOT RECOMMENDED for the priority set: quantitative intensity-profile
+   sampling across the shafts (Agent_05 P4). Methodologically confounded on
+   a single oblique projection and does not reduce reliance on visual
+   re-confirmation despite being framed as "more objective." Include only as
+   an unbudgeted tertiary check if resources are genuinely unlimited, not as
+   part of the core recommended battery.
+
+================================================================================
+SUMMARY OF WHERE I DISAGREE WITH A STRAIGHT MAJORITY-VOTE READING
+================================================================================
+- I rank Agent_02's single-agent histogram/clipping check ABOVE the two
+  6/6-supported proposals, because it's a risk-free precondition for
+  interpreting both of them correctly — vote count alone would have buried
+  it near the bottom.
+- I deliberately hold Group B (cortical edge enhancement) to a stricter
+  implementation bar and rank it below Group A despite identical (6/6)
+  agent support, because the agents' own unanimous artifact warnings are, in
+  my read, a stronger signal than their unanimous endorsement of the
+  technique itself.
+- I push back against treating Agent_05's intensity-profile sampling and
+  inverted-polarity proposals as core deliverables; both are defensible as
+  cheap add-ons but I don't think either earns a place in the priority
+  battery on the evidence presented.

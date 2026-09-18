@@ -1,0 +1,37 @@
+Agent_04 — Proposed Additional Image-Processing Analyses
+Image: 00_original.png
+
+1. NAME: Agent_04_propose_midshaft_lucency_zoom_contrast
+QUESTION: Is the subtle transverse lucent line seen at roughly 55-65% down the near-vertical forearm bone a fracture, a nutrient foramen, a growth plate, or a summation artifact?
+WHY THIS METHOD MAY HELP: A tight crop around that specific segment of the shaft, enlarged and with local contrast stretched (e.g., min-max normalization or CLAHE restricted to that crop), would make the margins, width, and cortical extent of the lucency far easier to judge than in the full-frame view at native contrast.
+WHAT IT EXPECTS TO REVEAL: Whether the lucent line crosses both cortices (favoring fracture), is confined to one cortex with smooth sclerotic margins and an oval shape (favoring nutrient foramen), aligns with a joint-adjacent growth-plate-like band, or disappears/shifts when contrast is stretched (favoring artifact).
+POSSIBLE ARTIFACTS/MISLEADING EFFECTS: Aggressive local contrast stretching can create or exaggerate edge halos that mimic a fracture line; over-sharpening at high zoom can introduce ringing artifacts along the cortex that look like additional lucent lines.
+COMPARISON WITH ORIGINAL: Overlay or side-by-side the cropped/enhanced region against the same crop from the unprocessed original at matched scale, to confirm any apparent line is present (not created) in the source data and to compare its width/position in both versions.
+
+2. NAME: Agent_04_propose_paw_deblur_sharpen
+QUESTION: Does the digit/paw cluster at the bottom of the image contain a fracture, malalignment, or abnormal digit count that is currently obscured by motion blur and overlap?
+WHY THIS METHOD MAY HELP: Motion blur was visually apparent (doubled/smeared digit contours). Deconvolution-style deblurring (e.g., Wiener/Lucy-Richardson if a blur kernel can be estimated, or simpler unsharp masking as a fallback) applied specifically to this region could recover edge definition of individual digit bones.
+WHAT IT EXPECTS TO REVEAL: Clearer digit boundaries allowing a digit count and an assessment of whether any digit is angulated, foreshortened abnormally, or discontinuous.
+POSSIBLE ARTIFACTS/MISLEADING EFFECTS: Deblurring algorithms can hallucinate false edges or introduce ringing/haloing around bone margins, especially in a region with heavy overlap; this could create the appearance of an extra bone edge or a false fracture line. Any finding here should be treated as lower-confidence than findings in less-blurred regions.
+COMPARISON WITH ORIGINAL: Present the deblurred crop next to the original crop at the same magnification, and explicitly flag which edges are newly visible vs. present-but-faint in the original, so viewers can judge how much is enhancement vs. genuine signal.
+
+3. NAME: Agent_04_propose_proximal_bone_adaptive_contrast
+QUESTION: Is there subtle cortical or medullary detail in the proximal long bone that is being masked by apparent overexposure/saturation in that region?
+WHY THIS METHOD MAY HELP: The proximal bone appeared very bright with reduced internal contrast in the original. Adaptive histogram equalization (CLAHE) applied to that region specifically (rather than globally, to avoid degrading the already-adequate contrast elsewhere) could redistribute intensity values and reveal texture currently compressed into near-white pixels.
+WHAT IT EXPECTS TO REVEAL: Whether the cortex has a uniform, smooth density (normal) or whether there is a focal lucency, sclerosis, or periosteal change currently hidden by saturation.
+POSSIBLE ARTIFACTS/MISLEADING EFFECTS: CLAHE can amplify sensor noise or JPEG/PNG compression artifacts into false texture that mimics trabecular or lesional patterns; tile-boundary effects can create grid-like false lines if tile size is too small.
+COMPARISON WITH ORIGINAL: Compare pixel intensity histograms of the region before/after equalization, and visually compare the equalized crop against the original at matched brightness scaling to confirm any "new" feature isn't purely a product of the algorithm's tile boundaries.
+
+4. NAME: Agent_04_propose_fullbone_edge_trace
+QUESTION: Is the cortical margin continuous along the entire length of both major bone segments (proximal long bone and forearm bones), or is there a break/step-off anywhere not yet noticed?
+WHY THIS METHOD MAY HELP: A single first-pass visual scan can miss a subtle cortical step-off, especially where the bone is foreshortened at the flexed joint. An edge-detection pass (Sobel or Canny) over the whole limb, with the resulting edge map overlaid semi-transparently on the original, would let a reviewer trace both cortical margins continuously in one view.
+WHAT IT EXPECTS TO REVEAL: Any discontinuity, step, or angulation in the cortical outline that indicates a fracture, as well as confirmation that the joint alignment is smooth and continuous.
+POSSIBLE ARTIFACTS/MISLEADING EFFECTS: Edge detectors respond to noise and to the many soft-tissue/bone overlap lines in the flexed and paw regions, producing numerous false-positive "edges" unrelated to bone cortex; superimposed structures (e.g., the two forearm bones crossing) can produce edge lines that look like a fracture where none exists.
+COMPARISON WITH ORIGINAL: Use the overlay (edge map at reduced opacity on top of the grayscale original) so any candidate discontinuity can be immediately checked against the underlying bone density in the same view, rather than judging the edge map alone.
+
+5. NAME: Agent_04_propose_cornermark_crop_contrast
+QUESTION: What are the faint marks visible in the bottom-right corner of the image — an artifact, a scanner/PACS annotation, or a physical marker on the patient/cassette?
+WHY THIS METHOD MAY HELP: The marks are faint and small in the full-frame view. A simple high-magnification crop with contrast/brightness stretching targeted to that corner would make the marks legible enough to classify.
+WHAT IT EXPECTS TO REVEAL: Whether the marks are alphanumeric text/labels (non-pathologic, identifying/orientation information), a physical artifact (e.g., debris, fold, or detector defect), or unrelated background noise.
+POSSIBLE ARTIFACTS/MISLEADING EFFECTS: Aggressive contrast stretching on a low-signal corner can amplify background noise into shapes that appear falsely structured; this is a low-clinical-priority item and should not be over-interpreted.
+COMPARISON WITH ORIGINAL: Direct side-by-side of the stretched corner crop against the same corner from the unprocessed original, at equal magnification, to confirm the marks are real signal and not a processing artifact.

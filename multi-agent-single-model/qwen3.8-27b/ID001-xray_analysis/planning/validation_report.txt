@@ -1,0 +1,18 @@
+OK       ID001-xray.png                           PNG 373x454 RGB min=0 max=237
+OK       01_flatfield_corrected_full.png          PNG 373x454 RGB min=0 max=255
+OK       02_clahe_mild_full.png                   PNG 373x454 RGB min=0 max=245
+OK       03_clahe_moderate_full.png               PNG 373x454 RGB min=0 max=251
+OK       04_roi_ankle_subtalar_clahe.png          PNG 200x180 RGB min=3 max=203
+OK       05_roi_talus_clahe.png                   PNG 180x130 RGB min=7 max=207
+OK       06_roi_talus_denoised_mild.png           PNG 180x130 RGB min=19 max=189
+OK       07_roi_talus_denoised_strong.png         PNG 180x130 RGB min=35 max=178
+OK       08_roi_posterior_calcaneus_clahe.png     PNG 170x160 RGB min=0 max=253
+OK       09_edge_hindfoot_unsharp.png             PNG 240x230 RGB min=0 max=255
+OK       10_edge_hindfoot_gradient.png            PNG 240x230 RGB min=0 max=127
+OK       11_edge_overlay_full.png                 PNG 373x454 RGB min=0 max=246
+OK       12_angles_overlay.png                    PNG 373x454 RGB min=0 max=255
+OK       13_softtissue_contour.png                PNG 373x454 RGB min=0 max=255
+OK       14_right_edge_crop_flatfield.png         PNG 246x180 RGB min=0 max=217
+OK       15_noise_floor_chart.png                 PNG 1650x675 RGBA min=0 max=255
+original copy unmodified: True
+VALIDATION: PASS

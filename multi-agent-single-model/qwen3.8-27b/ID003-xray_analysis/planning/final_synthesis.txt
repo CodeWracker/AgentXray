@@ -1,0 +1,153 @@
+================================================================================
+FINAL SYNTHESIS — ID003-xray.png
+Orchestrator consolidation of ALL files in agent_reports/ (6 first-pass, 6
+proposals, 6 deliberations, 33 per-image reports; all agents: qwen3.8-27b).
+Note: agent agreement reflects independent runs of the SAME model — it is
+consistency, not cross-model validation. Derived images are supporting
+visualizations; only features present in the unmodified original count as
+findings.
+================================================================================
+
+1. OBSERVATIONS SUPPORTED DIRECTLY BY THE ORIGINAL IMAGE
+   - Single non-standard (oblique/near-lateral) radiograph of one upper limb:
+     distal humerus (partially in field), elbow flexed ~90 deg, full forearm
+     (radius + ulna), wrist, hand in semi-fist. Laterality indeterminable
+     (no marker visible).
+   - Focal transverse irregularity in the mid-forearm diaphysis at approx
+     x 0.50-0.57, y 0.37-0.41 (all six first-pass agents; visible in the
+     unmodified original per Agent_01 at the limit of native detectability).
+   - Dense, heavily superimposed carpal/metacarpal-base confluence in the
+     lower center of the image.
+   - Two oblique bright long-bone bands in the lower right passing behind
+     the carpal cluster; bright vertical torso band at the right edge; fine
+     wavy external texture at the bottom-right corner; thin bright line at
+     the top image edge (detector border).
+
+2. OBSERVATIONS REPRODUCED ACROSS MULTIPLE INDEPENDENT AGENTS
+   - Mid-forearm focal finding: transverse lucent line with a small cortical
+     step/kink, predominantly in the wider (image-right) bone, with a fainter
+     companion transverse line in the other bone at a slightly lower level.
+     Reproduced by: Agent_03 (plain/CLAHE/unsharp crops, high confidence),
+     Agent_04 (Canny edge deflection + step; axis kink visible; focal-minus-
+     control dip ~-29 native gray units at x~680 flanked by bright peaks),
+     Agent_01 (faint transverse tick in original; co-located transverse bar
+     in the difference image; transverse dip at x~675; 4-peak tracking gap
+     at y 610-650 coincident with the focal level).
+   - Skeletally IMMATURE (pediatric): open smooth distal humeral and distal
+     radial physes, 4-5 small rounded carpal ossification centers, multiple
+     elbow ossification centers (Agent_04, Agent_05, Agent_06 in image
+     review; Agent_02/04/05 in first pass). Age band estimates vary
+     (toddler/preschool vs ~5-10 yrs); consensus: young child, not mature.
+   - Wrist: no focal finding; distal radial physis smooth, continuous, not
+     widened (physeal injury screen negative) — Agent_04, Agent_05.
+   - Elbow: no definite fracture or dislocation in the visible portion;
+     articulation appears congruent — Agent_05, Agent_06.
+   - Hand: no definite fracture where cortices are visible; central
+     metacarpal confluence non-assessable (superimposition); no gas, no
+     foreign body, no definite swelling — Agent_01 (x2), Agent_06.
+   - No soft-tissue swelling: smooth tapering width curve, no focal bulge at
+     the lesion level — Agent_02 (width curve), Agent_06 (soft-tissue window).
+   - Lower-right oblique structures ARE bone (cortical margins + medullary
+     channel morphology in UNFILTERED 2x crop): Agent_03 (changed from
+     "no cortex" after Round 2), Agent_04 (changed from "no bone" after
+     Round 2, moderate confidence), Agent_06 (consistent: second radius/ulna
+     pair passing behind the carpal cluster). Best-supported attribution:
+     a second superimposed limb, most consistent with a contralateral
+     forearm; exact orientation/level not determinable.
+
+3. OBSERVATIONS REPORTED BY ONLY ONE AGENT
+   - Faint short transverse lucency across the distal ulna just proximal to a
+     small irregular/flaky ulnar-side opacity (Agent_05, wrist bone window).
+     Uncertain significance; unconfirmed by any other agent; treat as an
+     unverified single-agent observation (possible tiny epiphysis or
+     artifact).
+   - Dark round background shadow at approx x 0.72, y 0.53, visible only
+     after CLAHE (Agent_02) — non-anatomic background/stand shadow.
+   - "Small separate bone (cortical ring + trabeculae)" immediately right of
+     the carpal mass (Agent_03, Round 2) vs Agent_06's reading of the same
+     structure as a "small ovoid fingertip projection with a tiny internal
+     phalanx (likely thumb tip)" — same structure, differing identity.
+   - Apparent "mottled/lobulated" margin of the largest carpal center
+     (Agent_05) — likely magnification/marble-bone texture effect; no other
+     agent reported irregularity.
+
+4. UNCERTAIN FINDINGS
+   - The mid-forearm lesion itself: real focal cortical feature (supported)
+     vs fracture vs shadow/interosseous overlap (not fully excludable on a
+     single oblique view); timing (acute vs healing) not determinable.
+   - Attribution of the second limb (contralateral forearm most consistent,
+     but "emerging from the same carpal mass" caveat from Agent_06 Round 2
+     keeps same-arm oblique configuration formally open).
+   - Identity of the wavy bottom-right texture (hair/fabric/cable) and of the
+     loop-like opacity right of the hand — external object, not anatomy.
+
+5. DISAGREEMENTS (preserved, not force-consensused)
+   - Lesion severity/character: Agent_03/04 describe a definite cortical
+     step/kink (high/moderate confidence on crops); Agent_01 describes only
+     a faint transverse tick at the limit of visibility on the original;
+     Agent_02 (high-pass view) describes smooth continuous cortices with a
+     mild ulnar bow and NO break/step at the lesion level. The consensus is
+     a focal transverse feature; its magnitude and whether it constitutes a
+     cortical interruption remains reviewer-dependent.
+   - D2 attribution: "bone, second limb" (3 reviewers after Round 2) vs
+     "bone, but limb attribution unconfirmed" (Agent_06 Round 2 caveat).
+   - Skeletal age band: toddler/preschool (Agent_05) vs ~5-10 years
+     (Agent_06) vs mid-childhood (Agent_06) — unresolved; consensus is
+     "pediatric, young child".
+
+6. OBSERVATIONS DEPENDENT ON PROCESSED IMAGES
+   - Sharper cortex-medulla contrast of the oblique bones in CLAHE crops
+     (co-located, but exaggerated).
+   - Conspicuity of the transverse line in CLAHE/unsharp views (exaggerated
+     relative to plain; the line itself exists natively).
+   - Canny "edge tangle" at the focal level (exaggerates the step).
+   - Longitudinal tracking gap at y 610-650 (may partly be tracker failure
+     due to low local contrast, per Agent_01).
+
+7. LIKELY PROCESSING ARTIFACTS (identified and flagged)
+   - CLAHE: background mottling, speckle in soft tissue/medullary cavities,
+     halo at high-contrast borders, exaggeration of the background shadow.
+   - Unsharp masking: bright-dark-bright halo fringes around all strong
+     edges (must NOT be read as periosteal reaction — flagged by Agent_03).
+   - High-pass: ROI mask straight edges; low-frequency suppression.
+   - Canny: threshold sensitivity, fragmentation of real edges, false
+     positive noise edges.
+   - Nearest-neighbor upscaling: pixel blockiness/stair-stepping.
+   - Threshold-dependent metrics: width-curve bone plateau (exposure
+     gradient), physeal FWHM (33/19/29 px; reviewer estimates ~0.1-0.2
+     ratio vs reported 0.31-0.54 — ratios of limited reliability), Canny
+     thresholds.
+   - Plotting: gray 630-650 outlier band in ID003_60 (failed track points,
+     no anatomical counterpart).
+
+8. TECHNICAL LIMITATIONS
+   - Single non-standard oblique projection; no orthogonal pair; elbow
+     partially out of field; laterality unknown.
+   - No physical scale in the image: all quantitative values are pixels /
+     image-plane degrees / ratios.
+   - 8-bit PNG, no DICOM metadata (no exposure parameters, no original
+     pixel spacing).
+   - Fist superimposition: central metacarpal/carpal detail partly
+     non-assessable; 1.7% of hand ROI pixels clipped (fist-center detail
+     partly unrecoverable); mid-forearm lesion level has 0% clipping.
+   - Second-limb superimposition limits assessment of the ulnar hand.
+   - Angulation fits are image-plane apparent values with high segment
+     sensitivity (±11 deg with 6 px segment shifts) — order-of-magnitude
+     only.
+
+9. UNRESOLVED QUESTIONS
+   - Is the mid-forearm transverse feature a true (healing?) diaphyseal
+     fracture or a superimposition/shadow? Favors a real focal cortical
+     finding (present natively, reproduced by 5 independent visual methods
+     and 3 independent agents), but diagnosis and timing require standard
+     AP/lateral views.
+   - Exact level/orientation of the superimposed second limb.
+   - Single-agent distal-ulnar lucency: real or artifact?
+   - Identity of the external objects (loop right of hand; wavy texture
+     bottom right).
+
+TERMINATION STATEMENT: Round-2 reviews resolved D1 (pediatric) and D2
+(structures are bone; second-limb attribution most consistent). Remaining
+uncertainties (lesion diagnosis/timing, limb orientation, age band) cannot
+be resolved by further processing of this single image — they require new
+acquisitions (standard AP/lateral pair). No further round is justified.

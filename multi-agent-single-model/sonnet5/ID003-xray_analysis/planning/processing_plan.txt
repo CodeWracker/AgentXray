@@ -1,0 +1,197 @@
+PROCESSING PLAN — ID003-xray.png
+Synthesized by orchestrator from independent proposals of Agent_01–Agent_06 (all sonnet 5, single-model council).
+Council method: 6 agents independently reviewed the original image (no cross-talk), then independently proposed
+processing analyses. This plan groups their 27 raw proposals into non-redundant implementation items, ranked by
+how many agents independently converged on the same underlying question. No agent explicitly opposed any
+proposal; every agent flagged generic artifact-risk caveats for contrast/sharpening operations, which are carried
+into "possible artifacts" below and must be respected during visual inspection (any finding visible only in a
+processed image and not traceable, even faintly, in the original should be treated with skepticism).
+
+================================================================================
+1. OUTPUT: 01_fracture_zone_zoom_contrast.png
+TRANSFORM: Crop forearm shaft around the candidate lucent line, ~4x upscale (LANCZOS), local min-max contrast
+           stretch on the crop only.
+PARAMETERS: crop box ~ (560,560)-(820,720) in original 1280x1600 px; scale factor 4x; percentile clip 1-99 for
+            contrast stretch.
+QUESTION: Is the transverse lucent line crossing the forearm shaft a true cortical fracture, or a nutrient
+          foramen / projection artifact? What is its margin sharpness, cortex involvement, and any step-off?
+REASON: This was the single most consistent finding across all six independent first-pass reviews.
+AGENTS SUPPORTING: Agent_01, Agent_02, Agent_03, Agent_04, Agent_05, Agent_06 (unanimous)
+AGENTS OPPOSING/QUESTIONING: None opposed; all cautioned that aggressive contrast stretching can exaggerate a
+          normal nutrient canal or introduce false halos/ringing at high zoom.
+POSSIBLE ARTIFACTS: Contrast-stretch halos, interpolation ringing from upscaling, exaggeration of normal
+          trabecular texture into a line-like pattern.
+EXPECTED INFORMATIONAL VALUE: High — directly targets the top diagnostic question.
+
+================================================================================
+2. OUTPUT: 02_fracture_zone_edge_enhancement.png
+TRANSFORM: Same crop as #1, unsharp-mask edge enhancement (high-pass emphasis) instead of plain contrast stretch.
+PARAMETERS: unsharp radius ~3px, amount ~150%, threshold 3; applied to the same crop box as #1.
+QUESTION: Are the margins of the candidate fracture line sharp/well-corticated (favors true fracture) or soft/
+          gradual (favors motion blur, summation, or nutrient canal)?
+REASON: Proposed independently by five of six agents as a complement to plain contrast stretching, specifically
+        to judge margin character rather than just visibility.
+AGENTS SUPPORTING: Agent_01, Agent_02, Agent_03, Agent_04, Agent_06
+AGENTS OPPOSING/QUESTIONING: None opposed; all noted unsharp masking can create ringing/halo artifacts that
+          mimic additional lines, and that normal cortex elsewhere should be checked as a sanity control.
+POSSIBLE ARTIFACTS: Ringing/halo along any high-contrast edge, including normal cortex, which could be
+          mistaken for a second fracture line.
+EXPECTED INFORMATIONAL VALUE: High — complements #1 for margin-sharpness judgment.
+
+================================================================================
+3. OUTPUT: 03_hand_region_deblur_contrast.png
+TRANSFORM: Crop the hand/digit cluster, ~3x upscale, unsharp-mask sharpening + local contrast stretch.
+PARAMETERS: crop box ~ (350,1000)-(850,1600); scale 3x; unsharp radius 2px amount 120%; percentile clip 1-99.
+QUESTION: Does the blurred/overlapping digit cluster reflect motion blur over a normal clenched fist, or does it
+          obscure a true phalangeal/metacarpal abnormality? Does it represent one hand or two superimposed hands?
+REASON: Motion blur in the hand was independently flagged by all six agents as the second major image-quality
+        limitation and source of diagnostic uncertainty.
+AGENTS SUPPORTING: Agent_01, Agent_02, Agent_03, Agent_04, Agent_05, Agent_06 (unanimous)
+AGENTS OPPOSING/QUESTIONING: None opposed; all cautioned that sharpening a genuinely motion-blurred region can
+          hallucinate false edges/ringing that look like extra bone margins, and that true 2D deblurring cannot
+          "unfold" genuinely superimposed structures.
+POSSIBLE ARTIFACTS: Hallucinated edges from deconvolution/sharpening of blurred, low-information data.
+EXPECTED INFORMATIONAL VALUE: Moderate-high — best-effort clarification only, explicitly not a substitute for
+          a repeat radiograph with an extended hand.
+
+================================================================================
+4. OUTPUT: 04_hand_region_edge_detection.png
+TRANSFORM: Sobel/Canny-style gradient-magnitude map of the same hand crop as #3.
+PARAMETERS: Canny thresholds auto-tuned (Otsu-based) on the crop; crop box same as #3.
+QUESTION: How many genuinely distinct digit outlines can be traced, and does the hand-wrist junction represent
+          one flexed hand or two overlapping hands (patient's own hand vs. a possible assisting/support hand)?
+REASON: Two agents specifically flagged the "one hand vs. two hands" interpretive question as materially
+        affecting how hand findings should be read, and edge/gradient mapping was proposed as the objective
+        way to trace digit boundaries independent of blur-smoothed grayscale.
+AGENTS SUPPORTING: Agent_03, Agent_06 (edge-detection specifically); Agent_01, Agent_04, Agent_05 independently
+          proposed general hand sharpening covered partly by #3
+AGENTS OPPOSING/QUESTIONING: None opposed; all edge-detection proposals warned that gradient filters are noise-
+          sensitive and can invent spurious digit boundaries from soft-tissue folds.
+POSSIBLE ARTIFACTS: Spurious edges from noise/soft-tissue folds; doubled edges from real motion blur
+          misread as two separate real structures.
+EXPECTED INFORMATIONAL VALUE: Moderate — targets a specific, materially important interpretive ambiguity.
+
+================================================================================
+5. OUTPUT: 05_elbow_fatpad_zoom_contrast.png
+TRANSFORM: Crop elbow joint region, upscale, soft-tissue-oriented windowing (gamma/levels tuned toward the
+           lower-mid intensity range rather than bone-optimized).
+PARAMETERS: crop box ~ (600,150)-(1050,430); scale 3x; gamma ~0.7 on normalized crop to lift mid/low tones.
+QUESTION: Is there a fat-pad sign (anterior "sail sign" or visible posterior fat pad) suggesting an elbow joint
+          effusion / occult intra-articular injury associated with the forearm finding?
+REASON: Proposed independently by three agents given the flexed limb and the nearby forearm fracture candidate;
+        pediatric forearm fractures are frequently associated with occult elbow injury.
+AGENTS SUPPORTING: Agent_02, Agent_05, Agent_06
+AGENTS OPPOSING/QUESTIONING: All three supporting agents themselves flagged that the elbow's atypical ~90-100°
+          flexion (not a standard true lateral) can itself produce a false-positive fat-pad-like lucency from
+          projection/rotation — this is a built-in caveat, not opposition, but it materially lowers confidence
+          in any positive finding here.
+POSSIBLE ARTIFACTS: Projection-induced pseudo fat-pad appearance from non-standard flexion angle; over/under-
+          brightening washing out or fabricating the sign.
+EXPECTED INFORMATIONAL VALUE: Moderate — useful but low-confidence given non-standard positioning.
+
+================================================================================
+6. OUTPUT: 06_whole_image_clahe.png
+TRANSFORM: Contrast-Limited Adaptive Histogram Equalization over the whole image, with the near-black background
+           capped/masked before equalization to avoid amplifying background noise.
+PARAMETERS: CLAHE clipLimit=2.0, tileGridSize=8x8; background mask = pixels below ~5th percentile intensity
+           held constant.
+QUESTION: Is there low-contrast detail (soft-tissue swelling, subtle periosteal reaction, secondary lucent/
+          sclerotic lines) anywhere in the image compressed out by the native exposure/windowing?
+REASON: Proposed by three agents as a general-purpose visibility aid, given the wide dynamic range needed to
+        cover both the well-penetrated shaft and the comparatively overexposed distal hand.
+AGENTS SUPPORTING: Agent_01, Agent_03, Agent_04 (regional variant)
+AGENTS OPPOSING/QUESTIONING: None opposed; all warned CLAHE can amplify quantum noise/compression artifacts
+          into false texture or tile-boundary grid lines, and should be a visibility aid only, never sole
+          evidence for a finding.
+POSSIBLE ARTIFACTS: Amplified noise/speckle in background and low-signal regions; tile-boundary artifacts;
+          normal trabecular bone appearing falsely heterogeneous/mottled.
+EXPECTED INFORMATIONAL VALUE: Moderate — general-purpose companion view, not targeted at one question.
+
+================================================================================
+7. OUTPUT: 07_full_forearm_edge_trace.png
+TRANSFORM: Sobel gradient-magnitude edge map computed over the full limb (humerus through wrist), overlaid
+           semi-transparently on the original grayscale.
+PARAMETERS: Sobel kernel 3x3, magnitude normalized, overlay opacity ~40% on top of original.
+QUESTION: Is the cortical margin continuous along the entire length of the humerus, radius, and ulna, or is
+          there a break/step-off anywhere beyond the already-identified mid-shaft line?
+REASON: Proposed by three agents as a full-length screening complement to the targeted fracture-zone crop, to
+        avoid missing a second, less obvious injury elsewhere along the bone.
+AGENTS SUPPORTING: Agent_01, Agent_04, Agent_05
+AGENTS OPPOSING/QUESTIONING: None opposed; all warned edge filters respond to any strong gradient (soft-tissue
+          overlap, skin folds, bone-on-bone crossing at the flexed joint and hand), producing false "breaks."
+POSSIBLE ARTIFACTS: False cortical-break appearance at genuine anatomic overlap zones (flexed elbow, hand-wrist
+          junction), noise-driven spurious edges.
+EXPECTED INFORMATIONAL VALUE: Moderate — screening value, overlay format makes artifacts easier to sanity-check
+          against the underlying grayscale in the same view.
+
+================================================================================
+8. OUTPUT: 08_torso_region_contrast.png
+TRANSFORM: Crop the right-edge torso/flank region, brightness/contrast adjustment targeted to that narrow,
+           comparatively overexposed strip.
+PARAMETERS: crop box ~ (1120,750)-(1280,1600); gamma ~0.6; contrast stretch on crop only.
+QUESTION: Are the faint curvilinear lines over the torso at the right edge an external artifact (skin fold,
+          clothing wrinkle, immobilization wrap) or do they relate to underlying rib/lung anatomy?
+REASON: Proposed by four agents; regular spacing/curvature following body contour (not rib orientation)
+        favored an external cause on visual inspection, but this was flagged as worth confirming rather than
+        assuming, since the torso was only incidentally included and not the exam's target region.
+AGENTS SUPPORTING: Agent_01, Agent_02, Agent_03, Agent_04
+AGENTS OPPOSING/QUESTIONING: None opposed; agents noted this region sits at the edge of the exposed field and
+          may show heel-effect/beam-edge intensity fall-off unrelated to anatomy, which enhancement could
+          mistake for a structured finding.
+POSSIBLE ARTIFACTS: Pseudo-rib banding from beam-edge fall-off; over-brightening washing out real distinction.
+EXPECTED INFORMATIONAL VALUE: Low-moderate — incidental region, not the exam's clinical target, but worth
+          resolving so it is not mis-flagged as a finding.
+
+================================================================================
+9. OUTPUT: 09_inverted_grayscale_fullimage.png
+TRANSFORM: Full photographic-negative polarity inversion of the whole image (no other adjustment).
+PARAMETERS: pixel-wise 255-minus-value inversion (8-bit) or equivalent for the working bit depth.
+QUESTION: Does reversed polarity make the fracture line or any other subtle linear finding more or less
+          conspicuous than standard display — a perceptual cross-check, not new data?
+REASON: Proposed by two agents as a zero-assumption, whole-image sanity check.
+AGENTS SUPPORTING: Agent_05, Agent_06
+AGENTS OPPOSING/QUESTIONING: None opposed; both proposing agents explicitly caution that inversion adds no new
+          information and any "more obvious" appearance is a perceptual effect, not independent evidence.
+POSSIBLE ARTIFACTS: None introduced beyond the inversion itself, but risk of over-interpreting a perceptual
+          contrast effect as a new finding.
+EXPECTED INFORMATIONAL VALUE: Low — supporting/corroborating view only.
+
+================================================================================
+10. OUTPUT: 10_proximal_bone_gamma_recovery.png
+TRANSFORM: Crop the proximal long bone (humerus) region, gamma/levels adjustment targeted at the bright end of
+           the histogram to recover detail from apparent overexposure/saturation.
+PARAMETERS: crop box ~ (620,150)-(1280,420); gamma ~1.8 (darkening bright end) applied to crop only.
+QUESTION: Is there subtle cortical or medullary detail in the proximal bone masked by overexposure, or is the
+          apparent brightness simply normal cortex against a bone-optimized exposure?
+REASON: Proposed by two agents who both independently noted the proximal shaft looked comparatively bright/
+        near-saturated with reduced internal contrast.
+AGENTS SUPPORTING: Agent_03 (as part of whole-hand overexposure recovery), Agent_04
+AGENTS OPPOSING/QUESTIONING: None opposed; both noted that if the region is truly clipped (not just compressed)
+          no real data can be recovered, and the adjustment may instead amplify banding into false texture.
+POSSIBLE ARTIFACTS: Banding/posterization if source data is clipped rather than merely compressed.
+EXPECTED INFORMATIONAL VALUE: Low-moderate — secondary region, no abnormality suspected there on first pass.
+
+================================================================================
+11. OUTPUT: 11_cornermark_crop_contrast.png
+TRANSFORM: High-magnification crop of the bottom-right corner marks, contrast/brightness stretch.
+PARAMETERS: crop box ~ (1180,1520)-(1280,1600); scale 6x; percentile clip 1-99.
+QUESTION: What are the faint marks in the bottom-right corner — artifact, scanner/PACS annotation, or physical
+          marker?
+REASON: Proposed by three agents as a low-priority, low-clinical-relevance item to avoid leaving an unexplained
+        image feature unaddressed.
+AGENTS SUPPORTING: Agent_01, Agent_04, Agent_05
+AGENTS OPPOSING/QUESTIONING: None opposed; all note this is low clinical priority and aggressive stretching of
+          a low-signal corner can amplify noise into false structure.
+POSSIBLE ARTIFACTS: Noise amplified into pseudo-structure.
+EXPECTED INFORMATIONAL VALUE: Low — administrative/technical curiosity, not a clinical question.
+
+================================================================================
+ITEMS CONSIDERED AND NOT IMPLEMENTED AS SEPARATE OUTPUTS (merged or deferred):
+- "Whole forearm edge enhancement" (Agent_05 proposal 4) — merged into #7 (full_forearm_edge_trace), which
+  already covers the full bone length.
+- Per-agent duplicate variants of the same fracture-zone crop (e.g. Agent_02's "windowing" vs. Agent_03/06's
+  "contrast stretch") — consolidated into #1 since the underlying operation and question are the same.
+- Deferred: true deconvolution with an estimated motion-blur kernel for the hand region — flagged by Agent_02
+  and Agent_04 as ideal but higher-risk/lower-reliability than unsharp masking without a known kernel; unsharp
+  masking (#3) is used as the practical first pass, with true deconvolution held as a possible iteration if #3
+  proves inconclusive.

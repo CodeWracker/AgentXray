@@ -1,0 +1,19 @@
+ANGLE MEASUREMENTS — ID001-xray.png (native-resolution landmarks, see 12_angles_overlay.png)
+Landmarks (x,y): A posterosup calcaneal tuberosity=(154, 280); C inferior plantar point=(162, 319);
+B anterior calcaneal tuberosity=(205, 301); tibial axis (176, 45)->(186, 158); metatarsal axis (248, 298)->(318, 330);
+talar axis (192, 247)->(208, 282); fibula center x=216 / tibia center x=198 at y=210.
+
+Boehler angle (A-B vs A-C):              56.0 deg   (normal ~20-40 deg)
+Calcaneal pitch (plantar line vs horiz):  22.7 deg   (normal ~15-30 deg)
+Tibiometatarsal angle:                   60.4 deg   (normal ~10-25 deg; estimate — MT axis truncated by crop)
+Tibiocalcaneal angle:                     6.5 deg   (normal ~25-40 deg)
+Talocalcaneal angle:                     13.0 deg   (normal ~25-50 deg)
+Fibula-tibia center separation:            18 px     (true lateral: ~0; indicates off-true-lateral rotation)
+
+CAVEATS:
+- Landmark placement error ~+/-3-4 px -> angle uncertainty ~+/-5-8 deg (Böhler is the most sensitive).
+- The measured fibula-tibia separation (~18px) shows the view is NOT a true lateral;
+  ALL angles carry this projection bias (Agent_06 rule: call abnormal only if outside
+  normal range by more than estimated landmark error).
+- First-metatarsal axis truncated at the right-edge crop -> tibiometatarsal is an estimate.
+- No physical scale; angles are scale-invariant so no mm conversion applies.

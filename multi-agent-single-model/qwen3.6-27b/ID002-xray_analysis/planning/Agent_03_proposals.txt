@@ -1,0 +1,696 @@
+AGENT_03 — PROPOSALS FOR ADDITIONAL IMAGE ANALYSIS
+===================================================
+Image:    ID002-xray.png
+Date:     2026-09-14
+Analyst:  Agent_03 (independent medical image analyst, qwen3.6-27b)
+Basis:    First-pass review confirmed lateral elbow X-ray, 1600x1280,
+          8-bit grayscale (RGB-identical channels), content in right ~55%
+          of frame, no DICOM metadata.
+
+Each proposal includes:
+  (Q) Question being addressed
+  (W) Why the proposed method helps
+  (E) Expected output / information revealed
+  (A) Artifacts or misleading effects to watch for
+  (C) How to compare the result with the original image
+
+
+==============================================================================
+PROPOSAL 1 — Tight Crop to Anatomical Content
+==============================================================================
+
+What to do:
+  Crop the image to the bounding box of non-background content. Identify
+  background as columns where the row-wise mean intensity stays below a
+  threshold (e.g., pixel value 10) for the full column height. The left
+  boundary is where columns first consistently exceed this threshold
+  (approximately column 720-750). Preserve the full vertical extent but
+  trim the black left margin. Save the cropped result.
+
+(Q) Where is the actual radiographic data?
+  The image wastes ~45% of its horizontal real estate on black background.
+  Cropping concentrates pixel resolution on the anatomy.
+
+(W) Why cropping helps:
+  Removing the dead zone gives a more manageable aspect ratio and allows
+  subsequent analyses to focus exclusively on signal-bearing pixels. It
+  also simplifies histogram analysis by removing the overwhelming mass
+  of zero-value background pixels.
+
+(E) Expected result:
+  A cropped image of approximately 850-900 x 1200 pixels showing only the
+  arm, elbow, and forearm. The histogram of the cropped image will be
+  significantly less skewed, with the background peak greatly reduced.
+
+(A) Caveats:
+  Do not crop too aggressively on the right edge where the humeral shaft
+  exits the frame — any partial anatomy is still relevant. Preserve the
+  full vertical extent even if the bottom includes partial wrist structures.
+  Cropping alone does not improve any per-pixel information; it only
+  redistributes existing pixels.
+
+(C) Comparison:
+  Overlay the cropped result on the original at full size to verify no
+  anatomical content was lost. The cropped image should contain all
+  visible bone and soft-tissue structures.
+
+
+==============================================================================
+PROPOSAL 2 — Soft-Tissue Window and Bone Window Dual Contrast Stretching
+==============================================================================
+
+What to do:
+  Produce two independently windowed versions of the cropped image:
+
+  (a) SOFT-TISSUE WINDOW:
+      Map the intensity range [20, 130] linearly to [0, 255]. Clip
+      values below 20 to black and above 130 to white.
+
+  (b) BONE WINDOW:
+      Map the intensity range [150, 254] linearly to [0, 255]. Clip
+      values below 150 to black and above 254 to white.
+
+  Save both versions as separate images.
+
+(Q) Can we simultaneously assess soft tissue detail and cortical bone?
+  The original image maps the full 0-254 range to display, which means
+  soft tissue (intensity ~30-127) occupies only a narrow band of perceived
+  contrast, while bone cortex (180-254) is compressed at the bright end.
+  Neither region is optimally visualized.
+
+(W) Why dual windowing helps:
+  A soft-tissue window expands the narrow 30-130 range across the full
+  display range, making fat pads, muscle boundaries, and potential swelling
+  visible. A bone window compresses the dark soft tissue to black and
+  spreads the cortical/trabecular range, revealing subtle density changes
+  in bone structure. Radiologists routinely switch between windows; here
+  we produce both for static review.
+
+(E) Expected results:
+  - Soft-tissue window: The anterior and posterior fat pads around the
+    elbow joint become clearly visible. Muscle bulk around the upper arm
+    and anterior forearm becomes discernible. Any joint effusion would
+    manifest as soft tissue elevation in the posterior or anterior aspects.
+  - Bone window: Cortical thickness variations, trabecular pattern detail,
+    and subtle cortical irregularities (hairline fracture lines) become
+    visible. The distinction between dense cortex and cancellous bone
+    improves.
+
+(A) Caveats:
+  - Linear mapping amplifies noise within the selected range. Small
+    intensity fluctuations that were invisible become prominent. A mild
+    Gaussian smoothing before windowing may be needed if noise is visible.
+  - The window boundaries (20-130 for soft tissue, 150-254 for bone)
+    are starting estimates. The actual optimal boundaries depend on the
+    histogram of the anatomical content only (after cropping).
+  - Windowing is a DISPLAY transformation, not a data transformation.
+    No new information is created; existing contrast is redistributed.
+    Over-interpretation of amplified noise is the main risk.
+
+(C) Comparison:
+  Always interpret the windowed images alongside the original. Any feature
+  highlighted in a window should be cross-referenced with the original
+  to confirm it is a real structure and not an amplification of random
+  noise. Use the original as the ground truth and the windowed versions
+  as hypothesis generators.
+
+
+==============================================================================
+PROPOSAL 3 — Anterior and Posterior Fat Pad Visualization
+==============================================================================
+
+What to do:
+  On the soft-tissue windowed image from Proposal 2(a), specifically
+  examine the regions anterior and posterior to the elbow joint:
+
+  (a) Define an anterior region of interest (ROI) in the coronoid fossa
+      area: approximately rows 200-350, columns at the anterior aspect
+      of the distal humerus (relative to the cropped image).
+
+  (b) Define a posterior ROI in the olecranon fossa area: approximately
+      rows 200-400, columns at the posterior aspect of the distal humerus.
+
+  (c) For each ROI, generate a horizontal intensity profile across the
+      region, and compute the mean and maximum soft-tissue intensity.
+
+  (d) Mark the anterior fat pad as a triangular radiolucent region in the
+      coronoid fossa if visible. Assess whether it is elevated (sail sign).
+
+  (e) Assess whether a posterior fat pad is visible at all.
+
+(Q) Is there an occult intra-articular fracture suggested by fat pad signs?
+  In elbow imaging, the anterior fat pad may be visible normally (as a
+  subtle triangular lucency in the coronoid fossa). An elevated anterior
+  fat pad ("sail sign") is always abnormal and indicates joint effusion,
+  most commonly from an occult supracondylar or radial neck fracture.
+  A visible posterior fat pad is ALWAYS abnormal and strongly indicates
+  intra-articular pathology.
+
+(W) Why this specific analysis:
+  The fat pad sign is one of the most sensitive indicators of occult
+  fracture in the elbow. Up to 90% of patients with a visible posterior
+  fat pad have an underlying fracture. Even a positive anterior sail
+  sign carries a high positive predictive value. This analysis is
+  purpose-built for elbow imaging and is not a generic enhancement.
+
+(E) Expected results:
+  - Normal: anterior fat pad may be barely visible as a thin triangular
+    lucency; posterior fat pad is NOT visible (hidden by the olecranon
+    fossa).
+  - Abnormal (sail sign): anterior fat pad is clearly elevated into a
+    triangular shape protruding from the coronoid fossa.
+  - Abnormal (posterior fat pad sign): any visible radiolucent triangle
+    posterior to the distal humerus. This is always pathological.
+
+(A) Caveats:
+  - The posterior fat pad sign is definitive when present, but absence
+    does NOT rule out fracture (a negative posterior fat pad sign can
+    coexist with fracture if the effusion is small).
+  - The lateral projection is actually the BEST view for fat pad
+    assessment, which is fortunate for this image.
+  - The soft-tissue window from Proposal 2 is essential; the original
+    image may not show enough soft-tissue contrast.
+  - A small normal fat pad vs. a pathologically elevated one can be
+    subtle. Quantitative measurement (angle of the fat pad triangle,
+    or distance from the anterior cortex) adds objectivity.
+
+(C) Comparison:
+  Compare the fat pad visualization against the original image's soft
+  tissue region. The soft-tissue window should reveal structures that
+  are barely perceptible or invisible in the original. Confirm that any
+  identified fat pad corresponds to a real anatomical structure and not
+  a noise artifact by checking its shape and location.
+
+
+==============================================================================
+PROPOSAL 4 — Cortical Edge Gradient Analysis for Fracture Detection
+==============================================================================
+
+What to do:
+  (a) Compute the Sobel gradient magnitude and direction maps for the
+      bone window image.
+
+  (b) Trace the expected cortical margins of the key bones:
+      - Anterior and posterior cortex of the distal humerus (supracondylar
+        region)
+      - Anterior cortex of the ulnar shaft and olecranon
+      - Posterior cortex of the ulnar shaft
+      - Lateral cortex of the radial shaft and radial head
+
+  (c) For each traced cortical line, extract the intensity profile
+      perpendicular to the cortex (3-5 pixels on either side).
+
+  (d) Identify locations where the expected sharp cortical edge (high
+      gradient magnitude, typically >80 in pixel intensity over 2-3
+      pixels) is interrupted, shows a step-off, or has an unexpected
+      dip (radiolucent line within the bright cortex).
+
+  (e) Flag any discontinuity for visual review.
+
+(Q) Are there subtle cortical disruptions or step-offs that indicate
+    nondisplaced or hairline fractures?
+  Fracture lines appear as radiolucent (dark) lines interrupting the
+  continuous bright cortical margin. In a lateral elbow view, key
+  fracture sites include the radial head, olecranon, coronoid process,
+  and supracondylar humerus.
+
+(W) Why gradient analysis helps:
+  Cortical bone produces the highest intensity gradients in an X-ray.
+  A smooth, continuous cortex shows a consistent high-gradient band.
+  A fracture line — even a nondisplaced hairline fracture — introduces
+  a localized disruption: a brief drop in intensity (the radiolucent
+  fracture gap) within the cortex, or an unexpected change in the
+  gradient direction (a cortical step-off). Quantitative gradient
+  analysis is more sensitive to these subtle disruptions than the
+  naked eye, especially in an 8-bit image with limited contrast.
+
+(E) Expected results:
+  - A gradient magnitude map showing bright lines at all cortical
+    boundaries and dark interiors of medullary canals.
+  - Along each cortical trace, a smooth gradient profile with occasional
+    minor fluctuations (normal anatomical variation, noise).
+  - If a fracture is present, a sharp, localized dip in the cortical
+    intensity profile or an unexpected gap in the high-gradient band.
+  - A list of flagged locations with their coordinates, gradient values,
+    and the nature of the disruption.
+
+(A) Caveats:
+  - Sobel gradients are sensitive to noise. In the soft-tissue/bone
+    interface, gradients from soft-tissue structures can be confused
+    with cortical edges. The bone window helps by suppressing soft
+    tissue to black.
+  - The radial head on a lateral view is often superimposed on the
+    capitellum and trochlea, making isolated cortical tracing difficult.
+    Expect some ambiguity in the radial head region.
+  - A cortical step-off could be a normal anatomical landmark (e.g., the
+    trochlear notch contour) rather than a fracture. Each flag must be
+    anatomically contextualized.
+  - The 8-bit quantization can introduce small step-artifacts in the
+    gradient that mimic a cortical disruption. A minimum displacement
+    threshold (e.g., >15 intensity units over 2+ pixels) is needed.
+
+(C) Comparison:
+  Map each flagged location back to the original image (not the windowed
+  version) and visually inspect at maximum zoom. A real fracture line
+  will be visible in the original image, albeit faintly. If a flagged
+  location shows nothing abnormal in the original, it is likely noise
+  or an anatomical variant.
+
+
+==============================================================================
+PROPOSAL 5 — Anterior Humeral Line and Capitellar Line Analysis
+==============================================================================
+
+What to do:
+  (a) Trace the anterior cortex of the distal humeral shaft as a line
+      from approximately 3 cm proximal to the joint extending distally.
+
+  (b) Project this line forward (extend it past the joint) and determine
+      which third of the capitellum it intersects: proximal, middle,
+      or distal third.
+
+  (c) Trace a line through the center of the capitellum (the capitellar
+      line) and determine its angle relative to the distal humeral
+      articular surface.
+
+  (d) Measure the carrying angle in the lateral projection (this is the
+      lateral equivalent — the angle between the humeral shaft axis and
+      the forearm axis).
+
+(Q) Is the elbow properly aligned, or is there a subtle subluxation or
+    posterior angulation suggestive of a supracondylar fracture-dislocation?
+  The anterior humeral line is the single most important alignment
+  criterion in lateral elbow imaging. In a normal elbow, it should
+  pass through the middle third of the capitellum. If it passes through
+  the anterior (proximal) third or anterior to the capitellum entirely,
+  it indicates posterior angulation, most commonly from a displaced
+  supracondylar fracture.
+
+(W) Why this geometric analysis:
+  Supracondylar fractures are among the most common pediatric elbow
+  fractures. Even a small posterior angulation (>10-20 degrees) is
+  clinically significant and may require intervention. The anterior
+  humeral line provides a simple, objective measurement that is
+  reproducible and does not depend on image windowing.
+
+(E) Expected results:
+  - A traced line along the anterior humeral cortex.
+  - A projected line extending through the capitellum.
+  - A categorical assessment: the line intersects the proximal, middle,
+    or distal third of the capitellum.
+  - Quantitative: the angle of the anterior humeral line relative to the
+    humeral shaft axis, and the perpendicular distance from the line to
+    the center of the capitellum.
+
+(A) Caveats:
+  - This analysis assumes the image is a TRUE lateral view. If the
+    elbow is rotated (even slightly), the anterior humeral line will
+    not be in the correct plane, and the analysis is invalid. The
+    superimposition of the humeral condyles on a true lateral view
+    should confirm adequate rotation.
+  - The anterior cortex may be curved in the supracondylar region. The
+    line should be fitted to the mid-shaft portion, not the very distal
+    metaphysis where natural curvature exists.
+  - In a pediatric patient with an open physis, the line should be
+    extended to the ossification center of the capitellum, not the
+    entire capitellum.
+
+(C) Comparison:
+  Overlay the traced line on the original image to verify that the
+  anterior cortex was correctly identified. Compare the capitellar
+  intersection point visually. A normal intersection (middle third) is
+  reassuring; any deviation should be cross-checked against the original
+  for potential subtle angulation.
+
+
+==============================================================================
+PROPOSAL 6 — Frequency-Domain Noise Characterization and Artifact Check
+==============================================================================
+
+What to do:
+  (a) Apply a 2D Fast Fourier Transform (FFT) to the cropped anatomical
+      region (or to a representative sub-region of the bone area).
+
+  (b) Compute the radial power spectrum: average the FFT magnitude at
+      each radial frequency bin.
+
+  (c) Look for periodic peaks in the power spectrum that would indicate
+      grid lines, moiré patterns, or compression artifacts.
+
+  (d) Assess the high-frequency falloff to characterize the spatial
+      resolution limit of the image.
+
+  (e) Check for anisotropic frequency content (directional bias), which
+      would suggest motion blur or scanning artifacts.
+
+(Q) What is the frequency content of this image, and are there any
+    periodic artifacts that could interfere with diagnostic interpretation?
+  If the image was processed through a pipeline that introduced grid
+  lines, compression artifacts, or scanning patterns, these would appear
+  as periodic signals in the frequency domain. They could be mistaken
+  for fracture lines or cortical irregularities.
+
+(W) Why frequency analysis:
+  Periodic artifacts are invisible or subtle in the spatial domain but
+  appear as sharp peaks in the frequency domain. Characterizing the
+  noise spectrum also tells us about the effective spatial resolution
+  of the image — the point at which signal falls below noise. This
+  determines the smallest detectable feature (e.g., the minimum
+  fracture line width that can be reliably detected).
+
+(E) Expected results:
+  - A power spectrum plot showing the expected ~1/f^2 falloff typical
+    of natural images, with no sharp periodic peaks.
+  - Identification of the cutoff frequency where signal drops below
+    the noise floor, giving an estimate of the smallest resolvable
+    feature size.
+  - Confirmation of isotropic frequency content (no directional bias),
+    ruling out motion blur.
+  - If artifacts are present, their spatial frequency and orientation
+    will be identified.
+
+(A) Caveats:
+  - Edge effects from cropping can introduce low-frequency artifacts in
+    the FFT. Apply a Hann window to the image before the FFT to mitigate
+    this.
+  - The analysis is informative but not diagnostic. It characterizes
+    image quality but does not identify pathology.
+  - A smooth power spectrum confirms the ABSENCE of artifacts, which is
+    reassuring but not particularly actionable.
+
+(C) Comparison:
+  If periodic artifacts are found, attempt to filter them out and
+  compare the filtered image with the original to see if any features
+  were previously obscured by artifact patterns. Otherwise, this is a
+  quality assessment that informs confidence in all other findings.
+
+
+==============================================================================
+PROPOSAL 7 — Regional Bone Density Heatmap and Comparison Profile
+==============================================================================
+
+What to do:
+  (a) Create a binary bone mask by thresholding the bone window image
+      at a level that separates cortical/trabecular bone from soft
+      tissue and background (e.g., pixel value > 160 in the original
+      scale, adjusted for the windowed range).
+
+  (b) Define five regions of interest along the bones:
+      (i)   Distal humeral metaphysis (proximal to the joint)
+      (ii)  Distal humeral epiphysis (condylar region)
+      (iii) Proximal ulna (olecranon + coronoid)
+      (iv)  Radial head and neck
+      (v)   Mid-shaft radius and ulna
+
+  (c) For each ROI, compute the mean, median, and standard deviation
+      of pixel intensities. Also compute the bone area fraction (ratio
+      of pixels above threshold to total ROI area).
+
+  (d) Create a color-coded heatmap overlay on the image where bone
+      regions are colored by their relative density: warm colors for
+      higher density, cool colors for lower density.
+
+  (e) Generate a summary table of density values for all ROIs.
+
+(Q) Is bone density uniform across the visible skeleton, or are there
+    focal areas of osteopenia, sclerosis, or lytic lesions?
+  Focal changes in bone density can indicate pathology: osteolytic
+  lesions (tumor, infection), focal sclerosis (healing fracture,
+  osteoid osteoma), or regional osteopenia (disuse, reflex sympathetic
+  dystrophy).
+
+(W) Why density mapping helps:
+  Visual assessment of bone density is subjective and influenced by
+  viewing conditions and fatigue. A quantitative, region-by-region
+  comparison provides objective data. An unexpected density difference
+  between symmetrically corresponding regions or between adjacent bone
+  regions flags areas for closer inspection.
+
+(E) Expected results:
+  - A table of quantitative density values for each ROI.
+  - A heatmap visualization showing density variation across the
+    skeleton.
+  - Identification of any ROI whose density falls outside 2 standard
+    deviations of the group mean, flagging it for review.
+  - Expected normal pattern: cortical bone (shaft) > trabecular bone
+    (metaphysis/epiphysis) > soft tissue > background.
+
+(A) Caveats:
+  - Partial volume effects: thin cortical bone may not reach the full
+    pixel intensity of thick cortex, even if mineral density is the
+    same. A thin cortical shell (e.g., radial head) will have a lower
+    mean intensity than a thick shaft, purely due to geometry.
+  - Beam hardening and X-ray attenuation through varying amounts of
+    overlying tissue can introduce apparent density differences that
+    are acquisition artifacts, not anatomical.
+  - The 8-bit quantization limits the precision of density measurements.
+    A 16-bit DICOM source would be much more reliable for this analysis.
+  - Be cautious about flagging the distal humeral epiphysis as "low
+    density" — it is predominantly cancellous bone and should be lower
+    than the diaphysis.
+
+(C) Comparison:
+  Any flagged density abnormality should be examined in the original
+  image and the bone window. A true focal lesion will have visible
+  anatomical correlates. A density difference that has no visible
+  correlate is likely a measurement artifact (partial volume, beam
+  hardening, or quantization).
+
+
+==============================================================================
+PROPOSAL 8 — Radial Head Fracture-Specific Analysis
+==============================================================================
+
+What to do:
+  (a) On the lateral view, the radial head is seen articulating with the
+      capitellum of the humerus. Define an ROI centered on the radial
+      head (approximately rows 180-320, columns corresponding to the
+      lateral aspect of the proximal forearm in the cropped image).
+
+  (b) Apply high-contrast edge enhancement (unsharp masking with a small
+      kernel, sigma ~1 pixel) to this ROI.
+
+  (c) Trace the expected circular/oval outline of the radial head cortex
+      using an edge-detection algorithm (Canny or active contour/snake).
+
+  (d) Compute the circularity and smoothness of the traced outline. Flag
+      any locations where the outline deviates from a smooth curve — these
+      could represent a cortical step-off from a fracture.
+
+  (e) Examine the "radial head line" — a line tangent to the anterior
+      cortex of the radial head should pass through the capitellum.
+      Deviation suggests radial head subluxation or fracture-dislocation.
+
+  (f) Check for a joint effusion that could suggest an occult radial head
+      fracture (Meyer's triad: radial head fracture, coronoid fracture,
+      and lateral collateral ligament injury).
+
+(Q) Is there a radial head fracture?
+  Radial head fractures are the most common elbow fracture in adults
+  (5-15% of all adult fractures). On a lateral view alone, nondisplaced
+  fractures are notoriously difficult to see because the fracture line
+  is often perpendicular to the X-ray beam. However, indirect signs
+  (cortical step-off, subtle irregularity, joint effusion) can be
+  detected.
+
+(W) Why this focused analysis:
+  The radial head is a small, complex structure that is often obscured
+  by superimposed anatomy on the lateral view. A dedicated analysis
+  targeting this specific region with edge enhancement and geometric
+  assessment has a better chance of detecting subtle pathology than a
+  general cortical review.
+
+(E) Expected results:
+  - A traced outline of the radial head with quantified smoothness.
+  - Identification of any cortical irregularities > 2 pixels in width.
+  - Assessment of the radial head to capitellum alignment.
+  - If a fracture is suspected, the location and orientation of the
+    fracture line will be indicated.
+
+(A) Caveats:
+  - This is the WEAK point of a lateral-only view. A nondisplaced
+    radial head fracture with the fracture line perpendicular to the
+    beam will be invisible on X-ray. The absence of findings does NOT
+    rule out a radial head fracture.
+  - The radial head cortex is thin, and the edge detection may pick up
+    the overlying soft tissue edge rather than the bone cortex.
+  - Normal anatomical variants exist in radial head shape; not every
+    irregularity is a fracture.
+  - Edge enhancement amplifies noise, which can create false step-offs.
+    Use a minimum size threshold for flagged irregularities.
+
+(C) Comparison:
+  Map any flagged irregularity back to the original image and the bone
+  window. A real fracture will be consistent across both views. Compare
+  with the clinical context — a positive fat pad sign (Proposal 3) plus
+  a subtle radial head irregularity is highly suggestive of a radial
+  head fracture even if the fracture line itself is not visible.
+
+
+==============================================================================
+PROPOSAL 9 — Interosseous Space Width Profile Along the Forearm
+==============================================================================
+
+What to do:
+  (a) For each row in the forearm region (from the elbow joint to the
+      distal visible extent), find the rightmost column of the ulnar
+      cortex and the leftmost column of the radial cortex.
+
+  (b) Compute the interosseous distance (in pixels) at each row.
+
+  (c) Plot the interosseous distance as a function of distance from the
+      elbow joint.
+
+  (d) Compare the profile to the expected normal pattern: the interosseous
+      space should be narrowest at the proximal radioulnar joint and
+      gradually widen distally, maintaining a consistent, smooth curve.
+
+  (e) Flag any abrupt narrowing or widening of the interosseous space,
+      which could indicate a forearm fracture with displacement or a
+      proximal radioulnar joint dislocation.
+
+(Q) Is there an abnormal narrowing or widening of the interosseous
+    space that would suggest a forearm fracture or dislocation?
+  The interosseous space between the radius and ulna should maintain a
+  consistent width. A sudden change in width at a particular level
+  strongly suggests a fracture with cortical displacement. This is
+  a sensitive indicator even when the fracture line itself is subtle.
+
+(W) Why this quantitative profile:
+  Visual assessment of the interosseous space is influenced by the
+  perspective and projection. A row-by-row quantitative measurement
+  provides an objective, reproducible profile. The expected smooth
+  widening curve is a strong prior — any deviation is immediately
+  suspicious.
+
+(E) Expected results:
+  - A plot of interosseous distance vs. distance from the elbow.
+  - A smooth, monotonically increasing curve in the normal case.
+  - If a fracture is present, a step change in the curve at the level
+    of the fracture.
+  - Quantitative measurement of the maximum deviation from the expected
+    curve.
+
+(A) Caveats:
+  - On a lateral view, the radius and ulna are partially superimposed,
+    making cortical edge detection ambiguous in some regions. The
+    interosseous space may not be clearly visible at all levels.
+  - The forearm bones are not perfectly parallel — normal anatomy
+    includes a gentle convergence. The expected widening pattern must
+    account for this.
+  - The analysis is most reliable in the mid-forearm where the bones
+    are best separated. Near the elbow and wrist, superimposition
+    increases.
+
+(C) Comparison:
+  Overlay the measured interosseous distances on the original image as
+  horizontal markers. Verify that the edge detection correctly identified
+  the cortical margins. A flagged narrowing should correspond to a
+  visible change in bone alignment in the original image.
+
+
+==============================================================================
+PROPOSAL 10 — Multi-Scale Laplacian Pyramid for Feature Scale Analysis
+==============================================================================
+
+What to do:
+  (a) Build a 4-level Laplacian pyramid from the cropped image:
+      - Level 0: Gaussian-blurred version (sigma ~8 pixels) — captures
+        large-scale anatomy (bone outlines, soft tissue bulk)
+      - Level 1: Difference between levels 0 and 1 — captures
+        medium-scale features (joint spaces, cortical thickness)
+      - Level 2: Difference between levels 1 and 2 — captures
+        fine features (trabecular pattern, small cortical irregularities)
+      - Level 3: Difference between levels 2 and 3 — captures
+        finest details (potential fracture lines, noise)
+
+  (b) Display each level as a separate image, with appropriate contrast
+      stretching for each.
+
+  (c) At each level, flag regions where the absolute intensity exceeds
+      2 standard deviations of the level's global distribution.
+
+  (d) Correlate flags across levels: a feature that appears at multiple
+      scales is likely anatomical; a feature that appears only at the
+      finest scale is likely noise.
+
+(Q) What features exist at different spatial scales, and which are
+    anatomically significant vs. noise?
+  Pathological features like fracture lines, subtle cortical irregularities,
+  and early lytic lesions span specific spatial scales. Noise and artifacts
+    tend to be either very high frequency (fine-grained noise) or very
+    low frequency (illumination variation). A multi-scale decomposition
+    separates features by their spatial frequency, making it easier to
+    identify meaningful structures.
+
+(W) Why a Laplacian pyramid helps:
+  The human visual system naturally processes images at multiple scales.
+  A Laplacian pyramid provides a computational analog: each level isolates
+  a specific range of spatial frequencies. This is more informative than
+  a single edge-detection pass, which conflates all scales. A real
+  fracture line will typically span both medium and fine scales (it has
+  a characteristic width and length), while noise is mostly fine-scale
+  only.
+
+(E) Expected results:
+  - Four pyramid level images, each revealing different features.
+  - Level 0: Overall bone anatomy, major alignment.
+  - Level 1: Joint spaces, cortical margins, soft-tissue boundaries.
+  - Level 2: Trabecular pattern, small cortical irregularities,
+    potential nondisplaced fracture lines.
+  - Level 3: Fine detail and noise.
+  - A set of flagged features at each level, with cross-level
+    correlation to distinguish real features from noise.
+
+(A) Caveats:
+  - The pyramid decomposition is a linear operation. It redistributes
+    information across levels but does not create new information.
+  - Features that span multiple scales may appear fragmented across
+    levels, making them harder to recognize than in the original image.
+  - The choice of the number of levels and the Gaussian kernel size
+    affects the scale separation. A 4-level pyramid is a reasonable
+    default for the resolution of this image.
+  - Interpretation requires visual inspection at each level. Automated
+    thresholding alone is unreliable.
+
+(C) Comparison:
+  The key insight from the pyramid is cross-scale correlation. A feature
+  that appears in levels 1 AND 2 is a real structure at a meaningful scale.
+  A feature that appears only in level 3 is likely noise. Map the
+  cross-scale confirmed features back to the original image for final
+  interpretation. The original image remains the ground truth; the pyramid
+  is a tool for systematic feature discovery.
+
+
+==============================================================================
+SUMMARY OF PROPOSALS
+==============================================================================
+
+  # | Analysis                              | Primary Clinical Question
+  --|--------------------------------------|--------------------------------------
+  1 | Crop to anatomical content           | What is the actual data region?
+  2 | Soft-tissue & bone windowing         | Can we see fat pads and cortical detail?
+  3 | Fat pad sign assessment              | Is there occult joint effusion/fracture?
+  4 | Cortical gradient analysis           | Are there subtle cortical disruptions?
+  5 | Anterior humeral line                | Is there supracondylar displacement?
+  6 | Frequency-domain artifact check      | Are there periodic artifacts?
+  7 | Regional bone density mapping        | Are there focal density abnormalities?
+  8 | Radial head fracture analysis        | Is there a radial head fracture?
+  9 | Interosseous space profile           | Is there forearm displacement?
+  10| Laplacian pyramid multi-scale        | What features exist at each spatial scale?
+
+Execution order recommendation:
+  1 -> 2 (cropping enables effective windowing)
+  2 -> 3, 4 (windowed images feed into fat pad and cortical analysis)
+  2 -> 8 (bone window feeds radial head analysis)
+  3 + 4 + 8 together provide convergent evidence for occult fracture
+  5, 6, 7, 9 can proceed in parallel (independent analyses)
+  10 can proceed in parallel as a comprehensive scale analysis
+
+All flagged findings from any proposal must be cross-referenced with
+the original unmodified image before any diagnostic conclusion. The
+enhanced images are hypothesis generators; the original is the arbiter.
+
+==============================================================================
+END OF AGENT_03 PROPOSALS
+==============================================================================

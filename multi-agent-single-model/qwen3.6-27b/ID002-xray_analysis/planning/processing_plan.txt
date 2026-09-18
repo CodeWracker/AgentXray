@@ -1,0 +1,185 @@
+================================================================================
+PROCESSING PLAN — ID002-xray.png
+Multi-Agent Medical Image Analysis System
+All Agents: qwen3.6-27b
+Date: 2026-09-14
+================================================================================
+
+Image: Lateral X-ray of elbow/forearm
+Format: 1600x1280 8-bit RGB PNG (functionally grayscale)
+Anatomical content: Right ~55% of image width
+
+================================================================================
+STEP 1 — CROP TO ANATOMICAL CONTENT
+================================================================================
+Output:          images/01_cropped_elbow.png
+Analysis:        Crop to bounding box of non-background content (>10 intensity).
+                 Preserve 20px margin. Convert to grayscale.
+Question:        Where is the actual radiographic data?
+Reason:          ~45% of image is empty black background. Cropping effectively
+                 doubles spatial resolution on anatomy.
+Supporting:      All 6 agents (unanimous)
+Opposing:        None
+Artifacts:       Upscaling doesn't add real resolution. Aggressive crop may
+                 truncate edge anatomy.
+Expected value:  HIGH — foundational step for all subsequent analyses.
+
+================================================================================
+STEP 2 — CLAHE CONTRAST ENHANCEMENT
+================================================================================
+Output:          images/02_clahe_enhanced.png
+Analysis:        CLAHE on cropped grayscale image. Clip limit=2.0, tile size=8x8
+                 (in 9-pixel blocks). Also produce global linear contrast stretch
+                 (p2 to p98).
+Question:        Can we recover visibility of low-contrast structures (fat pads,
+                 trabecular patterns, interosseous membrane)?
+Reason:          78.8% of pixels are below intensity 30. Dynamic range is heavily
+                 compressed. CLAHE adapts locally to each region.
+Supporting:      Agents 01, 02, 03, 04, 05 (5/6)
+Opposing:        None
+Artifacts:       CLAHE may amplify noise if clip limit is too high. Tile size
+                 too small creates visible tile boundaries. Over-enhancement
+                 may create misleading structures.
+Expected value:  HIGH — critical for soft tissue and fat pad assessment.
+
+================================================================================
+STEP 3 — DUAL WINDOW/LEVEL RENDERING
+================================================================================
+Output:          images/03_bone_window.png (bone detail)
+                 images/03_soft_tissue_window.png (soft tissue detail)
+Analysis:        Two independently windowed versions:
+                 (a) BONE WINDOW: Map intensity [150, 254] linearly to [0, 255].
+                 (b) SOFT TISSUE WINDOW: Map intensity [10, 130] linearly to [0, 255].
+                 Both applied to cropped image.
+Question:        Can we simultaneously assess cortical bone detail and soft tissue?
+Reason:          Original image maps full 0-254 range, compressing both bone
+                 and soft tissue. Separate windows optimize each tissue type.
+Supporting:      Agents 01, 02, 03, 04, 06 (5/6)
+Opposing:        None
+Artifacts:       Hard clipping at window boundaries may create false uniformity.
+                 Bone window loses all soft tissue information.
+Expected value:  HIGH — standard radiographic practice.
+
+================================================================================
+STEP 4 — EDGE DETECTION / CORTICAL OUTLINE
+================================================================================
+Output:          images/04_edge_detection.png
+Analysis:        Canny edge detection on bone-windowed image. Gaussian
+                 pre-smoothing (sigma=1.5), Canny thresholds (low=20, high=80).
+                 Semi-transparent edge overlay on original cropped image.
+Question:        Are there cortical disruptions, step-offs, or fracture lines?
+Reason:          Edge detection highlights intensity discontinuities. Cortical
+                 bone edges are sharp; fracture lines create additional edges.
+Supporting:      Agents 01, 02, 03, 04, 06 (5/6)
+Opposing:        None
+Artifacts:       Canny may detect trabecular patterns as edges. Noise may
+                 create spurious edge fragments. Edge gaps may miss actual
+                 cortical disruptions.
+Expected value:  MODERATE-HIGH — supports fracture screening.
+
+================================================================================
+STEP 5 — FAT PAD ASSESSMENT (ENHANCED)
+================================================================================
+Output:          images/05_fat_pad_enhanced.png
+Analysis:        Targeted CLAHE on anterior (coronoid fossa) and posterior
+                 (olecranon fossa) fat pad regions from soft-tissue window.
+                 ROI-based enhancement with annotations.
+Question:        Is the posterior fat pad visible (always = abnormal)? Is the
+                 anterior fat pad elevated (sail sign = possible occult fracture)?
+Reason:          Fat pad signs are the most sensitive indirect indicator of
+                 occult elbow fracture. Soft tissue window + CLAHE optimizes
+                 visibility.
+Supporting:      Agents 01, 03, 04, 05 (4/6)
+Opposing:        None
+Artifacts:       CLAHE may create false fat pad lucencies. Soft tissue window
+                 may oversaturate bone-adjacent regions.
+Expected value:  HIGH — critical for occult fracture detection.
+
+================================================================================
+STEP 6 — RADIAL HEAD DETAILED ANALYSIS
+================================================================================
+Output:          images/06_radial_head_roi.png
+Analysis:        Tight ROI crop on radial head region. Mild unsharp masking
+                 (kernel=5, amount=0.5). Edge tracing of cortical outline.
+                 Smoothness analysis of radial head contour.
+Question:        Is there a radial head fracture (most common elbow fracture)?
+Reason:          Radial head fractures are frequently subtle on lateral view.
+                 Dedicated ROI with sharpening may reveal occult cortical
+                 step-off or lucency.
+Supporting:      Agents 01, 02, 03, 05 (4/6)
+Opposing:        None
+Artifacts:       Unsharp masking creates halos at edges that may mimic
+                 fracture lines. Tight ROI may miss adjacent pathology.
+Expected value:  MODERATE-HIGH — targets most common elbow fracture.
+
+================================================================================
+STEP 7 — LINE PROFILE ANALYSIS
+================================================================================
+Output:          images/07_line_profiles.png
+Analysis:        Intensity profiles along anterior humeral cortex, posterior
+                 olecranon cortex, and radial head/neck. Compute raw profiles,
+                 first and second derivatives. Flag anomalies (>2 SD from mean).
+                 Visualize as overlaid plots on the cropped image.
+Question:        Are there quantitative cortical irregularities along expected
+                 smooth bony margins?
+Reason:          A smooth cortical margin should produce a smooth intensity
+                 profile. Fracture step-offs or irregularities appear as
+                 derivative spikes.
+Supporting:      Agents 01, 02, 04, 05 (4/6)
+Opposing:        None
+Artifacts:       Profile line placement must be accurate. Misplaced lines
+                 give misleading profiles. 8-bit quantization limits
+                 resolution of derivative analysis.
+Expected value:  MODERATE — quantitative supplement to visual assessment.
+
+================================================================================
+STEP 8 — HISTOGRAM ANALYSIS REPORT
+================================================================================
+Output:          images/08_histogram_analysis.png
+Analysis:        Full histogram of content-only region. Annotate expected
+                 tissue intensity ranges (bone cortex, trabecular bone,
+                 soft tissue, background). Show optimal window parameters.
+                 Include cumulative distribution.
+Question:        What is the effective dynamic range of the image content?
+                 What are the optimal display parameters?
+Reason:          Quantifies information content and guides window/level
+                 optimization. Confirms 8-bit conversion impact.
+Supporting:      Agents 01, 02, 03, 04, 05, 06 (6/6)
+Opposing:        None
+Artifacts:       None — purely analytical.
+Expected value:  HIGH — quality assessment and parameter derivation.
+
+================================================================================
+SUPPLEMENTARY STEP S1 — GRADIENT MAGNITUDE MAP
+================================================================================
+Output:          images/s1_gradient_magnitude.png
+Analysis:        Sobel gradient magnitude on cropped image. Suppress high-
+                 magnitude edges (cortex) to reveal internal structures.
+                 Display as color-coded heatmap.
+Question:        Are there internal linear features within bone that may
+                 represent fracture lines?
+Reason:          Gradient magnitude reveals all intensity transitions. By
+                 suppressing the highest edges (cortex), internal features
+                 become visible.
+Supporting:      Agents 03, 04 (2/6)
+Opposing:        None explicitly. Council rated as "low-yield" but not harmful.
+Artifacts:       May amplify noise. Internal trabecular patterns may mimic
+                 fracture lines. Color encoding may be misleading.
+Expected value:  LOW-MODERATE — exploratory, lower priority.
+
+================================================================================
+PROCESSING ORDER
+================================================================================
+1. Step 1 (Crop) — prerequisite for all steps
+2. Step 8 (Histogram) — informs Step 3 parameters
+3. Step 2 (CLAHE) — depends on Step 1
+4. Step 3 (Dual Windows) — depends on Step 1 + Step 8
+5. Step 4 (Edge Detection) — depends on Step 3 bone window
+6. Step 5 (Fat Pad) — depends on Step 3 soft tissue window
+7. Step 6 (Radial Head) — depends on Step 1
+8. Step 7 (Line Profiles) — depends on Step 4
+9. Supplementary S1 — depends on Step 1
+
+================================================================================
+END OF PROCESSING PLAN
+================================================================================

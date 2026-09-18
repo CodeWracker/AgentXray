@@ -1,0 +1,26 @@
+AGENT: dr-vega
+MODEL: QN 3.6-27B
+IMAGE: ID003-xray.png
+IMAGE TYPE: Single radiograph of an upper extremity in a non-standard position: distal humerus, elbow, forearm (radius + ulna seen side by side, i.e. near-AP/oblique, not a true lateral), wrist and hand all in one field. Elbow flexed ~90 degrees; hand clenched into a fist (oblique clenched-fist position). Lateral torso/axilla occupies the right image edge; proximal humerus and shoulder are out of frame. Left vs right: indeterminate with certainty; if standard AP orientation, torso position is compatible with a left arm (guess). Skeletally mature (adult): no clearly open physes or unfused apophyses visible.
+STRUCTURES OF INTEREST:
+- Elbow (distal humerus, olecranon, radial head): x 0.50-0.85, y 0.12-0.25
+- Forearm diaphyses (radius, ulna): x 0.47-0.58, y 0.20-0.55
+- Distal forearm / wrist (distal radius, ulnar head, radiocarpal joint): x 0.45-0.60, y 0.53-0.70
+- Clenched hand (metacarpals, phalanges): x 0.28-0.65, y 0.65-0.97
+- Central palm / carpal mass (overdense): x 0.45-0.63, y 0.75-0.90
+- Lateral torso edge (soft tissue / rib margins): x 0.90-1.00, y 0.40-1.00
+POSSIBLE FINDINGS:
+- No definite fracture line, cortical break, dislocation, or joint-space widening is visible in the humerus, elbow, or forearm.
+- Elbow articulation appears congruent; no subluxation evident.
+- Central carpal / metacarpal-base region is markedly over-dense (near-white) from clenched-fist superimposition; a scaphoid or metacarpal-base fracture CANNOT be excluded there.
+- Metacarpal shafts and phalanges appear aligned; no definite cortical step or tuft abnormality seen, though carpal assessment is unreliable.
+- No obvious soft-tissue swelling or periosteal reaction.
+- Overall: no certain finding; one zone (central carpus) is unassessable.
+LIMITATIONS:
+- Single non-standard projection (flexed elbow, clenched fist); no AP/lateral pair.
+- Carpals and metacarpal bases obscured by superimposition and local over-density.
+- Proximal humerus, shoulder, scapula out of frame.
+- Left vs right not confirmable; torso superimposes at right edge.
+- Subtle cortical steps in the dense central region cannot be assessed from this image.
+ADDITIONAL PROCESSING WOULD HELP: yes - local contrast/brightness adjustment or CLAHE-type equalization on the over-dense carpal-central region (x 0.45-0.63, y 0.75-0.90); zoomed crops of distal radius/ulna and the elbow; edge-enhanced (high-pass) version for cortical detail.
+USEFUL ALTERNATIVE VISUALIZATIONS: 2-4x magnified crops of (a) carpus/central palm with contrast equalization, (b) distal forearm/wrist, (c) elbow; a sharpened full image; ideally a standard pair - true AP and 30-degree oblique hand, true lateral elbow - which would be more useful than any processing of this single view.

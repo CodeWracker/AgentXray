@@ -1,0 +1,878 @@
+================================================================================
+COUNCIL DELIBERATION — ID002-xray.png
+Multi-Agent Medical Image Analysis System
+All Agents: qwen3.6-27b
+Date: 2026-09-14
+================================================================================
+
+This document records the structured deliberation of a 6-agent council that
+evaluated first-pass reviews and independent processing proposals for
+ID002-xray.png.  The goal is to resolve disagreements, evaluate proposals,
+identify artifact risks, and produce a unified processing plan.
+
+================================================================================
+SECTION 1 — RESOLUTION OF ANATOMICAL IDENTIFICATION
+================================================================================
+
+SUMMARY OF FIRST-PASS IDENTIFICATIONS:
+
+  Agent  | Identification                | Correct?
+  -------|------------------------------|----------
+  Agent_01 | Lateral elbow/forearm X-ray   | YES
+  Agent_02 | Hand/wrist PA X-ray           | NO
+  Agent_03 | Lateral elbow X-ray           | YES
+  Agent_04 | Uncertain (limb joint vs.
+             partial thoracic)    | INCERTAIN
+  Agent_05 | Lateral elbow X-ray           | YES
+  Agent_06 | Chest/thoracic X-ray          | NO
+
+  Note: Agents 02 and 06 issued explicit corrections in their proposal
+  documents, acknowledging the misidentification and re-analyzing under
+  the correct lateral-elbow interpretation.
+
+RESOLVED IDENTIFICATION: LATERAL ELBOW/FOREAMR X-RAY
+
+  The council resolves this identification by majority vote (4-to-2) with
+  the following evidence cited unanimously by the correct agents:
+
+  (a) The image shows an "L"-shaped bony structure: a horizontally-oriented
+      distal humerus extending from the right side of the frame, meeting
+      the proximal radius and ulna at approximately 90 degrees of elbow
+      flexion, with the forearm bones extending vertically downward.
+
+  (b) The olecranon process of the ulna is clearly visible as the prominent
+      posterior bony prominence at the elbow joint articulation.
+
+  (c) The radial head articulates with the humeral capitellum at the
+      humeroradial joint — a structure unique to the elbow.
+
+  (d) The superimposition pattern of radius and ulna in the forearm region
+      is characteristic of a lateral (not PA) projection.
+
+  (e) Agents 02 and 06, upon correction, confirmed that their quantitative
+      observations (pixel statistics, bounding boxes, content location) are
+      fully consistent with a lateral elbow image; the anatomical labels
+      applied during the first pass were incorrect, but the underlying
+      numerical data was not.
+
+ROOT CAUSE OF MISIDENTIFICATION:
+
+  The council notes that the misidentification by Agents 02 and 06 likely
+  stems from two factors:
+
+  1. The image is stored as an 8-bit RGB PNG with ~45% of the frame width
+     being empty black background, which is an unusual presentation that
+     lacks standard radiographic markers (R/L label, laterality indicator,
+     institution watermark). Without these orienting cues, a model
+     examining pixel statistics alone could generate incorrect anatomical
+     hypotheses.
+
+  2. Agent_02's first-pass analysis relied heavily on automated feature
+     detection (counting "peaks" at certain rows, identifying "joint space
+     valleys") without sufficient anatomical context, leading to the
+     hand/wrist interpretation. The "five peaks" detected at row 100
+     correspond to anatomical features of the elbow region that were
+     misattributed to phalanges.
+
+  Agent_06's first-pass analysis misidentified the distal humerus as a
+  clavicle/shoulder girdle, the forearm as a rib cage, and the black
+  background as lung fields — a complete category error driven by the
+  absence of orienting markers.
+
+  The fact that both misidentifying agents issued self-corrections in their
+  proposal documents demonstrates the value of iterative, multi-pass review.
+  The council considers this self-correction a positive sign of system
+  robustness.
+
+  Agent_04's uncertainty is acknowledged and respected. The agent's
+  quantitative analysis (three-zone decomposition, center-of-mass drift,
+  lack of bilateral symmetry) was internally consistent but anatomically
+  underdetermined. The uncertainty is a feature, not a bug: it reflects
+  appropriate epistemic humility in the face of ambiguous visual data.
+
+================================================================================
+SECTION 2 — EVALUATION OF PROCESSING PROPOSALS
+================================================================================
+
+The council evaluated 13 distinct proposal themes across all 6 agents.
+Each is rated on three criteria:
+
+  JUSTIFIED    — The proposal addresses a real diagnostic question specific
+                 to this image and anatomical region.
+  REDUNDANT    — The proposal duplicates information already obtainable
+                 from another, simpler proposal.
+  MISLEADING   — The proposal risks introducing artifacts or false
+                 conclusions that outweigh its diagnostic value.
+
+--------------------------------------------------------------------------------
+2.1  CROP TO ANATOMICAL CONTENT [UNANIMOUS — 6/6 agents]
+--------------------------------------------------------------------------------
+
+  Rating:  STRONGLY JUSTIFIED
+
+  Rationale: All 6 agents identified that ~45-55% of the image width
+  (columns 0-720 approximately) is empty black background with no
+  anatomical content. Cropping to the bounding box of non-background
+  pixels would effectively double the spatial resolution devoted to
+  diagnostic structures.
+
+  Implementation consensus:
+  - Threshold at pixel value > 5 or > 10 to identify background.
+  - Compute bounding box of all non-background pixels.
+  - Preserve a small margin (~2-5% of width/height, or ~50 pixels) to
+    avoid cutting off peripheral soft tissue.
+  - Do NOT upscale beyond original pixel count for quantitative analysis;
+    upscaling is acceptable only for display purposes (see caveat below).
+
+  Caveats agreed upon:
+  - The right edge of the original image truncates the proximal humerus.
+    Cropping should not make this worse.
+  - The bottom edge partially includes wrist structures. Preserve full
+    vertical extent.
+  - Upscaling by interpolation does NOT add real information. Any analysis
+    that depends on sub-pixel detail should be performed on the cropped
+    image at its native resolution, not on an upscaled version.
+
+  Resolution:  APPROVED as Step 1 of the processing pipeline.
+
+--------------------------------------------------------------------------------
+ 2.2  CONTRAST ENHANCEMENT / CLAHE [UNANIMOUS — 6/6 agents]
+--------------------------------------------------------------------------------
+
+  Rating:  STRONGLY JUSTIFIED
+
+  Rationale: The histogram is heavily skewed — 75-79% of all pixels have
+  values 0-8 (background), and the clinically relevant anatomical content
+  (soft tissue through cortical bone) is compressed into approximately
+  values 20-254. Contrast-limited adaptive histogram equalization (CLAHE)
+  would redistribute intensity locally, revealing soft-tissue detail
+  (fat pads, muscle boundaries) and trabecular bone pattern.
+
+  Implementation consensus:
+  - Apply CLAHE with clip limit 2.0-4.0 (start conservative).
+  - Tile size: 32x32 to 64x64 pixels (larger tiles reduce block artifacts;
+    64x64 is preferred for this image scale).
+  - Apply to grayscale channel only (all three RGB channels are identical).
+  - Generate both a moderate and aggressive version for comparison.
+  - Also produce a simple global linear contrast stretch (mapping 2nd to
+    98th percentile of non-background pixels to 0-255) as a baseline.
+
+  Caveats agreed upon:
+  - CLAHE amplifies noise. In soft-tissue regions where signal is weak,
+    noise amplification could create spurious structures that mimic fat
+    pads or soft-tissue abnormalities.
+  - Tile boundary artifacts ("seams") can appear if the tile size is too
+    small. Visual inspection for seams is mandatory.
+  - CLAHE is a hypothesis generator, NOT a diagnostic tool. Any finding
+    on the CLAHE-enhanced image must be verified against the original.
+
+  Resolution:  APPROVED as Step 2 of the processing pipeline.
+
+--------------------------------------------------------------------------------
+ 2.3  DUAL WINDOW/LEVEL ADJUSTMENT [5/6 agents — all except Agent_05,
+        who proposed a general histogram-based approach instead]
+--------------------------------------------------------------------------------
+
+  Rating:  STRONGLY JUSTIFIED
+
+  Rationale: Bone and soft tissue have fundamentally different density
+  ranges. A single window cannot optimize both simultaneously. A "bone
+  window" (narrow, centered on cortical/trabecular bone density,
+  approximately 150-254 in the original scale) maximizes cortical margin
+  visibility for fracture detection. A "soft tissue window" (wider,
+  centered on soft tissue density, approximately 20-130) maximizes fat
+  pad and muscle boundary visibility for occult fracture assessment.
+
+  Implementation consensus:
+  - Bone window: map [150, 254] to [0, 255], clip below 150 to black.
+  - Soft tissue window: map [20, 130] to [0, 255], clip below 20 to
+    black, above 130 to white.
+  - Apply windows to the CROPPED, contrast-stretched image (not the raw
+    original), after Steps 1-2.
+  - Save both renderings as separate outputs.
+
+  Agent_05's histogram-based approach (compute percentiles p1, p5, p95,
+  p99 of the content-only histogram, then derive optimal windows) is
+  a refinement of this proposal. The council adopts Agent_05's method
+  for determining the exact window boundaries rather than the hardcoded
+  ranges above.
+
+  Caveats agreed upon:
+  - Narrow windowing clips information outside the window range.
+  - Soft tissue window will render bone as featureless white silhouettes.
+  - The 8-bit quantization means some information was lost in the
+    original DICOM-to-PNG conversion; windowing redistributes but does
+    not recover information.
+
+  Resolution:  APPROVED as Step 3 of the processing pipeline.
+
+--------------------------------------------------------------------------------
+ 2.4  EDGE ENHANCEMENT / CORTICAL ANALYSIS [5/6 agents]
+--------------------------------------------------------------------------------
+
+  Rating:  JUSTIFIED with CAVEATS
+
+  Rationale: Cortical bone margins are the primary visual target for
+  fracture detection. Edge enhancement (Canny, Sobel, or unsharp masking)
+  can reveal subtle cortical step-offs, disruptions, or angular deviations
+  that are below the threshold of reliable visual perception in the
+  original image.
+
+  Implementation consensus:
+  - Canny edge detection on the bone-windowed image (from Step 3).
+  - Gaussian pre-smoothing (sigma=1.5) before edge detection.
+  - Canny thresholds: lower=20, upper=80 (on the bone-windowed,
+    contrast-stretched image).
+  - Unsharp masking as an alternative: sigma=1.5-2.0, amount=0.5-1.0.
+  - Render result as semi-transparent overlay on the original grayscale.
+
+  Caveats agreed upon:
+  - Edge detection produces false positives from soft-tissue boundaries,
+    noise, and normal anatomical landmarks (trochlear notch, olecranon
+    fossa, coronoid fossa).
+  - Unsharp masking creates "halo" artifacts (dark rings around bright
+    edges) that can mimic cortical step-offs — the most common source
+    of false-positive fracture detection.
+  - The olecranon fossa, coronoid fossa, and trochlear notch have NORMAL
+    cortical discontinuities that will be flagged as "breaks" but are
+    anatomical, not pathological.
+  - Every flagged discontinuity must be manually verified against the
+    original unprocessed image.
+
+  Resolution:  APPROVED as Step 4, with mandatory validation against the
+               original image.
+
+--------------------------------------------------------------------------------
+ 2.5  FAT PAD ASSESSMENT [4/6 agents — Agents 01, 03, 04, 05; Agent_02
+        addressed it implicitly through soft tissue windowing; Agent_06
+        did not explicitly propose it]
+--------------------------------------------------------------------------------
+
+  Rating:  HIGHLY JUSTIFIED — CRITICAL FOR ELBOW IMAGING
+
+  Rationale: The fat pad signs are the most sensitive indirect
+  radiographic markers of occult elbow fracture. On a lateral view:
+
+  - ANTERIOR FAT PAD: Normally barely visible or invisible. Elevation into
+    a triangular shape ("sail sign") indicates joint effusion, which in a
+    trauma setting is highly predictive of an occult fracture (especially
+    radial head or supracondylar).
+
+  - POSTERIOR FAT PAD: NEVER normally visible. Its presence is pathognomonic
+    for intra-articular pathology and, in the trauma setting, virtually
+    always indicates an occult fracture.
+
+  The lateral view is the OPTIMAL projection for fat pad assessment, making
+  this analysis particularly valuable for this image.
+
+  Implementation consensus:
+  - Use the soft-tissue windowed image (Step 3) as the primary view.
+  - Define anterior ROI in the coronoid fossa region.
+  - Define posterior ROI in the olecranon fossa region.
+  - Apply targeted CLAHE (smaller tile, moderate clip) to each ROI for
+    enhanced visibility.
+  - Assess anterior fat pad for sail sign (elevation above normal plane).
+  - Assess posterior fat pad for any visibility at all.
+  - Measure soft tissue thickness anterior vs. posterior for swelling.
+
+  Caveats agreed upon:
+  - A negative posterior fat pad sign does NOT rule out fracture.
+  - The anterior fat pad may be visible normally; the distinction between
+    "visible" and "elevated" is subtle and requires careful judgment.
+  - Contrast enhancement in these small ROIs may amplify noise to create
+    false lucent areas that resemble fat pads.
+  - The olecranon fossa itself is a radiolucent depression that can be
+    confused with a posterior fat pad.
+
+  Resolution:  APPROVED as Step 5, treated as a high-priority diagnostic
+               analysis given its clinical significance.
+
+--------------------------------------------------------------------------------
+ 2.6  RADIAL HEAD DETAILED ANALYSIS [4/6 agents]
+--------------------------------------------------------------------------------
+
+  Rating:  HIGHLY JUSTIFIED
+
+  Rationale: Radial head fractures are the most common adult elbow
+  fracture (5-15% of all adult fractures) and are notoriously difficult
+  to detect on a single lateral view. A nondisplaced (Mason type I)
+  fracture may show only a subtle cortical step-off or hairline lucency.
+
+  Implementation consensus:
+  - Crop a tight ROI around the radial head and neck region.
+  - Apply unsharp masking (mild: sigma=1.0-1.5, amount=0.5-0.8) for
+    cortical sharpening.
+  - Trace the expected circular/oval outline of the radial head cortex
+    using edge detection (Canny).
+  - Compute smoothness of the traced outline; flag deviations from a
+    smooth curve as potential step-offs.
+  - Assess radial head to capitellum alignment.
+
+  Caveats agreed upon:
+  - This is the WEAK point of lateral-only imaging. A nondisplaced
+    fracture with the fracture line perpendicular to the beam will be
+    invisible. Absence of findings does NOT rule out radial head fracture.
+  - Edge enhancement creates false step-offs at the radial head-neck
+    junction (a normal anatomical transition).
+  - Superimposition of the radial head over other structures in the
+    lateral view complicates isolated cortical tracing.
+
+  Resolution:  APPROVED as Step 6, understood as supplementary evidence
+               to be interpreted in conjunction with fat pad findings.
+
+--------------------------------------------------------------------------------
+ 2.7  LINE PROFILE ANALYSIS ALONG CORTICAL MARGINS [3/6 agents —
+        Agents 01, 02, 04; Agent_03 proposed gradient analysis instead,
+        Agent_05 proposed line profiles along anatomical axes]
+--------------------------------------------------------------------------------
+
+  Rating:  JUSTIFIED — MODERATE TO HIGH VALUE
+
+  Rationale: Visual inspection of cortical margins, while the primary
+  method for fracture detection, can miss subtle step-offs (<2 mm).
+  Quantitative line profiles provide reproducible, measurable traces of
+  intensity along expected cortical paths.
+
+  Implementation consensus:
+  - Use edges detected in Step 4 as a guide for line placement.
+  - Trace profiles at 3-5 pixels inside and outside each cortical edge.
+  - Key paths: anterior and posterior distal humeral cortex (supracondylar
+    region), anterior and posterior ulnar shaft cortex, lateral radial
+    head/neck cortex.
+  - Compute raw profile and first/second derivatives.
+  - Flag regions where the second derivative exceeds 2 standard deviations
+    from the mean (potential anomalies).
+
+  Agent_03's gradient magnitude analysis (Sobel-based) and Agent_05's
+  transect-line profiles along specific anatomical axes are complementary
+  approaches. The council recommends combining them: use gradient analysis
+  to identify cortical edges, then extract line profiles perpendicular to
+  those edges.
+
+  Caveats agreed upon:
+  - Line placement must be precise; even a 5-pixel offset will smooth the
+    signal and reduce sensitivity.
+  - Bone superimposition in the lateral projection creates complex
+    intensity landscapes where radius and ulna overlap.
+  - Normal anatomical contours (trochlear notch, olecranon fossa) produce
+    legitimate intensity transitions that are not fractures.
+
+  Resolution:  APPROVED as Step 7, to be performed on the bone-windowed
+               image with validation against the original.
+
+--------------------------------------------------------------------------------
+ 2.8  HISTOGRAM / DENSITY ANALYSIS [5/6 agents]
+--------------------------------------------------------------------------------
+
+  Rating:  JUSTIFIED — FOUNDATIONAL VALUE
+
+  Rationale: Understanding the intensity distribution of the anatomical
+  content is prerequisite to optimal windowing, thresholding, and all
+  subsequent analysis. Agents 01, 02, 04, 05, and 06 all proposed some
+  form of histogram or density analysis.
+
+  Implementation consensus:
+  - Compute full 256-bin histogram of the CROPPED content region (not the
+    full image, which is dominated by background).
+  - Identify intensity percentiles: p1, p5, p25, p50, p75, p95, p99.
+  - Compute regional histograms for: distal humerus, elbow joint, proximal
+    radius/ulna, distal forearm, soft tissue envelope.
+  - Use the content-only histogram to derive optimal window/level
+    parameters (as proposed by Agent_05).
+  - Assess whether the 8-bit conversion preserved meaningful separation
+    between tissue classes.
+
+  Caveats agreed upon:
+  - The global histogram may be dominated by the largest structure
+    (forearm shafts), masking the intensity range of smaller structures.
+  - Regional histograms require reasonable anatomical segmentation, which
+    may be imprecise without prior processing.
+
+  Resolution:  APPROVED as Step 0 (preliminary analysis, runs in parallel
+               with Step 1).
+
+--------------------------------------------------------------------------------
+ 2.9  FREQUENCY-DOMAIN (FFT) ANALYSIS [3/6 agents — Agents 01, 02, 03;
+        Agent_04 also proposed it]
+--------------------------------------------------------------------------------
+
+  Rating:  LOW YIELD — EXPLORATORY ONLY
+
+  Rationale: Fourier transform analysis would characterize the spatial
+  frequency content of the image, potentially revealing periodic artifacts
+  (grid lines, moire patterns, scanning artifacts) and the effective
+  resolution limit. However:
+
+  - The first-pass reviews found no evidence of periodic artifacts
+    (no grid lines, no moire patterns, no motion blur streaks).
+  - The PNG format is lossless; compression artifacts are unlikely.
+  - The effective resolution limit can be estimated more simply from the
+    image dimensions and anatomical scale.
+  - FFT is computationally expensive and produces results that are not
+    directly diagnostic.
+
+  The council acknowledges that FFT analysis could serve as a quality-
+  assurance check to confirm the absence of periodic artifacts, but
+  considers this a lower-priority task relative to the direct diagnostic
+  analyses above.
+
+  Resolution:  APPROVED as OPTIONAL/EXPLORATORY. Should not delay or
+               interfere with higher-priority steps. If performed, apply
+               a 2D Hamming window before FFT to minimize edge artifacts.
+
+--------------------------------------------------------------------------------
+ 2.10 ROTATION / REORIENTATION [2/6 agents — Agents 04, 06]
+--------------------------------------------------------------------------------
+
+  Rating:  MODERATE VALUE — DISPLAY-ONLY
+
+  Rationale: Agent_04 proposed rotating the image approximately -45
+  degrees (clockwise) to reorient the limb along a more natural vertical
+  axis. Agent_06 similarly proposed rotation for improved comparison
+  with reference images.
+
+  The council notes that:
+  - Rotation is purely a display convenience. It does not add diagnostic
+    information.
+  - Rotation introduces interpolation artifacts (nearest-neighbor creates
+    stair-stepping; bilinear/lanczos creates blurring and value mixing).
+  - Any quantitative analysis should be performed on the unrotated image
+    to avoid interpolation artifacts.
+  - A rotated version is acceptable for display and visual comparison
+    purposes.
+
+  Resolution:  APPROVED for DISPLAY ONLY. Do not use rotated images for
+               quantitative analysis.
+
+--------------------------------------------------------------------------------
+ 2.11 BONE DENSITY HEATMAP [3/6 agents — Agents 01, 03, 04]
+--------------------------------------------------------------------------------
+
+  Rating:  LOW YIELD — LIMITED BY 8-BIT DATA
+
+  Rationale: A sliding-window density heatmap would visualize regional
+  variations in bone density, potentially identifying focal osteolytic
+  or osteoblastic lesions. However:
+
+  - The 8-bit quantization severely limits the precision of density
+    measurements. A 16-bit DICOM source would be much more reliable.
+  - Partial volume effects (thin cortical bone vs. thick cortex) create
+    apparent density differences that are geometric, not pathological.
+  - Beam hardening and X-ray attenuation through varying amounts of
+    overlying tissue create apparent density gradients that are
+    acquisition artifacts.
+  - Superimposition of the radius and ulna in the lateral projection
+    creates density patterns that are geometric, not biological.
+
+  The council considers this exploratory at best. It may flag regions
+  worth visual inspection but should not be interpreted as diagnostic.
+
+  Resolution:  APPROVED as OPTIONAL/EXPLORATORY. Any flagged region must
+               be visually confirmed on the original and bone-windowed
+               image.
+
+--------------------------------------------------------------------------------
+ 2.12 INTEROSSEOUS SPACE MEASUREMENT [2/6 agents — Agents 01, 03]
+--------------------------------------------------------------------------------
+
+  Rating:  MODERATE VALUE
+
+  Rationale: The interosseous space between the radius and ulna should
+  maintain a relatively consistent, gradually widening profile from
+  proximal to distal. An abrupt narrowing or widening at a particular
+  level could indicate a fracture with cortical displacement.
+
+  Caveats agreed upon:
+  - On a lateral view, the radius and ulna are partially superimposed,
+    making cortical edge detection ambiguous.
+  - Forearm rotation during acquisition significantly alters the apparent
+    interosseous space width.
+  - Without pixel-to-mm calibration, only relative measurements are
+    reliable.
+
+  Resolution:  APPROVED as a supplementary analysis. Results should be
+               interpreted cautiously given projection limitations.
+
+--------------------------------------------------------------------------------
+ 2.13 ANTERIOR HUMERAL LINE [2/6 agents — Agents 03, 05]
+--------------------------------------------------------------------------------
+
+  Rating:  JUSTIFIED — SPECIFIC CLINICAL VALUE
+
+  Rationale: The anterior humeral line is the single most important
+  alignment criterion in lateral elbow imaging. Drawn along the anterior
+  cortex of the distal humeral shaft and projected forward, it should
+  pass through the middle third of the capitellum in a normal elbow.
+  Deviation (passing through the anterior third or anterior to the
+  capitellum entirely) indicates posterior angulation, most commonly
+  from a displaced supracondylar fracture.
+
+  Agent_05 noted that this image may be from a pediatric patient (open
+  physes at the distal humerus), making this analysis particularly
+  relevant, as supracondylar fractures are the most common pediatric
+  elbow fracture.
+
+  Caveats agreed upon:
+  - Requires a TRUE lateral view. Even slight rotation invalidates the
+    analysis. Superimposition of the humeral condyles should confirm
+    adequate rotation.
+  - In a pediatric patient with an open physis, the line should be
+    extended to the ossification center of the capitellum, not the entire
+    capitellum.
+  - The humeral shaft is partially cut off at the right edge of the image,
+    which may limit the length of cortex available for line fitting.
+
+  Resolution:  APPROVED as Step 8, with the caveat that results are
+               contingent on the image being a true lateral projection.
+
+================================================================================
+SECTION 3 — ARTIFACT RISKS FROM PROCESSING
+================================================================================
+
+The council identified the following specific artifact risks that must be
+mitigated during processing:
+
+  RISK 1: CLAHE NOISE AMPLIFICATION
+  Severity: HIGH
+  Mechanism: CLAHE with too-small tile size or too-high clip limit will
+    amplify background noise, creating a grainy "salt-and-pepper" appearance
+    that can be mistaken for cortical irregularity or trabecular disruption.
+  Mitigation: Use tile size >= 64x64 pixels. Clip limit <= 4.0. Always
+    compare CLAHE findings against the original.
+
+  RISK 2: EDGE ENHANCEMENT FALSE FRACTURE LINES
+  Severity: HIGH
+  Mechanism: Unsharp masking creates "halo" artifacts — dark rings on one
+    side and bright rings on the other of every edge. These halos can mimic
+    cortical step-offs or hairline fracture lines.
+  Mitigation: Use mild unsharp masking parameters (sigma 1.5-2.0, amount
+    0.5-1.0). Any apparent fracture visible only on the sharpened image
+    and not on the original is a false positive.
+
+  RISK 3: UPSCALING DOES NOT ADD REAL RESOLUTION
+  Severity: MODERATE
+  Mechanism: Interpolation (bilinear, bicubic, Lanczos) creates new pixel
+    values by mathematical averaging of existing pixels. No new information
+    is added. Sub-pixel detail inferred from an upscaled image is illusory.
+  Mitigation: Perform all quantitative analysis on the cropped image at its
+    native resolution. Use upscaling only for display.
+
+  RISK 4: THRESHOLDING MAY MISS SUBTLE STRUCTURES
+  Severity: MODERATE
+  Mechanism: Binary thresholding (e.g., for bone mask extraction) will
+    exclude pixels at intermediate intensity values. Thin cortical bone,
+    trabecular bone, and early lytic lesions may fall below the threshold
+    and be excluded from analysis.
+  Mitigation: Use multiple thresholds and compare results. Never rely on a
+    single binary mask for diagnostic conclusions.
+
+  RISK 5: WINDOWING ARTIFACTS AT INTENSITY BOUNDARIES
+  Severity: MODERATE
+  Mechanism: Narrow windowing clips values outside the window range to
+    black or white. At the clipping boundary, small intensity differences
+    that were present in the original are lost, potentially creating
+    artificial "steps" or "bands" in the displayed image.
+  Mitigation: Use multiple window settings and cross-validate findings.
+
+  RISK 6: ROTATION INTERPOLATION ARTIFACTS
+  Severity: LOW
+  Mechanism: Image rotation requires resampling, which introduces
+    interpolation artifacts. These are cosmetically visible but generally
+    do not create misleading diagnostic features at mild rotation angles.
+  Mitigation: Restrict rotation to display purposes. Do not perform
+    quantitative analysis on rotated images.
+
+  RISK 7: LINE PROFILE PATH MISPLACEMENT
+  Severity: MODERATE
+  Mechanism: If a line profile does not perfectly follow the cortical
+    margin (even a few pixels off), the intensity trace will show artificial
+    dips where the line crosses the cortex at an oblique angle.
+  Mitigation: Verify line placement visually on the original image. Use
+    edge detection results to guide placement. Smooth profiles with a
+    moving average (3-5 pixel window) before analysis.
+
+================================================================================
+SECTION 4 — ANALYSES THAT RESOLVE UNCERTAINTY
+================================================================================
+
+The council identified the following analyses as directly resolving the
+uncertainties raised during first-pass review:
+
+  UNCERTAINTY 1: Anatomical identification
+  Resolved by: Step 1 (Crop) + Step 8 (Histogram)
+  Explanation: Cropping to the anatomical content and analyzing the
+    resulting histogram will definitively confirm the anatomical structures
+    present. The L-shaped bony architecture, combined with the intensity
+    distribution (cortical bone peak, trabecular bone shoulder, soft tissue
+    range), is distinctive for a lateral elbow radiograph.
+
+  UNCERTAINTY 2: Occult fracture detection
+  Resolved by: Step 5 (Fat pad assessment) + Step 6 (Radial head analysis)
+    + Step 4 (Edge enhancement)
+  Explanation: These three analyses provide convergent evidence:
+    - Fat pad signs (especially posterior fat pad) are the most sensitive
+      indirect indicator of occult elbow fracture.
+    - Radial head cortical analysis directly targets the most common elbow
+      fracture site.
+    - Edge enhancement along cortical margins detects subtle step-offs.
+    - If any two of these three analyses converge on a finding, confidence
+      is substantially increased.
+
+  UNCERTAINTY 3: Image quality limitations
+  Resolved by: Step 0 (Histogram analysis)
+  Explanation: The content-only histogram will quantify the effective
+    dynamic range, the separation between tissue classes, and the optimal
+    window/level parameters. This directly answers the question of how
+    much diagnostic information the 8-bit PNG retains relative to the
+    original DICOM.
+
+  UNCERTAINTY 4: Supracondylar alignment (pediatric relevance)
+  Resolved by: Step 8 (Anterior humeral line)
+  Explanation: The anterior humeral line directly assesses whether the
+    distal humerus is properly aligned with the capitellum. Deviation
+    indicates posterior angulation, most commonly from a displaced
+    supracondylar fracture — the most common pediatric elbow fracture.
+
+  UNCERTAINTY 5: Soft tissue swelling / joint effusion
+  Resolved by: Step 3 (Soft tissue window) + Step 5 (Fat pad assessment)
+  Explanation: The soft tissue window makes the anterior and posterior
+    fat pads, muscle boundaries, and periarticular soft tissue thickness
+    visible. Combined with targeted fat pad analysis, this resolves whether
+    joint effusion is present.
+
+================================================================================
+SECTION 5 — PRESERVED DISAGREEMENTS
+================================================================================
+
+The council deliberately preserves the following disagreements rather than
+forcing artificial consensus, as they represent legitimate areas of
+uncertainty:
+
+  DISAGREEMENT 1: Pediatric vs. Adult Patient
+  Status: UNRESOLVED
+  Details: Agent_05 observed what appears to be an open physis at the
+    distal humerus, suggesting a pediatric patient. No other agent made
+    this observation explicitly. If this is a pediatric patient, the
+    anterior humeral line analysis (Step 8) and physis assessment take on
+    much higher clinical priority, as supracondylar fractures and
+    Salter-Harris injuries are common in children.
+  Implication: The processing plan includes both analyses. Their relative
+    priority should be adjusted if the patient is confirmed to be pediatric.
+
+  DISAGREEMENT 2: True Lateral vs. Oblique Projection
+  Status: UNRESOLVED
+  Details: Agents 01, 03, and 05 described the image as a "true lateral"
+    view. Agent_04 noted structural drift and non-standard orientation.
+    Agent_06 noted a 142.6-degree principal axis, suggesting possible
+    rotation. If the view is not a true lateral (i.e., the forearm is
+    rotated even slightly from the lateral plane), the anterior humeral
+    line analysis (Step 8) is invalid, and the interosseous space
+    measurement (Step 12) is unreliable.
+  Implication: The superimposition of the humeral condyles should be
+    checked as the criterion for a true lateral. If they are not
+    perfectly superimposed, the view is oblique, and analyses depending
+    on true lateral geometry should be flagged as approximate.
+
+  DISAGREEMENT 3: Value of FFT/Frequency-Domain Analysis
+  Status: MAINTAINED
+  Details: The council rated FFT analysis as "low yield" (Section 2.9),
+    but Agents 01, 02, 03, and 04 argued for its inclusion as a quality-
+    assurance check. The council preserves this as a legitimate minority
+    position: FFT analysis could detect periodic artifacts that are
+    invisible in the spatial domain, and its absence leaves a small gap
+    in the quality assurance pipeline.
+
+  DISAGREEMENT 4: Laterality (Right vs. Left Elbow)
+  Status: UNRESOLVED
+  Details: Agent_01 and Agent_03 suggested "right elbow" based on the
+    orientation of structures. Agent_02 suggested "left" based on marker
+    placement convention (but no marker is visible). No anatomical
+    laterality marker (R/L) is present in the image. Without DICOM
+    metadata, laterality cannot be determined from the image alone.
+  Implication: All findings should be reported without assumed laterality,
+    or with a note that laterality is unknown.
+
+================================================================================
+SECTION 6 — UNIFIED PROCESSING PLAN
+================================================================================
+
+Based on the deliberation above, the council adopts the following ordered
+processing pipeline:
+
+  STEP 0  [PRELIMINARY — runs in parallel with Step 1]
+          Histogram and density analysis of the content region.
+          Determines optimal window parameters for Step 3.
+          Agents responsible: 01, 02, 04, 05, 06 (all proposed this)
+
+  STEP 1  [FOUNDATIONAL]
+          Crop to anatomical content, removing black background margin.
+          Preserve small margin to avoid edge truncation.
+          Convert to single-channel grayscale (lossless, since R=G=B).
+          Agents responsible: 01, 02, 03, 04, 05, 06 (all proposed this)
+
+  STEP 2  [FOUNDATIONAL]
+          CLAHE contrast enhancement on the cropped image.
+          Parameters: clip limit 2.0, tile size 64x64.
+          Also produce a global linear contrast stretch (p2 to p98).
+          Agents responsible: 01, 02, 03, 04, 05 (all proposed this)
+
+  STEP 3  [DISPLAY/ANALYSIS]
+          Dual window/level rendering:
+            (a) Bone window — derived from Step 0 histogram analysis.
+            (b) Soft tissue window — derived from Step 0 histogram analysis.
+          Agents responsible: 01, 02, 03, 04, 06 (proposed this);
+                              Agent 05's percentile method for boundaries
+
+  STEP 4  [FRACTURE SCREENING]
+          Edge detection (Canny) on the bone-windowed image.
+          Gaussian pre-smoothing (sigma=1.5), then Canny (low=20, high=80).
+          Morphological filtering to isolate cortical edges.
+          Semi-transparent overlay on original for visual review.
+          Agents responsible: 01, 02, 03, 04, 06 (proposed this)
+
+  STEP 5  [OCCLT FRACTURE DETECTION — HIGH PRIORITY]
+          Fat pad assessment on the soft-tissue windowed image.
+          Anterior ROI (coronoid fossa): assess for sail sign.
+          Posterior ROI (olecranon fossa): assess for any visibility.
+          Targeted CLAHE on each ROI for enhanced visibility.
+          Agents responsible: 01, 03, 04, 05 (proposed this)
+
+  STEP 6  [TARGETED FRACTURE DETECTION]
+          Radial head dedicated analysis.
+          Tight ROI crop, mild unsharp masking, edge tracing.
+          Smoothness analysis of cortical outline.
+          Alignment assessment (radial head to capitellum).
+          Agents responsible: 01, 02, 03, 05 (proposed this)
+
+  STEP 7  [QUANTITATIVE CORTICAL ASSESSMENT]
+          Line profile analysis along cortical margins.
+          Use Step 4 edges to guide line placement.
+          Compute raw profiles, first and second derivatives.
+          Flag anomalies (second derivative > 2 SD from mean).
+          Agents responsible: 01, 02, 04 (proposed line profiles);
+                              Agent 03 (gradient analysis);
+                              Agent 05 (transect profiles)
+
+  STEP 8  [ALIGNMENT ASSESSMENT]
+          Anterior humeral line analysis.
+          Trace anterior distal humeral cortex, project through capitellum.
+          Assess which third of capitellum is intersected.
+          Agents responsible: 03, 05 (proposed this)
+
+  SUPPLEMENTARY [LOWER PRIORITY]
+          Interosseous space measurement (Agents 01, 03).
+          Bone alignment and bowing assessment (Agent 02).
+          Forearm bone alignment (Agent 06).
+          Joint space width measurement (Agents 02, 06).
+
+  OPTIONAL/EXPLORATORY [DO NOT DELAY HIGHER PRIORITY STEPS]
+          FFT / frequency-domain analysis (Agents 01, 02, 03, 04).
+          Bone density heatmap (Agents 01, 03, 04).
+          Laplacian pyramid multi-scale analysis (Agent 03).
+          High-pass filter decomposition (Agent 05).
+          Physis quantitative assessment (Agent 05).
+          Atlas comparison (Agent 06).
+          Transition boundary profile (Agent 06).
+          Display-only rotation (Agents 04, 06).
+
+================================================================================
+SECTION 7 — VALIDATION PRINCIPLES
+================================================================================
+
+The council establishes the following validation principles that apply to
+ALL processing steps:
+
+  PRINCIPLE 1: ORIGINAL AS GROUND TRUTH
+  No finding on any processed, enhanced, or windowed image is considered
+  credible until it can be verified on the original unmodified image.
+  Processed images are hypothesis generators; the original is the arbiter.
+
+  PRINCIPLE 2: CROSS-VALIDATION ACROSS METHODS
+  When multiple independent methods (e.g., edge detection, line profiles,
+  and visual inspection) converge on the same finding at the same
+  anatomical location, confidence in that finding is substantially
+  increased. Disagreement between methods flags the finding for careful
+  review.
+
+  PRINCIPLE 3: ARTIFACT AWARENESS
+  Every processing step has known artifact modes (Section 3 above). Any
+  finding that matches a known artifact pattern (halo from unsharp masking,
+  noise amplification from CLAHE, edge discontinuity from Canny) must be
+  treated as suspicious until proven otherwise.
+
+  PRINCIPLE 4: 8-BIT LIMITATION ACKNOWLEDGMENT
+  The image is an 8-bit PNG converted from an unknown original (likely
+  12-16 bit DICOM). Some information has been irreversibly lost.
+  Quantitative density measurements are approximate at best. The council
+  recommends obtaining the original DICOM file if available.
+
+  PRINCIPLE 5: SINGLE-VIEW LIMITATION
+  This is a single lateral view without an accompanying AP view. Many
+  pathologies (especially radial head fractures with the fracture line
+  perpendicular to the beam, and medial/lateral epicondyle fractures)
+  are invisible on a lateral-only study. A negative finding does NOT
+  rule out fracture. Clinical correlation is essential.
+
+================================================================================
+SECTION 8 — RECOMMENDATIONS BEYOND IMAGE PROCESSING
+================================================================================
+
+The council notes the following recommendations that extend beyond the
+scope of image processing but are relevant to the diagnostic assessment:
+
+  1. Obtain the original DICOM file. The 8-bit PNG conversion has
+     irreversibly lost dynamic range and all metadata (patient ID,
+     laterality, acquisition parameters, kVp, mAs).
+
+  2. Obtain an AP view of the elbow for orthogonal assessment. Many
+     fractures (especially radial head and medial epicondyle fractures)
+     are invisible on lateral-only imaging.
+
+  3. Obtain an oblique view (or Y-view) for radial head assessment.
+     The radial head is optimally visualized on an oblique projection
+     that separates it from the superimposed capitellum.
+
+  4. Include clinical context: patient age (to determine if physeal
+     analysis is relevant), mechanism of injury, and location of
+     tenderness.
+
+  5. If clinical suspicion remains high despite negative imaging,
+     consider CT or MRI for occult fracture detection.
+
+================================================================================
+APPENDIX — AGENT CONTRIBUTION SUMMARY
+================================================================================
+
+  Agent  | Identification | Key Proposal Contributions
+  -------|----------------|-------------------------------------------
+  Agent_01 | Correct        | Comprehensive 10-proposal plan; cortical
+             |                | edge detection, line profiles, radial head
+             |                | ROI, olecranon-fat pad enhancement,
+             |                | trabecular analysis, quality report
+  Agent_02 | Misidentified  | Corrected self; 12 proposals including
+  (corrected)|                | joint space analysis, olecranon/coronoid
+             |                | ROI, bone alignment, FFT analysis,
+             |                | frequency-domain characterization
+  Agent_03 | Correct        | 10 proposals including fat pad visualization,
+             |                | anterior humeral line, gradient
+             |                | magnitude analysis, density heatmap,
+             |                | Laplacian pyramid, interosseous
+             |                | space profile
+  Agent_04 | Uncertain      | 8 proposals including bone/soft-tissue
+             |                | dual windows, CLAHE, line profiles,
+             |                | gradient magnitude map, rotation,
+             |                | density heatmap, FFT analysis
+  Agent_05 | Correct        | 8 proposals including soft-tissue window,
+             |                | unsharp masking, line profiles,
+             |                | Laplacian filtering, physis
+             |                | assessment, histogram-based
+             |                | window optimization
+  Agent_06 | Misidentified  | Corrected self; 10 proposals including
+  (corrected)|                | dual windows, CLAHE for distal
+             |                | forearm, bone alignment, elbow
+             |                | joint space, transition boundary
+             |                | profile, atlas comparison
+
+================================================================================
+END OF COUNCIL DELIBERATION
+================================================================================

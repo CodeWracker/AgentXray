@@ -1,0 +1,528 @@
+================================================================================
+PROCESSING PLAN — ID003-xray.png
+Orchestrator synthesis of the single-model council (Agent_01..Agent_06, all
+qwen3.8-27b). Round 1.
+================================================================================
+
+GOVERNING RULES (agreed by all six agents in deliberation):
+- R1. Every enhanced output has a PLAIN (nearest-neighbor, unfiltered) reference
+  crop twin. A finding is credited only if traceable in the plain crop /
+  original at native resolution.
+- R2. Upscaling adds no information; all calls are made against native pixels.
+- R3. No physical scale exists in the image; all quantitative values are in
+  pixels / degrees (image plane) / ratios, stated as such.
+- R4. Derived images are supporting visualizations, never standalone evidence.
+- R5. Disagreements D1 (skeletal maturity) and D2 (lower-right structure
+  identity) are resolved only by the dedicated tests below; if unresolvable,
+  they remain reported as open.
+
+KEY UNRESOLVED QUESTIONS DRIVING THIS PLAN:
+  Q1. Is the mid-forearm focal irregularity (x~0.45-0.60, y~0.33-0.47, flagged
+      by 6/6 agents) a true cortical lesion (hairline/transverse diaphyseal
+      fracture, acute or healing) or a superimposition/blur artifact?
+  Q2. Are there occult carpal/wrist or metacarpal/phalangeal fractures hidden
+      by overexposure and fist superimposition?
+  Q3. D1: pediatric (open physes, few carpal centers) vs skeletally mature?
+  Q4. D2: is the lower-right structure a second superimposed limb (Agent_05)
+      or continuation of torso/positioning (majority)?
+  Q5. Soft-tissue swelling as indirect sign of injury?
+  Q6. How much of the bright hand region is truly clipped (unrecoverable)?
+  Q7. Any measurable angulation/step-off/width change at the lesion level?
+
+================================================================================
+SECTION A — GLOBAL BASELINE AND ENHANCEMENTS
+================================================================================
+
+A1. OUTPUT: ID003_01_pctstretch_full.png
+    TRANSFORMATION: Grayscale conversion + linear percentile stretch
+    (1.0th–99.5th percentiles -> 0–255).
+    PARAMETERS: p_lo=1.0, p_hi=99.5.
+    QUESTION: What is a defensible global display baseline, neutral to the
+    dark background and the bright right-edge structure?
+    REASON: Common reproducible base for all later comparisons; removes the
+    influence of background/trunk on display range.
+    SUPPORTED BY: Agent_01 (P1), Agent_03 (A1), Agent_06 (P1 baseline item).
+    OPPOSED/QUESTIONED BY: none.
+    ARTIFACTS: Clipping at both ends; background noise exaggeration.
+    EXPECTED VALUE: Baseline reference; modest.
+
+A2. OUTPUT: ID003_02_clahe_full.png
+    TRANSFORMATION: CLAHE (clipLimit=2.5, tileGridSize=8x8) on grayscale.
+    PARAMETERS: clip 2.5, tiles 8x8.
+    QUESTION: What low-contrast detail (cortical margins, soft-tissue
+    outlines, carpal trabeculae) is hidden at native display?
+    REASON: 6/6 agents independently proposed a full-image CLAHE; the image
+    has two opposite exposure problems (dark left, saturated right) that a
+    single global window cannot address simultaneously.
+    SUPPORTED BY: Agent_01 (P2), Agent_02 (P1), Agent_03 (A1), Agent_04 (P1
+    via crop-level CLAHE), Agent_05 (A1), Agent_06 (P1).
+    OPPOSED/QUESTIONED BY: none (unanimous; parameters consolidated from
+    proposed ranges clip 2.0–3.0).
+    ARTIFACTS: Noise amplification in soft tissue/background; halos/banding at
+    strong edges; false "lines" from amplified noise.
+    EXPECTED VALUE: High — general re-read of the whole limb.
+
+A3. OUTPUT: ID003_03_highpass_forearmhand.png
+    TRANSFORMATION: High-pass = original - GaussianBlur(sigma=15 px), rendered
+    mid-gray-centered (value 128 = zero response); limited to the
+    forearm+hand ROI band (x 0.38–0.72, y 0.05–1.00), black outside ROI.
+    PARAMETERS: sigma=15, scale=3.0 for display.
+    QUESTION: Where exactly are the cortical edges, and does any cortical
+    margin show a discontinuity/step at the mid-forearm level?
+    REASON: Suppresses low-frequency exposure gradients so cortical
+    continuity can be traced objectively; ROI-limited per council to avoid
+    trunk scatter edges.
+    SUPPORTED BY: Agent_01 (P3), Agent_02 (P4), Agent_03 (A2), Agent_04 (P2),
+    Agent_06 (P4) — consolidated; council limited full-image version to ROI.
+    OPPOSED/QUESTIONED BY: Agent_02, Agent_04, Agent_06 cautioned (full-image
+    version opposed; ROI version accepted).
+    ARTIFACTS: bright-dark-bright triplets at true gaps (must not be read as
+    normal two-edge cortex); residual low-frequency ringing; joint spaces
+    light up.
+    EXPECTED VALUE: High for Q1 cortical-continuity question.
+
+A4. OUTPUT: ID003_04_saturation_map.png
+    TRANSFORMATION: Map of clipped pixels: pixel >= 250 rendered yellow on
+    black; also fraction per ROI reported in measurements report.
+    PARAMETERS: threshold 250 (and exact-255 count).
+    QUESTION: How much of the hand/carpal region is truly clipped vs merely
+    under-displayed (bounds the value of all hand windowing)?
+    REASON: Characterization of the data itself; bounds Q6.
+    SUPPORTED BY: Agent_03 (additional proposal, spatial saturation map);
+    supported in substance by Agent_02 (P8 motivation), Agent_04 (P4 note),
+    Agent_06 (Q3).
+    OPPOSED/QUESTIONED BY: none.
+    ARTIFACTS: none diagnostic (data characterization).
+    EXPECTED VALUE: Medium — sets an honest limit on hand interpretability.
+
+================================================================================
+SECTION B — PLAIN REFERENCE CROPS (unfiltered, nearest-neighbor)
+    (council rule R1: mandatory twins for all enhanced outputs)
+================================================================================
+
+B1. OUTPUT: ID003_10_crop_midforearm_plain.png
+    REGION: x 0.40–0.64, y 0.28–0.50 (px 512–819, 448–800); 3x nearest-neighbor.
+    QUESTION/REASON: Native-resolution ground truth for the primary suspected
+    finding (Q1). All enhanced mid-forearm outputs are judged against this.
+    SUPPORTED BY: all six agents (Agent_01 P4-base, Agent_02 P4-base,
+    Agent_03 P3-base, Agent_04 M4, Agent_05 C2, Agent_06 C1).
+    OPPOSED/QUESTIONED BY: none.
+    ARTIFACTS: pixelation only.
+    EXPECTED VALUE: Essential (reference).
+
+B2. OUTPUT: ID003_11_crop_wrist_plain.png
+    REGION: x 0.40–0.68, y 0.52–0.80; 2.5x nearest-neighbor.
+    QUESTION/REASON: Reference for distal radius/ulna physes, epiphyses,
+    carpal centers (Q2, Q3).
+    SUPPORTED BY: all six (Agent_01 P6-base, Agent_02 P2-base, Agent_03 P4,
+    Agent_04 M4, Agent_05 C1, Agent_06 C2).
+    OPPOSED/QUESTIONED BY: none.
+    ARTIFACTS: pixelation only.
+
+B3. OUTPUT: ID003_12_crop_elbow_plain.png
+    REGION: x 0.42–0.70, y 0.08–0.34; 2.5x nearest-neighbor.
+    QUESTION/REASON: Reference for distal humerus, olecranon, radial head,
+    proximal forearm (occult elbow pathology; D1 epiphyses).
+    SUPPORTED BY: all six (Agent_01 P5, Agent_02 P3, Agent_03 P5, Agent_04 P6,
+    Agent_05 A8, Agent_06 C4).
+    OPPOSED/QUESTIONED BY: none (all caution: partial/oblique view, absence of
+    finding is not clearance).
+    ARTIFACTS: pixelation only.
+
+B4. OUTPUT: ID003_13_crop_hand_plain.png
+    REGION: x 0.24–0.70, y 0.58–1.00; 2x nearest-neighbor.
+    QUESTION/REASON: Reference for metacarpals/phalanges and the lower-right
+    superimposed structures (Q2, Q4).
+    SUPPORTED BY: all six (Agent_01 P7, Agent_02 P5, Agent_03 P4, Agent_04 M4,
+    Agent_05 C3, Agent_06 C3).
+    OPPOSED/QUESTIONED BY: none.
+    ARTIFACTS: pixelation only.
+
+B5. OUTPUT: ID003_14_crop_lowerright_plain.png
+    REGION: x 0.38–0.95, y 0.72–1.00; 2x nearest-neighbor.
+    QUESTION/REASON: Plain reference for D2: second limb (Agent_05) vs
+    torso/positioning (majority) — continuity tracing must start from an
+    unfiltered view.
+    SUPPORTED BY: Agent_02 (F1 added in deliberation), Agent_05 (A7 base),
+    Agent_06 (lower-right trio), Agent_01 (A7 base), Agent_03 (D2 test),
+    Agent_04 (A7 base).
+    OPPOSED/QUESTIONED BY: none.
+    ARTIFACTS: pixelation only.
+
+================================================================================
+SECTION C — ENHANCED CROPS AND DERIVATIVES
+================================================================================
+
+C1. OUTPUT: ID003_20_midforearm_clahe.png  (TOP PRIORITY)
+    TRANSFORMATION: B1 crop + CLAHE (clip 2.5, 8x8) on the crop.
+    QUESTION: Q1 — definite transverse fracture line / cortical break /
+    step-off / periosteal reaction at the mid-diaphysis?
+    REASON: 6/6 agents' top-priority proposal; magnification + local
+    equalization targets the low-contrast suspicion zone.
+    SUPPORTED BY: all six (Agent_01 P4, Agent_02 P4, Agent_03 P3, Agent_04 P1,
+    Agent_05 A2, Agent_06 P2).
+    OPPOSED/QUESTIONED BY: none (all caution: interpolation adds no detail).
+    ARTIFACTS: CLAHE noise -> false lines; halos; interpolated smoothing may
+    erase a 1-2 px true line.
+    EXPECTED VALUE: Highest — primary lesion read.
+
+C2. OUTPUT: ID003_21_midforearm_unsharp.png
+    TRANSFORMATION: B1 crop + unsharp mask (Gaussian sigma=2, amount=0.7).
+    QUESTION: Q1 — subtle cortical step-off or lucency visible on
+    high-frequency emphasis?
+    REASON: 5/6 agents proposed unsharp/high-pass on the mid-forearm.
+    SUPPORTED BY: Agent_01 (P3/P4), Agent_02 (P4), Agent_04 (P2), Agent_05
+    (A2), Agent_06 (P2).
+    OPPOSED/QUESTIONED BY: Agent_03 preferred edge map instead (caution on
+    halo artifacts).
+    ARTIFACTS: ringing halos around cortices can mimic a second cortical line
+    or a lucency; noise amplification.
+    EXPECTED VALUE: High for cortical edge continuity.
+
+C3. OUTPUT: ID003_22_midforearm_canny.png
+    TRANSFORMATION: Canny edge detection (Gaussian sigma=1.5, thresholds from
+    gradient histogram ~1:2) on B1 crop, rendered white-on-black; second panel
+    = edges overlaid 50% on the plain crop.
+    QUESTION: Q1 — objective edge-termination/deflection at the lesion level
+    vs continuous parallel edges (superimposition)?
+    REASON: 4/6 agents proposed Canny/edge maps; council limited it to the
+    mid-forearm crop (full-image Canny overlay opposed).
+    SUPPORTED BY: Agent_01 (P8), Agent_03 (A2), Agent_04 (P5), Agent_06 (P5).
+    OPPOSED/QUESTIONED BY: Agent_02, Agent_05 (threshold sensitivity; accepted
+    crop-limited version), Agent_06 (opposed full-image version).
+    ARTIFACTS: threshold-sensitive; may break real edges (false gaps) or keep
+    noise edges; bone ends/crop borders produce terminations.
+    EXPECTED VALUE: Medium-high; an objective cross-check of C1/C2.
+
+C4. OUTPUT: ID003_23_midforearm_diff.png
+    TRANSFORMATION: (C1 - B1) difference image, amplified x4, mid-gray
+    centered, on B1 geometry.
+    QUESTION: Which structures exist ONLY after enhancement (artifacts) vs
+    which pre-exist in the native data?
+    REASON: Artifact discriminator for the primary lesion — any true cortical
+    feature must also appear in the difference image; pure enhancement halos
+    appear here too, but a "line" absent from the native crop cannot be real.
+    SUPPORTED BY: Agent_03 (added in deliberation).
+    OPPOSED/QUESTIONED BY: none; single-agent proposal, retained by
+    orchestrator judgment (low cost, direct answer to R1/R2 discipline).
+    ARTIFACTS: difference of two noisy images amplifies noise; interpret
+    only in conjunction with B1.
+    EXPECTED VALUE: Medium — methodological guard.
+
+C5. OUTPUT: ID003_30_wrist_bonewindow.png
+    TRANSFORMATION: B2 crop + bone window (linear clip at crop percentiles
+    5–98, mapped 0–255) + mild unsharp (sigma 1.5, amount 0.4).
+    QUESTION: Q2/Q3 — carpal bone outlines, individual ossification centers,
+    distal radial/ulnar physis integrity, radiocarpal alignment?
+    REASON: 6/6 proposed wrist magnification + local contrast (consolidated
+    from CLAHE/window variants).
+    SUPPORTED BY: all six (Agent_01 P6, Agent_02 P2, Agent_03 P4, Agent_04 P7,
+    Agent_05 A4, Agent_06 P3).
+    OPPOSED/QUESTIONED BY: none (all caution: saturation clipping may be
+    unrecoverable — see A4).
+    ARTIFACTS: windowing crushes background; CLAHE-like noise in trabecular
+    bone; obliquity remains unfixable.
+    EXPECTED VALUE: High for Q2/Q3 and D1.
+
+C6. OUTPUT: ID003_31_elbow_clahe.png
+    TRANSFORMATION: B3 crop + CLAHE (clip 2.5, 8x8).
+    QUESTION: Occult distal humerus/olecranon/radial head fracture; epiphyseal
+    morphology for D1?
+    REASON: 6/6 proposed elbow crop + local enhancement.
+    SUPPORTED BY: all six.
+    OPPOSED/QUESTIONED BY: none (caution: oblique partial view).
+    ARTIFACTS: halos at joint spaces; beam inhomogeneity -> false lines.
+    EXPECTED VALUE: Medium (limited by projection).
+
+C7. OUTPUT: ID003_40_hand_bonewindow.png
+    TRANSFORMATION: B4 crop + bone window (percentiles 10–99) + mild unsharp
+    (sigma 1.5, amount 0.4).
+    QUESTION: Q2 — metacarpal shaft/neck cortical integrity, MCP alignment,
+    the small dense focus near x~0.63, y~0.82 (Agent_04/05)?
+    REASON: 5/6 proposed hand bone-window crop.
+    SUPPORTED BY: Agent_01 (P7), Agent_02 (P5), Agent_03 (P4), Agent_04 (P8),
+    Agent_05 (A5).
+    OPPOSED/QUESTIONED BY: Agent_06 preferred soft-tissue window for hand
+    (both kept).
+    ARTIFACTS: dense overlap stays saturated; halos at overlapping cortices.
+    EXPECTED VALUE: Medium-high (superimposition limits remain).
+
+C8. OUTPUT: ID003_41_hand_softtissue.png
+    TRANSFORMATION: B4 region extended proximally to y 0.50 (x 0.24–0.70,
+    y 0.50–1.00) + soft-tissue window (percentiles 2–45 mapped 0–255), no
+    sharpening.
+    QUESTION: Q5 — soft-tissue swelling of digits/forearm, gas, foreign body?
+    REASON: 4/6 proposed soft-tissue window (indirect sign of occult injury).
+    SUPPORTED BY: Agent_01 (P9), Agent_04 (P4b), Agent_05 (A6), Agent_06 (P7).
+    OPPOSED/QUESTIONED BY: Agent_02, Agent_03 (noise amplification, positional
+    "plumpness"); kept as visual-only (numeric swelling index dropped by
+    council).
+    ARTIFACTS: bone ghosts; noise in dark background; flexed-fist baseline
+    asymmetry.
+    EXPECTED VALUE: Medium for Q5.
+
+C9. OUTPUT: ID003_50_lowerright_clahe.png
+    TRANSFORMATION: B5 crop + CLAHE (clip 3.0, 8x8).
+    QUESTION: Q4 (D2) — anatomy of the lower-right structures; limb vs torso?
+    REASON: D2 resolution test (all six in deliberation endorsed the
+    lower-right crop trio).
+    SUPPORTED BY: all six (Agent_02 P8/F1, Agent_05 A7, Agent_06 trio,
+    Agent_01 A7, Agent_03 D2, Agent_04 A7).
+    OPPOSED/QUESTIONED BY: none.
+    ARTIFACTS: CLAHE in a low-information region mostly amplifies noise;
+    truly overlapping pixels cannot be un-mixed.
+    EXPECTED VALUE: High for D2.
+
+C10. OUTPUT: ID003_51_lowerright_edges.png
+     TRANSFORMATION: B5 crop + Sobel gradient magnitude, mid-gray centered,
+     plus Canny edges overlaid colored on the plain crop (two panels).
+     QUESTION: Q4 (D2) — do the oblique structures show the long-bone
+     morphology (cortices + medullary channel) of a second limb, and where do
+     they overlap the examined hand?
+     REASON: Agent_05's A7 edge-overlay; endorsed by all six in deliberation
+     as the D2 discriminator (continuity tracing + joint-space evidence).
+     SUPPORTED BY: Agent_05 (A7), Agent_02 (F2 joint-space profile analog),
+     Agent_03 (D2 test), Agent_04 (A7 base), Agent_06 (trio), Agent_01 (A7).
+     OPPOSED/QUESTIONED BY: none (all require ambiguity labeling where pixels
+     are truly shared).
+     ARTIFACTS: derivative filters light up noise; ambiguous overlap zones
+     must be labeled ambiguous, not force-assigned.
+     EXPECTED VALUE: High for D2.
+
+================================================================================
+SECTION D — QUANTITATIVE MEASUREMENTS (plots/annotations + measurements
+report planning/measurements_report.txt)
+================================================================================
+
+D1. OUTPUT: ID003_60_profiles_midforearm.png
+    TRANSFORMATION: (a) Transverse intensity profiles (x 0.44–0.62) at focal
+    rows y = 0.385, 0.395, 0.405, 0.415 (individual + 4-row mean) and control
+    rows y = 0.33, 0.35, 0.45, 0.47; (b) longitudinal profiles along the four
+    tracked cortical x-positions (peak detection per row) for y 0.28–0.52.
+    QUESTION: Q1 — is there a discrete sharp dip (lucent line) crossing the
+    cortex, or only broad low-amplitude variation? Does it persist across
+    adjacent rows (anatomy) or jump (noise)?
+    REASON: 5/6 agents proposed profiles with control rows; the objective
+    real-vs-artifact test.
+    SUPPORTED BY: Agent_02 (P6), Agent_03 (A6), Agent_04 (M1), Agent_05 (A3),
+    Agent_06 (P8 M5).
+    OPPOSED/QUESTIONED BY: Agent_01 (accepted in ranking as part of the
+    mid-forearm battery).
+    ARTIFACTS: 1-2 px dips may be quantization noise (control rows set the
+    noise floor); row-jitter (mitigated by row averaging); single 1-D profiles
+    miss off-plane structure.
+    EXPECTED VALUE: High for Q1.
+
+D2. OUTPUT: ID003_61_profile_diff.png
+    TRANSFORMATION: (focal 4-row mean) minus (distal control 2-row mean),
+    transverse profile, amplified x4.
+    QUESTION: Q1 — what remains at the focal level after subtracting the
+    adjacent "normal" diaphysis (removes tapering/beam-gradient contributions)?
+    REASON: Agent_04 added in deliberation (F1: aligned focal-minus-control
+    subtraction); supported as profiles discipline by Agent_05.
+    SUPPORTED BY: Agent_04 (F1), Agent_05 (profiles), Agent_03 (profiles
+    discipline).
+    OPPOSED/QUESTIONED BY: none.
+    ARTIFACTS: subtraction amplifies row-to-row noise; anatomical taper
+    differences between the two levels leak in (levels are close, so small).
+    EXPECTED VALUE: Medium-high for Q1.
+
+D3. OUTPUT: ID003_62_axis_angulation.png
+    TRANSFORMATION: On the mid-forearm plain geometry: per-row peak detection
+    of the four cortical margins (x 0.42–0.66, y 0.28–0.52); linear fits over
+    proximal segment (y 0.29–0.365) and distal segment (y 0.44–0.51) per
+    cortex; inter-axis angles, step-off (px offset at y 0.40), fit residuals;
+    sensitivity check with segment windows shifted by 6 px. Annotated on the
+    crop.
+    QUESTION: Q7 — measurable angular deformity, step-off, or focal width
+    change at the lesion?
+    REASON: 5/6 agents proposed axis/angulation measurement.
+    SUPPORTED BY: Agent_01 (P10), Agent_02 (P7), Agent_04 (M2), Agent_05
+    (M2), Agent_06 (P6).
+    OPPOSED/QUESTIONED BY: none (all require residual + sensitivity reporting;
+    1-2 deg is within fitting error and must be flagged as such).
+    ARTIFACTS: peak-tracking jitter; normal ulnar bowing; obliquity means
+    angles are image-plane apparent values only.
+    EXPECTED VALUE: High for Q7.
+
+D4. OUTPUT: ID003_63_width_curve.png
+    TRANSFORMATION: Forearm silhouette width vs y (0.25–0.55): outer
+    soft-tissue boundary per row (threshold at mid background-soft-tissue
+    level) and bone boundary (higher threshold); plot both curves; focal level
+    y~0.40 marked.
+    QUESTION: Q7 — focal bulge (callus/swelling/displacement) at the lesion
+    level?
+    REASON: Agent_03 (A8), Agent_05 (M2 width delta), Agent_04 (M1 width
+    ratio).
+    SUPPORTED BY: Agent_03 (A8), Agent_05 (M2), Agent_04 (M1 part).
+    OPPOSED/QUESTIONED BY: none (caution: soft-tissue boundary detection is
+    noisier than cortex — both curves reported).
+    ARTIFACTS: edge-detection jitter of a few px (smoothed with 3-row
+    moving average); background threshold choice.
+    EXPECTED VALUE: Medium for Q7.
+
+D5. OUTPUT: ID003_64_histogram_saturation.png
+    TRANSFORMATION: Histograms (shared axis) of full image + ROIs: hand
+    (x 0.40–0.66, y 0.68–0.95), mid-forearm (x 0.44–0.60, y 0.30–0.50),
+    lower-right (x 0.45–0.90, y 0.80–1.00); saturation fractions (>=250 and
+    ==255) annotated.
+    QUESTION: Q6 — how much hand/carpal information is clipped (unrecoverable)
+    vs recoverable by windowing?
+    REASON: Agent_03 (A9), Agent_02 (P8 motivation), Agent_06 (Q3).
+    SUPPORTED BY: Agent_03 (A9), Agent_02, Agent_06.
+    OPPOSED/QUESTIONED BY: none.
+    ARTIFACTS: none diagnostic.
+    EXPECTED VALUE: Medium — honest bounds on Q2 interpretability.
+
+D6. OUTPUT: ID003_70_carpal_census.png
+    TRANSFORMATION: B2 geometry (wrist plain crop) with numbered circular
+    markers on each identifiable carpal ossification center/fragment
+    (coordinates set by direct inspection of the enhanced crops B2/C5);
+    center list with normalized coordinates in measurements report.
+    QUESTION: Q3 (D1) — how many carpal centers, which positions filled;
+    pattern consistent with a specific age band or with fragmentation?
+    REASON: Agent_04 (M3), Agent_03 (consolidated census map), Agent_06 (D1
+    test), Agent_02, Agent_05.
+    SUPPORTED BY: Agent_04 (M3), Agent_03, Agent_06, Agent_02 (ranking),
+    Agent_05 (ranking).
+    OPPOSED/QUESTIONED BY: none (overlap may undercount — flagged).
+    ARTIFACTS: overlap hides centers; noise may create false ones; markers are
+    analyst-assigned, verify against plain crop.
+    EXPECTED VALUE: High for D1.
+
+D7. OUTPUT: ID003_71_elbow_census.png
+    TRANSFORMATION: B3 geometry with numbered markers on each identifiable
+    elbow ossification center/fragment (capitellum, radial head, medial
+    epicondyle, olecranon, distal humeral epiphyses as visible).
+    QUESTION: Q3 (D1) — epiphyseal set consistent with open physes (pediatric)
+    or fused (mature)? Elbow is the less-degraded site (council tie-breaker).
+    REASON: Agent_04 (F2 added in deliberation), Agent_03, Agent_06.
+    SUPPORTED BY: Agent_04 (F2), Agent_03, Agent_06 (D1 pattern).
+    OPPOSED/QUESTIONED BY: none (partial FOV — some centers may be out of
+    field, flagged).
+    ARTIFACTS: analyst-assigned markers; tangential projection distorts center
+    shape.
+    EXPECTED VALUE: High for D1.
+
+D8. OUTPUT: ID003_72_physeal_width.png
+    TRANSFORMATION: On distal radial physis (wrist crop geometry): 3
+    measurement lines perpendicular to the physeal line (positions set by
+    inspection); for each, transverse intensity profile across physis +
+    metaphysis; physeal band width (px, FWHM of the dark band) and local
+    shaft width (px); ratio reported per point + mean.
+    QUESTION: Q3 (D1) — physeal widening (screen for physeal injury) and
+    evidence of an OPEN physis (pediatric) vs closed (mature)?
+    REASON: Agent_05 (M1), Agent_04 (M3 part), Agent_06 (D1 test).
+    SUPPORTED BY: Agent_05 (M1), Agent_04, Agent_06.
+    OPPOSED/QUESTIONED BY: none (obliquity caveat; sub-pixel width
+    unreliable in 8-bit — flagged).
+    ARTIFACTS: physeal obliquity changes measured width; 8-bit quantization;
+    oblique view shows physis foreshortened.
+    EXPECTED VALUE: Medium-high for D1 (and for occult physeal injury).
+
+D9. OUTPUT: ID003_80_attribution_overlay.png
+    TRANSFORMATION: Full image with annotations: (i) examined-limb axis line
+    (humerus->forearm->wrist chain), (ii) ellipse + label around the
+    lower-right oblique structures (suspected second limb / unattributed),
+    (iii) band at x>0.88 labeled torso/trunk, (iv) box around lower-right
+    corner linear texture (external object/wire hypothesis), (v) marker at
+    the small dense focus (x~0.63, y~0.82).
+    QUESTION: Q4 (D2) — a single annotated map of attribution hypotheses so
+    reviewers can test continuity visually.
+    REASON: Agent_06 (F1 attribution overlay), Agent_05 (A9 tracing).
+    SUPPORTED BY: Agent_06 (F1), Agent_05 (A9).
+    OPPOSED/QUESTIONED BY: none (labels are hypotheses, not assertions).
+    ARTIFACTS: annotation bias (reviewers may anchor on labels); must be read
+    with B5/C9/C10.
+    EXPECTED VALUE: Medium — organizes the D2 evidence for reviewers.
+
+================================================================================
+SECTION E — DROPPED PROPOSALS (recorded with reasons)
+================================================================================
+E1. Global bone mask / Otsu overlay (Agent_03 P7): WITHDRAWN by Agent_03;
+    OPPOSED by Agent_01, Agent_02, Agent_04, Agent_05, Agent_06 (global
+    threshold fails across the 4 intensity regimes; merged-blob problem).
+E2. Inverted hand image (Agent_01 P11): WITHDRAWN by Agent_01; opposed by
+    Agent_02, Agent_03, Agent_06 (zero information, polarity flip).
+E3. Gamma recovery of right edge (Agent_02 P8): WITHDRAWN by Agent_02;
+    opposed by Agent_03, Agent_04, Agent_06 (A4 saturation map will show
+    whether any headroom exists; region outside clinical question).
+E4. Flat-field / background normalization (Agent_04 P3): demoted by Agent_04;
+    opposed by Agent_01 (redundant with A1+A2), Agent_05, Agent_06 (halo risk
+    concentrated on the open question).
+E5. Full-image Canny overlay (Agent_01 P8): opposed by Agent_02, Agent_05,
+    Agent_06; retained ONLY as crop-limited (C3).
+E6. Numeric soft-tissue swelling index (Agent_01 M4): dropped by council
+    (Agent_03, Agent_04, Agent_06); visual soft-tissue window (C8) retained.
+E7. Wrist position angle image (Agent_05 M3): withdrawn by Agent_05; opposed
+    by Agent_02, Agent_06 (descriptive only, no diagnostic value).
+E8. Interosseous membrane width profile (Agent_01 M3): dropped (Agent_02,
+    Agent_06) — unreliable on this oblique view.
+E9. Standalone sharpness PNG (Agent_06 P8 image): dropped as image (Agent_02,
+    Agent_03, Agent_04, Agent_06) — Laplacian-variance ROI values are kept as
+    NUMBERS in planning/measurements_report.txt only.
+
+================================================================================
+SECTION F — EXECUTION NOTES
+================================================================================
+- Grayscale working domain (PIL luminance). 8-bit PNG outputs.
+- All crop coordinates are normalized (x: 0 left->1 right, y: 0 top->1 bottom)
+  on the 1280x1600 image; pixel mapping recorded in each script.
+- Scripts in scripts/: common.py (shared functions), then numbered pipeline
+  scripts; each prints its output list and exits non-zero on failure.
+- Outputs stored in images/; original unmodified copy already present
+  (images/ID003-xray.png, md5-verified identical to source).
+- After execution: validation pass (scripts/validate_outputs.py) checks every
+  expected output exists, opens, and has expected dimensions; failures are
+  recorded in planning/validation_report.txt (never silent).
+- After validation: mandatory visual inspection by sub-agents (dynamic
+  assignment: primary lesion images get >=3 reviewers; routine crops >=1;
+  disputed/important regions get additional independent reviewers).
+- Iteration rule: after inspection, agents may request further analyses for
+  specific unresolved questions; plan is updated (Round 2 section appended)
+  and re-implemented as justified.
+
+================================================================================
+ROUND 2 (iterative) — added after Round-1 agent inspection
+================================================================================
+Trigger: (a) reviewer-reported bug — annotations in ID003_70/71/72 were drawn
+off-canvas (normalized-vs-pixel coordinate mixup); images regenerated from the
+fixed scripts/r5_annotations.py (same filenames, same numeric measurements).
+(b) Genuine D2 disagreement in Round-1 review: Agent_06 reads the lower-right
+oblique structures as a SECOND (contralateral) forearm; Agent_04 reads them
+as torso/soft tissue without bone; Agent_03 saw no cortex in the annotated
+box of ID003_80. Disagreement preserved, not force-consensused.
+
+R2-1. OUTPUT: ID003_90_diagonalbones_plain.png
+     REGION: x 0.44-0.74, y 0.74-1.00; 2x nearest-neighbor, unfiltered.
+     QUESTION (D2): do the oblique structures show bony cortex + medullary
+     channel morphology (limb) or soft-tissue/positioning only?
+     REASON: higher-magnification unfiltered reference for the disputed zone
+     (council rule R1: dispute resolved from native data first).
+     SUPPORTED BY: all six (D2 resolution endorsed in deliberation).
+     OPPOSED/QUESTIONED BY: none.
+     ARTIFACTS: pixelation only.
+
+R2-2. OUTPUT: ID003_91_diagonalbones_clahe.png
+     TRANSFORMATION: same crop, CLAHE (clip 3.0, 8x8), 2x NN.
+     QUESTION (D2): same as R2-1 under local contrast recovery.
+     REASON/ARTIFACTS: as C9; CLAHE in low-contrast tissue amplifies noise.
+
+R2-3. OUTPUT: ID003_92_diagonalbones_edges.png
+     TRANSFORMATION: same crop, Canny (sigma 1.5, Otsu-derived thresholds) —
+     panel 1 edges white-on-black; panel 2 red overlay on plain crop.
+     QUESTION (D2): do continuous paired cortical edges (long-bone morphology)
+     trace along the oblique structures?
+     REASON: objective edge-continuity test (council C10 method).
+     ARTIFACTS: threshold sensitivity; soft-tissue edges also light up.
+
+ASSIGNMENTS (Round 2):
+- Agent_03: ID003_90, ID003_91   (Round-1 skeptic: "no cortex in box")
+- Agent_04: ID003_92             (Round-1 skeptic: "no bone")
+- Agent_06: ID003_90             (second-limb proponent, 2nd plain reviewer)
+- Agent_05: ID003_70, ID003_72   (re-review regenerated annotations)
+- Agent_06: ID003_71             (re-review regenerated annotation)
+
+Termination rule: after Round-2 reviews, if D2 remains unresolved it is
+reported as an open limitation (single oblique view, superimposition); no
+further processing is likely to separate genuinely overlapping pixels.

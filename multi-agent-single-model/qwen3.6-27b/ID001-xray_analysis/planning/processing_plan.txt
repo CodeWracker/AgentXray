@@ -1,0 +1,167 @@
+PROCESSING PLAN - ID001-xray Analysis
+======================================
+Date: 2026-09-14
+Model: qwen3.6-27b
+Orchestrator: Multi-Agent Council (6 agents)
+
+Based on independent proposals from all 6 agents and council deliberation.
+
+================================================================================
+ANALYSIS 1: Display Inversion (Conventional Negative Format)
+================================================================================
+Output: images/01_inverted.png
+Method: Simple pixel inversion (255 - pixel_value)
+Question: Does standard radiographic negative format reveal findings masked by positive display?
+Support: Agent_01 (Priority 1), Agent_03, Agent_04
+Opposition: None
+Artifacts: None - purely linear operation
+Expected value: High - sanity check, radiologists are trained on negative format
+
+================================================================================
+ANALYSIS 2: Global Contrast Stretch (Windowing)
+================================================================================
+Output: images/02_contrast_stretched.png
+Method: Percentile-based contrast stretch (1st-99th percentile to full range)
+Question: Is hidden contrast information in soft tissue and trabecular bone revealed when we remap the intensity range?
+Support: Agent_02 (Priority 1), Agent_01
+Opposition: None
+Artifacts: Noise amplification in low-signal regions
+Expected value: High - recovers dynamic range wasted on background
+
+================================================================================
+ANALYSIS 3: CLAHE - Full Image Enhancement
+================================================================================
+Output: images/03_clahe_full.png
+Method: Contrast-Limited Adaptive Histogram Equalization (clip=3.0, tile=64x64)
+Question: Are local contrast features (joint margins, Lisfranc junction, cortical detail) masked by regional intensity differences?
+Support: Agent_01 (Priority 2), Agent_02 (Priority 2), Agent_05 (Priority 1)
+Opposition: Agent_04 (rejected CLAHE due to false-positive risk in trabecular bone)
+Artifacts: Tile boundary artifacts, noise amplification in homogeneous regions, edge halos at bone-soft tissue boundaries
+Expected value: High - reveals detail in both dense heel and lighter forefoot simultaneously
+
+================================================================================
+ANALYSIS 4: CLAHE - Lateral Midfoot ROI (Cuboid Focus)
+================================================================================
+Output: images/04_clahe_midfoot_roi.png
+Method: CLAHE on cropped midfoot region (cuboid, calcaneocuboid joint, 5th metatarsal base)
+Question: Is the cuboid trabecular pattern genuinely disrupted or a projection artifact? (Agent_05's primary finding)
+Support: Agent_05 (Priority 1), Agent_03 (Proposal 2 - cuboid texture analysis)
+Opposition: Agent_04 (cautioned against enhancement in regions of interest due to artifact risk)
+Artifacts: Same as Analysis 3, but more focused; edge halos could mimic cortical erosion
+Expected value: High - addresses the most controversial finding (solo Agent_05 cuboid abnormality)
+
+================================================================================
+ANALYSIS 5: Unsharp Masking - Full Image
+================================================================================
+Output: images/05_unsharp_mask.png
+Method: Gaussian unsharp mask (sigma=2.0, amount=1.5)
+Question: Are there cortical step-offs, hairline fractures, or periosteal reactions invisible at native contrast?
+Support: Agent_02 (Priority 4), Agent_04 (Proposal 3 - distal tibia), Agent_05 (Proposal 2 - high-pass filtering)
+Opposition: None
+Artifacts: Halo effect at edges (mimics cortical disruption), noise amplification, compression artifact amplification
+Expected value: High - targets specific question about cortical integrity
+
+================================================================================
+ANALYSIS 6: Böhler's Angle and Gissane's Angle Measurement
+================================================================================
+Output: images/06_calcaneal_angles.png
+Method: Edge detection + landmark identification + geometric angle calculation
+Question: Is the calcaneus structurally intact? Are Böhler and Gissane angles within normal range?
+Support: Agent_03 (Priority 1), Agent_04 (Priority 1), Agent_05 (Priority 2), Agent_01
+Opposition: None
+Artifacts: Landmark identification errors (2-4° variability), positional dependency (requires true lateral view)
+Expected value: Very High - clinically validated quantitative measurement for occult calcaneal fracture
+
+================================================================================
+ANALYSIS 7: Talar Dome Crop + Inverted
+================================================================================
+Output: images/07_talar_dome_crop.png
+         images/07_talar_dome_inverted.png
+Method: Crop to talar dome region, 3x nearest-neighbor upsample, optional inversion
+Question: Is there an osteochondral defect or subchondral cyst on the talar dome?
+Support: Agent_04 (Priority 2), Agent_01, Agent_06
+Opposition: None
+Artifacts: Upsampling creates false sense of resolution; inversion may create halo at joint space
+Expected value: Moderate - known occult fracture zone
+
+================================================================================
+ANALYSIS 8: Anterior Calcaneal Process Crop
+================================================================================
+Output: images/08_anterior_calcaneus_crop.png
+Method: Crop + nearest-neighbor upsample (3x), no filtering
+Question: Is there an anterior process calcaneal fracture?
+Support: Agent_04 (Priority 5), Agent_01, Agent_03
+Opposition: None
+Artifacts: Bilinear interpolation could mask fine lines; nearest-neighbor preserves data but is blocky
+Expected value: Moderate - subtle fracture commonly missed
+
+================================================================================
+ANALYSIS 9: Soft Tissue Thickness Profiling
+================================================================================
+Output: images/09_soft_tissue_profile.png
+Method: Soft tissue contour extraction, perpendicular thickness measurement at key points
+Question: Is there occult soft tissue swelling suggesting acute injury?
+Support: Agent_01 (Proposal 4), Agent_02 (Proposal 4), Agent_04 (Proposal 4), Agent_05 (Proposal 4)
+Opposition: None
+Artifacts: Positioning-dependent, boundary ambiguity (2-5 mm uncertainty), pixel-only measurements (no calibration)
+Expected value: Moderate - indirect injury sign
+
+================================================================================
+ANALYSIS 10: Kager's Fat Pad Triangle Assessment
+================================================================================
+Output: images/10_kagers_triangle.png
+Method: Segmentation of Kager's triangle region, area and density measurement
+Question: Is Kager's fat pad triangle preserved (normal) or obliterated (suggesting acute injury)?
+Support: Agent_03 (Proposal 3), Agent_01 (Proposal 4)
+Opposition: None
+Artifacts: Positioning-dependent, positive-format inversion complicates thresholding
+Expected value: Moderate - under-appreciated acute injury sign
+
+================================================================================
+ANALYSIS 11: Cuboid Texture Analysis (GLCM Comparison)
+================================================================================
+Output: images/11_cuboid_texture.png
+Method: Gray Level Co-occurrence Matrix features on cuboid ROI vs. calcaneus control ROI
+Question: Is the cuboid trabecular texture genuinely different from normal trabecular bone?
+Support: Agent_03 (Proposal 2), Agent_05 (Proposal 5)
+Opposition: None
+Artifacts: ROI placement sensitivity, superimposition confounds, GLCM parameter dependency
+Expected value: High - objectively tests the contested Agent_05 cuboid finding
+
+================================================================================
+ANALYSIS 12: Distal Tibia Crop + Enhancement
+================================================================================
+Output: images/12_distal_tibia_crop.png
+         images/12_distal_tibia_enhanced.png
+Method: Crop to distal tibial metaphysis (5-10cm proximal to plafond), apply targeted contrast stretch
+Question: Is the faint linear density in the distal tibial metaphysis a real finding or artifact? (Agent_06's observation)
+Support: Agent_06 (Proposal 1 - directional bandpass), Agent_01, Agent_04
+Opposition: None
+Artifacts: Enhancement could amplify normal trabecular pattern to look like fracture
+Expected value: Moderate - addresses Agent_06's unique observation
+
+================================================================================
+ANALYSIS 13: Plantar Calcaneal Spur Region Crop + Contrast Stretch
+================================================================================
+Output: images/13_plantar_calcaneus_crop.png
+Method: Crop to plantar calcaneal tubercle, piecewise contrast stretch
+Question: Is there a calcaneal spur (enthesophyte) at the plantar fascia insertion?
+Support: Agent_06 (Proposal 6), Agent_02, Agent_03
+Opposition: None
+Artifacts: Noise amplification could create false spicules
+Expected value: Low-Moderate - accessible finding with clinical relevance
+
+================================================================================
+ANALYSIS 14: Side-by-Side Comparison Montage
+================================================================================
+Output: images/14_comparison_montage.png
+Method: Original + inverted + CLAHE + unsharp mask, side by side
+Question: How do all enhancement methods compare? What findings are consistent across methods?
+Support: Agent_02 (recommended multi-method comparison)
+Opposition: None
+Artifacts: None - composite of existing outputs
+Expected value: High - enables cross-validation of findings
+
+================================================================================
+END OF PROCESSING PLAN
+================================================================================

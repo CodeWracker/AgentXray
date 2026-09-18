@@ -1,0 +1,385 @@
+PROCESSING PLAN — ID001-xray.png
+ORCHESTRATOR SYNTHESIS of the 6-agent single-model council (all agents: MODEL_NAME = qwen3.8-27b).
+Input: images/ID001-xray.png (373x454 px, RGB film scan, lateral distal leg/ankle/foot; toes cropped at right edge; no side marker; no physical scale).
+
+Method note: the 32 independent proposals from planning/proposals/ were assessed in
+planning/deliberation/ by all six agents. The plan below consolidates by analysis FAMILY
+(redundancy across independent agents raised priority but never correctness). The number of
+outputs was determined dynamically by the council: 15 generated images + the preserved
+unmodified original. Every output has an explicit question, supporters, objectors, and
+artifact guards. The universal guard (unanimous across all 32 proposals): the unprocessed
+original is the arbiter — any feature with no faint counterpart at the same location in the
+original is discarded as an artifact.
+
+=========================================================================
+PLANNED ANALYSES
+=========================================================================
+
+[1] OUTPUT: images/01_flatfield_corrected_full.png
+    ANALYSIS: Flat-field / de-vignette correction of the full image.
+    PARAMETERS: background estimate = large Gaussian blur (sigma ~40 px) of the grayscale;
+                corrected = original / background * median(original in beam field); 8-bit.
+    QUESTION: What is the structure of the non-uniform background (vertical gradient,
+              faint streaks, vignetting), and can underexposed peripheral regions
+              (forefoot, upper leg) be made assessable without distorting anatomy?
+    REASON: The dominant documented limitation of this scan; every enhancing analysis in
+            this plan amplifies the background, so it must be characterized first.
+            Resolves inter-agent disagreement on gradient direction.
+    SUPPORTING AGENTS: Agent_02 (P5), Agent_03 (P1), Agent_05 (P4), Agent_06 (P5); Agent_04 (P1, milder global variant).
+    OPPOSING/QUESTIONING: none opposed; all demanded region-by-region verification that
+            correction does not alter any bone's apparent density or shape.
+    POSSIBLE ARTIFACTS: division by imperfect background model -> curved brightness
+            artifacts mimicking periosteal reaction; erasure of genuine broad
+            low-frequency soft-tissue signal; noise amplification in darkest regions.
+            The collimation/field edge is a straight-line fracture mimic and must be
+            identified as non-anatomic.
+    EXPECTED INFORMATIONAL VALUE: HIGH — prerequisite for trustworthy enhancement; yields
+            the background characterization that several first passes described differently.
+
+[2] OUTPUT: images/02_clahe_mild_full.png
+    ANALYSIS: Whole-image CLAHE, mild strength.
+    PARAMETERS: clipLimit=2.0, tileGridSize=8x8, on grayscale, full size (373x454).
+    QUESTION: Does mild global adaptive contrast recovery the upper-leg fade and general
+              detail without amplifying grain to misleading levels?
+    REASON: The "least-processed enhanced" reference baseline; targets the documented
+            upper-leg fade no ROI proposal covers.
+    SUPPORTING AGENTS: Agent_04 (P1), Agent_01 (P1, global component).
+    OPPOSING/QUESTIONING: none.
+    POSSIBLE ARTIFACTS: grain speckle mimicking subchondral cysts or spurs; tile-boundary
+            blockiness; halos at cortices.
+    EXPECTED INFORMATIONAL VALUE: MODERATE — baseline for comparison; not a finding source.
+
+[3] OUTPUT: images/03_clahe_moderate_full.png
+    ANALYSIS: Whole-image CLAHE, moderate strength (dual-strength bracket with [2]).
+    PARAMETERS: clipLimit=3.5, tileGridSize=8x8, full size.
+    QUESTION: Which features persist across two enhancement strengths (real) vs which
+              migrate/appear (noise)?
+    REASON: The council's universal artifact guard is dual-strength concordance; the full
+            image is the widest-FOV check of that guard.
+    SUPPORTING AGENTS: Agent_04 (P1), Agent_02 (P1, bracketing concept).
+    OPPOSING/QUESTIONING: none.
+    POSSIBLE ARTIFACTS: stronger grain amplification and blockiness than [2]; false
+            "structures" at tile boundaries.
+    EXPECTED INFORMATIONAL VALUE: MODERATE — bracketing partner of [2].
+
+[4] OUTPUT: images/04_roi_ankle_subtalar_clahe.png
+    ANALYSIS: Local adaptive contrast enhancement of the tibiotalar joint, talar
+              dome/plafond, posterior subtalar joint and sinus tarsi.
+    PARAMETERS: crop (x 140-240, y 225-315) at native resolution; CLAHE clipLimit=3.0,
+                tile 8x8; 2x nearest-neighbor display enlargement (adds no resolution).
+    QUESTION: Is the tibiotalar and posterior subtalar joint space preserved, and is there
+              subchondral cyst/sclerosis or step-off at the talar dome/plafond?
+    REASON: The talar dome/plafond is the near-saturated brightest region; joint spaces are
+            a few pixels wide at moderate contrast. Six of six agents proposed local
+            windowing of this region.
+    SUPPORTING AGENTS: Agent_01 (P1), Agent_02 (P1), Agent_03 (P5), Agent_05 (P1), Agent_06 (P1, P2).
+    OPPOSING/QUESTIONING: none (Agent_06 P2 mm-width sub-claim withdrawn — no scale marker;
+            pixel widths only).
+    POSSIBLE ARTIFACTS: CLAHE speckle mimicking subchondral cysts; interpolation artifacts
+            (nearest-neighbor chosen to avoid ringing); banding in the joint space mimicking
+            narrowing.
+    EXPECTED INFORMATIONAL VALUE: HIGH — core joint-space question; judge first on raw crop
+            at native scale (Agent_03 rule).
+
+[5] OUTPUT: images/05_roi_talus_clahe.png
+    ANALYSIS: Local adaptive contrast enhancement of the talar body and neck.
+    PARAMETERS: crop (x 140-230, y 235-300) native; CLAHE clipLimit=3.0, tile 8x8; 2x
+                nearest-neighbor display.
+    QUESTION: Is there a true focal lucency/irregularity in the talar body/neck
+              (Agent_05's unique first-pass observation: possible osteochondral lesion,
+              stress reaction, or early osteonecrosis) vs superimposition of fibular/
+              metatarsal shadows and trabecular pattern?
+    REASON: The only first-pass finding with a differential of true intraosseous pathology;
+            uncorroborated by the other five agents, so it must be tested directly, not
+            voted away.
+    SUPPORTING AGENTS: Agent_05 (P1); supported as council priority by Agent_02, Agent_03,
+            Agent_04, Agent_06 (all list the talar body as top investigation region).
+    OPPOSING/QUESTIONING: none.
+    POSSIBLE ARTIFACTS: over-equalization fabricating a border around nothing; amplified
+            grain reading as "mottling"; fibula/metatarsal superimposition misread as a
+            lesion (draw the superimposition paths when judging).
+    EXPECTED INFORMATIONAL VALUE: HIGH if a real lesion exists; otherwise it downgrades the
+            observation to normal pattern + overlap.
+
+[6] OUTPUT: images/06_roi_talus_denoised_mild.png
+    ANALYSIS: Edge-preserving denoising (mild) of the same talar crop, then local
+              enhancement.
+    PARAMETERS: bilateral filter (d=5, sigmaColor=30, sigmaSpace=30) on grayscale crop
+                (x 140-230, y 235-300); then CLAHE clipLimit=3.0; 2x nearest-neighbor.
+    QUESTION: Does the suspected talar "mottled lucency" survive conservative edge-
+              preserving denoising (structure) or dissolve (film grain)?
+    REASON: The only proposal that attacks the talar question from the noise side;
+            denoise-persistence is the cleanest grain-vs-structure discriminator proposed.
+    SUPPORTING AGENTS: Agent_05 (P2); endorsed by Agent_01, Agent_02, Agent_03, Agent_04,
+            Agent_06 (all SUPPORT the two-strength denoise design).
+    OPPOSING/QUESTIONING: none (Agent_03 QUESTIONED the median-filter variant, not this
+            edge-preserving variant).
+    POSSIBLE ARTIFACTS: asymmetric false-NEGATIVE risk — over-smoothing can mask a real
+            faint lesion or thin cortex; waxy/blotchy texture. Guard: a known thin cortex
+            (posterior calcaneal rim) must survive; "vanishes on denoising" argues for
+            grain but does not prove it (Agent_03).
+    EXPECTED INFORMATIONAL VALUE: HIGH — half of the two-sided test of the talar question.
+
+[7] OUTPUT: images/07_roi_talus_denoised_strong.png
+    ANALYSIS: Edge-preserving denoising (strong) of the same talar crop, then local
+              enhancement.
+    PARAMETERS: bilateral filter (d=9, sigmaColor=50, sigmaSpace=50); then CLAHE
+                clipLimit=3.0; 2x nearest-neighbor.
+    QUESTION: Does the pattern persist at a second, stronger denoising level? (Only
+              structures persisting across BOTH strengths count.)
+    REASON: Dual-strength bracket is the council-mandated guard for the denoise test.
+    SUPPORTING AGENTS: Agent_05 (P2); all six agents SUPPORT the two-strength design.
+    OPPOSING/QUESTIONING: none.
+    POSSIBLE ARTIFACTS: greater masking risk than [6]; loss of genuine fine trabeculae.
+    EXPECTED INFORMATIONAL VALUE: HIGH — persistence half of the talar adjudication.
+
+[8] OUTPUT: images/08_roi_posterior_calcaneus_clahe.png
+    ANALYSIS: Local enhancement of the posterior calcaneus: posterosuperior tuberosity
+              (Achilles insertion), posteroinferior corner, plantar-fascia origin.
+    PARAMETERS: crop (x 115-200, y 255-335) native; CLAHE clipLimit=3.0, tile 8x8, then
+                mild unsharp mask (sigma=1.5, amount=0.8); 2x nearest-neighbor.
+    QUESTION: Does a true bony spur/enthesophyte exist at the posterior calcaneus, what is
+              its morphology and enthesis of origin (retrocalcaneal vs plantar-fascial),
+              and is there Achilles-insertion calcification or cortical step-off?
+    REASON: Directly adjudicates the council's sharpest first-pass disagreement: Agent_03
+            asserted a posteroinferior calcaneal spur; Agent_01/Agent_05 treated any
+            enthesophyte as unconfirmed; Agent_02/Agent_04/Agent_06 did not flag it.
+            Decision rule (Agent_03/Agent_04/Agent_06): a true spur is a cortex-continuous
+            bony projection matching bone attenuation in the ORIGINAL; a "beak" visible
+            only after enhancement, or smoother on the raw film, is a normal variant or
+            artifact.
+    SUPPORTING AGENTS: Agent_01 (P2), Agent_03 (P2), Agent_05 (P3).
+    OPPOSING/QUESTIONING: none (the disagreement is about the finding, not the analysis).
+    POSSIBLE ARTIFACTS: edge-filter false "spurs" from grain or cortices (highest
+            false-positive zone per council); dust specks misread as calcification;
+            spur vs normal tuberosity-extreme landmark confusion (Agent_03 P4 warning —
+            Böhler landmarks and spur delineation are done together in [12]).
+    EXPECTED INFORMATIONAL VALUE: HIGH — resolves the council's principal disagreement.
+
+[9] OUTPUT: images/09_edge_hindfoot_unsharp.png
+    ANALYSIS: Unsharp-mask (Gaussian) edge enhancement of the hindfoot for occult
+              fracture-line and cortical-integrity screening.
+    PARAMETERS: crop (x 130-250, y 225-340); base = CLAHE clipLimit=2.5; unsharp
+                (Gaussian sigma=2, amount=2.0); 2x nearest-neighbor display.
+    QUESTION: Is there a hairline/non-displaced fracture or cortical step-off in the
+              talus, calcaneus, or proximal midfoot?
+    REASON: Thin lucent lines live at the spatial frequency this scan degrades most;
+            5-7 agents independently proposed high-pass screening.
+    SUPPORTING AGENTS: Agent_02 (P2), Agent_04 (P3), Agent_01 (P5), Agent_06 (P1).
+    OPPOSING/QUESTIONING: Agent_04 QUESTIONED the midfoot-high-pass component of Agent_01
+            P5 (highest false-line risk); retained here limited to hindfoot with all
+            guards.
+    POSSIBLE ARTIFACTS: false linear edges from grain, trabeculae, scratches; halos on both
+            sides of normal cortices mimicking double cortex/periosteal reaction.
+            Guards: candidate line must be traceable in the unprocessed original across its
+            full length; must cut across (not along) trabecular flow; must not cross a joint
+            space; endpoints must meet cortex; must persist in [10] (independent method).
+    EXPECTED INFORMATIONAL VALUE: MODERATE-HIGH — the fracture screen, gated by [15].
+
+[10] OUTPUT: images/10_edge_hindfoot_gradient.png
+     ANALYSIS: Independent gradient (Sobel) edge map of the same hindfoot crop —
+               cross-check method for [9].
+     PARAMETERS: same crop; base = CLAHE clipLimit=2.5; Sobel gradient magnitude;
+                 2x nearest-neighbor display.
+     QUESTION: Which candidate lines from [9] are reproduced by an independent edge
+               operator (persistence across methods = real)?
+     REASON: Dual independent edge-method corroboration is the council's preferred guard
+               against false fracture lines.
+     SUPPORTING AGENTS: Agent_04 (P3), Agent_03 (P3, overlay-on-original concept).
+     OPPOSING/QUESTIONING: none.
+     POSSIBLE ARTIFACTS: same false-edge classes as [9]; gradient response to any sharp
+             transition including scratches and streaks.
+     EXPECTED INFORMATIONAL VALUE: MODERATE — corroboration instrument for [9].
+
+[11] OUTPUT: images/11_edge_overlay_full.png
+     ANALYSIS: Full-image edge map drawn as a colored overlay ON the original (native
+               373x454), keeping every detected edge tied to anatomy.
+     PARAMETERS: Sobel magnitude on full-image CLAHE clipLimit=2.5; edges above 45th
+                 percentile drawn in red at 1:1 over the original RGB.
+     QUESTION: Across the whole foot (midfoot tarsals, metatarsals, distal tibia/fibula),
+               are there candidate linear structures, and where exactly do they lie
+               relative to cortices, joints, and the field edge?
+     REASON: The midfoot (overlapping cortices) and metatarsals are the hardest
+               fracture-search zone and are not covered by the hindfoot crop [9]/[10];
+               the overlay format is the council's best false-edge control (Agent_03 P3).
+     SUPPORTING AGENTS: Agent_03 (P3), Agent_01 (P5, midfoot scope), Agent_04 (P2, P3).
+     OPPOSING/QUESTIONING: none.
+     POSSIBLE ARTIFACTS: red false edges from grain/scratches/streaks; field/collimation
+             edge at the right border is a classic straight-line fracture mimic and must be
+             explicitly rejected as non-anatomic.
+     EXPECTED INFORMATIONAL VALUE: MODERATE-HIGH — whole-foot fracture screen with
+             anatomy anchoring.
+
+[12] OUTPUT: images/12_angles_overlay.png
+     ANALYSIS: Quantitative angular measurement with all landmark lines drawn on the
+               native-resolution original; plus projection (true-lateral) checks.
+     PARAMETERS (landmarks placed on the native original, verified on this overlay):
+       Böhler: A=(154,280) posterosuperior calcaneal tuberosity; C=(162,319) most
+               inferior plantar point; B=(205,301) anterior calcaneal tuberosity rise.
+       Calcaneal pitch: plantar line C->B vs horizontal.
+       Tibiometatarsal: tibial axis (176,45)->(186,158) vs metatarsal axis (248,298)->(318,330).
+       Tibiocalcaneal: tibial axis vs posterior calcaneal line A->C.
+       Talocalcaneal: talar axis (192,247)->(208,282) vs A->C.
+       Rotation proxies: fibula-tibia center separation (tibia ~x198, fibula ~x216 at
+       y=210; ~18-23 px along the shaft) and talar-head position marker at (200,275).
+     QUESTION: (a) How plantarflexed is the foot and how far is the view off true lateral
+               (the positioning disagreement: Agent_02 "plantarflexed, possibly rotated"
+               vs Agent_04 "approximately neutral")? (b) Is Böhler's angle normal,
+               excluding an old/minimally displaced calcaneal fracture? (c) What are the
+               sagittal alignment angles, with uncertainty?
+     REASON: Six of six agents proposed angular measurement; it converts subjective
+             impressions into numbers and the rotation check GATES interpretation of all
+             joint-space and angle readings. Böhler is the only tool that screens for an
+             old calcaneal fracture without a visible line.
+     SUPPORTING AGENTS: all six (Agent_01 P3, Agent_02 P4, Agent_03 P4, Agent_04 P5,
+             Agent_05 P5, Agent_06 P4).
+     OPPOSING/QUESTIONING: none.
+     POSSIBLE ARTIFACTS: landmark misidentification under superimposition; ±3-4 px
+             placement error shifts angles by several degrees; off-true-lateral rotation
+             biases ALL values (the measured fibula-tibia separation ~18-23 px indicates
+             the view is NOT a true lateral, so every angle carries that caveat).
+             Guards: lines overlaid on the original for visual verification; values
+             reported with uncertainty bands; an angle is called abnormal only if outside
+             the normal range by more than the estimated landmark error (Agent_06 rule).
+             First-metatarsal axis is truncated by the crop -> tibiometatarsal is an
+             estimate (Agent_01, Agent_06).
+     EXPECTED INFORMATIONAL VALUE: HIGH — documents position, screens old calcaneal
+             fracture, quantifies the projection bias that limits the whole study.
+
+[13] OUTPUT: images/13_softtissue_contour.png
+     ANALYSIS: Soft-tissue window (bone-saturating) + skin-line contour overlay +
+               standardized thickness measurements.
+     PARAMETERS: full image; display window saturates bone to white (bone >~150 grey -> 255),
+                 soft tissue shown mid-tone; skin line extracted per-row/per-column from a
+                 low threshold on the background-subtracted image, smoothed, drawn in
+                 yellow; heel-pad thickness (posterior skin line -> posterior calcaneal
+                 cortex) at 3 standardized stations (y=295, 305, 315); dorsal soft-tissue
+                 band (dorsal skin line -> first bone) at 3 stations (x=200, 240, 280),
+                 dorsal vs plantar as internal control.
+     QUESTION: Is there true soft-tissue swelling (dorsal foot fullness per Agent_01,
+               heel-pad/plantar status) vs an exposure/scan artifact?
+     REASON: Swelling is the most sensitive non-specific sign of occult hindfoot injury;
+               contour is the silhouette question that bone-windowed views cannot answer.
+     SUPPORTING AGENTS: Agent_01 (P4), Agent_04 (P4), Agent_06 (P3).
+     OPPOSING/QUESTIONING: Agent_02's bone-subtraction variant (P3) was QUESTIONED by all
+             six agents (halo mimics calcification) and is NOT run; plain re-windowing +
+             contour covers the same question more safely.
+     POSSIBLE ARTIFACTS: segmentation breaks at the beam-field edge or streaks (overlay
+             must be verified point-by-point); background brightness changes behind an
+             unchanged contour must not be read as swelling; the plantar contour is
+             weight-bearing-flat (uninformative as a control except for asymmetry).
+     EXPECTED INFORMATIONAL VALUE: MODERATE-HIGH — resolves the dorsal-fullness question
+             with an internal dorsal-vs-plantar control; quantifies heel pad in pixels.
+
+[14] OUTPUT: images/14_right_edge_crop_flatfield.png
+     ANALYSIS: Flat-field-corrected inspection of the right-edge zone: distal metatarsals,
+               metatarsal heads, and the field/crop boundary.
+     PARAMETERS: from [1]; crop (x 250-373, y 255-345); 2x nearest-neighbor.
+     QUESTION: What anatomy is actually in field at the right edge (most distal visible
+               bone), and is the straight field edge being (mistakenly) read as a fracture
+               line?
+     REASON: Every agent flagged the crop; an honest report must state precisely what is
+               assessed vs outside the field; the field edge is a classic straight-line
+               fracture mimic (Agent_06 P5).
+     SUPPORTING AGENTS: Agent_03 (P1), Agent_04 (P2), Agent_06 (P5); Agent_02 scope note
+             (cropped anatomy is unrecoverable by any processing).
+     OPPOSING/QUESTIONING: none.
+     POSSIBLE ARTIFACTS: over-correction hot spots near the field boundary; interpolation
+             artifacts at 2x; the field edge itself.
+     EXPECTED INFORMATIONAL VALUE: MODERATE — definitive in-field/out-of-field statement.
+
+[15] OUTPUT: images/15_noise_floor_chart.png
+     ANALYSIS: Noise-floor / practical-detection-limit estimation, measured on the
+               ORIGINAL only (chart figure, not an enhanced image).
+     PARAMETERS: background sigma in 3 anatomy-free ROIs (upper-left, mid-left, upper-right
+                 beam field); edge-spread FWHM at 2 sharp cortices (posterior calcaneal rim
+                 at y=295; distal tibial cortex); derived statement of minimum reliably
+                 detectable line length/contrast.
+     QUESTION: What is this image's practical detection limit — i.e., how small/weak a
+               fracture line can it not exclude?
+     REASON: Unique to Agent_04 but SUPPORTED by all six agents as the single highest
+             value-per-cost item: it converts "subtle fracture cannot be excluded" into a
+             calibrated statement and sets the evidentiary weight of every negative finding
+             from [9], [10], [11].
+     SUPPORTING AGENTS: all six (Agent_04 P6).
+     OPPOSING/QUESTIONING: none.
+     POSSIBLE ARTIFACTS: none diagnostic (measured on anatomy-free background); risk of
+             over-precise claims if ROIs contain streaks — ROIs chosen in the most uniform
+             beam-field regions.
+     EXPECTED INFORMATIONAL VALUE: HIGH — calibrates every "no fracture seen" statement in
+             the final report.
+
+=========================================================================
+REJECTED / NOT RUN (recorded disagreements preserved)
+=========================================================================
+
+R1. PSF deconvolution (Agent_04 P7) — NOT RUN.
+    Votes: OPPOSE Agent_04 (as primary tool), Agent_01, Agent_05 (zero diagnostic weight);
+    QUESTION Agent_02, Agent_03, Agent_06 (exploratory only).
+    Orchestrator decision: rejected. It is the single highest artifact risk in the council —
+    its signature artifact (phantom linear streaks) is indistinguishable from exactly the
+    finding being hunted (hairline fractures); it is a single-agent proposal with the
+    council's least support; and the cheap [15] answers the same underlying question
+    ("is blur the limiting factor?") at a fraction of the risk. Agent_04's objection is
+    preserved: the question "is the blur recoverable?" remains formally open.
+
+R2. Bone attenuation subtraction (Agent_02 P3) — NOT RUN.
+    Votes: QUESTION from all six agents (subtraction halos at bone margins mimic
+    calcification; over-subtraction distorts the silhouette).
+    Orchestrator decision: rejected; the soft-tissue question is covered more safely by
+    [13] (re-windowing + contour).
+
+R3. Millimeter-scale claims (Agent_06 P2 sub-claim) — WITHDRAWN.
+    The image contains no physical scale marker; all linear measurements are reported in
+    pixels as semi-quantitative/relative values. Angles are scale-invariant and unaffected.
+
+=========================================================================
+EXECUTION ORDER AND VERIFICATION
+=========================================================================
+1. [1] flat-field (prerequisite, characterizes background)
+2. [2], [3] full-image CLAHE bracket
+3. [4], [5], [6], [7], [8] ROI enhancements (joint, talus x3, posterior calcaneus)
+4. [9], [10], [11] edge screening (hindfoot dual-method, full-image overlay)
+5. [12] angles + projection checks (lines drawn; if a landmark looks wrong on the overlay,
+   re-place and regenerate — the overlay IS the verification)
+6. [13] soft-tissue contour
+7. [14] right-edge crop (depends on [1])
+8. [15] noise floor (original only)
+Then: output validation (existence, openability, dimensions), followed by mandatory
+independent visual inspection by the council (each agent actually reads every assigned
+image and writes agent_reports/<agent>-<image>.txt).
+
+=========================================================================
+ITERATION LOG
+=========================================================================
+ITER-1 (after review round A):
+  Trigger: Agent_03 and Agent_06 (independently) flagged that [1] crushed central
+  bone density (normalized to the global image median, which the dark corners/frame
+  drag down, so the central beam field divided by too much). Two independent agents
+  flagging the same artifact = justified correction (not a new technique).
+  Change: [1]/[14] regenerated with (a) bone-excluded exposure-gradient estimate
+  (iterative bone replacement before blur) and (b) scale constant = 75th percentile
+  of the beam-field estimate (central beam level).
+  Result: peripheral bone preserved (x~1.0), central tibia x~0.65-0.80 (known
+  limitation, documented: use the original for central density judgments), background
+  flattened. Agent_03 and Agent_06 re-review the regenerated images (round C).
+  Note: no other plan items were affected.
+ITER-2 (after review round C):
+  Trigger: Agent_04 and Agent_06 (independently) found [11] non-diagnostic:
+  v1 threshold (45th percentile of Sobel magnitude) + opaque red saturated the
+  image (~90% of pixels red), so no candidate line could be isolated.
+  Change: [11] re-rendered at 90th-percentile threshold with 45/55 translucent
+  red-over-gray blend, so the underlying anatomy stays visible at every edge.
+  Agent_04 and Agent_06 re-review the regenerated image (round D).
+ITER-3 (after review round C/D):
+  Trigger: Agent_01 (report on 11) and Agent_04 (report on 11) independently
+  requested a dedicated midfoot/forefoot bone-window ROI as the one remaining
+  materially useful 2D analysis (metatarsal shafts are hardest to screen on a
+  single lateral and were only covered by the full-image CLAHE + edge overlay).
+  Assessment: this is NOT a new technique — it is the midfoot component of the
+  already-approved families [4]/[9] (Agent_04 P2, Agent_01 P5 scope), previously
+  covered only at full-image scale. Approved.
+  Added: [16] images/16_roi_midfoot_forefoot_clahe.png — crop (x 215-373, y 255-345),
+  CLAHE clipLimit 3.0, 2x nearest. Question: occult metatarsal shaft fracture or
+  abnormality in the in-field distal forefoot, given the bright overlapping
+  metatarsal-head mass? Agents Agent_02 and Agent_04 inspect (round E).

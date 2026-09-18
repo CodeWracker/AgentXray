@@ -1,0 +1,417 @@
+AGENT_05 PROPOSALS — Lateral Elbow X-ray (ID002-xray.png)
+============================================================
+Date: 2026-09-14
+Analyst: Agent_05 (qwen3.6-27b)
+Image: 1600x1280 RGB PNG, anatomical content concentrated in right half
+       (left half mean ~5, right half mean ~51.6, top-right quadrant mean ~82.2)
+       Bone pixels (>180): 4.56% of image, background noise std ~1.05
+
+First-pass observations:
+- Lateral projection of a single elbow, likely pediatric (open physes at distal humerus)
+- Good technical quality: low background noise, full dynamic range (0-254 used)
+- Large area of unused black background on left ~50% of image width
+- Cortical bone margins well-defined; soft tissue contrast is present but low in some regions
+- Fat pad region shows measurable signal variation worth investigating
+
+============================================================
+PROPOSAL 1: Anatomical ROI Crop and Reframe
+============================================================
+
+Question being answered:
+Does isolating the actual anatomical region eliminate wasted dynamic range and
+reveal detail currently compressed by the large black margin?
+
+Method:
+Detect the bounding box of pixels > 50 (the threshold where soft tissue signal
+begins above background), crop to that region, and upscale the result to 1600x1280
+to maintain resolution for pixel-level analysis.
+
+Why it helps:
+The image currently wastes ~50% of horizontal space on black background.
+The top-right quadrant (mean 82.2) contains most anatomical content, while
+the left half (mean 5.1) contributes nothing. Reframing concentrates all
+pixel budget on the anatomy.
+
+Expected revelation:
+- Sharper apparent cortical edges due to larger pixel footprint per mm
+- Better soft tissue visibility from the humeral soft tissue shadow region
+- Easier visual assessment of all structures
+
+Possible artifacts:
+- Upscaling interpolation may introduce artificial smoothing. Use nearest-neighbor
+  or Lanczos to minimize.
+- Cropping may exclude peripheral soft tissue findings if the bounding box is
+  too tight. Include a 50-pixel margin around the bounding box.
+
+Comparison with original:
+Overlay the cropped result on the original at the same display size to verify
+no anatomical structures were truncated. The reframed image should show the
+same structures at higher effective resolution.
+
+Actionable steps:
+1. Threshold at >50, compute bounding box
+2. Add 50px margin on each side
+3. Crop and resize to 1600x1280 with Lanczos resampling
+4. Save as ID002-cropped.png
+
+============================================================
+PROPOSAL 2: CLAHE (Contrast-Limited Adaptive Histogram Equalization)
+============================================================
+
+Question being answered:
+Are there details in mid-tones and soft-tissue regions that are invisible in the
+linear presentation because local contrast is too low?
+
+Method:
+Apply CLAHE with clip limit 2.0, tile size 64x64 (in pixels), on the grayscale
+version of the image. CLAHE equalizes histogram locally within each tile while
+clamping extreme contrast amplification to avoid noise explosion.
+
+Why it helps:
+The image has regions of very different brightness (bone mean 219.5, forearm
+region mean 76.6, soft tissue mean ~1.4 in lower areas). Global contrast
+stretching would over-amplify the bright bone or lose the dark soft tissue.
+CLAHE adapts to each local region, revealing subtle gradients.
+
+Expected revelation:
+- Enhanced visibility of the anterior and posterior fat pads in the elbow joint
+  region (currently anterior fat pad region mean 170.3, posterior 42.6 — a
+  significant difference that may contain diagnostic information about the
+  sail sign or fat pad displacement)
+- Better differentiation of overlapping soft tissue layers
+- Improved trabecular pattern visibility in the metaphyseal regions
+
+Possible artifacts:
+- CLAHE can amplify background noise, especially in the low-signal areas.
+  The current background noise std is ~1.05, so with clip limit 2.0, noise
+  amplification should be moderate.
+- Tile boundaries may show visible seams if the tile size is too small.
+  64x64 should be large enough to avoid this for this image size.
+- Over-enhancement in homogeneous bone regions may create artificial texture.
+
+Comparison with original:
+View side-by-side with the original at identical display settings. CLAHE
+should make more structures visible without distorting proportions. Any
+structure visible in the CLAHE version should be verifiable as a real signal
+change in the original (not pure noise amplification).
+
+Actionable steps:
+1. Convert to grayscale (luminance channel)
+2. Apply CLAHE (clip_limit=2.0, tile_grid_size=64x64)
+3. Save as ID002-clahe.png
+
+============================================================
+PROPOSAL 3: Unsharp Mask for Cortical Edge Enhancement
+============================================================
+
+Question being answered:
+Are there subtle cortical disruptions, hairline fracture lines, or irregularities
+along bone margins that are present but visually suppressed by the natural
+frequency response of the X-ray detector?
+
+Method:
+Apply unsharp masking: subtract a Gaussian-blurred version (sigma=2.0 pixels)
+from the original, then add a scaled version of the difference (amount=1.5)
+back to the original. Formula: result = original + amount * (original - blurred).
+
+Why it helps:
+The maximum gradient magnitude in this image is 77.47, indicating sharp edges
+exist but many cortical boundaries may have gradient magnitudes in the 5-15
+range, which the visual system can miss in the presence of surrounding bone
+texture. Unsharp masking amplifies these mid-frequency edge components.
+
+Expected revelation:
+- Sharper definition of the anterior cortex of the distal humerus (the
+  supracondylar region, a common fracture site in pediatric patients)
+- Enhanced visibility of the olecranon cortex and the radiocapitellar joint margins
+- Potential identification of subtle cortical step-offs or buckle fractures
+
+Possible artifacts:
+- Halo effect: bright edges may show dark halos on one side and bright halos
+  on the other, creating artificial step-off appearances.
+- Noise amplification along high-frequency noise patterns.
+- The sigma parameter is critical: too small amplifies noise, too large misses
+  the fine fractures we are looking for.
+
+Comparison with original:
+Any cortical irregularity visible in the sharpened image MUST be present in the
+original as a measurable intensity change (even if subtle). To validate, draw a
+line profile across the suspicious area in both images — the sharpened version
+will show a steeper gradient, but the underlying intensity change must exist in
+the original.
+
+Actionable steps:
+1. Apply Gaussian blur (sigma=2.0) to grayscale
+2. Compute difference: original - blurred
+3. Add 1.5 * difference back to original
+4. Clip to [0, 255], save as ID002-sharp.png
+
+============================================================
+PROPOSAL 4: Soft Tissue Window (Focused Contrast for Fat Pads and
+Swelling Assessment)
+============================================================
+
+Question being answered:
+Is there evidence of elbow joint effusion, soft tissue swelling, or displaced
+fat pads (anterior "sail sign" or posterior fat pad sign), which are key indirect
+signs of occult fracture in pediatric elbow injuries?
+
+Method:
+Apply a narrow window centered on the soft tissue intensity range. Based on
+analysis, soft tissue in the anterior fat pad region has mean 170.3 (std 46.9)
+and the posterior region mean 42.6 (std 59.5). Map pixel values in the range
+[30, 200] linearly to [0, 255], clipping values outside this range.
+
+Why it helps:
+In a standard X-ray presentation, bone (219.5 mean) dominates the display
+dynamic range, leaving soft tissue details (which vary in a much narrower
+intensity band) under-exposed. By remapping only the soft tissue range to
+full display contrast, subtle density differences become visible.
+
+Expected revelation:
+- Anterior fat pad visibility: normally the anterior (coronoid) fat pad may be
+  barely visible; elevation or widening suggests joint effusion
+- Posterior fat pad visibility: a visible posterior fat pad is always abnormal
+  and strongly correlates with fracture
+- Overall soft tissue swelling pattern around the elbow
+- Soft tissue foreign bodies or calcifications
+
+Possible artifacts:
+- Bone cortex will be clipped to white and lose all internal detail
+- The narrow window may amplify subtle noise in soft tissue, making noise
+  appear as soft tissue texture
+- Compression artifacts or processing gradients may be exaggerated
+
+Comparison with original:
+This window should ONLY be used to identify structures of interest, which are
+then verified on the original image. A fat pad that is "visible" in this window
+must correspond to a real density difference in the original (check with a line
+profile). The window does not create new information; it redistributes existing
+dynamic range.
+
+Actionable steps:
+1. Compute window: values [30, 200] map to [0, 255]
+2. Clip below 30 to black, above 200 to white
+3. Save as ID002-soft-tissue-window.png
+
+============================================================
+PROPOSAL 5: Line Intensity Profiles Along Key Anatomical Axes
+============================================================
+
+Question being answered:
+Do quantitative intensity profiles reveal measurable irregularities along bone
+cortex, through the joint space, or across the physes that support or contradict
+visual impressions?
+
+Method:
+Extract pixel intensity profiles along four specific transects:
+  a) Distal humerus: horizontal line through the supracondylar region (~row 380)
+     from column 800 to 1000, to assess anterior and posterior cortical integrity
+  b) Elbow joint space: horizontal line through the trochlear notch (~row 450)
+     from column 800 to 1000, to measure the anterior humeroulnar interval and
+     detect joint space narrowing or widening
+  c) Proximal radius: horizontal line through the radial neck (~row 470)
+     from column 850 to 1050, to assess radial head/neck cortex
+  d) Distal humerus physis: horizontal line through the growth plate (~row 400)
+     from column 820 to 980, to check for physeal asymmetry or widening
+
+Why it helps:
+Visual inspection is subjective and influenced by display conditions. A numeric
+profile provides a reproducible, quantifiable trace of bone cortex position,
+width, and density. A cortical fracture would appear as a localized dip or
+irregularity in the profile that is measurable rather than just "visible."
+
+Expected revelation:
+- Quantitative measurement of the anterior humeroulnar interval (normal ~2-4mm
+  on lateral view); widening >4mm suggests effusion
+- Identification of subtle cortical step-offs not obvious by eye
+- Symmetry assessment of the physis: asymmetric widening may suggest Salter-Harris
+  injury
+- Baseline data for comparing with contralateral side if available
+
+Possible artifacts:
+- Profile line placement is critical: a 1-pixel offset can cross from cortex
+  into medullary bone and give misleading values
+- Partial volume effect: if the patient's arm was not perfectly in the lateral
+  plane, some cortex will appear thicker or thinner than actual
+- The profiles represent a single pixel-thin transect; a wider transect (mean
+  over 5 pixels) is more robust
+
+Comparison with original:
+Plot the profiles and overlay their positions on the original image for
+verification. Any feature in the profile should be visually identifiable on
+the original at the corresponding location.
+
+Actionable steps:
+1. Define the four transect lines with their pixel coordinates
+2. Extract intensity values along each line
+3. Also compute 5-pixel-wide running mean for robustness
+4. Plot profiles (intensity vs. pixel position) with annotations
+5. Save plots as ID002-profiles.png
+
+============================================================
+PROPOSAL 6: High-Pass Filter Decomposition (Laplacian Detail Extraction)
+============================================================
+
+Question being answered:
+Does high-frequency analysis reveal detail structures (fine trabecular pattern,
+micro-fracture lines, subtle periosteal reactions) that are present in the image
+data but below the visual detection threshold?
+
+Method:
+Apply Laplacian filtering (kernel: center 4, neighbors -1) to the grayscale
+image. The Laplacian responds to second derivatives — regions where intensity
+curvature is high (fine edges, transitions). Display the absolute value of the
+result, inverted (so high-frequency detail is bright on dark). Also compute
+a Gaussian-Laplacian (LoG) at two scales (sigma=1.0 and sigma=3.0) to
+separate fine detail from coarser structural features.
+
+Why it helps:
+The overall gradient magnitude in this image is low (mean 0.84), indicating
+most of the image is smooth. The Laplacian will be near-zero in smooth regions
+and spike at edges and fine features. This is a form of band-pass filtering
+that suppresses both the low-frequency bone/soft-tissue bulk and the
+high-frequency noise, isolating the diagnostic mid-high frequency range.
+
+Expected revelation:
+- Fine trabecular pattern in the metaphyseal bone
+- Subtle periosteal reaction (a thin line of new bone formation)
+- Micro-fracture lines that may not reach the visual threshold in standard
+  viewing
+- The relationship between bone trabecular architecture and the physis
+
+Possible artifacts:
+- The Laplacian responds equally to noise and real detail; both will appear
+  as bright spots
+- Double-edge effect: each edge produces two responses (one positive, one
+  negative), creating pairs of lines
+- The filter is highly sensitive to the sigma parameter; wrong values will
+  either miss features or be overwhelmed by noise
+
+Comparison with original:
+Treat this as a hypothesis generator only. Any feature flagged by the
+Laplacian must be investigated on the original image. The Laplacian does
+not provide diagnostic confirmation; it provides targets for focused
+inspection. A practical approach: add a transparent Laplacian overlay
+(blended at 30% opacity) on the original to highlight areas for review.
+
+Actionable steps:
+1. Apply Laplacian filter to grayscale
+2. Apply LoG at sigma=1.0 (fine detail) and sigma=3.0 (coarser structure)
+3. Take absolute values, scale to [0, 255]
+4. Save each as separate images and as a blended overlay
+5. Save as ID002-laplacian.png, ID002-log1.png, ID002-log3.png
+
+============================================================
+PROPOSAL 7: Physis (Growth Plate) Quantitative Assessment
+============================================================
+
+Question being answered:
+Given that this is a pediatric elbow, is the distal humeral physis normal in
+width, symmetry, and density, or does it show signs of Salter-Harris injury,
+physiolysis, or asymmetric growth disturbance?
+
+Method:
+1. Manually or semi-automatically segment the distal humeral physis region
+   (the radiolucent gap between the humeral metaphysis and epiphysis, visible
+   in the upper portion of the joint)
+2. Measure the physis width at 5 equidistant points across its extent
+   (medial to lateral in this lateral projection, i.e., anterior to posterior
+   aspect)
+3. Compute the intensity gradient across the physis at each point to assess
+   how sharp the metaphyseal and epiphyseal boundaries are
+4. Compare the anterior vs. posterior physis width ratio (normal ratio ~1.0,
+   ratio >1.5 may suggest injury)
+
+Why it helps:
+Salter-Harris type I fractures (through the physis alone) can be extremely
+difficult to see on standard viewing. The injury manifests as physis widening
+that may be only 1-2mm and easily missed. Quantitative measurement is more
+sensitive than visual estimation.
+
+Expected revelation:
+- Quantitative physis width (normal distal humeral physis ~2-4mm depending on
+  age)
+- Asymmetry between anterior and posterior aspects
+- Whether the physis boundary is sharp (normal) or irregular (suggestive of
+  disruption)
+- Baseline for comparison with the contralateral elbow
+
+Possible artifacts:
+- Measurement accuracy depends on correct identification of the physis
+  boundaries; partial volume effect may blur the transition
+- On a lateral view, the physis appears foreshortened compared to AP view
+- The measurement is in pixel units and requires knowledge of the pixel-to-mm
+  ratio for clinical interpretation
+
+Comparison with original:
+The measured physis boundaries should be marked directly on the original image
+so the reader can verify each measurement point. The numeric measurements
+should be displayed as annotations alongside the image.
+
+Actionable steps:
+1. Identify physis region in the distal humerus
+2. Place 5 measurement transects perpendicular to the physis
+3. At each transect, find the two intensity peaks (metaphysis and epiphysis)
+   and measure the gap between them
+4. Compute mean width, anterior/posterior ratio
+5. Annotate findings on the original image
+6. Save as ID002-physis-assessment.png with measurement report
+
+============================================================
+PROPOSAL 8: Global Histogram Analysis and Display Optimization
+============================================================
+
+Question being answered:
+Is the image being displayed at optimal contrast and brightness, or would
+adjusting the window/level reveal hidden detail?
+
+Method:
+1. Compute the full 256-bin histogram of the grayscale image
+2. Identify the intensity percentiles at 1%, 5%, 95%, and 99% to determine
+   the effective content range
+3. Based on the histogram, compute an optimal linear window/level
+4. Generate three display variants:
+   a) Window set to [p1, p99] (content-adaptive, excludes outliers)
+   b) Window set to [p5, p95] (inner content, higher contrast)
+   c) Window optimized for bone detail: [180, 240] (narrow window on bright
+      bone range)
+
+Why it helps:
+The current image uses the full 0-254 range, but the anatomically relevant
+content occupies a much narrower band. Background is near 0, and the
+distribution shows that most non-black pixels are in the 50-200 range
+(12.1% in 50-150, 2.6% in 150-200). A content-adaptive window would shift
+the display to maximize contrast within the actual anatomical signal range.
+
+Expected revelation:
+- Whether the current presentation is optimal or suboptimal
+- Potential loss of detail in shadows (low values) or highlights (bone)
+- An evidence-based recommendation for the best display settings for this
+  specific image
+
+Possible artifacts:
+- Overly narrow windows will clip legitimate signal and lose context
+- Window/level changes do not add information; they redistribute existing
+  contrast. A narrow bone window will lose all soft tissue detail
+- Display optimization is subjective: the "optimal" window depends on what
+  the reader is looking for
+
+Comparison with original:
+Present all three optimized variants alongside the original, using identical
+display size. The reader can verify whether structures of interest are better
+or worse represented in each variant.
+
+Actionable steps:
+1. Compute histogram and percentiles
+2. Generate three windowed variants
+3. Display in a 2x2 grid with the original
+4. Save as ID002-window-comparison.png with histogram plot
+
+============================================================
+END OF PROPOSALS
+============================================================
+Total proposals: 8
+Priority recommendation: Start with Proposal 1 (crop) and Proposal 2 (CLAHE),
+as these are low-risk, high-reward preprocessing steps that improve the
+foundation for all subsequent analyses.

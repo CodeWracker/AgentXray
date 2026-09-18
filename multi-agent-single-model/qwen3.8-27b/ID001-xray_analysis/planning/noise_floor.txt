@@ -1,0 +1,4 @@
+noise sigma per ROI: {'upper-left': 1.2713148190151877, 'lower-left': 1.235250113527832, 'upper-right': 1.0859224134496213}
+edge FWHM px: calcaneal=9, tibial_cortex_y120=6, tibial_plafond_x190=11
+mean sigma_bg=1.20; mean FWHM=8.67px
+practical detection limit: line length <~17px or contrast <~4 grey levels not reliably detectable

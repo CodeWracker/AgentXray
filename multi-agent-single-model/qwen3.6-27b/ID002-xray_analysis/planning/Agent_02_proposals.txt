@@ -1,0 +1,609 @@
+================================================================================
+AGENT_02 — ADDITIONAL IMAGE ANALYSIS PROPOSALS
+X-ray Image: ID002-xray.png
+Date: 2026-09-14
+Model: qwen3.6-27b
+================================================================================
+
+CORRECTION NOTE:
+My first-pass assessment misidentified this image as a hand/wrist PA radiograph.
+Upon closer inspection of the actual image, the anatomy is clearly a lateral
+view of the elbow/forearm: distal humerus extending horizontally, elbow joint
+at ~90 degrees flexion, and the radius/ulna extending vertically downward.
+The following proposals are based on the correct anatomical identification.
+
+The quantitative observations from my first-pass (image dimensions 1600x1280,
+RGB with bit-identical channels, histogram heavily skewed to dark values with
+~70% of pixels at 0-2, anatomical content occupying only ~30-40% of total
+image area) remain valid and form the technical basis for these proposals.
+
+================================================================================
+PROPOSAL 1 — CROP TO ANATOMICAL CONTENT AND REMOVE EMPTY MARGINS
+================================================================================
+
+Question being answered:
+  What is the actual field of view and how much usable image area is wasted on
+  empty padding?
+
+Why this method helps:
+  My first-pass quantitative analysis showed that approximately 55% of the
+  image is empty background (columns 0-700, roughly the entire left half). The
+  anatomical content (humerus, elbow, forearm) is confined to approximately
+  columns 650-1600 and rows 20-1280. Cropping eliminates wasted pixels and
+  effectively increases the resolution devoted to the diagnostic region.
+
+Expected to reveal:
+  - The usable content region is approximately columns 600-1600 (width ~1000
+    pixels) and rows 20-1280 (height ~1260 pixels), occupying roughly 60% of
+    the original frame.
+  - After cropping, the effective resolution per anatomical millimeter improves
+    from ~3.1 pixels/mm (estimated) to approximately 4.8 pixels/mm, a 55%
+    increase in spatial detail.
+  - The full humeral shaft, elbow articulation, proximal and distal forearm
+    bones will be more clearly visible at higher relative resolution.
+
+Potential artifacts/misleading effects:
+  - Over-aggressive cropping could clip important anatomical landmarks at the
+    edges (distal humerus at the right edge, distal forearm/wrist at the
+    bottom edge).
+  - The crop boundaries must be chosen conservatively, leaving a small margin
+    of soft tissue around the bony anatomy.
+
+How to compare with original:
+  - Display original and cropped side-by-side to confirm no anatomical content
+    was lost.
+  - Verify that the soft tissue silhouette is preserved at the crop edges.
+  - Use the cropped version for all subsequent processing steps.
+
+================================================================================
+PROPOSAL 2 — ADAPTIVE CONTRAST ENHANCEMENT (CLAHE-STYLE WINDOWING)
+================================================================================
+
+Question being answered:
+  Can low-contrast structures (subtle trabecular changes, cortical thinning,
+  soft tissue details) be made visible by better distributing the available
+  pixel intensity range?
+
+Why this method helps:
+  My first-pass showed the histogram is extremely skewed: the three most common
+  values (0, 1, 2) account for ~1.4 million pixels (~69%). Only 13% of pixels
+  exceed intensity 100. The clinically relevant bone and soft tissue
+  intensities (approximately 10-250) are compressed into a narrow range,
+  wasting the dynamic range. Contrast-limited adaptive histogram equalization
+  (CLAHE) or manual window/level adjustment would redistribute the intensity
+  values across the full 0-255 range, making subtle density variations visible.
+
+Expected to reveal:
+  - Improved visibility of the trabecular bone pattern within the humeral
+    metaphysis and distal forearm bones.
+  - Better delineation of the soft tissue envelope around the bones,
+    potentially revealing fat pad signs (anterior and posterior elbow fat pads).
+  - Enhanced visibility of joint space margins at the humeroulnar and
+    humeroradial articulations.
+  - Potential subtle cortical irregularities that are invisible in the
+    original contrast range.
+
+Potential artifacts/misleading effects:
+  - Over-enhancement can introduce false "fracture lines" by amplifying
+    background noise or compression artifacts.
+  - CLAHE can create unnatural brightness transitions at block boundaries if
+    the tile size is too small.
+  - Soft tissue enhancement may reduce bone contrast; a separate "bone window"
+    and "soft tissue window" may be needed.
+  - Any new apparent abnormalities must be verified against the original image.
+
+How to compare with original:
+  - Always maintain the original image for cross-reference.
+  - For each enhanced region, zoom to the same area in the original to confirm
+    whether the feature is real or an artifact of contrast manipulation.
+  - Apply conservative enhancement first (e.g., clip limit 2.0 in CLAHE),
+    then assess whether stronger settings add real information or just noise.
+
+================================================================================
+PROPOSAL 3 — EDGE ENHANCEMENT VIA UNSHARP MASKING FOR CORTICAL BONE
+  MARGIN ANALYSIS
+================================================================================
+
+Question being answered:
+  Are there any subtle cortical step-offs, breaks, or irregularities along the
+  ulnar and radial shafts, the olecranon, coronoid process, or radial head that
+  might indicate nondisplaced fractures?
+
+Why this method helps:
+  Unsharp masking subtracts a blurred version of the image from itself,
+  amplifying high-frequency content (edges). Cortical bone margins in X-rays
+  are sharp transitions from dense bone to less dense soft tissue. Enhancing
+  these transitions makes subtle discontinuities more apparent. This is
+  particularly valuable for:
+  - Radial head fractures (often occult on lateral view)
+  - Olecranon fractures (common in falls on outstretched hand)
+  - Coronoid process fractures (Mayo classification relevant to elbow
+    instability)
+  - Supracondylar humerus fractures
+
+Expected to reveal:
+  - Enhanced cortical outlines of the ulna (both anterior and posterior
+    cortices) along the visible shaft.
+  - Enhanced cortical outline of the radius, particularly at the radial head
+    and neck.
+  - The articular surfaces of the trochlea and capitellum.
+  - Any subtle cortical step-off or lucency that corresponds to a fracture
+    line would appear as a localized dark break in the enhanced cortical line.
+
+Potential artifacts/misleading effects:
+  - Unsharp masking amplifies noise alongside edges. Background noise in the
+    dark regions may appear as spurious "fracture lines."
+  - The halo effect (dark rings around bright objects) is characteristic of
+    unsharp masking and may be mistaken for cortical erosions.
+  - If the kernel size is too large, real fine features may be suppressed;
+    if too small, noise dominates.
+  - Must use mild settings (e.g., sigma 1-2 pixels, amount 0.5-1.0) and
+    validate all findings against the original.
+
+How to compare with original:
+  - For any apparent cortical disruption, immediately verify on the original
+    image at full resolution.
+  - Edge enhancement alone is never diagnostic; it is an aid to visual
+    inspection. A "positive" finding must be confirmed on the unprocessed
+    image.
+  - Compare the enhanced cortical line with the expected smooth anatomical
+    contour: the ulnar shaft should be a smooth curve; the radial shaft should
+    be nearly straight.
+
+================================================================================
+PROPOSAL 4 — LINE PROFILE ANALYSIS ALONG THE ULNAR AND RADIAL CORTICAL
+  MARGINS
+================================================================================
+
+Question being answered:
+  Is the cortical margin of the ulna and radius smooth and continuous, or are
+  there localized intensity dips or peaks that suggest cortical disruption
+  (fracture) or periosteal reaction?
+
+Why this method helps:
+  Visual inspection of bone cortices can miss subtle changes. A quantitative
+  line profile traces pixel intensity along a path following the expected
+  cortical margin. In a normal bone, the cortical margin shows a smooth,
+  consistent high-intensity band. A fracture, periosteal reaction, or
+  lytic lesion would create a characteristic local deviation:
+  - Fracture: a dip in intensity (radiolucent line through the cortex)
+  - Periosteal reaction: an additional intensity peak outside the cortex
+  - Cortical thinning: a reduction in the width of the high-intensity band
+
+Expected to reveal:
+  - Posterior ulnar cortex (olecranon to distal shaft): expected to be smooth
+    with a consistent intensity profile. Any dip >20 intensity units from the
+    local baseline would warrant closer inspection.
+  - Anterior ulnar cortex (coronoid to distal shaft): similarly expected to
+    be smooth.
+  - Radial head and neck: the radial neck is a common site of subtle fracture
+    and may show a localized intensity dip or cortical irregularity.
+  - Distal humeral cortex at the supracondylar region: a common site of
+    fracture, particularly in children.
+
+Potential artifacts/misleading effects:
+  - Partial volume effect: if the line path does not perfectly follow the
+    cortical surface, the profile may show artifactual intensity variations.
+  - Overlap of the radius and ulna in the lateral projection may create
+    confusing intensity patterns where the two bones are superimposed.
+  - Noise in the image can create small fluctuations that are not clinically
+    significant; the profile should be smoothed (e.g., moving average over
+    3-5 pixels) before interpretation.
+
+How to compare with original:
+  - Any anomaly detected in the line profile should be mapped back to the
+    original image at the corresponding pixel location for visual confirmation.
+  - The line profile path should be verified against the original image to
+    ensure it follows the actual cortical margin.
+  - Compare anterior and posterior cortex profiles of the same bone: they
+    should be roughly similar in pattern.
+
+================================================================================
+PROPOSAL 5 — REGIONAL DENSITY ANALYSIS OF THE ELBOW JOINT SPACE
+================================================================================
+
+Question being answered:
+  Is the humeroulnar and humeroradial joint space uniform and within normal
+  limits, or is there joint space narrowing, asymmetry, or irregularity that
+  suggests degenerative change, effusion, or occult fracture?
+
+Why this method helps:
+  The elbow joint space on a lateral view consists of the humeroulnar joint
+  (trochlea in the trochlear notch) and the humeroradial joint (capitellum
+  articulating with the radial head). These joint spaces should appear as
+  uniform radiolucent gaps between the articular surfaces. Quantitative
+  measurement of the joint space width along its length would detect
+  asymmetries or focal narrowing that might be missed by visual inspection.
+
+Expected to reveal:
+  - Humeroulnar joint space width: normally ~1-3 mm. Focal narrowing could
+    indicate early degenerative changes or cartilage loss.
+  - Humeroradial joint space width: normally ~1-2 mm.
+  - The "double arc sign" (normal alignment of radial head arc with
+    capitellar arc) can be assessed.
+  - Joint space widening on one side could indicate ligamentous injury.
+
+Potential artifacts/misleading effects:
+  - Lateral projection with the elbow flexed at 90 degrees means the joint
+    space width is viewed obliquely, not in true cross-section. The measured
+    width may not correspond to the actual anatomical width.
+  - Overlap of the radial head with the capitellum in a true lateral view
+    makes separate measurement of the humeroradial joint space challenging.
+  - Image resolution limits (estimated ~3-5 pixels/mm) may not resolve joint
+    spaces of 1-2 mm accurately.
+
+How to compare with original:
+  - Verify the joint space measurement on the original image at full
+    resolution.
+  - Compare the measured joint space with expected normal values for the
+    patient's age (if known).
+  - Assess whether the joint space appears uniform along its visible length.
+
+================================================================================
+PROPOSAL 6 — SOFT TISSUE SILHOUETTE ANALYSIS: FAT PAD SIGNS
+================================================================================
+
+Question being answered:
+  Is there an elevated anterior fat pad (sail sign) or visible posterior fat
+  pad in the elbow, which would indicate intra-articular effusion and possible
+  occult fracture?
+
+Why this method helps:
+  The fat pad signs are one of the most important indicators of occult elbow
+  fracture. The anterior fat pad (in the coronoid fossa) is normally not
+  visible or barely visible. Elevation of the anterior fat pad (sail sign)
+  indicates joint effusion, which on a traumatized elbow is highly suggestive
+  of an occult fracture (especially radial head or supracondylar). The
+  posterior fat pad (in the olecranon fossa) should never be visible; its
+  presence is always abnormal.
+
+  My first-pass quantitative analysis noted that the soft tissue region has
+  low contrast (mean intensity 39.2 in the dark regions, with values 0-20
+  for most non-bone pixels). Enhancing the soft tissue window specifically
+  would bring these fat pads into view.
+
+Expected to reveal:
+  - Anterior fat pad: if visible as a triangular radiolucency at the anterior
+    aspect of the distal humerus (coronoid fossa), this constitutes a positive
+  - sail sign and suggests joint effusion.
+  - Posterior fat pad: if visible as a radiolucency behind the olecranon,
+    this is pathognomonic for intra-articular pathology.
+  - Overall soft tissue swelling around the elbow: diffuse thickening of the
+    soft tissue envelope compared to normal.
+
+Potential artifacts/misleading effects:
+  - Normal soft tissue folds and skin creases may mimic fat pad elevation.
+  - The lateral projection with elbow flexion means the anterior and posterior
+    compartments overlap, potentially obscuring the fat pads.
+  - Contrast enhancement can create false soft tissue boundaries by
+    amplifying noise.
+
+How to compare with original:
+  - Any fat pad identified in the enhanced image must be confirmed on the
+    original image.
+  - The expected location of the anterior fat pad is just anterior to the
+    coronoid process. The posterior fat pad would be in the olecranon fossa.
+  - Soft tissue thickness should be compared to expected normal for the
+    patient's body habitus (if known).
+
+================================================================================
+PROPOSAL 7 — RADIAL HEAD DEDICATED ASSESSMENT
+================================================================================
+
+Question being answered:
+  Is the radial head intact, or is there a subtle fracture (Mason type I) that
+  is obscured by the lateral projection and low image contrast?
+
+Why this method helps:
+  Radial head fractures are among the most common elbow fractures and are
+  notoriously difficult to detect on a single lateral view. A nondisplaced
+  radial head fracture (Mason type I) may show only a subtle cortical
+  impression or hairline lucency. A dedicated assessment of the radial head
+  region, with optimized windowing and edge enhancement, can reveal findings
+  missed on general review.
+
+  The radial head is located at the elbow joint, articulating with the
+  capitellum. On a true lateral view, the radial head should be a smooth,
+  rounded structure with a continuous cortical rim. The "capitellar line"
+  (drawn down the center of the capitellum) should bisect the radial head
+  on an AP view, but on lateral view the key finding is the smoothness of the
+  radial head contour.
+
+Expected to reveal:
+  - Smooth, continuous cortical rim of the radial head with no step-offs,
+    lucencies, or irregularities.
+  - Alternatively, a focal cortical depression or hairline lucency would
+    suggest a nondisplaced fracture.
+  - The radial neck region, just distal to the radial head, is another common
+    fracture site.
+
+Potential artifacts/misleading effects:
+  - Superimposition of the radial head over other structures in the lateral
+    view can create confusing radiopacity patterns.
+  - Edge enhancement may create a false "step-off" at the junction between
+    the radial head and radial neck (a normal anatomical transition).
+  - The limited resolution (~3-5 pixels/mm) may not resolve a hairline
+    fracture that is less than 1 pixel wide.
+
+How to compare with original:
+  - The radial head region should be examined at maximum zoom on the original
+    image.
+  - Any apparent fracture line on the enhanced image must be verified on the
+    unprocessed original.
+  - The normal smooth contour of the radial head should be used as the
+    reference standard.
+
+================================================================================
+PROPOSAL 8 — FOREARM BONE ALIGNMENT AND BOWING ASSESSMENT
+================================================================================
+
+Question being answered:
+  Is the alignment of the ulna and radius normal, or is there evidence of
+  malalignment, bowing, or angular deformity suggestive of a healing fracture
+  or congenital abnormality?
+
+Why this method helps:
+  The ulna normally has a slight anterior bow (convex posteriorly) when viewed
+  laterally. The radius normally runs straight or with a very slight curve.
+  Abnormal bowing could indicate:
+  - A healed or healing displaced fracture with malunion
+  - Congenital bowing (e.g., congenital pseudarthrosis)
+  - Post-traumatic deformity
+
+  Quantitative assessment involves tracing the midline of each bone shaft and
+  measuring the deviation from a straight line connecting the proximal and
+  distal reference points.
+
+Expected to reveal:
+  - Normal ulnar bow: slight posterior convexity (the ulnar shaft bows
+    posteriorly, with the apex of the curve at the midshaft).
+  - Normal radial alignment: nearly straight or very slight anterior bow.
+  - Any focal angulation (sudden change in direction) along either shaft
+    would suggest a healed fracture with malunion.
+  - The interosseous space between the radius and ulna should be relatively
+    uniform.
+
+Potential artifacts/misleading effects:
+  - Patient positioning (degree of elbow flexion, forearm rotation) can
+    alter the apparent alignment.
+  - The image may be partially cropped at the proximal humerus and distal
+    forearm, limiting the length of bone available for alignment assessment.
+  - Mild rotation of the forearm away from true lateral will alter the
+    apparent relationship between the radius and ulna.
+
+How to compare with original:
+  - Trace the midline of each bone on the original image at full resolution.
+  - Verify that the apparent bowing is consistent along the entire visible
+    shaft, not localized to one region.
+  - Compare the measured alignment with standard reference images of normal
+    lateral elbow/forearm anatomy.
+
+================================================================================
+PROPOSAL 9 — GRAYSCALE HISTOGRAM ANALYSIS OF THE ANATOMICAL REGION
+================================================================================
+
+Question being answered:
+  What is the actual distribution of pixel intensities in the anatomical
+  content region, and what does this tell us about exposure quality and the
+  optimal windowing parameters?
+
+Why this method helps:
+  My first-pass analysis showed the global histogram is dominated by empty
+  background pixels (~69% at values 0-2). A regional histogram computed only
+  on the anatomical content (after cropping) would reveal the true intensity
+  distribution of the radiographic data. This would:
+  - Identify the optimal window/level for bone visualization
+  - Identify the optimal window/level for soft tissue visualization
+  - Assess whether the exposure is appropriate (bone structures should
+    occupy a substantial range of the intensity spectrum)
+  - Detect whether the 8-bit conversion from the original DICOM has
+    discarded clinically relevant information
+
+Expected to reveal:
+  - The histogram should show a multimodal distribution: a peak at low
+    intensities (soft tissue/air), a broad peak at medium intensities
+    (trabecular bone and soft tissue overlap), and a peak at high intensities
+    (cortical bone).
+  - The width of the high-intensity peak indicates the range of cortical bone
+    density. A narrow peak suggests limited dynamic range, meaning the 8-bit
+    conversion may have compressed important detail.
+  - The low-intensity range reveals soft tissue detail. A very narrow low-
+    intensity range suggests soft tissue detail is compressed and could be
+    recovered with appropriate windowing.
+
+Potential artifacts/misleading effects:
+  - If the anatomical region boundaries are imprecise, background pixels will
+    contaminate the histogram and distort the analysis.
+  - The histogram reflects the combined intensity of overlapping structures
+    (e.g., humerus, soft tissue, and background in the same column of pixels).
+  - 8-bit PNG conversion is lossy relative to the original DICOM data; the
+    histogram cannot recover information that was lost in the conversion.
+
+How to compare with original:
+  - Use the histogram to define specific window/level parameters, then apply
+    them to the original image to verify that the resulting visualization is
+    diagnostically useful.
+  - Compare the regional histogram with published reference histograms for
+    normal elbow radiographs (if available).
+
+================================================================================
+PROPOSAL 10 — GRAYSCALE TO SINGLE-CHANNEL CONVERSION AND QUANTITATIVE
+  PIXEL ANALYSIS
+================================================================================
+
+Question being answered:
+  Is the image truly single-channel grayscale stored redundantly as RGB, and
+  what are the exact pixel statistics of the anatomical region?
+
+Why this method helps:
+  My first-pass analysis confirmed that all three RGB channels are
+  bit-identical (max inter-channel difference = 0.0), meaning the image is
+  effectively 8-bit grayscale stored as 24-bit RGB. Converting to single-
+  channel grayscale is the foundation for all subsequent quantitative
+  analysis. Additionally, computing precise statistics on specific anatomical
+  subregions (humerus, elbow joint, proximal ulna, distal ulna, radial head,
+  radial shaft) would establish baseline density values for comparison.
+
+Expected to reveal:
+  - Confirmed single-channel data (R = G = B for all pixels).
+  - Regional mean, standard deviation, min, max, and percentile values for
+    each anatomical subregion.
+  - The dynamic range within the anatomical region: the difference between
+    the brightest and darkest anatomical pixels (excluding empty background).
+  - Identification of any localized areas of abnormally high or low density
+    that could represent pathology (e.g., osteolytic or osteoblastic lesions).
+
+Potential artifacts/misleading effects:
+  - Defining anatomical subregions imprecisely will mix different tissue types
+    and confound the statistics.
+  - Small regions (e.g., radial head, which may occupy fewer than 100 pixels)
+    will have noisy statistics that are not meaningful.
+  - The statistics alone cannot diagnose pathology; they must be interpreted
+    in anatomical context.
+
+How to compare with original:
+  - Verify that the grayscale conversion is lossless (all information
+    preserved, since R=G=B means no color information exists).
+  - Use the statistics to identify regions of interest for closer visual
+    inspection on the original image.
+
+================================================================================
+PROPOSAL 11 — FREQUENCY-DOMAIN ANALYSIS (2D FOURIER TRANSFORM)
+================================================================================
+
+Question being answered:
+  What are the frequency characteristics of the image, and are there any
+  directional patterns or artifacts that would inform the optimal sharpening
+  or noise-reduction strategy?
+
+Why this method helps:
+  A 2D Fourier transform decomposes the image into its frequency components.
+  For an X-ray of the elbow, this would reveal:
+  - The dominant spatial frequencies (related to bone width and cortical
+    thickness)
+  - Whether there are directional frequency components (e.g., periodic
+    artifacts from compression, scanning artifacts, or grid lines)
+  - The noise floor (high-frequency content that is random noise vs.
+    meaningful detail)
+
+  Understanding the frequency content guides the choice of sharpening
+  parameters: sharpening should amplify frequencies corresponding to
+  anatomical detail while suppressing noise frequencies.
+
+Expected to reveal:
+  - Low-frequency components: the overall shape and position of the bones
+    (large-scale structure).
+  - Mid-frequency components: cortical bone margins, trabecular patterns,
+    joint spaces.
+  - High-frequency components: noise, fine detail, and any artifacts.
+  - The power spectrum would show the distribution of energy across
+    frequencies, guiding the design of an optimal band-pass filter for
+    enhancing diagnostically relevant features.
+
+Potential artifacts/misleading effects:
+  - The Fourier transform of a cropped rectangular region can introduce
+    edge artifacts (high-frequency components from the sharp transition
+    between anatomical content and black background).
+  - Windowing (e.g., Hann or Hamming window) should be applied before the
+    FFT to minimize these edge artifacts.
+  - The frequency analysis is informative for guiding processing parameters
+    but does not directly identify anatomical abnormalities.
+
+How to compare with original:
+  - Use the frequency analysis to select optimal parameters for sharpening
+    and noise reduction.
+  - Apply the derived filters and compare the filtered image with the original
+    to verify that anatomically relevant detail is enhanced and noise is
+    suppressed.
+
+================================================================================
+PROPOSAL 12 — LOCALIZED REGION-OF-INTEREST (ROI) EXTRACTION AND
+  INDIVIDUAL ENHANCEMENT FOR THE OLECRANON AND CORONOID PROCESSES
+================================================================================
+
+Question being answered:
+  Are the olecranon and coronoid processes of the proximal ulna intact, or is
+  there a fracture, avulsion, or impaction injury at either of these critical
+  anatomical landmarks?
+
+Why this method helps:
+  The olecranon and coronoid processes are small, complex bony structures at
+  the proximal end of the ulna. The olecranon is the most common site of
+  elbow fracture in adults (often from falling on an outstretched hand with
+  the elbow flexed). The coronoid process is a key stabilizer of the elbow
+  joint, and fractures here are associated with elbow instability
+  (terrible triad injury: coronoid fracture + radial head fracture +
+  posterolateral rotatory instability).
+
+  Because these structures are small relative to the overall image, they may
+  not benefit from global contrast enhancement. Extracting them as individual
+  ROIs and applying tailored windowing and sharpening would optimize
+  visualization of these specific regions.
+
+Expected to reveal:
+  - Olecranon: smooth, continuous cortical margin at the tip and along the
+    articular surface. No lucent fracture lines.
+  - Coronoid process: smooth, triangular bony prominence at the anterior
+    ulna. No cortical disruption.
+  - The olecranon fossa of the humerus: should be a smooth concave surface
+    that accommodates the olecranon in extension.
+  - Any step-off, lucent line, or comminution at either process would
+    indicate fracture.
+
+Potential artifacts/misleading effects:
+  - The olecranon and coronoid are close together in the lateral projection,
+    and the joint space between them (trochlear notch) may be confused with
+    a fracture line.
+  - Over-sharpening of small ROIs can create edge halos that mimic cortical
+    step-offs.
+  - The FOV may not include the very tip of the olecranon if it extends
+    beyond the image frame.
+
+How to compare with original:
+  - Any suspected fracture in the ROI-enhanced view must be verified on the
+    original full-resolution image.
+  - The normal anatomy of the trochlear notch should be used as a reference
+    to distinguish it from a fracture line.
+
+================================================================================
+SUMMARY OF PROPOSED ANALYSES BY PRIORITY
+================================================================================
+
+  CRITICAL (highest diagnostic yield):
+    1. Proposal 1: Crop to anatomical content (foundation for all other steps)
+    2. Proposal 2: Adaptive contrast enhancement (single biggest improvement)
+    3. Proposal 3: Edge enhancement for cortical margin analysis
+
+  HIGH (targeted clinical questions):
+    4. Proposal 4: Line profile analysis along ulnar/radial cortices
+    5. Proposal 5: Elbow joint space density analysis
+    6. Proposal 6: Soft tissue silhouette — fat pad signs
+    7. Proposal 7: Radial head dedicated assessment
+    8. Proposal 12: Olecranon/coronoid ROI extraction
+
+  MODERATE (supporting evidence):
+    9. Proposal 8: Forearm bone alignment and bowing assessment
+   10. Proposal 9: Regional grayscale histogram analysis
+   11. Proposal 10: Single-channel conversion and quantitative pixel stats
+
+  EXPLORATORY (informing processing strategy):
+   12. Proposal 11: Frequency-domain analysis (2D FFT)
+
+================================================================================
+EXECUTION RECOMMENDATION
+================================================================================
+
+The proposals are designed to be executed in dependency order:
+  Step 1: Proposals 1 & 10 (crop + grayscale conversion)
+  Step 2: Proposal 9 (regional histogram to determine optimal windowing)
+  Step 3: Proposal 2 (contrast enhancement, informed by histogram)
+  Step 4: Proposals 3 & 11 (edge enhancement + frequency analysis)
+  Step 5: Proposals 4, 5, 6, 7, 8, 12 (targeted clinical assessments
+          on the enhanced images)
+
+Each step produces outputs that can be independently validated against the
+original unprocessed image.
+
+================================================================================
+END OF AGENT_02 ADDITIONAL IMAGE ANALYSIS PROPOSALS
+================================================================================

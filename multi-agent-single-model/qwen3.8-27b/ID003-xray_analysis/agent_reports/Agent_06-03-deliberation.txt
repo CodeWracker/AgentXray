@@ -1,0 +1,480 @@
+AGENT: Agent_06
+MODEL:
+qwen3.8-27b
+IMAGE: ID003-xray.png
+PHASE: council deliberation
+
+I read all six proposal sets (Agent_01..06, phase 02) and, for context on the
+disagreements, all six first-pass files. I am not a radiologist; this is an
+assessment of analyses and evidence, not a diagnosis.
+
+================================================================================
+A. TOPIC-BY-TOPIC ASSESSMENT
+================================================================================
+
+T1. Global baseline normalization (percentile stretch of the full image)
+    Agents: Agent_01 (P1)
+    VERDICT: SUPPORT
+    Cheap, low-artifact, and gives every downstream analysis a common
+    reproducible base; no new information is claimed from it. Keep exactly one
+    such output as the display baseline for all other work.
+
+T2. Whole-image CLAHE / adaptive local equalization
+    Agents: Agent_01 (P2), Agent_02 (P1), Agent_03 (P1, with global window),
+            Agent_05 (A1), Agent_06 (P1); Agent_04 (P4 bone window, adjacent)
+    VERDICT: SUPPORT (with consolidation)
+    Six near-identical variants are on the table; the information content of
+    any one of them is the same. Consolidate to a SINGLE full-image CLAHE
+    output (tile ~8x8, clip ~2.5) and retire the rest. Noise-amplified
+    "fracture lines" are the known failure mode, so the traceable-back-to-the-
+    original rule all agents agreed on must be enforced.
+
+T3. Global illumination / flat-field normalization
+    Agents: Agent_04 (P3)
+    VERDICT: OPPOSE
+    Subsumed by T1+T2 for everything that is recoverable, and its specific
+    claim (recover the burned-out right edge) fails: multiple first passes
+    (Agent_04 f, Agent_05 Q4) agree that region is clipped at saturation, so
+    background subtraction will return banding, not anatomy. Over-subtraction
+    rings around dense bone are an added artifact risk for near-zero gain.
+
+T4. Soft-tissue window (forearm + hand)
+    Agents: Agent_01 (P9), Agent_04 (P4b), Agent_05 (A6), Agent_06 (P7)
+    VERDICT: SUPPORT-WITH-CAUTION
+    Legitimate use (swelling, gas, foreign body) and only way to look at the
+    soft-tissue envelope, but baseline asymmetry is expected in a flexed
+    fist with no contralateral reference, so findings here can only be
+    "suggestive". Keep ONE output covering forearm + hand; bone-suppression
+    variants must be checked for residual bone ghosts. A separate whole-image
+    "bone window" output (Agent_04 P4a) is largely redundant with T2 and the
+    region crops; fold windowing into the crops instead.
+
+T5. Mid-forearm crop (primary finding): plain reference + enhanced
+    Agents: ALL SIX (Agent_01 P4, Agent_02 P4, Agent_03 P3, Agent_04 P1+M4,
+            Agent_05 A2+C2, Agent_06 P2)
+    VERDICT: SUPPORT (highest priority, consolidated to 2 outputs)
+    This is the single most important region in the image and every agent
+    converged on it. The union should produce exactly two files: one PLAIN
+    unenhanced 2-3x magnified crop (the ground truth against which everything
+    else is judged — Agent_04 M4 / Agent_05 C2) and one CLAHE-enhanced crop
+    (Agent_04 P1 / Agent_06 P2). Anything beyond that is redundancy.
+
+T6. Elbow crop (enhanced)
+    Agents: Agent_01 (P5), Agent_02 (P3), Agent_03 (P5), Agent_04 (P6),
+            Agent_05 (A8)
+    VERDICT: SUPPORT-WITH-CAUTION
+    The elbow is partly out of FOV and oblique, so its yield is bounded:
+    exclude gross pathology and read the ossification centers. That second
+    use matters because the elbow ossification pattern is one of the three
+    pillars of the maturity question (D1). One enhanced crop suffices; do not
+    over-claim clearance of subtle injury (Agent_05's caveat is correct).
+
+T7. Wrist / carpal crop (windowed / CLAHE)
+    Agents: Agent_01 (P6), Agent_02 (P2), Agent_03 (P4), Agent_04 (P7),
+            Agent_05 (A4+C1), Agent_06 (P3)
+    VERDICT: SUPPORT (with one caution)
+    Doubly important: occult carpal/distal-radius fracture (Q3) AND the
+    physeal/carpal-center evidence for D1. Caution: several proposed boxes
+    (Agent_05 A4 down to y 0.80) reach into the disputed lower-right zone of
+    D2; the crop must be read with the second-limb hypothesis in mind, and
+    Agent_05's warning that "the superimposed second limb intrudes at the
+    crop's bottom edge" is the right framing. One windowed crop + plain
+    reference (C1).
+
+T8. Hand crop / hand bone window
+    Agents: Agent_01 (P7), Agent_02 (P5), Agent_04 (P8), Agent_05 (A5+C3)
+    VERDICT: SUPPORT-WITH-CAUTION
+    Worth one bone-window crop plus a plain reference, but all four agents
+    correctly state that flexed-fist superimposition is a geometric limit no
+    window fixes; the report must keep the metacarpal/phalangeal region as
+    "partially not assessable" wherever the second limb (D2) also overlaps.
+
+T9. Cortical edge tracing: high-pass / unsharp / Canny on the forearm
+    Agents: Agent_01 (P3, P8), Agent_02 (P4), Agent_03 (P2), Agent_04 (P2, P5),
+            Agent_05 (A7 derivatives), Agent_06 (P4, P5)
+    VERDICT: SUPPORT for a FOREARM-BAND version; OPPOSE the full-image Canny
+            overlay
+    A single high-pass/Canny map of the forearm band (elbow-to-wrist, the four
+    cortical margins) is genuinely useful: a true cortical break shows edge
+    termination/displacement, intact superimposed cortices stay parallel.
+    The full-image Canny overlay (Agent_01 P8) is redundant with this and
+    invites the classic failure of reading a derivative literally (noise
+    edges, joint spaces, and the right-edge trunk all light up).
+
+T10. Bone mask by global thresholding
+    Agents: Agent_03 (P7)
+    VERDICT: OPPOSE
+    A global threshold cannot simultaneously capture the faint forearm cortex
+    and avoid clipping the saturated hand/trunk; radius+ulna cortices will
+    merge into one blob, and the lower-right wire/fiber artifact (Agent_03
+    and Agent_06 both noted it) enters the mask and could be misread as bone.
+    High artifact risk, and the continuity question is already better served
+    by T5+T9. If a mask is insisted upon, restrict it to the mid-forearm crop
+    only — marginal added value over the high-pass map.
+
+T11. Inverted (negative) hand view
+    Agents: Agent_01 (P11)
+    VERDICT: OPPOSE
+    A polarity flip carries zero new information; it is a perceptual
+    curiosity, not an analysis, and it does not deserve an output slot.
+
+T12. Right-edge highlight recovery (gamma compression of the bright margin)
+    Agents: Agent_02 (P8)
+    VERDICT: OPPOSE
+    The right-edge structure is saturated and (per Agent_01, Agent_05)
+    substantially out of focus; compressing clipped highlights yields
+    banding, not anatomy. Its identity ("adjacent trunk, not the examined
+    region") should be settled by description in the report, not by a
+    dedicated processed image.
+
+T13. Lower-right second-limb separation
+    Agents: Agent_05 (A7)
+    VERDICT: SUPPORT (key to D2)
+    The only proposal aimed at the disputed lower-right structure, and the
+    right approach: dedicated crop + CLAHE + derivative overlay, with
+    ambiguous (truly overlapping) pixels explicitly labeled as such rather
+    than force-assigned. I would add a plain unenhanced crop of the same box
+    as the reference (the existing C3 hand crop only partially covers it).
+
+T14. Quantitative: 1-D intensity profiles across the mid-forearm (+ controls)
+    Agents: Agent_02 (P6), Agent_03 (P6), Agent_05 (A3), Agent_06 (P8)
+    VERDICT: SUPPORT (highest-value quantitative item)
+    A narrow, deep, row-stable dip crossing the cortex supports a real
+    lucent fracture line; a broad, shallow, row-unstable variation supports
+    superimposition/beam artifact. Averaging several adjacent rows and
+    including control levels (the design in Agent_03 P6 / Agent_05 A3)
+    controls the main failure modes. Consolidate the four variants into one
+    plot + numeric table.
+
+T15. Quantitative: axis fits, angulation, callus width, step-off
+    Agents: Agent_01 (P10), Agent_02 (P7), Agent_04 (M2), Agent_05 (M2),
+            Agent_06 (P6)
+    VERDICT: SUPPORT-WITH-CAUTION
+    Worth ONE consolidated annotated output (fitted proximal/distal lines,
+    inter-axis angle, max callus width in px and % of diaphyseal width,
+    step-off in px). Caution is mandatory: on an oblique single view the
+    angle is an image-plane apparent value, 1-2 degrees is within fitting
+    noise (Agent_05 M2's repeated-fit sensitivity check should be adopted),
+    and normal ulnar bowing must be excluded first.
+
+T16. Quantitative: forearm silhouette width curve
+    Agents: Agent_03 (P8)
+    VERDICT: SUPPORT-WITH-CAUTION
+    A focal bulge at the lesion level would support displacement/callus; a
+    smooth curve supports a purely cortical or artifactual change. Keep it,
+    but fold it as a secondary panel of the T14 profile plot rather than a
+    separate output, and smooth the edge detection to avoid pixel jitter.
+
+T17. Quantitative: per-region histograms + saturation percentage
+    Agents: Agent_03 (P9)
+    VERDICT: SUPPORT
+    Low cost, near-zero artifact risk, and it bounds every hand/wrist
+    windowing proposal: if a large fraction of the metacarpal region is
+    clipped at max gray, those structures are unrecoverable and must be
+    reported "not assessable for objective reasons". It also quantifies how
+    burned out the right edge actually is (settling T12 without an image).
+
+T18. Quantitative: carpal ossification-center census (count + coordinates)
+    Agents: Agent_04 (M3)
+    VERDICT: SUPPORT (key to D1)
+    Converts the impression "looks small/immature" into a checkable list that
+    can be compared against the normal maturation sequence; also relevant to
+    D2 (are the lower-right "carpal-like" centers part of a second limb?).
+    One annotated crop + coordinate table.
+
+T19. Quantitative: physeal width / shaft width ratio (distal radius & ulna)
+    Agents: Agent_05 (M1)
+    VERDICT: SUPPORT (key to D1)
+    Dimensionless, so robust to the missing physical scale; an open physis
+    shows as a measurable lucent band relative to shaft width, and the
+    three-point + ulnar-internal-control design is sound. Sub-pixel
+    limitations should be stated in the report.
+
+T20. Quantitative: sharpness metric (Laplacian variance / Tenengrad)
+    Agents: Agent_06 (P8, my own); profile sharpness also in Agent_02 (P6)
+    VERDICT: DEMOTE (self-objection)
+    Reassessing my own proposal: five of six first passes already found
+    cortices reasonably sharp with no convincing motion blur, so a
+    standalone sharpness number has low decision value and ROI-placement
+    bias risk. Keep the 1-D luminance profile (T14), drop the sharpness
+    metric as a standalone output; if computed at all, it is a footnote in
+    the profile report.
+
+T21. Quantitative: wrist position angle (forearm axis vs hand axis)
+    Agents: Agent_05 (M3)
+    VERDICT: REDUNDANT as an image output
+    Purely descriptive; it characterizes the projection but is not
+    diagnostic. Report the value as a line of text with the tracing method;
+    it does not deserve its own annotated image slot.
+
+T22. Quantitative: interosseous width profile
+    Agents: Agent_01 (M3)
+    VERDICT: REDUNDANT
+    Subsumed by the T16 width curve; no separate output.
+
+================================================================================
+B. DISAGREEMENT D1 (skeletal maturity)
+================================================================================
+Assessment:
+- Four of six first passes independently read a PEDIATRIC skeleton:
+  Agent_02 (open physes elbow/wrist, small carpal centers), Agent_03
+  (slender bones, separate rounded distal-phalangeal epiphyseal centers,
+  metaphyseal flaring), Agent_04 (narrow physes, small/incomplete carpal
+  centers), Agent_05 (open physes at distal radius/ulna AND phalanges,
+  multiple carpal/phalangeal centers).
+- Agent_01 and Agent_06 (myself) did not commit; my first pass simply never
+  addressed the physes, which is a gap in my own review, not counter-evidence.
+  None of the six first passes described CLOSED physes or fully ossified
+  carpal bones.
+- Working position: pediatric is the leading hypothesis by evidence weight,
+  but it is NOT formally established from this single oblique view, and I
+  will not force consensus. It matters diagnostically: (i) it makes the
+  mid-DIAphyseal location of the faint transverse line more concerning
+  (Agent_04's point: it is not at a physis, so it cannot be dismissed as a
+  growth plate); (ii) normal open physeal lines elsewhere must not be read
+  as fracture lines; (iii) physeal (Salter-Harris) injury enters the
+  differential for the wrist and elbow.
+Which analyses resolve it, in order of yield:
+ 1. Carpal census (T18, Agent_04 M3) on the windowed wrist crop (T7):
+    2-5 small, rounded, smooth-margined centers with large empty gaps =
+    young child; 8-9 fully ossified carpals with continuous cortices = adult.
+ 2. Physeal width/shaft width ratio (T19, Agent_05 M1): a lucent band of
+    measurable width at the distal radius/ulna = open physis; its absence
+    with a continuous cortex = closed.
+ 3. Elbow crop (T6): elbow ossification-center pattern (capitellum, radial
+    head, olecranon, epicondyles) cross-checks the carpus.
+ 4. Distal phalangeal epiphyses (noted by Agent_03 first pass): separate
+    rounded centers = immature.
+Evidence pattern that would settle it:
+ - PEDIATRIC: open physeal lucent bands at distal radius/ulna and phalanges
+   + a handful (roughly 2-5) of small rounded carpal centers + metaphyseal
+   flaring + slender diaphyses.
+ - ADULT: no physeal bands anywhere (continuous cortex), all carpal bones
+   ossified and fused, no metaphyseal flaring, wider diaphyses.
+ - MIXED/AMBIGUOUS: e.g., closed distal radius but open phalanges, or
+   unreadable physes due to obliquity — in that case report maturity as
+   "indeterminate, features favor [X]" and say which structure was
+   unreadable.
+Cross-check: if Agent_05's D2 second limb is real, its small rounded
+"carpal-like" centers are consistent with a CHILD — the two hypotheses
+(pediatric + contralateral child's limb) are mutually reinforcing, which
+raises my confidence in both, though neither is confirmed yet.
+
+================================================================================
+C. DISAGREEMENT D2 (right-edge / lower-right structure)
+================================================================================
+Assessment:
+- There are actually THREE distinct structures at the right side that agents
+  discuss separately, and conflating them is a likely source of the
+  disagreement:
+  (a) the bright, out-of-focus, saturated mass at the extreme right edge
+      (x ~0.88-1.00, y ~0.35-1.00): near-unanimous trunk/torso
+      (Agent_01, 02, 03, 04, 05 B13, 06). Low dispute.
+  (b) the disputed LOWER-RIGHT structure (Agent_05 B10/B11): two oblique
+      long bones running from the bottom edge (x ~0.55-0.75, y ~1.0) up to
+      a wrist-like joint (x ~0.45-0.60, y ~0.88-0.95), plus a carpal-like
+      ossification cluster (x ~0.62-0.78, y ~0.80-0.92) — read by Agent_05
+      as the CONTRALATERAL forearm/hand superimposed under the examined
+      hand.
+  (c) the thin wavy linear structure in the extreme lower-right corner
+      (x ~0.85-0.95, y ~0.88-0.98): read as external wire/fiber by
+      Agent_03 and Agent_06 — adjacent to (b) but distinct from it.
+- Note the overlap: Agent_04's "small irregular dense focus at x ~0.63,
+  y ~0.82 (phalanx? sesamoid? fragment?)" sits INSIDE Agent_05's cluster
+  (b). So D2 also decides the attribution of Agent_04's focus: second-limb
+  carpal center (benign) vs possible fragment of the examined hand.
+- Why it matters: if Agent_05 is right, the carpus and metacarpal bases of
+  the examined hand are partially obscured by a second limb, and the report
+  must state those zones as not assessable — a material difference from
+  "obscured only by the patient's own rotated hand".
+Which analyses resolve it:
+ 1. Dedicated lower-right crop (x ~0.40-0.88, y ~0.74-1.00) as THREE
+    outputs: plain 2x reference, CLAHE, and edge/derivative overlay
+    (Agent_05 A7 plus the plain reference I add). The overlay's purpose is
+    to trace each oblique long bone and see where it terminates.
+ 2. Geometric tracing (part of my F-addition): follow each candidate long
+    bone proximally. Evidence FOR the second-limb hypothesis: two
+    long-bone shafts with metaphyseal flaring that terminate at their OWN
+    wrist-like cluster at y ~0.88-0.95 — distinct from and distal to the
+    examined wrist already identified at y ~0.63 — and that ENTER the image
+    from the bottom edge (consistent with a second arm lying in the field).
+    Evidence FOR the single-hand hypothesis: the oblique bones are
+    metacarpals/phalanges of the same hand in extreme obliquity — but this
+    is hard to reconcile with the examined wrist already being identified
+    more proximally. Evidence FOR trunk-only: the oblique densities are hip/
+    flank shadow — but they show discrete long-bone morphology with
+    cortical edges, which blurred trunk tissue should not.
+ 3. Per-region histogram/saturation (T17) applied to the lower-right box:
+    tells us how much of this zone is clipped before we even look.
+Limit to state explicitly: where the two limbs genuinely overlap, the same
+pixels carry both contributions; no processing can un-mix them. Those
+zones must be reported as "not assessable — superimposition", and ambiguous
+overlay pixels must not be force-labeled (Agent_05's own design already
+requires this; keep it).
+
+================================================================================
+D. QUANTITATIVE MEASUREMENTS
+================================================================================
+INCLUDE (worth the effort, in priority order):
+ 1. 1-D transverse intensity profiles across the mid-forearm at the lesion
+    level (2-3 adjacent rows, averaged) + 2 control levels, with dip depth
+    and width in px (T14). This is the decisive objective test of the
+    primary finding: sharp narrow row-stable dip = lucent fracture line;
+    broad shallow row-unstable variation = superimposition/beam artifact.
+ 2. Carpal center census with coordinates (T18): resolves D1; low cost.
+ 3. Physeal width/shaft width ratio at distal radius (3 points) and ulna
+    (T19): resolves D1; dimensionless so scale-free.
+ 4. Per-region histograms + saturation % (hand, forearm, wrist, lower-right,
+    right edge) (T17): bounds the recoverability of the overexposed zones
+    and objectively documents the right-edge clip (retiring T12).
+ 5. ONE axis/angulation annotation (T15): fitted proximal/distal diaphyseal
+    lines, inter-axis angle (image plane), max callus width in px and % of
+    diaphyseal width, step-off in px, with repeated-fit sensitivity check.
+DROP / DEMOTE:
+ 6. Sharpness metric (Laplacian variance / Tenengrad) as standalone output
+    (T20): five of six first passes already judged the cortices acceptably
+    sharp with no convincing motion blur; a single number with ROI-placement
+    bias risk has low decision value. Demote to a footnote if computed.
+ 7. Wrist position angle (T21): descriptive only; report as text with
+    method, no image slot.
+ 8. Interosseous width profile (T22): subsumed by the width curve.
+ 9. Forearm width curve (T16): keep, but as a secondary panel inside the
+    T14 profile plot, not a separate output.
+General rule for all numbers (all agents, and I agree): no physical scale
+exists in this image, so report pixels / normalized units / dimensionless
+ratios only, with that caveat stated in every report.
+
+================================================================================
+E. OBJECTIONS
+================================================================================
+1. Agent_01 P11 (hand inverted image) — OPPOSE. Zero new information (pure
+   polarity flip); it is a perceptual curiosity and does not merit an output
+   slot.
+2. Agent_03 P7 (global bone mask) — OPPOSE. A single global threshold cannot
+   handle this image's range (faint forearm vs saturated hand vs trunk);
+   radius+ulna cortices merge into one blob, the lower-right wire/fiber
+   artifact enters the mask, and a "break" in the mask in the clipped hand
+   region is an exposure limit, not a finding. High artifact risk, low
+   information; T5+T9 already answer the continuity question.
+3. Agent_02 P8 (gamma highlight recovery of the right edge) — OPPOSE. The
+   data there is clipped (multiple first passes) and out of focus;
+   highlight compression of clipped data produces banding, not anatomy.
+   Document the structure in report text instead; T17's saturation % makes
+   the limitation objective.
+4. Agent_01 P8 (full-image Canny overlay) — OPPOSE as whole-image. Redundant
+   with the forearm-band edge map (T9) and invites literal reading of a
+   derivative (trunk edge, joint spaces, and noise all light up). The
+   forearm-band version is fine and is what I support.
+5. Consolidation objection (process, not person): six whole-image CLAHE
+   variants and four mid-forearm enhanced-crop variants are on the table;
+   the processing plan should implement each ONCE with agreed parameters and
+   record them, not produce six near-duplicate files that the final reader
+   must reconcile.
+6. Caution on Agent_05 A7 (which I otherwise support): derivative overlays
+   on truly overlapping pixels can be over-read as clean separation. The
+   output must carry explicit "ambiguous/overlap" markings; force-labeling
+   is the main failure mode.
+
+================================================================================
+F. ADDITIONAL PROPOSALS
+================================================================================
+P-F1 — Full-image anatomical attribution overlay
+- ANALYSIS: On the T1 baseline-stretched image, manually trace and label
+  every bony structure in the frame, color-coded: examined limb (humerus
+  segment, radius, ulna, carpus, metacarpals, phalanges — e.g. cyan),
+  candidate second limb (the two oblique long bones + carpal-like cluster,
+  lower right — e.g. magenta), trunk (right-edge mass — gray), external
+  artifact (wire/fiber, lower-right corner — yellow). Each traced centerline
+  ends at its distal articulation so the traced wrist of the candidate
+  second limb (y ~0.88-0.95) is visibly distinct from the examined wrist
+  (y ~0.63). Ambiguous overlap zones get hatched "unassignable" regions
+  instead of a forced label.
+- QUESTION: Which bone in the image belongs to which structure, and where
+  exactly do the examined hand and the candidate second limb overlap?
+- RATIONALE: D2's practical consequence is misattribution (e.g., Agent_04's
+  dense focus at x ~0.63, y ~0.82: second-limb carpal center vs fragment of
+  the examined hand). A single labeled map forces the attribution decision
+  to be explicit, reviewable, and tied to geometry rather than impression,
+  and it is the reference the final report needs to state which hand
+  regions are not assessable.
+- EXPECTED INFORMATION: A reviewed attribution diagram: examined-limb
+  skeleton traced end-to-end; candidate second-limb bones traced to their
+  own wrist-like cluster; overlap zone delineated; Agent_04's focus
+  attributed (or flagged unassignable); trunk and wire artifact excluded
+  from both limb tracings.
+- ARTIFACT RISKS: Tracing is subjective; a wrong attribution is worse than
+  no attribution — mitigate by marking low-confidence segments dashed and
+  by requiring every traced line to sit on visible cortex in the original.
+  Hatching prevents over-confident force-labeling of overlap.
+- COMPARISON: Verify every trace against the plain crops (T5/T7/T8) and the
+  original at identical coordinates; any segment that cannot be matched to
+  visible cortex in the original is removed, not smoothed over.
+- PROPOSED OUTPUT FILENAME: ID003_06_attribution_overlay.png
+
+No other additions; the rest of my position is covered by the union above.
+
+================================================================================
+G. PRIORITY RANKING
+================================================================================
+Ordered output set for the processing plan (deduplicated from the union;
+filenames are the canonical ones I propose for the plan):
+
+ 1. ID003_00_baseline_stretch.png      — percentile-stretched full image;
+    common, reproducible display base for everything else (T1).
+ 2. ID003_01_plain_crops (4 files: ID003_01a_plain_midforearm.png,
+    ID003_01b_plain_wrist.png, ID003_01c_plain_hand.png,
+    ID003_01d_plain_elbow.png) — unenhanced 2-3x reference crops; the
+    ground truth against which every enhanced output is judged (T5/T6/T7/T8).
+ 3. ID003_02_crop_midforearm_clahe.png — the primary finding, CLAHE crop;
+    highest diagnostic priority of the whole plan (T5).
+ 4. ID003_03_profile_midforearm.png    — transverse intensity profiles at
+    lesion + control levels (width curve as secondary panel); the decisive
+    objective test: sharp row-stable dip vs broad artifact (T14+T16).
+ 5. ID003_04_forearm_edge_map.png      — high-pass/Canny cortical continuity
+    map, elbow-to-wrist band; break vs parallel intact cortices (T9).
+ 6. ID003_05_forearm_axis_annotated.png — fitted axes, inter-axis angle,
+    callus width (px, %), step-off (px) with sensitivity check; objective
+    angulation/deformity numbers, image-plane caveat stated (T15).
+ 7. ID003_06_crop_wrist_bonewindow.png — wrist/carpus bone-window + CLAHE
+    crop; occult carpal/distal-radius fracture plus physeal lines (T7).
+ 8. ID003_07_carpal_census.png         — annotated carpal center census +
+    coordinate table; resolves D1 maturity (T18).
+ 9. ID003_08_physeal_width_annotated.png — physeal width/shaft width ratios
+    (distal radius 3 points + ulna control); resolves D1, scale-free (T19).
+10. ID003_09_crop_lowright (3 files: ID003_09a_plain.png,
+    ID003_09b_clahe.png, ID003_09c_edge_overlay.png) — the D2 zone:
+    plain reference + enhancement + derivative overlay, ambiguity marked
+    (T13).
+11. ID003_10_attribution_overlay.png   — my P-F1: color-coded full-image
+    bone attribution with overlap hatching; makes misattribution explicit
+    and settles Agent_04's dense-focus question (F).
+12. ID003_11_crop_elbow.png            — enhanced elbow crop; exclude gross
+    pathology + elbow ossification centers cross-check for D1 (T6).
+13. ID003_12_crop_hand_bonewindow.png  — hand bone-window crop; metacarpal/
+    phalangeal cortex within the stated superimposition limits (T8).
+14. ID003_13_clahe_full.png            — the single consolidated whole-image
+    CLAHE; one rescan pass for anything missed regionally (T2).
+15. ID003_14_histogram_saturation.png  — per-region histograms + saturation
+    %; bounds recoverability of hand/wrist/right-edge and objectively
+    documents the clip (T17).
+16. ID003_15_softtissue_window.png     — soft-tissue window, forearm + hand;
+    swelling/gas/foreign body, "suggestive only" caveat (T4).
+
+Text-only (no image slot): wrist position angle + method (T21); sharpness
+metric, if computed at all (T20); interosseous width values (T22); all
+numeric values reported in px / normalized / dimensionless units with the
+no-scale caveat.
+
+Not included (opposed or redundant): global bone mask, hand inversion,
+right-edge gamma recovery, full-image Canny overlay, flat-field
+normalization, a second whole-image CLAHE, standalone width-curve and
+position-angle images.
+
+Preserved disagreements (not resolved from available evidence): D1 final
+maturity call (pediatric favored, not established), D2 second-limb
+hypothesis (plausible and self-consistent with D1, not confirmed), and the
+acute-vs-healing nature of the mid-forearm finding. All three depend on the
+outputs above; the plan should report them as open with the evidence pattern
+that would close each.
+
+END OF DELIBERATION — Agent_06

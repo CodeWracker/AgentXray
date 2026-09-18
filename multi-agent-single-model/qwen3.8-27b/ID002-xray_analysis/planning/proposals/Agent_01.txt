@@ -1,0 +1,36 @@
+AGENT: Agent_01
+MODEL: qwen3.8-27b
+IMAGE: ID002-xray.png
+PROPOSALS:
+Proposal 1:
+  QUESTION: Is there a fracture of the olecranon/proximal ulna, and if so what is the exact course and displacement of the fracture line?
+  METHOD: Zoomed crop of the elbow joint region (ROI covering distal humerus plus proximal radius and ulna, roughly the central 40% of the image) with local adaptive histogram equalization (CLAHE) or a tuned brightness/contrast window, displayed at high magnification.
+  WHY IT MAY HELP: The suspected lucent line is thin and low-contrast; local contrast enhancement increases the conspicuity of subtle lucent lines and cortical irregularity within the region of interest without affecting the remainder of the image, which is exactly the problem with the current flat global rendering.
+  EXPECTED INFORMATION: Course of a fracture line (transverse vs oblique), width of any gap and degree of displacement, and whether the fragment is intra-articular (in apposition to the trochlea); confirm or refute the suspected proximal ulna fracture.
+  POSSIBLE ARTIFACTS: CLAHE amplifies noise and can create spurious low-contrast "lines" in the medullary cavity or soft tissue; overshoot/ringing near very bright cortices; enhanced rendering can make normal superimposition boundaries (e.g., radial cortex overlapping ulna) look like fracture lines.
+  COMPARISON WITH ORIGINAL: Every line or irregularity seen in the enhanced ROI must be verified at the same anatomical location in the original image; only findings present in both, or anatomically plausible as cortices/joint spaces, count.
+  PRIORITY: high
+Proposal 2:
+  QUESTION: Is the elbow dislocated or subluxed - are the radiocapitellar and humeroulnar relationships preserved, or is the olecranon displaced from the trochlea?
+  METHOD: Geometric overlay analysis on the original image (and on the contrast-enhanced crop): draw the line through the center of the radial head/neck and verify it passes through the center of the capitellum (capitelloradial line, which is rotation-independent); draw the humeroulnar joint line and assess congruence and joint-space width on both sides.
+  WHY IT MAY HELP: Alignment rules are objective and unaffected by rotation, whereas the apparent humeroulnar alignment in this single lateral/oblique view is hard to judge by eye and is the key differential between a displaced olecranon fracture and a true dislocation.
+  EXPECTED INFORMATION: Objective confirmation or exclusion of radial head subluxation/dislocation and of humeroulnar dislocation; quantification of any joint-space asymmetry or step-off.
+  POSSIBLE ARTIFACTS: Accuracy depends on correctly identifying the centers of the radial head and capitellum, which may be superimposed; an oblique projection can make a normal joint appear slightly non-parallel; joint-space width measurements are unreliable where the proximal radius and ulna overlap the condyles.
+  COMPARISON WITH ORIGINAL: Overlay must be drawn directly on the original image (not only on the enhanced version); the conclusion should be re-checked by eye without the overlay to avoid bias from the drawn lines.
+  PRIORITY: high
+Proposal 3:
+  QUESTION: Is there a subtle fracture in the distal humerus (supracondylar/condylar region) or the radial head/neck that is not visible at native contrast?
+  METHOD: Edge enhancement (unsharp masking or Laplacian/Sobel edge map) combined with a bone-window histogram stretch applied to the elbow ROI to trace cortical continuity around the condyles, olecranon, and radial neck.
+  WHY IT MAY HELP: Edge maps emphasize continuity versus discontinuity of the cortex, making a subtle step-off, hairline fracture, or small cortical fragment in the condyles or radial neck more conspicuous than in the flat original rendering.
+  EXPECTED INFORMATION: Confirmation of continuous humeral cortex around the condyles; detection of a radial head/neck fracture line; identification of small cortical fragments near the joint.
+  POSSIBLE ARTIFACTS: Edge detection responds to every high-contrast boundary, including normal joint spaces, superimposition edges, and noise, producing many false "edges"; a lucent (dark) fracture line produces two opposing edges, which can be misread as a cortical step-off.
+  COMPARISON WITH ORIGINAL: Use the edge map only as a guide to where to look; any suspected cortical interruption must be verified in the original grayscale image at full resolution before being called a fracture.
+  PRIORITY: medium
+Proposal 4:
+  QUESTION: Is there periarticular joint effusion or soft-tissue swelling around the elbow (e.g., a displaced fat pad), which would support an intra-articular injury even if the bone looks normal?
+  METHOD: Soft-tissue window: a gentle gamma/brightness adjustment or histogram stretch of the low gray levels over the periarticular soft-tissue region to reveal fat planes and the contour of the soft-tissue envelope.
+  WHY IT MAY HELP: In the current rendering the soft tissues are flat and under-displayed; a low-gray-level stretch may reveal a triangular anterior fat pad, periarticular fullness, or a fluid collection that would raise suspicion for an occult intra-articular fracture (fat pad sign).
+  EXPECTED INFORMATION: Presence/absence of an anterior (or posterior) fat pad sign, degree of periarticular soft-tissue swelling, and any periarticular fluid collection.
+  POSSIBLE ARTIFACTS: Over-stretching low gray levels produces banding and noise in soft tissue and can exaggerate normal fat planes into a "fat pad"; the detector contact shadow at the flexed elbow can mimic a soft-tissue bulge.
+  COMPARISON WITH ORIGINAL: Interpret only relative changes within the same image; compare periarticular elbow soft tissue against the more proximal/distal forearm soft tissue as an internal reference, and cross-check with the original.
+  PRIORITY: medium

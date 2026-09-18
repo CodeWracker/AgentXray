@@ -1,0 +1,16 @@
+OUTPUT VALIDATION
+=================
+OK  00_original.png  exists=True opens=True mode=RGB size=[1600, 1280] format=PNG
+OK  01_elbow_crop_native.png  exists=True opens=True mode=L size=[860, 840] format=PNG
+OK  02_elbow_crop_clahe.png  exists=True opens=True mode=L size=[860, 840] format=PNG
+OK  03_olecranon_focus_native.png  exists=True opens=True mode=L size=[880, 1040] format=PNG
+OK  04_olecranon_focus_clahe.png  exists=True opens=True mode=L size=[880, 1040] format=PNG
+OK  05_elbow_softtissue_window.png  exists=True opens=True mode=L size=[860, 840] format=PNG
+OK  06_elbow_edge_enhanced.png  exists=True opens=True mode=RGB size=[860, 840] format=PNG
+OK  07_alignment_overlay.png  exists=True opens=True mode=RGB size=[1600, 1280] format=PNG
+OK  08_softtissue_profile.png  exists=True opens=True mode=RGBA size=[1540, 880] format=PNG
+OK  09_wrist_crop_native.png  exists=True opens=True mode=L size=[1000, 660] format=PNG
+OK  10_wrist_crop_clahe.png  exists=True opens=True mode=L size=[1000, 660] format=PNG
+OK  11_forearm_shaft_window.png  exists=True opens=True mode=L size=[900, 1000] format=PNG
+
+TOTAL: 12 expected, 12 valid, 0 failed

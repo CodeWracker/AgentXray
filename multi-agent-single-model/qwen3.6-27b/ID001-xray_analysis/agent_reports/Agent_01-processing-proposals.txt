@@ -1,0 +1,319 @@
+AGENT_01 — IMAGE PROCESSING PROPOSALS
+Model: qwen3.6-27b
+Date: 2026-09-14
+Image: ID001-xray_original.png
+===============================================================
+
+PREAMBLE
+--------
+Based on my independent first-pass review, this is a lateral radiograph
+of the foot and ankle with adequate technical quality. No gross fracture,
+dislocation, or malalignment was identified. However, the single lateral
+projection, positive-format display, and limitations of visual inspection
+at standard resolution leave several specific questions unanswered.
+
+The proposals below target those questions. I am not proposing a standard
+menu of techniques — each one is motivated by a concrete uncertainty
+from my reading of this specific image.
+
+===============================================================
+PROPOSAL 1: DISPLAY INVERSION TO NEGATIVE FORMAT
+===============================================================
+
+(a) QUESTION:
+    Does displaying the image in conventional radiographic format
+    (radiopaque structures dark on a light background) reveal findings
+    that are harder to detect in the current positive format?
+
+(b) WHY THIS METHOD HELPS:
+    The image is displayed with bright bones on a dark background — the
+    reverse of decades of radiological display convention. The human
+    visual system (and any AI trained on standard-format radiographs) is
+    optimized for the conventional display. In standard format, radiolucent
+    fracture lines appear as dark lines interrupting light bone, which is
+    how radiologists are trained to detect them. The inverted format flips
+    this relationship and may make subtle lucencies less conspicuous.
+
+(c) EXPECTED FINDING:
+    - If real pathology exists, inversion may make cortical step-offs,
+      subtle fracture lines, or trabecular disruptions more apparent.
+    - At minimum, it will allow comparison of findings between the two
+      display formats as a consistency check.
+
+(d) POSSIBLE ARTIFACTS:
+    - Inversion is a purely linear operation; it should not introduce
+      artifacts of its own. However, gamma correction or display
+      calibration differences between the positive and negative formats
+      could alter perceived contrast slightly.
+
+(e) COMPARISON WITH ORIGINAL:
+    - Display both formats side by side.
+    - Any finding identified only in one format and not the other should
+      be flagged as potentially format-dependent and examined with
+      additional processing (e.g., CLAHE) in both formats to confirm.
+    - The inversion serves as a sanity check, not a replacement for
+      enhanced analysis.
+
+===============================================================
+PROPOSAL 2: BONE-TARGETED CLAHE (Contrast-Limited Adaptive
+Histogram Equalization) ON CALCANEUS AND TALUS
+===============================================================
+
+(a) QUESTION:
+    Are there subtle trabecular density changes in the calcaneal body
+    or talar dome that could indicate early compression, stress
+    reaction, or osteonecrosis — changes that are below the threshold
+    of detection on the original image?
+
+(b) WHY THIS METHOD HELPS:
+    Global contrast stretching affects the entire image uniformly and
+    tends to amplify noise in low-signal regions. CLAHE operates on
+    local neighborhoods, enhancing contrast where it matters most
+    (inside the bone) while suppressing noise amplification. The
+    "contrast-limited" step prevents noise from being boosted to
+    diagnostic-looking artifacts. This is especially relevant for the
+    calcaneus, which has a complex trabecular architecture that can
+    hide focal areas of sclerosis or lucency.
+
+(c) EXPECTED FINDING:
+    - Normal calcaneus: trabecular pattern remains uniform after
+      enhancement; no focal density changes revealed.
+    - If pathology: focal area of increased density (compression
+      fracture impaction, bone island) or decreased density (stress
+      reaction, early AVN, cystic change) that was not conspicuous
+      on the original.
+    - Specifically interested in the posterior-superior calcaneal body
+      near the subtalar joint (Agent_06 noted heterogeneous trabecular
+      pattern there) and the talar dome (osteochondral lesions).
+
+(d) POSSIBLE ARTIFACTS:
+    - Over-amplification of noise in homogeneous regions, creating
+      pseudo-texture. Mitigate by using a small clip limit (e.g., 0.01–
+      0.03) and a tile grid size of 8x8 or 16x16.
+    - Edge halos at bone-soft tissue boundaries due to the adaptive
+      nature of the algorithm. These halos could mimic cortical
+      step-offs. Mitigate by applying CLAHE only within a bone ROI
+      mask, not the full image.
+    - False confidence: enhanced contrast may make normal anatomic
+      variants appear pathologic.
+
+(e) COMPARISON WITH ORIGINAL:
+    - Any density change identified in the CLAHE-enhanced image must
+      be traceable back to a real signal difference in the original,
+      however subtle. Use line profiles across the suspected region in
+      both the original and CLAHE images to confirm that the intensity
+      gradient exists in the original (even if visually imperceptible).
+    - Do NOT report a finding based solely on the enhanced image if the
+      original shows no corresponding signal change.
+
+===============================================================
+PROPOSAL 3: MORPHOLOGICAL GRADIENT FOR CORTICAL INTEGRITY
+MAPPING
+===============================================================
+
+(a) QUESTION:
+    Are there cortical disruptions, step-offs, or irregularities along
+    the load-bearing surfaces of the distal tibia, talar dome, and
+    calcaneal anterior process that are too subtle for visual detection?
+
+(b) WHY THIS METHOD HELPS:
+    Cortical bone appears as a high-intensity, high-contrast boundary
+    on the radiograph. A morphological gradient (dilation minus erosion
+    using a structuring element oriented along the expected cortical
+    margin) will isolate the cortical boundary as a continuous curve.
+    Any interruption, thickening, or angular deviation in this curve
+    indicates a potential cortical breach. This is more sensitive than
+    visual inspection because it removes the cognitive bias of "looking
+    for" a fracture and instead lets the data reveal discontinuities.
+
+(c) EXPECTED FINDING:
+    - Clean, continuous cortical gradient curve: no disruption.
+    - Focal gap, thickening, or angular step in the gradient:
+      corresponds to a potential cortical breach. Most critical regions:
+      (i) tibial plafond (intra-articular surface), (ii) inferior
+      talar dome (subtalar joint), (iii) anterior calcaneal process
+      (avulsion zone), (iv) lateral cortex of distal tibial shaft.
+
+(d) POSSIBLE ARTIFACTS:
+    - Normal anatomical contours (e.g., the concave tibial plafond, the
+      curved talar dome) will produce gradients that reflect shape, not
+      pathology. The structuring element size must be chosen to be
+      smaller than the minimum expected fracture width but large enough
+      to span the cortical thickness (~2-3 mm on this image scale).
+    - Image noise may produce spurious gradient responses. Pre-smooth
+      with a mild Gaussian (sigma ~0.5–1.0 px) before the morphological
+      operation.
+    - Overlapping bones (fibula behind tibia) may produce a double
+      gradient that is hard to interpret.
+
+(e) COMPARISON WITH ORIGINAL:
+    - Map each gradient anomaly back to the original image using
+      coordinate overlay.
+    - If a gradient anomaly has no visual correlate on the original,
+      classify as probable artifact and flag for manual review.
+    - The original image remains the arbiter: the gradient is a
+      hypothesis generator, not a diagnostic tool.
+
+===============================================================
+PROPOSAL 4: SOFT TISSUE SILHOUETTE EXTRACTION AND THICKNESS
+PROFILING (KAGER'S TRIANGLE + PLANTAR FAT PAD)
+===============================================================
+
+(a) QUESTION:
+    Is there occult soft tissue swelling — particularly in Kager's
+    triangle (anterior to the Achilles tendon insertion) or the
+    plantar calcaneal fat pad — that would suggest acute injury
+    even in the absence of visible fracture?
+
+(b) WHY THIS METHOD HELPS:
+    Soft tissue swelling is an important indirect sign of injury. A
+    normal Kager's triangle has a well-defined fat-density triangle
+    anterior to the Achilles tendon; obliteration or increased density
+    in this region suggests hemorrhage or edema. Similarly, the
+    plantar calcaneal fat pad has a characteristic uniform appearance;
+    thickening or loss of definition suggests contusion or fasciitis.
+    Visual assessment of soft tissue on X-ray is subjective. A
+    quantitative approach — segmenting the soft tissue boundary and
+    measuring thickness at defined anatomical landmarks — provides
+    objective data.
+
+(c) EXPECTED FINDING:
+    - Kager's triangle: measure its height (from tibial plafond to
+      inferior boundary of the fat triangle) and area. A reduced area
+      or increased density suggests swelling/hemorrhage.
+    - Plantar fat pad: measure thickness at the calcaneal midpoint
+      (normal ~15-20 mm). Increased thickness suggests swelling.
+    - Posterior heel pad: measure thickness posterior to the
+      calcaneal tuberosity.
+    - Dorsal soft tissue: measure at three landmarks — ankle joint
+      level, midfoot level, and forefoot level.
+
+(d) POSSIBLE ARTIFACTS:
+    - The soft tissue boundary on X-ray is a gradient, not a sharp
+      edge. Any thresholding or edge-detection approach will have
+      inherent ambiguity (typically 2-5 mm uncertainty in boundary
+      placement).
+    - Positioning affects soft tissue measurements: plantarflexion
+      vs. dorsiflexion changes the apparent thickness of the posterior
+      heel pad and Kager's triangle.
+    - Patient habitus, BMI, and the presence of padding or bandages
+      can confound measurements.
+    - The positive-format display may make soft tissue boundaries
+      harder to segment reliably.
+
+(e) COMPARISON WITH ORIGINAL:
+    - Overlay the extracted soft tissue contour on the original image.
+      The contour should follow the visually apparent soft tissue
+      margin within 2-3 mm.
+    - Any region where the automated contour deviates from the visual
+      boundary should be manually corrected or excluded.
+    - Without a contralateral comparison image, absolute thickness
+      values are less useful than relative patterns (e.g., focal
+      thickening vs. uniform contour).
+
+===============================================================
+PROPOSAL 5: HIGH-PASS FREQUENCY DECOMPOSITION FOR HAIRLINE
+FRACTURE DETECTION
+===============================================================
+
+(a) QUESTION:
+    Are there linear, high-frequency structures consistent with
+    hairline fractures in the distal tibial shaft, metatarsal shafts,
+    or cuboid body that are obscured by the dominant low-frequency
+    signal of the surrounding bone?
+
+(b) WHY THIS METHOD HELPS:
+    On a radiograph, bone produces a strong low-frequency signal
+    (gradual density changes across the bone body), while a hairline
+    fracture is a thin, high-frequency linear feature. Standard viewing
+    is dominated by the low-frequency bone signal. By applying a
+    high-pass filter (or Laplacian-of-Gaussian derivative), we can
+    suppress the large-scale bone signal and isolate only the
+    high-frequency components. A real fracture line will appear as
+    a linear response in the high-pass image; noise will appear as
+    random, unstructured speckling.
+
+(c) EXPECTED FINDING:
+    - If no hairline fractures: the high-pass image shows random
+      noise patterns consistent with the known image noise floor,
+      with no persistent linear structures.
+    - If fractures present: linear, oriented structures that persist
+      across a range of filter frequencies (not just at the highest
+      frequencies, where noise dominates). Expected locations:
+      (i) distal tibial metaphyseal-diaphyseal junction
+      (insufficiency fracture zone), (ii) metatarsal shafts (March
+      fracture zone), (iii) cuboid body (Agent_05 noted abnormal
+      density here).
+
+(d) POSSIBLE ARTIFACTS:
+    - Trabecular bone pattern itself is a high-frequency structure.
+      The filter will respond to trabeculae, not just fractures.
+      Discrimination relies on morphology: fractures are linear and
+      follow a single orientation; trabeculae form a meshwork of
+      multiple orientations. Post-processing with a line detector
+      (e.g., oriented Gabor filters or Hough transform) can help
+      distinguish.
+    - Image compression artifacts (especially in PNG format) can
+      produce linear edge artifacts that mimic fractures. Inspect
+      the high-pass response in background regions — if similar
+      linear artifacts appear outside the bone, they are likely
+      compression artifacts.
+    - The cortical boundary itself is a strong high-frequency edge.
+      The filter will produce a bright outline of every bone, which
+      can obscure intra-cortical features.
+
+(e) COMPARISON WITH ORIGINAL:
+    - Every linear feature identified in the high-pass image must be
+      verified on the original image, even if barely visible.
+    - Use the high-pass image as a pointer to where to look, not as
+      proof of pathology.
+    - Cross-reference with the morphological gradient (Proposal 3):
+      a feature seen in both the high-pass and gradient images has
+      higher confidence than one seen in only one.
+
+===============================================================
+EXECUTION PRIORITY (MY ASSESSMENT)
+===============================================================
+
+1. Proposal 1 (Inversion) — trivial to execute, low risk, high
+   value as a consistency check. Do this first.
+
+2. Proposal 2 (Bone CLAHE) — addresses the most clinically
+   significant question: are there occult density changes in the
+   weight-bearing bones? Higher ROI than general contrast
+   enhancement.
+
+3. Proposal 5 (High-pass decomposition) — specifically targets
+   the hairline fracture hypothesis in regions that are hard to
+   assess visually (tibial shaft, metatarsal shafts, cuboid).
+
+4. Proposal 3 (Morphological gradient) — complementary to
+   Proposal 5, but more focused on cortical surfaces rather than
+   intra-bony features.
+
+5. Proposal 4 (Soft tissue profiling) — lowest confidence in
+   detecting new findings from a single view without comparison,
+   but still valuable for documentation and indirect injury signs.
+
+===============================================================
+INTER-PROPOSAL DEPENDENCIES
+===============================================================
+
+- Proposals 3 and 5 are complementary: the morphological gradient
+  isolates cortical boundaries, while the high-pass filter isolates
+  high-frequency features throughout the image. A finding present in
+  both has higher specificity than one present in only one.
+
+- Proposal 2 (CLAHE) should be applied BEFORE Proposal 3 (gradient)
+  if the goal is to detect very subtle cortical disruptions, because
+  enhanced contrast will make the cortical boundary cleaner for the
+  morphological operation. However, CLAHE should NOT be applied
+  before Proposal 5 (high-pass), because the adaptive contrast
+  changes would confound the frequency decomposition.
+
+- Proposal 1 (inversion) is independent of all others and can be
+  done in parallel.
+
+===============================================================
+END OF AGENT_01 PROCESSING PROPOSALS
+===============================================================

@@ -1,0 +1,25 @@
+ROUND-2 PROPOSAL RECORD (from round-1 report NEXT STEP fields; orchestrator-compiled)
+
+UNRESOLVED QUESTION Q1 (disputed): the distal-forearm lucent cleft + small fragment at the
+wrist (visible in 09/10, present in original) - normal pediatric physis/ossification vs
+fracture; AND which bone (radius vs ulna) carries the cleft (agents disagree 2:1).
+UNRESOLVED QUESTION Q2 (contested): the thin lucent line above the olecranon-tip density -
+apophyseal physis (normal) vs nondisplaced avulsion.
+Q3: posterior humeral line offset - all agents agree it is uninterpretable on this oblique
+view; no in-image processing can fix projection. Treated as a limitation, no new proposal.
+
+PROPOSED NEW ANALYSES (any agent may support/oppose/modify):
+P12: 12_wrist_distal_zoom_grid.png - 3x nearest-neighbor zoom of the distal radius/ulna +
+     carpal region with a 50px full-image coordinate grid. Purpose: definitive bone
+     identification (radius vs ulna) by continuity tracing from the elbow and carpal
+     articulation; cleft morphology (course, margin character, displacement).
+P13: 13_olecranon_focus_zoom_grid.png - 3x nearest-neighbor zoom of the olecranon focus with
+     50px grid. Purpose: precise landmark placement and cleft-course characterization.
+P14: 14_wrist_distal_zoom_clahe.png - 3x CLAHE (clip 2.5) of the same wrist ROI (no grid).
+     Purpose: cleft/fragment delineation under expanded local contrast, compared with P12.
+P15: 15_intensity_profiles.png - pixel-intensity profiles on the ORIGINAL image:
+     (a) across the olecranon apophyseal cleft (perpendicular); (b) control profile along
+     adjacent olecranon cortex; (c) across the wrist cleft (perpendicular); (d) control
+     profile across a known-normal metaphyseal band. Purpose: objective density evidence -
+     a normal physis shows a smooth, narrow lucent band with dense parallel margins;
+     a fracture cleft tends to be irregular/offset.
