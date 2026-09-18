@@ -226,6 +226,9 @@ def collect_one(analysis_dir: pathlib.Path, results_root: pathlib.Path) -> dict 
         condition_name = condition
         run_id = run_dir.name
 
+    if model in ["sonnet5", "claude"] or "sonnet" in str(model).lower():
+        return None
+
     tokens = harness.get("tokens_main_session", {})
     tool_calls = harness.get("tool_calls", {})
 

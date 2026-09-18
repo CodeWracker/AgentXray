@@ -1,7 +1,7 @@
 """Prepara um diretório de rodada isolado, com o prompt renderizado e um manifesto de proveniência.
 
 Uso:
-    tools/py tools/new_run.py --mode single --model sonnet5
+    tools/py tools/new_run.py --mode single --model qwen3.6-27b
     tools/py tools/new_run.py --mode agents --model qwen3.8-27b --images inputs/ID003-xray.png
 
 Cria `<root>/<versão>/<modo>/<modelo>/<timestamp>/` com cópias das imagens, `PROMPT.md` (o texto exato
@@ -129,7 +129,7 @@ def create_run(mode: str, model: str, images: list[pathlib.Path], version: str =
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--mode", choices=MODES, required=True)
-    parser.add_argument("--model", required=True, help="nome do modelo avaliado, ex.: sonnet5, qwen3.8-27b")
+    parser.add_argument("--model", required=True, help="nome do modelo avaliado, ex.: qwen3.6-27b, qwen3.8-27b, gemma4-26b")
     parser.add_argument("--version", default="v2", help="versão dos prompts em prompts/<versão>/")
     parser.add_argument("--images", nargs="+", type=pathlib.Path, default=sorted((EVAL / "inputs").glob("*.png")))
     parser.add_argument("--root", type=pathlib.Path, default=EVAL / "results", help="onde criar a rodada (dentro do projeto)")
