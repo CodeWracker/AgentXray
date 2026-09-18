@@ -150,17 +150,22 @@ Write the final result to `<original_filename_without_extension>_analysis/<exact
   "image": "exact_original_filename.ext",
   "findings": "Consolidated visible findings.",
   "impression": "Concise final interpretation.",
+  "differential_diagnosis": [
+    "Primary hypothesis (most likely condition or 'Normal / No acute finding')",
+    "Secondary hypothesis",
+    "Tertiary hypothesis"
+  ],
   "limitations": "Relevant limitations and unresolved uncertainty."
 }
 ```
 
-Do not add extra JSON fields. Everything else belongs in `planning/`, `measurements/` and `provenance/`.
+`"differential_diagnosis"` is an ordered list of diagnostic hypotheses ranked from most likely to least likely, without numerical probabilities. Do not add extra JSON fields. Everything else belongs in `planning/`, `measurements/` and `provenance/`.
 
 # 15. FINAL VALIDATION
 
 Before completing the task, verify that:
 
-* the final JSON exists, parses, has the correct filename and exactly the four fields
+* the final JSON exists, parses, has the correct filename and all required fields
 * the working directories, the processing plan, the scripts and the agent reports exist
 * `scripts/reproduce.py` regenerates every file in `images/` (except `00_original.*`) and in `measurements/` from the original image, as described in the reproducibility section, and you actually ran it from a clean state
 * every generated image was inspected by at least one agent

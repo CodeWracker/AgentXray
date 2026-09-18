@@ -80,6 +80,11 @@ Write the final result to `<original_filename_without_extension>_analysis/<exact
   "image": "exact_original_filename.ext",
   "findings": "Relevant visible imaging findings.",
   "impression": "Concise overall impression.",
+  "differential_diagnosis": [
+    "Primary hypothesis (most likely condition or 'Normal / No acute finding')",
+    "Secondary hypothesis",
+    "Tertiary hypothesis"
+  ],
   "limitations": "Important technical or interpretive limitations."
 }
 ```
@@ -89,7 +94,8 @@ Rules:
 * `"image"` must contain the exact original filename.
 * If no definite abnormality is visible, explicitly say so.
 * `"findings"` describes observations, not treatment.
-* `"impression"` summarizes the most likely interpretation and may include a short differential when justified.
+* `"impression"` summarizes the most likely interpretation.
+* `"differential_diagnosis"` is an ordered list of diagnostic hypotheses ranked from most likely to least likely, without numerical probabilities.
 * `"limitations"` covers image quality, missing views, modality limitations, processing or model limitations, and uncertainty.
 * Do not add extra JSON fields. Everything else belongs in `provenance/` and `measurements/`.
 
@@ -97,7 +103,7 @@ Rules:
 
 Before finishing, verify that:
 
-* the final JSON exists, parses, has the correct filename and exactly the four fields
+* the final JSON exists, parses, has the correct filename and all required fields
 * `scripts/reproduce.py` regenerates every file in `images/` (except `00_original.*`) and in `measurements/` from the original image, as described in the reproducibility section
 * you actually ran `scripts/reproduce.py` from a clean state and it succeeded
 * every generated image was visually inspected
