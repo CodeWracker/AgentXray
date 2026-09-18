@@ -1,7 +1,7 @@
 """Confere se uma rodada cumpriu o contrato e se os resultados são reprodutíveis.
 
 Uso:
-    uv run python tools/check_run.py results/v2/single-agent/sonnet5/20260917-231500
+    uv run python tools/check_run.py results/v2/single-agent/qwen3.8-27b/20260918-101500-ID001
     uv run python tools/check_run.py results/v1/single-agent/sonnet5      # rodadas v1: só o JSON
 
 Para cada `*_analysis/` da rodada:
@@ -23,7 +23,7 @@ import subprocess
 import sys
 import tempfile
 
-REPO = pathlib.Path(__file__).resolve().parent.parent
+BENCH = pathlib.Path(__file__).resolve().parent.parent
 JSON_KEYS = {"image", "findings", "impression", "limitations"}
 REQUIRED = {
     "single": ["provenance/first_look.md", "provenance/decisions.md", "provenance/tools.json", "scripts/reproduce.py"],
@@ -84,7 +84,7 @@ def check_reproduce(analysis: pathlib.Path, timeout: int) -> dict:
             (clone / rel).unlink()
         try:
             proc = subprocess.run(
-                ["uv", "run", "--project", str(REPO), "python", "scripts/reproduce.py"],
+                [str(BENCH / "tools" / "py"), "scripts/reproduce.py"],
                 cwd=clone, capture_output=True, text=True, timeout=timeout,
             )
         except subprocess.TimeoutExpired:

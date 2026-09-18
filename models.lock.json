@@ -1,0 +1,184 @@
+{
+  "torchxrayvision": "1.5.4",
+  "weights": {
+    "txv/densenet121-res224-all": {
+      "path": "~/.torchxrayvision/models_data/nih-pc-chex-mimic_ch-google-openi-kaggle-densenet121-d121-tw-lr001-rot45-tr15-sc15-seed0-best.pt",
+      "sha256": "56524913dd16a906422e8d8b66a7a5c46be1d82eb7ac012d8103776f1aa68899",
+      "bytes": 28382008
+    },
+    "txv/densenet121-res224-nih": {
+      "path": "~/.torchxrayvision/models_data/nih-densenet121-d121-tw-lr001-rot45-tr15-sc15-seed0-best.pt",
+      "sha256": "31a5475c6b1383a7edbfcaf96af9ce302eb9969cfe28b6b8b5859afc6f274fdf",
+      "bytes": 28382096
+    },
+    "txv/densenet121-res224-pc": {
+      "path": "~/.torchxrayvision/models_data/pc-densenet121-d121-tw-lr001-rot45-tr15-sc15-seed0-best.pt",
+      "sha256": "a9148ef62ae4e7a31a9bed8cef22811f39681cd61e4390398936efc6280af521",
+      "bytes": 28381804
+    },
+    "txv/densenet121-res224-chex": {
+      "path": "~/.torchxrayvision/models_data/chex-densenet121-d121-tw-lr001-rot45-tr15-sc15-seed0-best.pt",
+      "sha256": "1a914ae802170187a4852e594708206c12468eeeefd66aa4e8e26141649d61a4",
+      "bytes": 28381998
+    },
+    "txv/densenet121-res224-rsna": {
+      "path": "~/.torchxrayvision/models_data/kaggle-densenet121-d121-tw-lr001-rot45-tr15-sc15-seed0-best.pt",
+      "sha256": "906a59f48cf09638b745d66848a6c6f9d741368c66244717a81207329d140268",
+      "bytes": 28381974
+    },
+    "txv/densenet121-res224-mimic_nb": {
+      "path": "~/.torchxrayvision/models_data/mimic_nb-densenet121-d121-tw-lr001-rot45-tr15-sc15-seed0-best.pt",
+      "sha256": "a15dc8e9d0880d7b8184b450f03c5c0204897fa0d9ac3a3a5c638038028a65e5",
+      "bytes": 28381970
+    },
+    "txv/densenet121-res224-mimic_ch": {
+      "path": "~/.torchxrayvision/models_data/mimic_ch-densenet121-d121-tw-lr001-rot45-tr15-sc15-seed0-best.pt",
+      "sha256": "23b13a04459684ffa41247d068207a7657b4e1b4dec2b02431f5026bd75b1189",
+      "bytes": 28382012
+    },
+    "txv/resnet50-res512-all": {
+      "path": "~/.torchxrayvision/models_data/pc-nih-rsna-siim-vin-resnet50-test512-e400-state.pt",
+      "sha256": "7724248ef6972be85a3e0d2fabe0a561634e11eb776d51b3999682c19fc596d9",
+      "bytes": 94471272
+    },
+    "txv/resnet-ae-101-elastic": {
+      "path": "~/.torchxrayvision/models_data/nihpcrsnamimic_ch-resnet101-2-ae-test2-elastic-e250.pt",
+      "sha256": "877ded430383a2bbce756737b316d76de42defed3079eebf2cce305f7be34df9",
+      "bytes": 125341920
+    },
+    "txv/chestx_det-pspnet": {
+      "path": "~/.torchxrayvision/models_data/pspnet_chestxray_best_model_4.pth",
+      "sha256": "019b167eac6b729fc1bb92bbbc185fc1730aaa65819f4e3fe718186cadc044fc",
+      "bytes": 272988989
+    },
+    "txv/chestx_anatomy-unet-resnet50": {
+      "path": "~/.torchxrayvision/models_data/baseline_models_cxas_UNet_ResNet50_default_repack.pth",
+      "sha256": "44c0161a9a375b8bbe6df747c73959defce8c91c3b507ce575f5a1d5addee030",
+      "bytes": 293894593
+    },
+    "txv/xinario-view": {
+      "path": "~/.torchxrayvision/models_data/xinario_chestViewSplit_resnet-50.pt",
+      "sha256": "d2d63da3758006d85b962f439c8f59a10228babe8b2fcc158bfa59be7dab5bd6",
+      "bytes": 102548915
+    },
+    "txv/jfhealthcare-densenet121": {
+      "path": "~/.torchxrayvision/models_data/baseline_models_jfhealthcare-DenseNet121_pre_train.pth",
+      "sha256": "d2f2d704bcd0bbfbf3dc5cd34dd930215adf39dd9afda22ab4223b5b22bb546b",
+      "bytes": 50731121
+    },
+    "hf/microsoft/BiomedCLIP-PubMedBERT_256-vit_base_patch16_224/open_clip_config.json": {
+      "path": "~/.cache/xray-bench/hf/microsoft/BiomedCLIP-PubMedBERT_256-vit_base_patch16_224/open_clip_config.json",
+      "sha256": "9a41f334a8c444678772c0ebb9ab854c97ab350bced3a17b803e258d39c23dc0",
+      "bytes": 707,
+      "revision": "9f341de24bfb00180f1b847274256e9b65a3a32e"
+    },
+    "hf/microsoft/BiomedCLIP-PubMedBERT_256-vit_base_patch16_224/open_clip_pytorch_model.bin": {
+      "path": "~/.cache/xray-bench/hf/microsoft/BiomedCLIP-PubMedBERT_256-vit_base_patch16_224/open_clip_pytorch_model.bin",
+      "sha256": "52cc993c5c5ff962bd0c60931874bc001e7e9b41666a385530f4a036294576be",
+      "bytes": 783705670,
+      "revision": "9f341de24bfb00180f1b847274256e9b65a3a32e"
+    },
+    "hf/microsoft/BiomedCLIP-PubMedBERT_256-vit_base_patch16_224/LICENSE.md": {
+      "path": "~/.cache/xray-bench/hf/microsoft/BiomedCLIP-PubMedBERT_256-vit_base_patch16_224/LICENSE.md",
+      "sha256": "222c691afe0dcdc498bb9a31cb4b331ce72a55a2351cab8d98ce246dd7799ffa",
+      "bytes": 1072,
+      "revision": "9f341de24bfb00180f1b847274256e9b65a3a32e"
+    },
+    "hf/microsoft/BiomedCLIP-PubMedBERT_256-vit_base_patch16_224/README.md": {
+      "path": "~/.cache/xray-bench/hf/microsoft/BiomedCLIP-PubMedBERT_256-vit_base_patch16_224/README.md",
+      "sha256": "4f23faa276bdeef957a0f7c00088f913214bcaad93d79e7768accb9ab5d0f58e",
+      "bytes": 10287,
+      "revision": "9f341de24bfb00180f1b847274256e9b65a3a32e"
+    },
+    "hf/wanglab/medsam-vit-base/config.json": {
+      "path": "~/.cache/xray-bench/hf/wanglab/medsam-vit-base/config.json",
+      "sha256": "930245d4ff7203cc9c10a69dba5a87c251a0be79a8b1448eea7412d4a0ef1432",
+      "bytes": 6517,
+      "revision": "de8488bca37bb1d4fb190f612c516126d739ce3b"
+    },
+    "hf/wanglab/medsam-vit-base/preprocessor_config.json": {
+      "path": "~/.cache/xray-bench/hf/wanglab/medsam-vit-base/preprocessor_config.json",
+      "sha256": "225545a743c654e3c495ec6f545a0eaba57c8ba3fbbd8483b3cb1c0fc58db517",
+      "bytes": 466,
+      "revision": "de8488bca37bb1d4fb190f612c516126d739ce3b"
+    },
+    "hf/wanglab/medsam-vit-base/pytorch_model.bin": {
+      "path": "~/.cache/xray-bench/hf/wanglab/medsam-vit-base/pytorch_model.bin",
+      "sha256": "0ef67838fba16f16c0e308eaf7a3ae6fbf4fe8e13d7a120ca932671ed9c47db0",
+      "bytes": 375045749,
+      "revision": "de8488bca37bb1d4fb190f612c516126d739ce3b"
+    },
+    "hf/wanglab/medsam-vit-base/README.md": {
+      "path": "~/.cache/xray-bench/hf/wanglab/medsam-vit-base/README.md",
+      "sha256": "344cae590631ba125945cce578666c9c097c5f023ef5f9e79f976ed819e46925",
+      "bytes": 4515,
+      "revision": "de8488bca37bb1d4fb190f612c516126d739ce3b"
+    },
+    "hf/prithivMLmods/Bone-Fracture-Detection/config.json": {
+      "path": "~/.cache/xray-bench/hf/prithivMLmods/Bone-Fracture-Detection/config.json",
+      "sha256": "406321acff3758e856532fa40aa2224cd91da2dd37426d0e5b6fb914a6b815a9",
+      "bytes": 1135,
+      "revision": "7ccaf775b87236a613265389e05c3f360f1215db"
+    },
+    "hf/prithivMLmods/Bone-Fracture-Detection/preprocessor_config.json": {
+      "path": "~/.cache/xray-bench/hf/prithivMLmods/Bone-Fracture-Detection/preprocessor_config.json",
+      "sha256": "9b36b57ebaf20f09bf4c22100ccc21877ea6bfe5aead0c00c59f8af8ccefacfc",
+      "bytes": 394,
+      "revision": "7ccaf775b87236a613265389e05c3f360f1215db"
+    },
+    "hf/prithivMLmods/Bone-Fracture-Detection/model.safetensors": {
+      "path": "~/.cache/xray-bench/hf/prithivMLmods/Bone-Fracture-Detection/model.safetensors",
+      "sha256": "1fe991a340c25c67413f22305e8a5f3e928a460eba863d5fd21f8f3ae80a89dd",
+      "bytes": 371567992,
+      "revision": "7ccaf775b87236a613265389e05c3f360f1215db"
+    },
+    "hf/prithivMLmods/Bone-Fracture-Detection/README.md": {
+      "path": "~/.cache/xray-bench/hf/prithivMLmods/Bone-Fracture-Detection/README.md",
+      "sha256": "d4066cc095fd171d945787cb08c0efffdf8741b9e8b01e1ddcbb519fc92f1f7e",
+      "bytes": 2783,
+      "revision": "7ccaf775b87236a613265389e05c3f360f1215db"
+    },
+    "hf/microsoft/BiomedNLP-BiomedBERT-base-uncased-abstract/config.json": {
+      "path": "~/.cache/xray-bench/hub/models--microsoft--BiomedNLP-BiomedBERT-base-uncased-abstract/snapshots/d673b8835373c6fa116d6d8006b33d48734e305d/config.json",
+      "sha256": "56bab767c02bc792897638feb8addc06d483d9c73769a5f554bbabea1f5507a1",
+      "bytes": 385,
+      "revision": "d673b8835373c6fa116d6d8006b33d48734e305d"
+    },
+    "hf/microsoft/BiomedNLP-BiomedBERT-base-uncased-abstract/vocab.txt": {
+      "path": "~/.cache/xray-bench/hub/models--microsoft--BiomedNLP-BiomedBERT-base-uncased-abstract/snapshots/d673b8835373c6fa116d6d8006b33d48734e305d/vocab.txt",
+      "sha256": "7b36651908a88bc38bda41b728b2a598191e0d3b553cbacf7b1e5f026d5b5b9f",
+      "bytes": 225062,
+      "revision": "d673b8835373c6fa116d6d8006b33d48734e305d"
+    },
+    "hf/microsoft/BiomedNLP-BiomedBERT-base-uncased-abstract/tokenizer_config.json": {
+      "path": "~/.cache/xray-bench/hub/models--microsoft--BiomedNLP-BiomedBERT-base-uncased-abstract/snapshots/d673b8835373c6fa116d6d8006b33d48734e305d/tokenizer_config.json",
+      "sha256": "53b6f42b8b8daddbdc6d3532c324187a92b46c1602bd6e8d4ad5a413b4fc90e1",
+      "bytes": 28,
+      "revision": "d673b8835373c6fa116d6d8006b33d48734e305d"
+    },
+    "hf/microsoft/BiomedCLIP-PubMedBERT_256-vit_base_patch16_224/config.json": {
+      "path": "~/.cache/xray-bench/hf/microsoft/BiomedCLIP-PubMedBERT_256-vit_base_patch16_224/config.json",
+      "sha256": "56bab767c02bc792897638feb8addc06d483d9c73769a5f554bbabea1f5507a1",
+      "bytes": 385,
+      "revision": "d673b8835373c6fa116d6d8006b33d48734e305d"
+    },
+    "hf/microsoft/BiomedCLIP-PubMedBERT_256-vit_base_patch16_224/vocab.txt": {
+      "path": "~/.cache/xray-bench/hf/microsoft/BiomedCLIP-PubMedBERT_256-vit_base_patch16_224/vocab.txt",
+      "sha256": "7b36651908a88bc38bda41b728b2a598191e0d3b553cbacf7b1e5f026d5b5b9f",
+      "bytes": 225062,
+      "revision": "d673b8835373c6fa116d6d8006b33d48734e305d"
+    },
+    "hf/microsoft/BiomedCLIP-PubMedBERT_256-vit_base_patch16_224/tokenizer_config.json": {
+      "path": "~/.cache/xray-bench/hf/microsoft/BiomedCLIP-PubMedBERT_256-vit_base_patch16_224/tokenizer_config.json",
+      "sha256": "53b6f42b8b8daddbdc6d3532c324187a92b46c1602bd6e8d4ad5a413b4fc90e1",
+      "bytes": 28,
+      "revision": "d673b8835373c6fa116d6d8006b33d48734e305d"
+    },
+    "file/grazpedwri-yolov8-best.pt": {
+      "path": "~/.cache/xray-bench/files/grazpedwri-yolov8-best.pt",
+      "sha256": "301abc1774c28dd7c5adbcf1e8a79ed6771273615238b62dd179b622292b3a81",
+      "bytes": 22484659,
+      "url": "https://github.com/RuiyangJu/Bone_Fracture_Detection_YOLOv8/releases/download/Trained_model/best.pt"
+    }
+  }
+}

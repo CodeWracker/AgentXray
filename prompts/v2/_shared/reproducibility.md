@@ -1,6 +1,6 @@
 # REPRODUCIBILITY AND ISOLATION
 
-Your run directory is `{{RUN_DIR}}`. Work only inside it. Do not read, list or search files outside it (other than the `torchxrayvision` source code and the Python environment). Other directories of this repository contain results of previous runs, and reading them would contaminate your independent analysis.
+Your run directory is `{{RUN_DIR}}`. Work only inside it. Do not read, list or search files outside it (other than the `torchxrayvision` source code, the model directory `{{MODELS_DIR}}` and the Python environment). Other directories of this repository contain results of previous runs, and reading them would contaminate your independent analysis.
 
 Every analysis folder must contain `scripts/reproduce.py`, a single entrypoint that:
 
