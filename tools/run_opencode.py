@@ -178,6 +178,7 @@ def main() -> int:
     parser.add_argument("--images", nargs="+", type=pathlib.Path, default=None)
     parser.add_argument("--manifest", type=pathlib.Path, help="caminho para manifest.json de benchmark")
     parser.add_argument("--max-cases", type=int, default=None, help="limite maximo de casos a rodar do manifest")
+    parser.add_argument("--case-range", nargs=2, type=int, metavar=("START", "END"), help="fatia de indices [START, END) do manifest")
     parser.add_argument("--repeat", type=int, default=1)
     parser.add_argument("--timeout", type=int, default=120, help="minutos por sessão, somando as retomadas")
     parser.add_argument("--max-nudges", type=int, default=5, help="retomadas automáticas se faltar o JSON final")
@@ -189,7 +190,10 @@ def main() -> int:
         manifest_file = args.manifest.resolve()
         with open(manifest_file, encoding="utf-8") as f:
             items = json.load(f)
-        if args.max_cases:
+        if args.case_range:
+            start_idx, end_idx = args.case_range
+            items = items[start_idx:end_idx]
+        elif args.max_cases:
             items = items[:args.max_cases]
         nih_images = EVAL / "inputs" / "nih_chestxray" / "images"
         images = []
