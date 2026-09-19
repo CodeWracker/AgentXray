@@ -123,3 +123,22 @@ def evaluate_bboxes(predicted_boxes: list[dict], ground_truth_boxes: list[dict])
         "hit_iou_05": best_iou >= 0.5,
         "best_match_label": best_label,
     }
+
+
+def extract_predicted_bboxes(json_data: dict) -> list[dict]:
+    """Extrai bounding boxes do JSON final gerado pelo agente ou zero-shot.
+    Suporta campos: 'localized_lesions', 'bboxes', 'bounding_boxes'.
+    """
+    candidates = json_data.get("localized_lesions") or json_data.get("bboxes") or json_data.get("bounding_boxes") or []
+    boxes = []
+    if isinstance(candidates, list):
+        for item in candidates:
+            if isinstance(item, dict):
+                label = item.get("label", item.get("pathology", item.get("finding", "abnormality")))
+                box = item.get("bbox", item.get("box", item.get("coordinates", [])))
+                if isinstance(box, list) and len(box) == 4:
+                    try:
+                        boxes.append({"label": str(label), "bbox": [float(c) for c in box]})
+                    except (ValueError, TypeError):
+                        pass
+    return boxes

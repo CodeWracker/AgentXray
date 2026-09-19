@@ -56,9 +56,11 @@ def render(template: str, values: dict) -> str:
     return template
 
 
-def prompt_parts(version: str, mode: str, harness: str | None) -> list[pathlib.Path]:
+def prompt_parts(version: str, mode: str, harness: str | None, results_name: str | None = None) -> list[pathlib.Path]:
     base = PROMPTS / version
-    parts = [base / f"{mode}.md", *sorted((base / "_shared").glob("*.md"))]  # a v1 não tem _shared
+    exp2_candidate = base / f"{mode}_exp2.md"
+    mode_file = exp2_candidate if (results_name and "exp2" in results_name and exp2_candidate.exists()) else (base / f"{mode}.md")
+    parts = [mode_file, *sorted((base / "_shared").glob("*.md"))]  # a v1 nao tem _shared
     if harness:
         parts.append(base / "_harness" / f"{harness}.md")
         extra = base / "_harness" / f"{harness}-{mode}.md"
@@ -97,7 +99,7 @@ def create_run(mode: str, model: str, images: list[pathlib.Path], version: str =
         "TXV_SOURCE": str(pathlib.Path(torchxrayvision.__file__).parent),
         "TXV_VERSION": torchxrayvision.__version__,
     }
-    parts = prompt_parts(version, mode, harness)
+    parts = prompt_parts(version, mode, harness, results_name=results_name)
     prompt = "\n\n".join(render(p.read_text(), values).strip() for p in parts) + "\n"
     (run_dir / "PROMPT.md").write_text(prompt)
 
