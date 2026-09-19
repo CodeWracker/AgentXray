@@ -35,56 +35,75 @@ def check_progress() -> dict:
             "failed": [],
         }
 
-    for model in MODELS:
-        for mode in MODES:
-            mode_dir = RESULTS_V2 / mode / model
-            if not mode_dir.exists():
-                continue
-            for run_dir in sorted(mode_dir.iterdir()):
-                if not run_dir.is_dir():
-                    continue
-                harness_json = run_dir / "harness_result.json"
-                events_file = run_dir / "opencode_events.jsonl"
-                manifest_file = run_dir / "run_manifest.json"
+    for run_dir in RESULTS_V2.glob("**/harness_result.json"):
+        parent = run_dir.parent
+        manifest_file = parent / "run_manifest.json"
+        events_file = parent / "opencode_events.jsonl"
+        harness_file = run_dir
 
-                image_name = "unknown"
-                if manifest_file.exists():
-                    try:
-                        mdata = json.loads(manifest_file.read_text(encoding="utf-8"))
-                        imgs = mdata.get("images", [])
-                        if imgs:
-                            image_name = imgs[0].get("file", "unknown")
-                    except Exception:
-                        pass
+        mdata = {}
+        if manifest_file.exists():
+            try:
+                mdata = json.loads(manifest_file.read_text(encoding="utf-8"))
+            except Exception:
+                pass
 
-                info = {
-                    "model": model,
-                    "mode": mode,
-                    "image": image_name,
-                    "run_dir": run_dir.name,
-                }
+        hdata = {}
+        try:
+            hdata = json.loads(harness_file.read_text(encoding="utf-8"))
+        except Exception:
+            pass
 
-                if harness_json.exists():
-                    try:
-                        hdata = json.loads(harness_json.read_text(encoding="utf-8"))
-                        info["elapsed_s"] = hdata.get("elapsed_s")
-                        info["nudges"] = hdata.get("nudges", 0)
-                        info["final_json_written"] = hdata.get("final_json_written", False)
-                        info["check_passed"] = hdata.get("check_passed", False)
-                        if hdata.get("final_json_written", False):
-                            completed.append(info)
-                        else:
-                            failed.append(info)
-                    except Exception:
-                        failed.append(info)
-                elif events_file.exists():
-                    # em andamento
-                    info["events_lines"] = len(events_file.read_text(encoding="utf-8", errors="ignore").splitlines())
-                    in_progress.append(info)
+        imgs = mdata.get("images", [])
+        image_name = imgs[0].get("file", parent.name) if imgs else parent.name
 
-    pct = (len(completed) / max(1, TOTAL_EXPECTED)) * 100.0
+        info = {
+            "model": mdata.get("model", "unknown"),
+            "mode": mdata.get("mode", "unknown"),
+            "condition": mdata.get("condition", parent.parent.parent.name),
+            "image": image_name,
+            "run_dir": parent.name,
+            "elapsed_s": hdata.get("elapsed_s", 0),
+            "nudges": hdata.get("nudges", 0),
+            "final_json_written": hdata.get("final_json_written", False),
+            "check_passed": hdata.get("check_passed", False),
+        }
+
+        if info["final_json_written"]:
+            completed.append(info)
+        else:
+            failed.append(info)
+
+    # Verifica sessoes ativas que ainda nao tem harness_result.json
+    for ev_file in RESULTS_V2.glob("**/opencode_events.jsonl"):
+        parent = ev_file.parent
+        if (parent / "harness_result.json").exists():
+            continue
+        manifest_file = parent / "run_manifest.json"
+        mdata = {}
+        if manifest_file.exists():
+            try:
+                mdata = json.loads(manifest_file.read_text(encoding="utf-8"))
+            except Exception:
+                pass
+        imgs = mdata.get("images", [])
+        image_name = imgs[0].get("file", parent.name) if imgs else parent.name
+
+        lines = len(ev_file.read_text(encoding="utf-8", errors="ignore").splitlines())
+        in_progress.append({
+            "model": mdata.get("model", "unknown"),
+            "mode": mdata.get("mode", "unknown"),
+            "condition": mdata.get("condition", parent.parent.parent.name),
+            "image": image_name,
+            "run_dir": parent.name,
+            "events_lines": lines,
+        })
+
+    # Benchmark total target: 45 (exp1) + 48 (exp2) = 93 per model * 3 = 279
+    TOTAL_TARGET = 93 * len(MODELS)
+    pct = (len(completed) / max(1, TOTAL_TARGET)) * 100.0
     return {
-        "total_expected": TOTAL_EXPECTED,
+        "total_target": TOTAL_TARGET,
         "completed_count": len(completed),
         "in_progress_count": len(in_progress),
         "failed_count": len(failed),
@@ -97,7 +116,7 @@ def check_progress() -> dict:
 
 def main():
     prog = check_progress()
-    print(f"Progresso Geral: {prog['percentage']:.1f}% ({prog['completed_count']}/{prog['total_expected']} sessoes concluidas)")
+    print(f"Progresso Geral: {prog['percentage']:.1f}% ({prog['completed_count']}/{prog['total_target']} sessoes concluidas)")
     print(f"Em andamento: {prog['in_progress_count']} sessoes | Falhas: {prog['failed_count']}")
 
     if prog["completed"]:
