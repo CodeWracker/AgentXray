@@ -193,7 +193,7 @@ def main() -> int:
     parser.add_argument("--case-range", nargs=2, type=int, metavar=("START", "END"), help="fatia de indices [START, END) do manifest")
     parser.add_argument("--repeat", type=int, default=1)
     parser.add_argument("--timeout", type=int, default=120, help="minutos por sessão, somando as retomadas")
-    parser.add_argument("--max-nudges", type=int, default=5, help="retomadas automáticas se faltar o JSON final")
+    parser.add_argument("--max-nudges", type=int, default=None, help="retomadas automáticas se faltar o JSON final")
     parser.add_argument("--version", default="v2", help="versão dos prompts (v1 ou v2)")
     parser.add_argument("--results-name", help="pasta da condição em results/ (padrão: v2, ou v1-runner para a v1)")
     args = parser.parse_args()
@@ -223,10 +223,11 @@ def main() -> int:
         images = args.images or sorted((EVAL / "inputs").glob("*.png"))
         results_name = args.results_name or ("v1-runner" if args.version == "v1" else None)
 
+    effective_nudges = args.max_nudges if args.max_nudges is not None else (40 if args.mode == "agents" else 5)
     for rep in range(1, args.repeat + 1):
         for image in images:
             label = f"{image.stem.split('-')[0]}-r{rep}"
-            run_one(args.mode, args.model, image.resolve(), args.provider, args.timeout, label, args.max_nudges,
+            run_one(args.mode, args.model, image.resolve(), args.provider, args.timeout, label, effective_nudges,
                     args.version, results_name)
     return 0
 
