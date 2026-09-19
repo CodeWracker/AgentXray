@@ -32,7 +32,7 @@ import sys
 import time
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
-from new_run import EVAL, create_run  # noqa: E402
+from new_run import EVAL, create_run, MODES  # noqa: E402
 
 AGENT_STEPS = 400
 # mensagem de retomada quando a sessão termina sem o JSON final; neutra quanto ao conteúdo da análise
@@ -116,6 +116,18 @@ def export_sessions(run_dir: pathlib.Path, ids: list[str]) -> None:
 
 def run_one(mode: str, model: str, image: pathlib.Path, provider: str, timeout_min: int, label: str,
             max_nudges: int, version: str = "v2", results_name: str | None = None) -> pathlib.Path:
+    dest_mode_dir = EVAL / "results" / (results_name or version) / MODES[mode] / model
+    if dest_mode_dir.exists():
+        for existing in dest_mode_dir.glob(f"*-{label}"):
+            if (existing / "harness_result.json").exists():
+                try:
+                    h_info = json.loads((existing / "harness_result.json").read_text(encoding="utf-8"))
+                    if h_info.get("check_passed") or h_info.get("final_json_written"):
+                        print(f"[{time.strftime('%H:%M:%S')}] Pula {image.name}: rodada ja concluida em {existing.name}", flush=True)
+                        return existing
+                except Exception:
+                    pass
+
     run_dir = create_run(mode, model, [image], version=version, harness="opencode", label=label,
                          results_name=results_name)
     (run_dir / "opencode.json").write_text(json.dumps(opencode_config(provider, model, run_dir), indent=2) + "\n")
