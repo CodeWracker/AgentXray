@@ -107,7 +107,7 @@ RELATION TO ORIGINAL IMAGE: <whether the observation is supported by the origina
 
 POSSIBLE ARTIFACTS: <what may have been introduced or exaggerated by processing or by the model>
 
-USEFULNESS: <answered the question, partially answered it, or useless — and why>
+USEFULNESS: <answered the question, partially answered it, or useless - and why>
 
 CONFIDENCE: <low, moderate, or high>
 

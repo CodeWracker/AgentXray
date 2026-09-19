@@ -8,7 +8,7 @@ Não é ferramenta clínica. É um experimento sobre como agentes usam (ou deixa
 
 ```
 env.sh                      confina caches, temporários, HOME e sessões do opencode dentro desta pasta
-inputs/                     imagens de entrada (ID001–ID003)
+inputs/                     imagens de entrada (ID001-ID003)
 prompts/v1/                 prompts da primeira rodada (lista fixa de transformações no single-agent)
 prompts/v2/                 prompts atuais: o modelo escolhe as análises
 prompts/v2/_shared/         inventário de ferramentas e regras de reprodutibilidade
