@@ -58,7 +58,7 @@ def query_zeroshot(image_path: pathlib.Path, model: str, base_url: str, api_key:
             }
         ],
         "temperature": 0.0,
-        "max_tokens": 1200,
+        "max_tokens": 6000,
     }
 
     req = urllib.request.Request(
@@ -73,24 +73,27 @@ def query_zeroshot(image_path: pathlib.Path, model: str, base_url: str, api_key:
     with urllib.request.urlopen(req, timeout=180) as resp:
         res = json.loads(resp.read().decode("utf-8"))
         content = res["choices"][0]["message"]["content"]
-        # Limpa blocos markdown de codigo se houver
         cleaned = content.strip()
-        if cleaned.startswith("```json"):
-            cleaned = cleaned[7:]
-        if cleaned.startswith("```"):
-            cleaned = cleaned[3:]
-        if cleaned.endswith("```"):
-            cleaned = cleaned[:-3]
+        if "```json" in cleaned:
+            parts = cleaned.split("```json")
+            if len(parts) > 1:
+                cleaned = parts[1].split("```")[0]
+        elif "```" in cleaned:
+            parts = cleaned.split("```")
+            if len(parts) > 1:
+                cleaned = parts[1]
         cleaned = cleaned.strip()
 
         try:
             return json.loads(cleaned)
         except Exception:
-            # extrai chaves se vier texto em volta
             start = cleaned.find("{")
             end = cleaned.rfind("}")
             if start != -1 and end != -1:
-                return json.loads(cleaned[start : end + 1])
+                try:
+                    return json.loads(cleaned[start : end + 1])
+                except Exception:
+                    pass
             raise ValueError(f"Resposta nao contem JSON valido: {content[:300]}")
 
 
