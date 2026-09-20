@@ -12,4 +12,5 @@ data/
 *.zip
 results/v2/
 results/*.log
+*.log
 
