@@ -15,11 +15,16 @@ import os
 import pathlib
 import sys
 import time
+import urllib.error
 import urllib.request
 
 EVAL = pathlib.Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(EVAL / "analysis"))
 from align_diagnosis import evaluate_differential_diagnosis
+
+# quando o DGX_UFSC_BASE_URL e um tunel (ngrok) que pode estourar cota de banda, cai para o
+# LiteLLM local, alcancavel diretamente no mesmo host da DGX
+LOCAL_LITELLM_FALLBACK = "http://127.0.0.1:4000"
 
 
 def encode_image(img_path: pathlib.Path) -> str:
@@ -61,40 +66,49 @@ def query_zeroshot(image_path: pathlib.Path, model: str, base_url: str, api_key:
         "max_tokens": 6000,
     }
 
-    req = urllib.request.Request(
-        f"{base_url}/v1/chat/completions",
-        data=json.dumps(payload).encode("utf-8"),
-        headers={
-            "Content-Type": "application/json",
-            "Authorization": f"Bearer {api_key}",
-        },
-    )
-
-    with urllib.request.urlopen(req, timeout=180) as resp:
-        res = json.loads(resp.read().decode("utf-8"))
-        content = res["choices"][0]["message"]["content"]
-        cleaned = content.strip()
-        if "```json" in cleaned:
-            parts = cleaned.split("```json")
-            if len(parts) > 1:
-                cleaned = parts[1].split("```")[0]
-        elif "```" in cleaned:
-            parts = cleaned.split("```")
-            if len(parts) > 1:
-                cleaned = parts[1]
-        cleaned = cleaned.strip()
-
+    urls_to_try = [base_url] if base_url == LOCAL_LITELLM_FALLBACK else [base_url, LOCAL_LITELLM_FALLBACK]
+    res, last_error = None, None
+    for url in urls_to_try:
+        req = urllib.request.Request(
+            f"{url}/v1/chat/completions",
+            data=json.dumps(payload).encode("utf-8"),
+            headers={
+                "Content-Type": "application/json",
+                "Authorization": f"Bearer {api_key}",
+            },
+        )
         try:
-            return json.loads(cleaned)
-        except Exception:
-            start = cleaned.find("{")
-            end = cleaned.rfind("}")
-            if start != -1 and end != -1:
-                try:
-                    return json.loads(cleaned[start : end + 1])
-                except Exception:
-                    pass
-            raise ValueError(f"Resposta nao contem JSON valido: {content[:300]}")
+            with urllib.request.urlopen(req, timeout=180) as resp:
+                res = json.loads(resp.read().decode("utf-8"))
+            break
+        except (urllib.error.URLError, urllib.error.HTTPError) as e:
+            last_error = e
+    if res is None:
+        raise last_error
+
+    content = res["choices"][0]["message"]["content"]
+    cleaned = content.strip()
+    if "```json" in cleaned:
+        parts = cleaned.split("```json")
+        if len(parts) > 1:
+            cleaned = parts[1].split("```")[0]
+    elif "```" in cleaned:
+        parts = cleaned.split("```")
+        if len(parts) > 1:
+            cleaned = parts[1]
+    cleaned = cleaned.strip()
+
+    try:
+        return json.loads(cleaned)
+    except Exception:
+        start = cleaned.find("{")
+        end = cleaned.rfind("}")
+        if start != -1 and end != -1:
+            try:
+                return json.loads(cleaned[start : end + 1])
+            except Exception:
+                pass
+        raise ValueError(f"Resposta nao contem JSON valido: {content[:300]}")
 
 
 def main():

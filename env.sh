@@ -34,6 +34,14 @@ export XDG_DATA_HOME="$SANDBOX/opencode/data"
 export XDG_STATE_HOME="$SANDBOX/opencode/state"
 export OPENCODE_DISABLE_AUTOUPDATE=1
 
+# npm: cache do instalador de pacotes Node fica dentro do sandbox
+export npm_config_cache="$SANDBOX/npm-cache"
+
+# opencode: o CLI e instalado localmente dentro do projeto (nao globalmente em ~/.nvm), pois o
+# filesystem fora do volume persistente e efemero e some a cada reinicio do servidor
+export OPENCODE_CLI_PREFIX="$SANDBOX/opencode-cli"
+export PATH="$OPENCODE_CLI_PREFIX/node_modules/.bin:$PATH"
+
 # credenciais do endpoint da DGX (arquivo fora do git)
 if [ -f "$EVAL/.env" ]; then
     set -a
@@ -42,7 +50,8 @@ if [ -f "$EVAL/.env" ]; then
 fi
 
 mkdir -p "$TMPDIR" "$UV_CACHE_DIR" "$XDG_CACHE_HOME" "$MPLCONFIGDIR" "$YOLO_CONFIG_DIR" "$HF_HOME" \
-    "$HF_HUB_CACHE" "$XDG_CONFIG_HOME" "$XDG_DATA_HOME" "$XDG_STATE_HOME" "$SANDBOX/home"
+    "$HF_HUB_CACHE" "$XDG_CONFIG_HOME" "$XDG_DATA_HOME" "$XDG_STATE_HOME" "$SANDBOX/home" \
+    "$npm_config_cache" "$OPENCODE_CLI_PREFIX"
 
 # o torchxrayvision (e alguns baseline models) grava sempre em ~/.torchxrayvision; o HOME dos processos
 # Python aponta para $SANDBOX/home (ver tools/py), onde este link leva aos pesos em models/

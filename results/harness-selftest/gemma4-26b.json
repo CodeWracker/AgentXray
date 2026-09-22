@@ -1,12 +1,20 @@
 {
   "model": "gemma4-26b",
   "session_directory_is_run_dir": true,
-  "session_directory": "/home/ralph/projects/ufsc/pablo-xray-tests/llm-xray-evaluation/.sandbox/tmp/selftest-gemma4-26b-sjiwhs8t",
+  "session_directory": "/home/jovyan/privado/llm-xray-project/llm-xray-evaluation/results/harness-selftest/runs/gemma4-26b-2iftk7um",
   "outside_read_attempted": true,
-  "outside_read_denied": false,
-  "project_python_works": false,
-  "subagents": [],
-  "subagent_file_written": false,
-  "subagent_same_model": false,
-  "passed": false
+  "outside_read_denied": true,
+  "outside_cat_attempted": true,
+  "outside_cat_denied": true,
+  "nudges": 0,
+  "project_python_works": true,
+  "subagents": [
+    {
+      "agent": "analyst",
+      "model": "gemma4-26b"
+    }
+  ],
+  "subagent_file_written": true,
+  "subagent_same_model": true,
+  "passed": true
 }
