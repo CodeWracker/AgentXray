@@ -1,0 +1,8 @@
+{
+  "lexicon_version": "1134e4fd254f",
+  "K": 3,
+  "bootstrap_B": 10000,
+  "seed": 42,
+  "n_cases": 45,
+  "baseline_weights": "densenet121-res224-all"
+}

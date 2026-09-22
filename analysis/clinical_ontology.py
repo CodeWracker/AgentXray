@@ -6,8 +6,12 @@ para os conceitos padronizados do NIH ChestX-ray14 usando correspondencias do Ra
 SNOMED CT e MeSH.
 
 Uso:
-    from clinical_ontology import ONTOLOGY, match_term_to_class
+    from clinical_ontology import ONTOLOGY, project_hypothesis, match_term_to_class, LEXICON_VERSION
 """
+
+import hashlib
+import json
+import re
 
 # Mapeamento canônico das 14 patologias + Normal
 ONTOLOGY = {
@@ -261,13 +265,110 @@ ONTOLOGY = {
 }
 
 
+MATCHER_VERSION = "2"
+
+# gatilhos no esquema do NegEx (Chapman et al., 2001), com janela de ate NEG_WINDOW tokens dentro da clausula
+PRE_NEGATION = ["no evidence of", "no signs of", "no sign of", "negative for", "absence of", "free of",
+                "without", "no", "not"]
+POST_NEGATION = ["ruled out", "excluded", "is absent", "are absent", "not seen", "not present",
+                 "not identified", "has resolved", "resolved"]
+# expressoes regulares de frases que contem gatilhos mas nao negam (numa lista diferencial,
+# "cannot be excluded" e "with or without" mantem o candidato afirmado)
+PSEUDO_NEGATION = [r"(?:can ?not|can't|not) be (?:\w+ )?(?:excluded|ruled out)",
+                   r"not (?:\w+ )?(?:excluded|ruled out)", r"with or without", r"not only",
+                   r"no (?:significant |interval )?change"]
+NEG_WINDOW = 6
+CLAUSE_BREAK = re.compile(r"[;,.:()\[\]]|\b(?:but|however|although|though|whereas|versus|vs|aside from|apart from"
+                          r"|except(?: for)?|other than)\b")
+NON_CONTENT = {"", "n/a", "na", "none", "null", "nil", "not applicable", "unknown", "-"}
+
+LEXICON_VERSION = hashlib.sha256(json.dumps(
+    {"ontology": ONTOLOGY, "matcher": MATCHER_VERSION, "pre": PRE_NEGATION, "post": POST_NEGATION,
+     "pseudo": PSEUDO_NEGATION, "window": NEG_WINDOW, "non_content": sorted(NON_CONTENT)},
+    sort_keys=True).encode()).hexdigest()[:12]
+
+
+def _term_regex(term: str) -> re.Pattern:
+    # fronteira de palavra com plural opcional: "infiltrate" casa "infiltrates", "mass" nao casa "massive"
+    return re.compile(r"(?<![a-z0-9])" + re.escape(term) + r"(?:e?s)?(?![a-z0-9])")
+
+
+_SYNONYM_PATTERNS = [(cls, _term_regex(syn)) for cls, info in ONTOLOGY.items() for syn in info["synonyms"]]
+_PRE = [_term_regex(t) for t in PRE_NEGATION]
+_POST = [_term_regex(t) for t in POST_NEGATION]
+_PSEUDO = [re.compile(r"(?<![a-z0-9])" + t + r"(?![a-z0-9])") for t in PSEUDO_NEGATION]
+
+
+def normalize_text(text: str) -> str:
+    return re.sub(r"\s+", " ", str(text).lower()).strip().strip(" .;:-")
+
+
+def _clause_bounds(text: str) -> list[tuple[int, int]]:
+    bounds, start = [], 0
+    for m in CLAUSE_BREAK.finditer(text):
+        bounds.append((start, m.start()))
+        start = m.end()
+    bounds.append((start, len(text)))
+    return bounds
+
+
+def _tokens_between(text: str, a: int, b: int) -> int:
+    return len(re.findall(r"[a-z0-9]+", text[a:b]))
+
+
+def project_hypothesis(text: str) -> dict:
+    """Projeta uma hipotese em texto livre nas classes canonicas.
+
+    Retorna {"informative", "classes" (afirmadas, em ordem de aparicao), "negated" (so negadas)}.
+    """
+    t = normalize_text(text)
+    if t in NON_CONTENT:
+        return {"informative": False, "classes": [], "negated": []}
+
+    # mascara as pseudo-negacoes para que seus gatilhos internos nao contem
+    masked = t
+    for pat in _PSEUDO:
+        masked = pat.sub(lambda m: " " * len(m.group(0)), masked)
+
+    found = []
+    for cls, pat in _SYNONYM_PATTERNS:
+        for m in pat.finditer(t):
+            found.append((m.start(), m.end(), cls))
+    # a correspondencia mais longa vence quando uma esta contida em outra de classe diferente
+    found.sort(key=lambda x: (-(x[1] - x[0]), x[0]))
+    kept = []
+    for s, e, cls in found:
+        if any(ks <= s and e <= ke and kc != cls for ks, ke, kc in kept):
+            continue
+        kept.append((s, e, cls))
+
+    clauses = _clause_bounds(masked)
+    triggers_pre = [(m.start(), m.end()) for pat in _PRE for m in pat.finditer(masked)]
+    triggers_post = [(m.start(), m.end()) for pat in _POST for m in pat.finditer(masked)]
+
+    status: dict[str, bool] = {}
+    order: dict[str, int] = {}
+    for s, e, cls in kept:
+        cs, ce = next(((a, b) for a, b in clauses if a <= s < b), (0, len(t)))
+        negated = False
+        for ts, te in triggers_pre:
+            # gatilhos dentro do proprio sinonimo ("absence of vascular markings", "no finding") nao negam
+            if cs <= ts and te <= s and not (s <= ts < e) and _tokens_between(masked, te, s) <= NEG_WINDOW:
+                negated = True
+        for ts, te in triggers_post:
+            if e <= ts and te <= ce and _tokens_between(masked, e, ts) <= NEG_WINDOW:
+                negated = True
+        status[cls] = status.get(cls, False) or not negated
+        order[cls] = min(order.get(cls, s), s)
+
+    ranked = sorted(status, key=lambda c: order[c])
+    return {
+        "informative": True,
+        "classes": [c for c in ranked if status[c]],
+        "negated": [c for c in ranked if not status[c]],
+    }
+
+
 def match_term_to_class(text: str) -> list[str]:
-    """Mapeia uma string de diagnostico ou hipotese para classes canonicas."""
-    text_lower = text.lower()
-    matches = []
-    for cls_name, info in ONTOLOGY.items():
-        for syn in info["synonyms"]:
-            if syn in text_lower:
-                matches.append(cls_name)
-                break
-    return matches
+    """Mapeia uma string de diagnostico ou hipotese para as classes canonicas afirmadas."""
+    return project_hypothesis(text)["classes"]

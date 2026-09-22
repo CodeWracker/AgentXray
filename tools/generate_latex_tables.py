@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
-"""Gera tabelas LaTeX completas para o artigo cientifico a partir dos resultados reais.
+"""Gera as tabelas LaTeX de processo, Exp 2 e anatomia do artigo.
+
+As tabelas do Exp 1 sao geradas por analysis/exp1_metrics.py e latex-paper/figures/scripts/exp1_tables_figures.py.
 
 Conforme diretriz experimental:
 Apenas o Gemma 4 26B concluiu todas as 93 imagens do benchmark e tem resultados fechados.
@@ -7,120 +9,16 @@ Os modelos Qwen (qwen3.6-27b e qwen3.8-27b) estao em execucao ativa e devem cons
 exclusivamente com '0.XXX' ou '\\textit{In progress}'.
 """
 
-import collections
-import glob
-import json
 import pathlib
-import sys
 import pandas as pd
 
 EVAL = pathlib.Path(__file__).resolve().parent.parent
 LATEX_FIGS = EVAL.parent / "latex-paper" / "figures"
 LATEX_FIGS.mkdir(parents=True, exist_ok=True)
 
-sys.path.insert(0, str(EVAL / "analysis"))
-from align_diagnosis import evaluate_differential_diagnosis
-
-def load_manifest():
-    p = EVAL / "inputs" / "benchmarks" / "exp1_image_level" / "manifest.json"
-    with open(p, encoding="utf-8") as f:
-        return {it["image"]: it["finding_labels"] for it in json.load(f)}
-
-def eval_agent_exp1(model):
-    manifest = load_manifest()
-    runs = sorted(glob.glob(str(EVAL / f"results/v2/exp1_image_level/single-agent/{model}/*")))
-    res = []
-    for r in runs:
-        rdir = pathlib.Path(r)
-        if not (rdir / "harness_result.json").exists():
-            continue
-        jsons = list(rdir.glob("*_analysis/*.png.json"))
-        if not jsons:
-            continue
-        try:
-            data = json.loads(jsons[0].read_text(encoding="utf-8"))
-            img_name = data.get("image")
-            gt = manifest.get(img_name, [])
-            dx = data.get("differential_diagnosis", [])
-            ev = evaluate_differential_diagnosis(dx, gt)
-            ev["image"] = img_name
-            ev["gt"] = gt
-            ev["dx"] = dx
-            res.append(ev)
-        except Exception:
-            pass
-    return res
-
-def eval_zeroshot_exp1(model):
-    manifest = load_manifest()
-    zdir = EVAL / "results" / "v2" / "zeroshot" / "exp1_image_level" / model
-    res = []
-    if not zdir.exists():
-        return res
-    for f in sorted(zdir.glob("*.json")):
-        try:
-            data = json.loads(f.read_text(encoding="utf-8"))
-            img_name = data.get("image")
-            gt = manifest.get(img_name, [])
-            dx = data.get("differential_diagnosis", [])
-            ev = evaluate_differential_diagnosis(dx, gt)
-            ev["image"] = img_name
-            ev["gt"] = gt
-            ev["dx"] = dx
-            res.append(ev)
-        except Exception:
-            pass
-    return res
 
 def main():
     print("Coletando metricas para tabelas LaTeX...")
-    manifest = load_manifest()
-
-    # 1. EXP 1 DIAGNOSTIC SUMMARY (Apenas Gemma 4 e baselines fechadas)
-    gemma_agent = eval_agent_exp1("gemma4-26b")
-    gemma_zero = eval_zeroshot_exp1("gemma4-26b")
-
-    # Baseline supervisionada
-    densenet_h1 = 31.1
-    densenet_h3 = 71.1
-    densenet_mrr = 0.539
-
-    def get_stats(lst):
-        if not lst:
-            return 0, 0.0, 0.0, 0.0
-        n = len(lst)
-        h1 = sum(1 for x in lst if x["hit_at_1"]) / n * 100
-        h3 = sum(1 for x in lst if x["hit_at_3"]) / n * 100
-        mrr = sum(x["mrr"] for x in lst) / n
-        return n, h1, h3, mrr
-
-    n_ga, h1_ga, h3_ga, mrr_ga = get_stats(gemma_agent)
-    n_gz, h1_gz, h3_gz, mrr_gz = get_stats(gemma_zero)
-
-    # ----------------------------------------------------
-    # TABELA 1: Diagnostic Performance Across Benchmark Tracks
-    # ----------------------------------------------------
-    t1_tex = r"""\begin{tabular}{lcccccccc}
-\toprule
-\multirow{2}{*}{\textbf{Model}} & \multirow{2}{*}{\textbf{Mode}} & \multicolumn{4}{c}{\textbf{Exp 1: Open Differential Diagnosis}} & \multicolumn{3}{c}{\textbf{Exp 2: Spatial Localization}} \\
-\cmidrule(lr){3-6} \cmidrule(lr){7-9}
-& & \textbf{$N$} & \textbf{Hit@1 (\%)} & \textbf{Hit@3 (\%)} & \textbf{MRR} & \textbf{$\text{IoU} \ge 0.1$} & \textbf{$\text{IoU} \ge 0.3$} & \textbf{$\text{IoU} \ge 0.5$} \\
-\midrule
-TorchXRayVision DenseNet-121 & Supervised & 45 & """ + f"{densenet_h1:.1f}" + r""" & """ + f"{densenet_h3:.1f}" + r""" & """ + f"{densenet_mrr:.3f}" + r""" & N/A & N/A & N/A \\
-\midrule
-\multirow{2}{*}{Gemma 4 26B A4B-it} & Zero-shot & """ + f"{n_gz}" + r""" & """ + f"{h1_gz:.1f}" + r""" & """ + f"{h3_gz:.1f}" + r""" & """ + f"{mrr_gz:.3f}" + r""" & N/A & N/A & N/A \\
- & Agent (w/ tools) & """ + f"{n_ga}" + r""" & """ + f"{h1_ga:.1f}" + r""" & """ + f"{h3_ga:.1f}" + r""" & """ + f"{mrr_ga:.3f}" + r""" & 0.0* & 0.0* & 0.0* \\
-\midrule
-\multirow{2}{*}{Qwen3.6-27B} & Zero-shot & --- & 0.XXX & 0.XXX & 0.XXX & N/A & N/A & N/A \\
- & Agent (w/ tools) & --- & 0.XXX & 0.XXX & 0.XXX & \multicolumn{3}{c}{\textit{In progress}} \\
-\midrule
-\multirow{2}{*}{Qwen3.8-27B} & Zero-shot & --- & 0.XXX & 0.XXX & 0.XXX & N/A & N/A & N/A \\
- & Agent (w/ tools) & --- & 0.XXX & 0.XXX & 0.XXX & \multicolumn{3}{c}{\textit{In progress}} \\
-\bottomrule
-\end{tabular}
-"""
-    (LATEX_FIGS / "table_diagnostic_performance.tex").write_text(t1_tex, encoding="utf-8")
-    print("Gravado: table_diagnostic_performance.tex")
 
     # ----------------------------------------------------
     # TABELA 2: Process Metrics (Apenas Gemma 4 com numeros, Qwen em In progress)
@@ -178,73 +76,6 @@ CLAHE / Spatial Enhancement Filters & 35 / 48 (72.9\%) & \textit{In progress} & 
     print("Gravado: table_exp2_localization.tex")
 
     # ----------------------------------------------------
-    # TABELA 4: Out-of-Scope (OOV) Diagnostic Taxonomy (Focada no Gemma 4, Qwen em In progress)
-    # ----------------------------------------------------
-    t4_tex = r"""\begin{tabular}{lcccp{7.5cm}}
-\toprule
-\textbf{Clinical Entity Category} & \textbf{Gemma 4 ($N=60$)} & \textbf{Qwen3.6} & \textbf{Qwen3.8} & \textbf{Representative Emitted Hypotheses (Gemma 4)} \\
-\midrule
-In-Scope (14 NIH Classes + Normal) & 46 (76.7\%) & \textit{In progress} & \textit{In progress} & Bilateral Pleural Effusion, Pulmonary Edema, Infiltration \\
-\midrule
-Acute Pulmonary Syndromes & 4 (6.7\%) & \textit{In progress} & \textit{In progress} & Acute Respiratory Distress Syndrome (ARDS), Pulmonary Hemorrhage \\
-Neoplastic / Malignant Infiltration & 3 (5.0\%) & \textit{In progress} & \textit{In progress} & Primary lung malignancy, Metastatic pulmonary disease \\
-Anatomical / Mechanical Variants & 1 (1.7\%) & \textit{In progress} & \textit{In progress} & Hiatal hernia / Elevated hemidiaphragm \\
-Early / Non-Specific Descriptions & 6 (10.0\%) & \textit{In progress} & \textit{In progress} & Subtle interstitial changes, Early infectious process \\
-\midrule
-\textbf{Total Hypotheses Evaluated} & \textbf{60 (100.0\%)} & \textit{In progress} & \textit{In progress} & \textit{Gemma 4 Out-of-Scope Rate: 23.3\% (14 / 60)} \\
-\bottomrule
-\end{tabular}
-"""
-    (LATEX_FIGS / "table_out_of_scope.tex").write_text(t4_tex, encoding="utf-8")
-    print("Gravado: table_out_of_scope.tex")
-
-    # ----------------------------------------------------
-    # TABELA 5: Per-Pathology Diagnostic Hit Rate for Gemma 4 (N=45)
-    # ----------------------------------------------------
-    path_support = collections.Counter()
-    path_hits_agent = collections.Counter()
-    path_hits_zero = collections.Counter()
-
-    for item in manifest.values():
-        for p in item:
-            path_support[p] += 1
-
-    for ev in gemma_agent:
-        gt = ev["gt"]
-        classes = ev.get("ranked_classes", [])
-        for p in gt:
-            if p in classes[:3]:
-                path_hits_agent[p] += 1
-
-    for ev in gemma_zero:
-        gt = ev["gt"]
-        classes = ev.get("ranked_classes", [])
-        for p in gt:
-            if p in classes[:3]:
-                path_hits_zero[p] += 1
-
-    t5_tex = r"""\begin{tabular}{lccccc}
-\toprule
-\textbf{Target Pathology} & \textbf{Support ($N$)} & \textbf{Agent Top-3 Hits} & \textbf{Agent Sensitivity (\%)} & \textbf{Zero-Shot Top-3 Hits} & \textbf{Zero-Shot Sens. (\%)} \\
-\midrule
-"""
-    all_paths = sorted(path_support.keys(), key=lambda x: path_support[x], reverse=True)
-    for p in all_paths:
-        supp = path_support[p]
-        ha = path_hits_agent[p]
-        hz = path_hits_zero[p]
-        sa = (ha / supp * 100) if supp else 0.0
-        sz = (hz / supp * 100) if supp else 0.0
-        p_display = p.replace("_", r"\_")
-        t5_tex += f"{p_display} & {supp} & {ha} & {sa:.1f}\\% & {hz} & {sz:.1f}\\% \\\\\n"
-
-    t5_tex += r"""\bottomrule
-\end{tabular}
-"""
-    (LATEX_FIGS / "table_gemma_per_pathology.tex").write_text(t5_tex, encoding="utf-8")
-    print("Gravado: table_gemma_per_pathology.tex")
-
-    # ----------------------------------------------------
     # TABELA 6: Anatomical Distribution (Qwen em In progress)
     # ----------------------------------------------------
     t6_tex = r"""\begin{tabular}{lccccc}
@@ -263,7 +94,7 @@ Knee / Lower Leg (Proximal Tibia, Fibula) & 1 & 1.0\% & 0.0\% (0/3)* & \textit{I
     (LATEX_FIGS / "table_anatomical_distribution.tex").write_text(t6_tex, encoding="utf-8")
     print("Gravado: table_anatomical_distribution.tex")
 
-    print("\nTodas as 6 tabelas foram atualizadas com sucesso: apenas Gemma 4 concluido, Qwen em 'In progress'!")
+    print("\nTabelas de processo, Exp 2 e anatomia atualizadas (Exp 1: analysis/exp1_metrics.py e figures/scripts/exp1_tables_figures.py).")
 
 if __name__ == "__main__":
     main()
