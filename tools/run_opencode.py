@@ -60,7 +60,7 @@ def opencode_config(provider: str, model: str, run_dir: pathlib.Path) -> dict:
                 "model": full,
                 "steps": AGENT_STEPS,
                 "description": "Independent radiograph analyst. Runs the same model as the orchestrator. Use for every sub-agent of the council.",
-                "prompt": "You are one independent analyst of a single-model council. Follow the task description exactly, write the files it asks for, and report back briefly.",
+                "prompt": "You are one independent analyst of a single-model council. Follow the task description exactly, write the files it asks for, keep your own agent log as described in the AGENT LOG section of PROMPT.md, and report back briefly.",
             },
             "general": {"model": full},
             "explore": {"model": full},

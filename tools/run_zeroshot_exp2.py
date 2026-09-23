@@ -35,8 +35,8 @@ def encode_image(img_path: pathlib.Path) -> str:
 def query_zeroshot_localization(image_path: pathlib.Path, model: str, base_url: str, api_key: str) -> dict:
     b64_img = encode_image(image_path)
     prompt_text = (
-        f"You are analyzing this chest radiograph `{image_path.name}` as a medical imaging specialist. "
-        "Your objective is to identify and spatially localize any focal thoracic abnormalities using bounding boxes. "
+        f"You are analyzing this medical image `{image_path.name}` as a second-opinion support tool for a medical professional. "
+        "Your objective is to identify and spatially localize any focal abnormalities using bounding boxes. "
         "Output ONLY a valid JSON object with exactly these fields:\n"
         "{\n"
         f'  "image": "{image_path.name}",\n'
@@ -48,7 +48,7 @@ def query_zeroshot_localization(image_path: pathlib.Path, model: str, base_url: 
         '  ],\n'
         '  "localized_lesions": [\n'
         '    {\n'
-        '      "label": "Pathology name (e.g., Atelectasis, Cardiomegaly, Effusion, Infiltration, Mass, Nodule, Pneumonia, Pneumothorax)",\n'
+        '      "label": "Name of the finding, in your own words",\n'
         '      "bbox": [x, y, w, h],\n'
         '      "confidence": "high",\n'
         '      "reasoning": "Visual evidence justifying this bounding box"\n'
@@ -57,7 +57,7 @@ def query_zeroshot_localization(image_path: pathlib.Path, model: str, base_url: 
         '  "limitations": "Technical and projection limitations."\n'
         "}\n"
         "Bounding box rules:\n"
-        "- Coordinates [x, y, w, h] must be in original image pixels (0 to 1024), where (x, y) is top-left and (w, h) are width and height.\n"
+        "- Coordinates [x, y, w, h] must be in original image pixels, where (x, y) is top-left and (w, h) are width and height.\n"
         "- If no focal abnormality is present, set \"localized_lesions\": [].\n"
         "Do not include conversational filler. Output only the JSON block."
     )
@@ -67,7 +67,7 @@ def query_zeroshot_localization(image_path: pathlib.Path, model: str, base_url: 
         "messages": [
             {
                 "role": "system",
-                "content": "You are a specialized thoracic radiology AI. Output only the requested JSON object. Do not include conversational filler or separate markdown text outside JSON.",
+                "content": "You are a medical image analysis assistant. Output only the requested JSON object. Do not include conversational filler or separate markdown text outside JSON.",
             },
             {
                 "role": "user",
@@ -137,6 +137,7 @@ def main():
     parser.add_argument("--manifest", type=pathlib.Path, required=True)
     parser.add_argument("--max-cases", type=int, default=None)
     parser.add_argument("--base-url", default=os.environ.get("DGX_UFSC_BASE_URL", "http://localhost:4000"))
+    parser.add_argument("--version", default="v3", help="pasta da condicao em results/")
     args = parser.parse_args()
 
     args.base_url = args.base_url.rstrip("/")
@@ -149,7 +150,7 @@ def main():
         items = items[: args.max_cases]
 
     bench_name = manifest_file.parent.name
-    out_dir = EVAL / "results" / "v2" / "zeroshot" / bench_name / args.model
+    out_dir = EVAL / "results" / args.version / "zeroshot" / bench_name / args.model
     out_dir.mkdir(parents=True, exist_ok=True)
 
     nih_images = EVAL / "inputs" / "nih_chestxray" / "images"

@@ -34,7 +34,7 @@ def encode_image(img_path: pathlib.Path) -> str:
 def query_zeroshot(image_path: pathlib.Path, model: str, base_url: str, api_key: str) -> dict:
     b64_img = encode_image(image_path)
     prompt_text = (
-        f"You are analyzing this chest X-ray image `{image_path.name}` as a medical second-opinion expert. "
+        f"You are analyzing this medical image `{image_path.name}` as a second-opinion support tool for a medical professional. "
         "You do not have access to any external tools or code execution. Inspect the image directly with your vision "
         "and output ONLY a valid JSON object with exactly these fields:\n"
         "{\n"
@@ -117,6 +117,7 @@ def main():
     parser.add_argument("--manifest", type=pathlib.Path, required=True)
     parser.add_argument("--max-cases", type=int, default=None)
     parser.add_argument("--base-url", default=os.environ.get("DGX_UFSC_BASE_URL", "http://localhost:4000"))
+    parser.add_argument("--version", default="v3", help="pasta da condicao em results/")
     args = parser.parse_args()
 
     args.base_url = args.base_url.rstrip("/")
@@ -129,7 +130,7 @@ def main():
         items = items[: args.max_cases]
 
     bench_name = manifest_file.parent.name
-    out_dir = EVAL / "results" / "v2" / "zeroshot" / bench_name / args.model
+    out_dir = EVAL / "results" / args.version / "zeroshot" / bench_name / args.model
     out_dir.mkdir(parents=True, exist_ok=True)
 
     nih_images = EVAL / "inputs" / "nih_chestxray" / "images"

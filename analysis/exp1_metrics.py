@@ -21,6 +21,7 @@ Saidas (analysis/exp1/):
 import csv
 import hashlib
 import json
+import os
 import pathlib
 import sys
 
@@ -32,7 +33,11 @@ from align_diagnosis import CATEGORIES, K, score_case  # noqa: E402
 from clinical_ontology import LEXICON_VERSION, ONTOLOGY, normalize_text  # noqa: E402
 
 MANIFEST = EVAL / "inputs" / "benchmarks" / "exp1_image_level" / "manifest.json"
-RESULTS = EVAL / "results" / "v2"
+# versao dos prompts cujas rodadas sao pontuadas (results/<versao>/); a v2 revelava regiao e classes
+VERSION = os.environ.get("XRAY_RESULTS_VERSION", "v3")
+RESULTS = EVAL / "results" / VERSION
+# o baseline supervisionado nao depende de prompt: as predicoes ficam em um caminho fixo
+SUPERVISED = EVAL / "results" / "v2" / "supervised"
 OUT = EVAL / "analysis" / "exp1"
 MODELS = ["gemma4-26b", "qwen3.6-27b", "qwen3.8-27b"]
 MODES = [("zeroshot", None), ("single", "single-agent"), ("council", "multi-agent-single-model")]
@@ -96,7 +101,7 @@ def collect_zeroshot(model: str, images: list[str], bench: str = "exp1_image_lev
 
 
 def collect_baseline(images: list[str]) -> dict:
-    data = load_json(RESULTS / "supervised" / "exp1_image_level" / BASELINE / "predictions.json") or {}
+    data = load_json(SUPERVISED / "exp1_image_level" / BASELINE / "predictions.json") or {}
     preds = data.get("predictions", {})
     out = {}
     for img in images:
@@ -264,7 +269,7 @@ def main() -> int:
     write("oov_audit.csv", audit_rows, ["text", "occurrences", "category", "notes"])
     write("oov_audit_by_condition.csv", audit_cond_rows, ["condition", *AUDIT_CATEGORIES, "pending"])
     (OUT / "meta.json").write_text(json.dumps({
-        "lexicon_version": LEXICON_VERSION, "K": K, "bootstrap_B": B, "seed": SEED, "n_cases": n_cases,
+        "results_version": VERSION, "lexicon_version": LEXICON_VERSION, "K": K, "bootstrap_B": B, "seed": SEED, "n_cases": n_cases,
         "baseline_weights": BASELINE,
     }, indent=2) + "\n")
 

@@ -24,6 +24,9 @@ import subprocess
 import sys
 import tempfile
 
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
+from agent_log import read_logs  # noqa: E402
+
 EVAL = pathlib.Path(__file__).resolve().parent.parent
 JSON_KEYS = {"image", "findings", "impression", "limitations"}
 ALLOWED_KEYS = {"image", "findings", "impression", "limitations", "differential_diagnosis", "localized_lesions"}
@@ -82,6 +85,19 @@ def check_tools(analysis: pathlib.Path) -> list[str]:
     return []
 
 
+def check_agent_log(analysis: pathlib.Path) -> list[str]:
+    """Contrato da v3: o log estruturado existe e toda linha e valida."""
+    logs = read_logs(analysis)
+    if not logs["files"]:
+        return ["log do agente ausente (provenance/agent_log.jsonl ou provenance/agent_log/)"]
+    errors = [f"log: {msg}" for msg in logs["invalid"][:10]]
+    if len(logs["invalid"]) > 10:
+        errors.append(f"log: mais {len(logs['invalid']) - 10} linhas invalidas")
+    if not logs["agents"]:
+        errors.append("log sem nenhuma entrada valida")
+    return errors
+
+
 def check_reproduce(analysis: pathlib.Path, timeout: int) -> dict:
     expected = derived_outputs(analysis)
     with tempfile.TemporaryDirectory(dir=os.environ["TMPDIR"]) as tmp:
@@ -137,6 +153,8 @@ def main() -> int:
         if mode:
             entry["errors"] += [f"ausente: {rel}" for rel in required[mode] if not (analysis / rel).exists()]
             entry["errors"] += check_tools(analysis)
+            if manifest.get("prompt_version") not in ("v1", "v2"):
+                entry["errors"] += check_agent_log(analysis)
             if not args.no_reproduce and (analysis / "scripts" / "reproduce.py").exists():
                 entry["reproduce"] = check_reproduce(analysis, args.timeout)
         report[str(analysis.relative_to(run_dir))] = entry

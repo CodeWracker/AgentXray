@@ -18,6 +18,8 @@ import re
 import sys
 
 EVAL = pathlib.Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(EVAL / "tools"))
+from agent_log import read_logs  # noqa: E402
 
 
 def static_analyze_scripts(scripts_dir: pathlib.Path) -> dict:
@@ -306,6 +308,9 @@ def collect_one(analysis_dir: pathlib.Path, results_root: pathlib.Path) -> dict 
 
     # sem imagem gerada a cobertura nao existe (nao e zero)
     coverage = viewed_generated / len(gen_names) if (viewed_generated is not None and gen_names) else None
+    logs = read_logs(analysis_dir)
+    log_actions = [e for entries in logs["agents"].values() for e in entries if e["action"] != "final_answer"]
+    harness_actions = sum(tools_all.values()) if tools_all else 0
     parts = pathlib.Path(str(run_dir.relative_to(results_root))).parts
     experiment = next((p for p in parts if p.startswith("exp")), "")
 
@@ -356,6 +361,14 @@ def collect_one(analysis_dir: pathlib.Path, results_root: pathlib.Path) -> dict 
         "untrusted_tools_count": prov_tools["untrusted_count"],
         "trusted_chest_model": prov_tools["trusted_chest_model"],
         "trusted_fracture_classifier": prov_tools["trusted_fracture_classifier"],
+        "log_files": logs["files"],
+        "log_entries": sum(len(v) for v in logs["agents"].values()),
+        "log_invalid_lines": len(logs["invalid"]),
+        "log_agents": len(logs["agents"]),
+        "log_view_image": sum(e["action"] == "view_image" for e in log_actions),
+        "log_run_command": sum(e["action"] == "run_command" for e in log_actions),
+        # fidelidade do log: acoes registradas pelo agente sobre chamadas de ferramenta vistas pelo harness
+        "log_action_ratio": round(len(log_actions) / harness_actions, 3) if (logs["files"] and harness_actions) else "",
         "reproduce_ok": reproduce.get("ok"),
         "reproduce_outputs": reproduce.get("outputs", 0),
         "findings_chars": len(str(final_json.get("findings", ""))),
