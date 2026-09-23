@@ -1,0 +1,107 @@
+{
+  "gemma4-26b": {
+    "calls": 8277,
+    "runs": 124,
+    "median_call_s": 1.201,
+    "median_output_tokens": 105.0,
+    "median_context_tokens": 14540.0,
+    "raw_output_tok_s_by_context": {
+      "0k-16k": {
+        "calls": 1120,
+        "median_tok_s": 162.24449161431167
+      },
+      "16k-32k": {
+        "calls": 787,
+        "median_tok_s": 141.9491525423729
+      },
+      "32k-64k": {
+        "calls": 450,
+        "median_tok_s": 125.01354279523292
+      },
+      "64k-128k": {
+        "calls": 28,
+        "median_tok_s": 118.05296873483714
+      },
+      "128k-maxk": {
+        "calls": 19,
+        "median_tok_s": 38.83085364566846
+      }
+    },
+    "fit": {
+      "fixed_latency_s": 0.3605563454113683,
+      "prefill_tok_s": 24677.230304308683,
+      "decode_tok_s": 114.817331157696,
+      "r2": 0.7362643805635635
+    }
+  },
+  "qwen3.6-27b": {
+    "calls": 2571,
+    "runs": 15,
+    "median_call_s": 4.022,
+    "median_output_tokens": 145.0,
+    "median_context_tokens": 49843.0,
+    "raw_output_tok_s_by_context": {
+      "0k-16k": {
+        "calls": 76,
+        "median_tok_s": 45.237711072327244
+      },
+      "16k-32k": {
+        "calls": 167,
+        "median_tok_s": 45.85597826086956
+      },
+      "32k-64k": {
+        "calls": 265,
+        "median_tok_s": 43.38446788111218
+      },
+      "64k-128k": {
+        "calls": 270,
+        "median_tok_s": 39.59207710832859
+      },
+      "128k-maxk": {
+        "calls": 61,
+        "median_tok_s": 38.28314295604015
+      }
+    },
+    "fit": {
+      "fixed_latency_s": 1.5364729698029118,
+      "prefill_tok_s": 11747.82765546603,
+      "decode_tok_s": 46.45642393533558,
+      "r2": 0.8726035024436203
+    }
+  },
+  "qwen3.8-27b": {
+    "calls": 669,
+    "runs": 3,
+    "median_call_s": 13.187,
+    "median_output_tokens": 248.0,
+    "median_context_tokens": 111439.0,
+    "raw_output_tok_s_by_context": {
+      "0k-16k": {
+        "calls": 11,
+        "median_tok_s": 23.128227194492258
+      },
+      "16k-32k": {
+        "calls": 32,
+        "median_tok_s": 23.692048562063498
+      },
+      "32k-64k": {
+        "calls": 55,
+        "median_tok_s": 22.40343347639485
+      },
+      "64k-128k": {
+        "calls": 152,
+        "median_tok_s": 21.52411162447548
+      },
+      "128k-maxk": {
+        "calls": 174,
+        "median_tok_s": 18.962918110807937
+      }
+    },
+    "fit": {
+      "fixed_latency_s": 2.4096848123042536,
+      "prefill_tok_s": null,
+      "decode_tok_s": 22.317613532738438,
+      "r2": 0.9716444497286023
+    }
+  }
+}
