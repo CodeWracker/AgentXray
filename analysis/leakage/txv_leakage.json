@@ -1,0 +1,41 @@
+{
+  "n_per_partition": {
+    "train_val": 3000,
+    "test": 2797
+  },
+  "classes": [
+    "Atelectasis",
+    "Cardiomegaly",
+    "Consolidation",
+    "Edema",
+    "Effusion",
+    "Pneumonia",
+    "Pneumothorax"
+  ],
+  "mean_gap": {
+    "densenet121-res224-all": -0.021065881088317133,
+    "densenet121-res224-nih": -0.030700801052110212,
+    "densenet121-res224-pc": -0.045532490532009286,
+    "densenet121-res224-chex": 0.07224028895223356,
+    "densenet121-res224-mimic_nb": -0.008093578225596596,
+    "densenet121-res224-mimic_ch": 0.01940207328592539
+  },
+  "diff_in_diff_vs_unseen_mean": {
+    "densenet121-res224-all": {
+      "point": -0.0305699544584554,
+      "ci95": [
+        -0.0563634348220258,
+        -0.007517332664607641
+      ]
+    },
+    "densenet121-res224-nih": {
+      "point": -0.040204874422248474,
+      "ci95": [
+        -0.07638258258990871,
+        -0.004515406390066551
+      ]
+    }
+  },
+  "seed": 0,
+  "boot": 1000
+}
