@@ -771,6 +771,9 @@ qwen3.6-27b:council,00030557_000.png,3,Early interstitial process (not suggested
 qwen3.6-27b:council,00013670_049.png,1,Multilobar right-sided pneumonia with consolidation,Pneumonia|Consolidation,,correct
 qwen3.6-27b:council,00013670_049.png,2,Right pleural effusion with adjacent compressive atelectasis,Effusion|Atelectasis,,incorrect
 qwen3.6-27b:council,00013670_049.png,3,Combined consolidation and pleural effusion (parapneumonic process),Consolidation|Effusion,,correct
+qwen3.6-27b:council,00000733_000.png,1,Normal / No acute finding,No Finding,,incorrect
+qwen3.6-27b:council,00000733_000.png,2,"Mild interstitial prominence (nonspecific, may be normal vascular markings)",No Finding,,incorrect
+qwen3.6-27b:council,00000733_000.png,3,Early interstitial lung disease (less likely given absence of clear reticular pattern),,Fibrosis,oov
 qwen3.8-27b:zeroshot,00022416_019.png,1,Multifocal pneumonia / acute respiratory distress syndrome (ARDS),Pneumonia,,incorrect
 qwen3.8-27b:zeroshot,00022416_019.png,2,Cardiogenic or non-cardiogenic pulmonary edema with dependent atelectasis,Edema|Atelectasis,,correct
 qwen3.8-27b:zeroshot,00022416_019.png,3,Bilateral pleural effusions with compressive atelectasis,Effusion|Atelectasis,,correct

@@ -172,6 +172,10 @@ def main():
         except Exception as e:
             print(f"[{idx}/{len(items)}] {img_name}: Erro: {e}")
 
+    if not args.max_cases:
+        # marca a passada completa: sem isso a analise nao distingue caso que falhou de caso nao executado
+        (out_dir / "_complete.json").write_text(json.dumps({"cases": len(items), "written": len(list(out_dir.glob("0*.json")))}) + "\n")
+
     if results:
         n = len(results)
         h1 = sum(1 for r in results if r["hit_at_1"])

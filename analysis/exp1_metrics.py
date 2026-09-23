@@ -55,9 +55,10 @@ def valid_differential(data) -> bool:
     return isinstance(data, dict) and isinstance(data.get("differential_diagnosis"), list)
 
 
-def collect_agent(mode_dir: str, model: str, images: list[str]) -> dict:
+def collect_agent(mode_dir: str, model: str, images: list[str], bench: str = "exp1_image_level",
+                  valid=valid_differential) -> dict:
     """Por imagem: a rodada valida mais recente; senao, marca tentativa terminada sem saida valida."""
-    base = RESULTS / "exp1_image_level" / mode_dir / model
+    base = RESULTS / bench / mode_dir / model
     runs: dict[str, list[pathlib.Path]] = {}
     if base.exists():
         for rd in sorted(p for p in base.iterdir() if p.is_dir()):
@@ -69,27 +70,28 @@ def collect_agent(mode_dir: str, model: str, images: list[str]) -> dict:
         chosen, finished = None, False
         for rd in reversed(runs.get(stem, [])):
             data = load_json(rd / f"{stem}_analysis" / f"{img}.json")
-            if valid_differential(data):
+            if valid(data):
                 chosen = (rd, data)
                 break
             finished = finished or (rd / "harness_result.json").exists()
         if chosen:
-            out[img] = {"finished": True, "valid": True, "source": chosen[0].name,
-                        "hypotheses": chosen[1]["differential_diagnosis"]}
+            out[img] = {"finished": True, "valid": True, "source": chosen[0].name, "data": chosen[1],
+                        "hypotheses": chosen[1].get("differential_diagnosis", [])}
         else:
-            out[img] = {"finished": finished, "valid": False, "source": "", "hypotheses": []}
+            out[img] = {"finished": finished, "valid": False, "source": "", "data": None, "hypotheses": []}
     return out
 
 
-def collect_zeroshot(model: str, images: list[str]) -> dict:
-    base = RESULTS / "zeroshot" / "exp1_image_level" / model
+def collect_zeroshot(model: str, images: list[str], bench: str = "exp1_image_level", valid=valid_differential) -> dict:
+    base = RESULTS / "zeroshot" / bench / model
+    # o zero-shot so grava arquivo quando a resposta e analisada; o marcador indica que o manifesto foi percorrido
+    passed = (base / "_complete.json").exists()
     out = {}
     for img in images:
         data = load_json(base / f"{pathlib.Path(img).stem}.json")
-        ok = valid_differential(data)
-        # o zero-shot so grava arquivo quando a resposta e analisada; sem arquivo nao ha como separar falha de nao executado
-        out[img] = {"finished": ok, "valid": ok, "source": "zeroshot" if ok else "",
-                    "hypotheses": data["differential_diagnosis"] if ok else []}
+        ok = valid(data)
+        out[img] = {"finished": ok or passed, "valid": ok, "source": "zeroshot" if ok else "", "data": data if ok else None,
+                    "hypotheses": data.get("differential_diagnosis", []) if ok else []}
     return out
 
 

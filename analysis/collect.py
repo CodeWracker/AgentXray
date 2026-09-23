@@ -106,6 +106,38 @@ def parse_events(events_path: pathlib.Path, run_dir: pathlib.Path, image_name: s
     }
 
 
+def session_totals(sessions_dir: pathlib.Path) -> dict | None:
+    """Soma tokens e chamadas de ferramenta de todas as sessoes exportadas (principal e subagentes).
+
+    O harness_result.json so conta a sessao principal; no conselho quase todo o trabalho fica nos subagentes.
+    """
+    files = sorted(sessions_dir.glob("*.json")) if sessions_dir.exists() else []
+    if not files:
+        return None
+    tokens = {"input": 0, "output": 0, "reasoning": 0}
+    tools: dict[str, int] = {}
+    images_read: set[str] = set()
+    for f in files:
+        try:
+            session = json.loads(f.read_text(encoding="utf-8"))
+        except Exception:
+            continue
+        for msg in session.get("messages", []):
+            t = msg.get("info", {}).get("tokens") or {}
+            for k in tokens:
+                tokens[k] += t.get(k, 0) or 0
+            for part in msg.get("parts", []):
+                if part.get("type") != "tool":
+                    continue
+                name = part.get("tool")
+                tools[name] = tools.get(name, 0) + 1
+                if name == "read":
+                    path = str(part.get("state", {}).get("input", {}).get("filePath", ""))
+                    if path.lower().endswith((".png", ".jpg", ".jpeg")):
+                        images_read.add(pathlib.Path(path).name)
+    return {"tokens": tokens, "tools": tools, "images_read": images_read, "sessions": len(files)}
+
+
 def parse_provenance_tools(tools_path: pathlib.Path) -> dict:
     if not tools_path.exists():
         return {
@@ -264,10 +296,22 @@ def collect_one(analysis_dir: pathlib.Path, results_root: pathlib.Path) -> dict 
     child_sessions = harness.get("child_sessions", [])
     num_subagents = len(child_sessions)
 
-    coverage = (event_stats["images_read_count"] / max(1, len(gen_images))) if gen_images else 0.0
+    # totais de todas as sessoes exportadas; sem exportacao, cai para a sessao principal do harness
+    totals = session_totals(run_dir / "sessions")
+    tokens_all = totals["tokens"] if totals else tokens
+    tools_all = totals["tools"] if totals else tool_calls
+    images_read_all = len(totals["images_read"]) if totals else event_stats["images_read_count"]
+    gen_names = {p.name for p in gen_images}
+    viewed_generated = len(gen_names & totals["images_read"]) if totals else None
+
+    # sem imagem gerada a cobertura nao existe (nao e zero)
+    coverage = viewed_generated / len(gen_names) if (viewed_generated is not None and gen_names) else None
+    parts = pathlib.Path(str(run_dir.relative_to(results_root))).parts
+    experiment = next((p for p in parts if p.startswith("exp")), "")
 
     return {
         "condition": condition_name,
+        "experiment": experiment,
         "prompt_version": prompt_version,
         "mode": mode,
         "model": model,
@@ -281,20 +325,23 @@ def collect_one(analysis_dir: pathlib.Path, results_root: pathlib.Path) -> dict 
         "final_json_written": final_json_path.exists(),
         "has_valid_json": has_valid_json,
         "check_passed": harness.get("check_passed"),
-        "tokens_input": tokens.get("input", 0),
-        "tokens_output": tokens.get("output", 0),
-        "tokens_reasoning": tokens.get("reasoning", 0),
-        "tool_calls_total": sum(tool_calls.values()) if tool_calls else 0,
-        "tool_calls_bash": tool_calls.get("bash", 0),
-        "tool_calls_read": tool_calls.get("read", 0),
-        "tool_calls_write": tool_calls.get("write", 0),
-        "tool_calls_edit": tool_calls.get("edit", 0),
-        "tool_calls_task": tool_calls.get("task", 0),
+        "tokens_input": tokens_all.get("input", 0),
+        "tokens_output": tokens_all.get("output", 0),
+        "tokens_reasoning": tokens_all.get("reasoning", 0),
+        "tokens_input_main": tokens.get("input", 0),
+        "tokens_output_main": tokens.get("output", 0),
+        "tool_calls_total": sum(tools_all.values()) if tools_all else 0,
+        "tool_calls_bash": tools_all.get("bash", 0),
+        "tool_calls_read": tools_all.get("read", 0),
+        "tool_calls_write": tools_all.get("write", 0),
+        "tool_calls_edit": tools_all.get("edit", 0),
+        "tool_calls_task": tools_all.get("task", 0),
+        "sessions_exported": totals["sessions"] if totals else 0,
         "subagents_count": num_subagents,
         "subagents_ge_6": num_subagents >= 6,
         "images_generated_count": len(gen_images),
-        "images_read_count": event_stats["images_read_count"],
-        "inspection_coverage": round(coverage, 3),
+        "images_read_count": images_read_all,
+        "inspection_coverage": "" if coverage is None else round(coverage, 3),
         "original_inspected_first": event_stats["first_action_was_read_original"],
         "script_loc": script_stats["loc"],
         "num_scripts": script_stats["num_scripts"],

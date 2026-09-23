@@ -303,7 +303,7 @@ qwen3.6-27b:council,qwen3.6-27b,council,00013648_018.png,1,1,20260922-193554-000
 qwen3.6-27b:council,qwen3.6-27b,council,00027726_005.png,1,1,20260922-202727-00027726_005-r1,No Finding,No Finding,3,1,2,0,1,1,1,1.0,1.0,1.0,1.0,0.3333,partial_oov_hit,1
 qwen3.6-27b:council,qwen3.6-27b,council,00030557_000.png,1,1,20260922-210826-00030557_000-r1,No Finding,No Finding|Atelectasis,3,1,1,1,1,1,1,1.0,1.0,0.5,0.6667,0.3333,partial_oov_hit,1
 qwen3.6-27b:council,qwen3.6-27b,council,00013670_049.png,1,1,20260922-220619-00013670_049-r1,Consolidation|Nodule,Pneumonia|Consolidation|Effusion|Atelectasis,3,0,2,1,1,1,1,1.0,0.5,0.25,0.3333,0.0,no_oov_hit,1
-qwen3.6-27b:council,qwen3.6-27b,council,00000733_000.png,0,0,,Nodule,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
+qwen3.6-27b:council,qwen3.6-27b,council,00000733_000.png,1,1,20260922-230758-00000733_000-r1,Nodule,No Finding,3,1,0,2,,0,0,0.0,0.0,0.0,0.0,0.3333,partial_oov_miss,0
 qwen3.6-27b:council,qwen3.6-27b,council,00029159_003.png,0,0,,Nodule,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
 qwen3.6-27b:council,qwen3.6-27b,council,00010007_062.png,0,0,,Effusion|Infiltration|Pleural_Thickening,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
 qwen3.6-27b:council,qwen3.6-27b,council,00021463_004.png,0,0,,Hernia|Infiltration|Pleural_Thickening,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
