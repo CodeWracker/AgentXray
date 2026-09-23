@@ -59,7 +59,7 @@ def selftest(model: str, provider: str) -> dict:
             subprocess.run(
                 ["opencode", "run", "--model", f"{provider}/{model}", "--format", "json", "--auto", "--dir", str(run_dir),
                  *(["--session", session] if session else []), message],
-                cwd=run_dir, env={**os.environ, "PWD": str(run_dir)}, stdout=out, stderr=subprocess.DEVNULL, timeout=900,
+                cwd=run_dir, env={**os.environ, "PWD": str(run_dir)}, stdin=subprocess.DEVNULL, stdout=out, stderr=subprocess.DEVNULL, timeout=900,
             )
         if sub.exists() or nudges >= 3:
             break

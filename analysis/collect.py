@@ -316,7 +316,17 @@ def collect_one(analysis_dir: pathlib.Path, results_root: pathlib.Path) -> dict 
     logs = read_logs(analysis_dir)
     log_actions = [e for entries in logs["agents"].values() for e in entries if e["action"] != "final_answer"]
     log_writes = totals["log_writes"] if totals else 0
-    harness_actions = (sum(tools_all.values()) if tools_all else 0) - log_writes
+    # acoes do protocolo vistas pelo harness: descontam a propria ferramenta de log, a lista de tarefas e as
+    # escritas no log por shell (v3)
+    not_actions = sum((tools_all or {}).get(t, 0) for t in ("log_action", "todowrite", "todoread"))
+    harness_actions = (sum(tools_all.values()) if tools_all else 0) - log_writes - not_actions
+    blocked, harness_log = 0, run_dir / "harness_log.jsonl"
+    if harness_log.exists():
+        for line in harness_log.read_text(encoding="utf-8", errors="ignore").splitlines():
+            try:
+                blocked += json.loads(line).get("kind") == "blocked"
+            except json.JSONDecodeError:
+                pass
     parts = pathlib.Path(str(run_dir.relative_to(results_root))).parts
     experiment = next((p for p in parts if p.startswith("exp")), "")
 
@@ -376,6 +386,7 @@ def collect_one(analysis_dir: pathlib.Path, results_root: pathlib.Path) -> dict 
         "log_run_command": sum(e["action"] == "run_command" for e in log_actions),
         # fidelidade do log: acoes registradas pelo agente sobre chamadas de ferramenta vistas pelo harness
         "log_write_calls": log_writes,
+        "log_blocked_calls": blocked if harness_log.exists() else "",
         "log_action_ratio": round(len(log_actions) / harness_actions, 3) if (logs["files"] and harness_actions > 0) else "",
         "reproduce_ok": reproduce.get("ok"),
         "reproduce_outputs": reproduce.get("outputs", 0),

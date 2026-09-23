@@ -25,6 +25,10 @@ PROMPTS = EVAL / "prompts"
 MODES = {"single": "single-agent", "agents": "multi-agent-single-model"}
 MODELS_DIR = EVAL / "models"
 PYTHON = EVAL / "tools" / "py"
+HARNESS_TEMPLATE = EVAL / "harness" / "opencode" / "run_template"
+AGENT_STEPS = 400
+# versoes em que o harness do opencode e gerado pela criacao da rodada (AGENTS.md, .opencode/, plugin)
+NATIVE_HARNESS = {"v4"}
 
 
 def sha256(path: pathlib.Path) -> str:
@@ -69,6 +73,62 @@ def prompt_parts(version: str, mode: str, harness: str | None, results_name: str
     return parts
 
 
+def harness_opencode_config(provider: str, model: str, run_dir: pathlib.Path) -> dict:
+    """opencode.json da rodada (v4): o agente analyst vem de .opencode/agent/analyst.md."""
+    import os
+
+    full = f"{provider}/{model}"
+    results = EVAL / "results"
+    # arquivos do harness que o agente nao pode alterar: o log so e escrito pela ferramenta log_action
+    protected = ["*agent_log*", "*harness_log*", "*harness.json*", "*.opencode*", "*opencode.json*", "*AGENTS.md*"]
+    return {
+        "$schema": "https://opencode.ai/config.json",
+        "model": full,
+        "small_model": full,
+        "autoupdate": False,
+        "share": "disabled",
+        # sem snapshots git por passo: sao lentos e nao fazem parte da tarefa
+        "snapshot": False,
+        "agent": {"build": {"model": full, "steps": AGENT_STEPS}, "general": {"model": full}, "explore": {"model": full}},
+        # a ultima regra que casa vence: o geral primeiro, as excecoes depois
+        "permission": {
+            "question": "deny",
+            "webfetch": "deny",
+            "websearch": "deny",
+            "external_directory": {"*": "deny", "/tmp/*": "allow"},
+            # dentro do repositorio, os resultados de outras rodadas contaminariam a analise
+            **{tool: {"*": "allow", f"*{results}*": "deny", f"{results}/**": "deny", f"{results}/*": "deny",
+                      f"{run_dir}/*": "allow", f"{run_dir}/**": "allow"} for tool in ["read", "list", "glob"]},
+            "edit": {"*": "deny", f"{run_dir}/*": "allow", f"{run_dir}/**": "allow", f"{os.environ['TMPDIR']}/*": "allow",
+                     "/tmp/*": "allow", **{p: "deny" for p in protected}},
+            "bash": {"*": "allow", f"*{results}*": "deny", "*../*": "deny", f"*{run_dir}*": "allow", **{p: "deny" for p in protected}},
+        },
+    }
+
+
+def write_native_harness(run_dir: pathlib.Path, version: str, mode: str, model: str, images: list[dict],
+                         values: dict, results_name: str | None) -> list[pathlib.Path]:
+    """Copia o modelo .opencode/ e escreve AGENTS.md, opencode.json e harness.json da rodada."""
+    base = PROMPTS / version
+    for src in HARNESS_TEMPLATE.rglob("*"):
+        if src.is_file():
+            dst = run_dir / src.relative_to(HARNESS_TEMPLATE)
+            dst.parent.mkdir(parents=True, exist_ok=True)
+            text = src.read_text()
+            dst.write_text(render(text, values) if src.suffix == ".md" else text)
+    shared = [*sorted((base / "_shared").glob("*.md")), base / "_harness" / "opencode.md"]
+    (run_dir / "AGENTS.md").write_text("\n\n".join(render(p.read_text(), values).strip() for p in shared) + "\n")
+    (run_dir / "opencode.json").write_text(json.dumps(harness_opencode_config("DGX-UFSC", model, run_dir), indent=2) + "\n")
+    stem = pathlib.Path(images[0]["file"]).stem
+    (run_dir / "harness.json").write_text(json.dumps({
+        "analysis_dir": f"{stem}_analysis",
+        "agent_log": f"{stem}_analysis/provenance/agent_log.jsonl",
+        "harness_log": "harness_log.jsonl",
+        "mode": mode,
+    }, indent=2) + "\n")
+    return shared
+
+
 def create_run(mode: str, model: str, images: list[pathlib.Path], version: str = "v2",
                root: pathlib.Path = EVAL / "results", harness: str | None = None, label: str = "",
                results_name: str | None = None) -> pathlib.Path:
@@ -100,8 +160,15 @@ def create_run(mode: str, model: str, images: list[pathlib.Path], version: str =
         "TXV_VERSION": torchxrayvision.__version__,
     }
     parts = prompt_parts(version, mode, harness, results_name=results_name)
+    shared_parts: list[pathlib.Path] = []
+    if harness == "opencode" and version in NATIVE_HARNESS:
+        # na v4 as regras comuns vao para AGENTS.md (todo agente recebe); o PROMPT.md fica so com a tarefa
+        shared_parts = write_native_harness(run_dir, version, mode, model, copied, values, results_name)
+        parts = [p for p in parts if p not in shared_parts]
     prompt = "\n\n".join(render(p.read_text(), values).strip() for p in parts) + "\n"
     (run_dir / "PROMPT.md").write_text(prompt)
+    harness_files = sorted(p for p in run_dir.rglob("*") if p.is_file() and p.name != "PROMPT.md"
+                           and (p.name in ("AGENTS.md", "opencode.json", "harness.json") or ".opencode" in p.parts))
 
     manifest = {
         "created_at": datetime.datetime.now().astimezone().isoformat(timespec="seconds"),
@@ -111,7 +178,8 @@ def create_run(mode: str, model: str, images: list[pathlib.Path], version: str =
         "prompt_version": version,
         "condition": results_name or version,
         "prompt_sha256": hashlib.sha256(prompt.encode()).hexdigest(),
-        "prompt_sources": [str(p.relative_to(EVAL)) for p in parts],
+        "prompt_sources": [str(p.relative_to(EVAL)) for p in parts + shared_parts],
+        "harness_files": {str(p.relative_to(run_dir)): sha256(p) for p in harness_files},
         "images": copied,
         "repo_commit": git("rev-parse", "HEAD"),
         "repo_dirty": bool(git("status", "--porcelain", "--", ".", ":!results")),  # resultados em andamento não contam

@@ -33,8 +33,8 @@ from align_diagnosis import CATEGORIES, K, score_case  # noqa: E402
 from clinical_ontology import LEXICON_VERSION, ONTOLOGY, normalize_text  # noqa: E402
 
 MANIFEST = EVAL / "inputs" / "benchmarks" / "exp1_image_level" / "manifest.json"
-# versao dos prompts cujas rodadas sao pontuadas (results/<versao>/); a v2 revelava regiao e classes
-VERSION = os.environ.get("XRAY_RESULTS_VERSION", "v3")
+# versao dos prompts cujas rodadas sao pontuadas (results/<versao>/); v2 revelava regiao e classes, v3 nao tinha o harness nativo
+VERSION = os.environ.get("XRAY_RESULTS_VERSION", "v4")
 RESULTS = EVAL / "results" / VERSION
 # o baseline supervisionado nao depende de prompt: as predicoes ficam em um caminho fixo
 SUPERVISED = EVAL / "results" / "v2" / "supervised"

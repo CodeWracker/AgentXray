@@ -130,7 +130,8 @@ def run_one(mode: str, model: str, image: pathlib.Path, provider: str, timeout_m
 
     run_dir = create_run(mode, model, [image], version=version, harness="opencode", label=label,
                          results_name=results_name)
-    (run_dir / "opencode.json").write_text(json.dumps(opencode_config(provider, model, run_dir), indent=2) + "\n")
+    if not (run_dir / "opencode.json").exists():  # na v4 o new_run ja escreveu o harness completo da rodada
+        (run_dir / "opencode.json").write_text(json.dumps(opencode_config(provider, model, run_dir), indent=2) + "\n")
     prompt = (run_dir / "PROMPT.md").read_text()
 
     print(f"[{time.strftime('%H:%M:%S')}] {mode} {model} {image.name} -> {run_dir}", flush=True)
@@ -148,8 +149,10 @@ def run_one(mode: str, model: str, image: pathlib.Path, provider: str, timeout_m
             try:
                 # o opencode usa o PWD herdado, não o cwd do processo: sem isso a sessão abre no diretório
                 # do runner e o opencode.json da rodada (subagente, permissões) não é carregado
+                # sem stdin: o opencode run le a entrada padrao quando ela nao e um terminal e esperaria para sempre
                 proc = subprocess.run([*cmd, message], cwd=run_dir, env={**os.environ, "PWD": str(run_dir)},
-                                      stdout=out, stderr=err, timeout=max(deadline - time.time(), 1))
+                                      stdin=subprocess.DEVNULL, stdout=out, stderr=err,
+                                      timeout=max(deadline - time.time(), 1))
                 attempts.append({"exit_code": proc.returncode, "ended_at_s": round(time.time() - started, 1)})
             except subprocess.TimeoutExpired:
                 attempts.append({"exit_code": None, "timed_out": True, "ended_at_s": round(time.time() - started, 1)})

@@ -14,3 +14,8 @@ results/v2/
 results/*.log
 *.log
 
+node_modules/
+results/v3/
+results/v4/
+results/v4-test/
+results/harness-selftest/runs/
