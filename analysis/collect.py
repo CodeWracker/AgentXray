@@ -370,6 +370,7 @@ def collect_one(analysis_dir: pathlib.Path, results_root: pathlib.Path) -> dict 
         "log_files": logs["files"],
         "log_entries": sum(len(v) for v in logs["agents"].values()),
         "log_invalid_lines": len(logs["invalid"]),
+        "log_concatenated": logs["concatenated"],
         "log_agents": len(logs["agents"]),
         "log_view_image": sum(e["action"] == "view_image" for e in log_actions),
         "log_run_command": sum(e["action"] == "run_command" for e in log_actions),

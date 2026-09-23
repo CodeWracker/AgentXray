@@ -95,6 +95,8 @@ def check_agent_log(analysis: pathlib.Path) -> list[str]:
         errors.append(f"log: mais {len(logs['invalid']) - 10} linhas invalidas")
     if not logs["agents"]:
         errors.append("log sem nenhuma entrada valida")
+    if logs["concatenated"]:
+        errors.append(f"log: {logs['concatenated']} entradas coladas na mesma linha (o formato exige uma por linha)")
     return errors
 
 

@@ -86,7 +86,9 @@ def query_zeroshot(image_path: pathlib.Path, model: str, base_url: str, api_key:
     if res is None:
         raise last_error
 
-    content = res["choices"][0]["message"]["content"]
+    msg = res["choices"][0]["message"]
+    # alguns modelos devolvem a resposta so no campo de raciocinio
+    content = msg.get("content") or msg.get("reasoning_content") or ""
     cleaned = content.strip()
     if "```json" in cleaned:
         parts = cleaned.split("```json")
