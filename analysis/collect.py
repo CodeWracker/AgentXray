@@ -119,6 +119,7 @@ def session_totals(sessions_dir: pathlib.Path) -> dict | None:
     tokens = {"input": 0, "output": 0, "reasoning": 0}
     tools: dict[str, int] = {}
     images_read: set[str] = set()
+    log_writes = 0
     for f in files:
         try:
             session = json.loads(f.read_text(encoding="utf-8"))
@@ -133,11 +134,15 @@ def session_totals(sessions_dir: pathlib.Path) -> dict | None:
                     continue
                 name = part.get("tool")
                 tools[name] = tools.get(name, 0) + 1
+                # a escrita do proprio log e uma chamada de ferramenta que o agente nao registra no log
+                call_input = json.dumps(part.get("state", {}).get("input", {}))
+                if "agent_log" in call_input:
+                    log_writes += 1
                 if name == "read":
                     path = str(part.get("state", {}).get("input", {}).get("filePath", ""))
                     if path.lower().endswith((".png", ".jpg", ".jpeg")):
                         images_read.add(pathlib.Path(path).name)
-    return {"tokens": tokens, "tools": tools, "images_read": images_read, "sessions": len(files)}
+    return {"tokens": tokens, "tools": tools, "images_read": images_read, "sessions": len(files), "log_writes": log_writes}
 
 
 def parse_provenance_tools(tools_path: pathlib.Path) -> dict:
@@ -310,7 +315,8 @@ def collect_one(analysis_dir: pathlib.Path, results_root: pathlib.Path) -> dict 
     coverage = viewed_generated / len(gen_names) if (viewed_generated is not None and gen_names) else None
     logs = read_logs(analysis_dir)
     log_actions = [e for entries in logs["agents"].values() for e in entries if e["action"] != "final_answer"]
-    harness_actions = sum(tools_all.values()) if tools_all else 0
+    log_writes = totals["log_writes"] if totals else 0
+    harness_actions = (sum(tools_all.values()) if tools_all else 0) - log_writes
     parts = pathlib.Path(str(run_dir.relative_to(results_root))).parts
     experiment = next((p for p in parts if p.startswith("exp")), "")
 
@@ -368,7 +374,8 @@ def collect_one(analysis_dir: pathlib.Path, results_root: pathlib.Path) -> dict 
         "log_view_image": sum(e["action"] == "view_image" for e in log_actions),
         "log_run_command": sum(e["action"] == "run_command" for e in log_actions),
         # fidelidade do log: acoes registradas pelo agente sobre chamadas de ferramenta vistas pelo harness
-        "log_action_ratio": round(len(log_actions) / harness_actions, 3) if (logs["files"] and harness_actions) else "",
+        "log_write_calls": log_writes,
+        "log_action_ratio": round(len(log_actions) / harness_actions, 3) if (logs["files"] and harness_actions > 0) else "",
         "reproduce_ok": reproduce.get("ok"),
         "reproduce_outputs": reproduce.get("outputs", 0),
         "findings_chars": len(str(final_json.get("findings", ""))),

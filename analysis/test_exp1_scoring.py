@@ -25,6 +25,10 @@ PROJECTION = [
     ("Bilateral infiltrates", ["Infiltration"], []),
     ("Cardiomegaly without pulmonary edema", ["Cardiomegaly"], ["Edema"]),
     ("Rib fracture", [], []),
+    ("No finding of pneumothorax", [], ["Pneumothorax"]),
+    ("No findings suggestive of pneumonia", [], ["Pneumonia"]),
+    ("No finding", ["No Finding"], []),
+    ("Progress notes describe a nodule in the right upper lobe", ["Nodule"], []),
 ]
 
 

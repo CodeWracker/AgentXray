@@ -258,6 +258,9 @@ gemma4-26b:zeroshot,00008295_022.png,3,Right-sided atelectasis,Atelectasis,,corr
 gemma4-26b:zeroshot,00007750_008.png,1,Residual right pleural effusion or atelectasis,Effusion|Atelectasis,,correct
 gemma4-26b:zeroshot,00007750_008.png,2,Right lower lobe pneumonia,Pneumonia,,incorrect
 gemma4-26b:zeroshot,00007750_008.png,3,Post-procedural changes following chest tube insertion,,,oov
+gemma4-26b:single,00006304_004.png,1,Congestive heart failure,,,oov
+gemma4-26b:single,00006304_004.png,2,Atelectasis,Atelectasis,,correct
+gemma4-26b:single,00006304_004.png,3,Pneumonia,Pneumonia,,incorrect
 qwen3.6-27b:zeroshot,00022416_019.png,1,Acute Respiratory Distress Syndrome (ARDS) / Non-cardiogenic Pulmonary Edema,Edema,,incorrect
 qwen3.6-27b:zeroshot,00022416_019.png,2,Cardiogenic Pulmonary Edema / Congestive Heart Failure,Edema,,incorrect
 qwen3.6-27b:zeroshot,00022416_019.png,3,Multilobar Pneumonia,Pneumonia,,incorrect
@@ -273,6 +276,72 @@ qwen3.6-27b:zeroshot,00013249_045.png,3,Respiratory Distress Syndrome (RDS) or B
 qwen3.6-27b:zeroshot,00011702_072.png,1,Left lower lobe pneumonia with parapneumonic effusion,Pneumonia|Effusion,,incorrect
 qwen3.6-27b:zeroshot,00011702_072.png,2,Pulmonary edema / Congestive heart failure,Edema,,incorrect
 qwen3.6-27b:zeroshot,00011702_072.png,3,Left lower lobe atelectasis,Atelectasis,,incorrect
+qwen3.6-27b:zeroshot,00010447_027.png,1,Multifocal pneumonia (bacterial or viral),Pneumonia,,incorrect
+qwen3.6-27b:zeroshot,00010447_027.png,2,Pulmonary edema (cardiogenic or non-cardiogenic),Edema,,incorrect
+qwen3.6-27b:zeroshot,00010447_027.png,3,Acute Respiratory Distress Syndrome (ARDS),,,oov
+qwen3.6-27b:zeroshot,00007322_007.png,1,Cardiogenic pulmonary edema / Congestive heart failure,Edema,,incorrect
+qwen3.6-27b:zeroshot,00007322_007.png,2,Multifocal pneumonia / Acute Respiratory Distress Syndrome (ARDS),Pneumonia,,incorrect
+qwen3.6-27b:zeroshot,00007322_007.png,3,Pleural effusion,Effusion,,incorrect
+qwen3.6-27b:zeroshot,00022416_056.png,1,Large left pleural effusion with compressive atelectasis,Effusion|Atelectasis,,correct
+qwen3.6-27b:zeroshot,00022416_056.png,2,Right-sided pneumonia or consolidation,Pneumonia|Consolidation,,correct
+qwen3.6-27b:zeroshot,00022416_056.png,3,Bilateral pleural effusions,Effusion,,correct
+qwen3.6-27b:zeroshot,00004911_016.png,1,Pulmonary mass (primary lung malignancy or metastasis),Mass,,incorrect
+qwen3.6-27b:zeroshot,00004911_016.png,2,Infectious granuloma or abscess,Nodule,,correct
+qwen3.6-27b:zeroshot,00004911_016.png,3,"Benign pulmonary nodule (e.g., hamartoma)",Nodule,,correct
+qwen3.6-27b:zeroshot,00019651_003.png,1,"Large pulmonary mass (e.g., bronchogenic carcinoma)",Mass,,correct
+qwen3.6-27b:zeroshot,00019651_003.png,2,Round pneumonia or large area of consolidation,Pneumonia|Consolidation,,incorrect
+qwen3.6-27b:zeroshot,00019651_003.png,3,Pulmonary abscess,,,oov
+qwen3.6-27b:zeroshot,00022084_000.png,1,Multifocal pneumonia (viral or atypical bacterial),Pneumonia,,correct
+qwen3.6-27b:zeroshot,00022084_000.png,2,Acute Respiratory Distress Syndrome (ARDS),,,oov
+qwen3.6-27b:zeroshot,00022084_000.png,3,Pulmonary edema,Edema,,correct
+qwen3.6-27b:zeroshot,00029469_012.png,1,Multifocal pneumonia with left pleural effusion,Pneumonia|Effusion,,correct
+qwen3.6-27b:zeroshot,00029469_012.png,2,Pulmonary edema with superimposed infection,Edema,,correct
+qwen3.6-27b:zeroshot,00029469_012.png,3,"Malignancy (e.g., lymphoma or metastatic disease) given the axillary mass and lung findings",Mass,,incorrect
+qwen3.6-27b:zeroshot,00029588_004.png,1,Multifocal pneumonia (right > left) with parapneumonic effusion,Pneumonia|Effusion,,correct
+qwen3.6-27b:zeroshot,00029588_004.png,2,Pulmonary edema (cardiogenic or non-cardiogenic),Edema,,incorrect
+qwen3.6-27b:zeroshot,00029588_004.png,3,Acute Respiratory Distress Syndrome (ARDS),,,oov
+qwen3.6-27b:zeroshot,00007632_013.png,1,Normal chest radiograph,No Finding,,incorrect
+qwen3.6-27b:zeroshot,00007632_013.png,2,No acute cardiopulmonary disease,No Finding,,incorrect
+qwen3.6-27b:zeroshot,00007632_013.png,3,Clear lungs,No Finding,,incorrect
+qwen3.6-27b:zeroshot,00022098_007.png,1,Left lower lobe pneumonia,Pneumonia,,incorrect
+qwen3.6-27b:zeroshot,00022098_007.png,2,Left lower lobe atelectasis,Atelectasis,,incorrect
+qwen3.6-27b:zeroshot,00022098_007.png,3,Small left pleural effusion,Effusion,,correct
+qwen3.6-27b:zeroshot,00003803_002.png,1,Right Pneumothorax,Pneumothorax,,correct
+qwen3.6-27b:zeroshot,00003803_002.png,2,Pulmonary Contusion / Atelectasis,Atelectasis,,incorrect
+qwen3.6-27b:zeroshot,00003803_002.png,3,Hemothorax,Effusion,,correct
+qwen3.6-27b:zeroshot,00003072_028.png,1,Traumatic chest injury (hemothorax and pneumothorax),Effusion|Pneumothorax,,correct
+qwen3.6-27b:zeroshot,00003072_028.png,2,Spontaneous pneumothorax with contralateral pleural effusion,Pneumothorax|Effusion,,correct
+qwen3.6-27b:zeroshot,00003072_028.png,3,Iatrogenic pneumothorax with underlying pleural effusion,Pneumothorax|Effusion,,correct
+qwen3.6-27b:zeroshot,00008911_026.png,1,Right-sided pneumothorax (likely traumatic or iatrogenic),Pneumothorax,,incorrect
+qwen3.6-27b:zeroshot,00008911_026.png,2,Extensive subcutaneous emphysema,Emphysema,,correct
+qwen3.6-27b:zeroshot,00008911_026.png,3,Pneumomediastinum,,,oov
+qwen3.6-27b:zeroshot,00005089_007.png,1,Left lower lobe pneumonia with parapneumonic effusion,Pneumonia|Effusion,,incorrect
+qwen3.6-27b:zeroshot,00005089_007.png,2,Malignant pleural effusion with compressive atelectasis,Effusion|Atelectasis,,incorrect
+qwen3.6-27b:zeroshot,00005089_007.png,3,Left lower lobe mass with post-obstructive pneumonia,Mass|Pneumonia,,incorrect
+qwen3.6-27b:zeroshot,00005609_025.png,1,Right lower lobe pneumonia,Pneumonia,,incorrect
+qwen3.6-27b:zeroshot,00005609_025.png,2,Right lower lobe atelectasis,Atelectasis,,incorrect
+qwen3.6-27b:zeroshot,00005609_025.png,3,Pleural effusion,Effusion,,incorrect
+qwen3.6-27b:zeroshot,00013659_029.png,1,Large left pleural effusion with compressive atelectasis,Effusion|Atelectasis,,incorrect
+qwen3.6-27b:zeroshot,00013659_029.png,2,Left lower lobe pneumonia/consolidation,Pneumonia|Consolidation,,incorrect
+qwen3.6-27b:zeroshot,00013659_029.png,3,"Malignancy (e.g., lung cancer with pleural involvement)",,,oov
+qwen3.6-27b:zeroshot,00021463_005.png,1,Congestive Heart Failure (CHF) with pulmonary edema,Edema,,correct
+qwen3.6-27b:zeroshot,00021463_005.png,2,Interstitial Lung Disease,,,oov
+qwen3.6-27b:zeroshot,00021463_005.png,3,Atypical Pneumonia,Pneumonia,,incorrect
+qwen3.6-27b:zeroshot,00000003_004.png,1,No acute cardiopulmonary abnormality,,,oov
+qwen3.6-27b:zeroshot,00000003_004.png,2,Post-surgical changes (axillary lymph node dissection),,,oov
+qwen3.6-27b:zeroshot,00000003_004.png,3,Normal chest radiograph,No Finding,,incorrect
+qwen3.6-27b:zeroshot,00020915_000.png,1,Hiatal hernia,Hernia,,correct
+qwen3.6-27b:zeroshot,00020915_000.png,2,Retrocardiac mass,Mass,,incorrect
+qwen3.6-27b:zeroshot,00020915_000.png,3,Esophageal pathology,,,oov
+qwen3.6-27b:zeroshot,00010120_019.png,1,Normal chest radiograph,No Finding,,incorrect
+qwen3.6-27b:zeroshot,00010120_019.png,2,No acute cardiopulmonary disease,No Finding,,incorrect
+qwen3.6-27b:zeroshot,00010120_019.png,3,No significant abnormality,,,oov
+qwen3.6-27b:zeroshot,00029159_015.png,1,Acute Respiratory Distress Syndrome (ARDS),,,oov
+qwen3.6-27b:zeroshot,00029159_015.png,2,Severe Cardiogenic Pulmonary Edema,Edema,,incorrect
+qwen3.6-27b:zeroshot,00029159_015.png,3,Multifocal Pneumonia / Severe Sepsis,Pneumonia,,incorrect
+qwen3.6-27b:zeroshot,00026194_000.png,1,Normal chest radiograph,No Finding,,incorrect
+qwen3.6-27b:zeroshot,00026194_000.png,2,Mild bronchitis,,,oov
+qwen3.6-27b:zeroshot,00026194_000.png,3,Early viral pneumonia,Pneumonia,,incorrect
 qwen3.8-27b:zeroshot,00022416_019.png,1,Multifocal pneumonia with right parapneumonic pleural effusion,Pneumonia|Effusion,,correct
 qwen3.8-27b:zeroshot,00022416_019.png,2,Cardiogenic pulmonary edema with bilateral pleural effusions,Edema|Effusion,,correct
 qwen3.8-27b:zeroshot,00022416_019.png,3,Acute respiratory distress syndrome (non-cardiogenic pulmonary edema) with dependent consolidation/effusion,Edema|Consolidation|Effusion,,correct
@@ -282,3 +351,36 @@ qwen3.8-27b:zeroshot,00006304_004.png,3,Left lower lobe pneumonia / consolidatio
 qwen3.8-27b:zeroshot,00001075_047.png,1,Normal chest radiograph with minor linear atelectasis (no acute finding),No Finding|Atelectasis,,correct
 qwen3.8-27b:zeroshot,00001075_047.png,2,Subsegmental / linear atelectasis (mucous plugging or post-inflammatory),Atelectasis,,correct
 qwen3.8-27b:zeroshot,00001075_047.png,3,Small pleural-based linear scar or focal pleural thickening,Pleural_Thickening,,incorrect
+qwen3.8-27b:zeroshot,00013249_045.png,1,Normal / no acute finding (mild atelectasis),No Finding|Atelectasis,,incorrect
+qwen3.8-27b:zeroshot,00013249_045.png,2,Early pneumonia or bronchiolitis,Pneumonia,,incorrect
+qwen3.8-27b:zeroshot,00013249_045.png,3,Cardiomegaly / early congestive heart failure,Cardiomegaly,,correct
+qwen3.8-27b:zeroshot,00011702_072.png,1,Bilateral pleural effusions with compressive atelectasis in the setting of volume overload / congestive heart failure,Effusion|Atelectasis,,incorrect
+qwen3.8-27b:zeroshot,00011702_072.png,2,Bilateral pneumonia with associated parapneumonic effusions,Pneumonia|Effusion,,incorrect
+qwen3.8-27b:zeroshot,00011702_072.png,3,Pulmonary edema with secondary pleural effusions and basilar consolidation,Edema|Effusion|Consolidation,,incorrect
+qwen3.8-27b:zeroshot,00010447_027.png,1,Multifocal pneumonia (bacterial or viral) with possible early ARDS,Pneumonia,,incorrect
+qwen3.8-27b:zeroshot,00010447_027.png,2,Cardiogenic or non-cardiogenic pulmonary edema,Edema,,incorrect
+qwen3.8-27b:zeroshot,00010447_027.png,3,Aspiration pneumonitis with dependent/patchy consolidation,Consolidation,,incorrect
+qwen3.8-27b:zeroshot,00007322_007.png,1,Left lower lobe pneumonia/consolidation with associated pleural effusion,Pneumonia|Consolidation|Effusion,,correct
+qwen3.8-27b:zeroshot,00007322_007.png,2,Left lower lobe atelectasis with volume loss,Atelectasis,,incorrect
+qwen3.8-27b:zeroshot,00007322_007.png,3,Layering pleural effusion with underlying parenchymal disease,Effusion,,incorrect
+qwen3.8-27b:zeroshot,00022416_056.png,1,Large left pleural effusion (parapneumonic/empyema or transudative) with compressive atelectasis,Effusion|Atelectasis,,correct
+qwen3.8-27b:zeroshot,00022416_056.png,2,Left lower lobe pneumonia/consolidation with reactive effusion,Pneumonia|Consolidation|Effusion,,correct
+qwen3.8-27b:zeroshot,00022416_056.png,3,Hemothorax or malignant pleural effusion,Effusion,,correct
+qwen3.8-27b:zeroshot,00004911_016.png,1,No acute cardiopulmonary abnormality; incidental central venous catheter and surgical clips,,,oov
+qwen3.8-27b:zeroshot,00004911_016.png,2,Central venous catheter malposition or intravascular coiling requiring repositioning/verification,,,oov
+qwen3.8-27b:zeroshot,00004911_016.png,3,Post-surgical changes (surgical clips) from prior thoracic or cardiac procedure,,,oov
+qwen3.8-27b:zeroshot,00019651_003.png,1,Pericardial/mediastinal fat pad or mediastinal lipomatosis (favored given body habitus and smooth contour),,,oov
+qwen3.8-27b:zeroshot,00019651_003.png,2,"Mediastinal or pericardial mass (pericardial cyst, lipoma, lymphoma, thymic lesion)",Mass,,correct
+qwen3.8-27b:zeroshot,00019651_003.png,3,Cardiomegaly with prominent left atrial appendage / left-sided cardiac contour abnormality,Cardiomegaly,,incorrect
+qwen3.8-27b:zeroshot,00022084_000.png,1,"Multifocal pneumonia (bacterial, atypical, or fungal) with nodular/consolidative opacities",Pneumonia,,correct
+qwen3.8-27b:zeroshot,00022084_000.png,2,Hematogenous pulmonary dissemination (septic emboli or pulmonary metastases),,,oov
+qwen3.8-27b:zeroshot,00022084_000.png,3,Bilateral pulmonary edema (cardiogenic or non-cardiogenic/ARDS) with superimposed interstitial disease,Edema,,correct
+qwen3.8-27b:zeroshot,00029469_012.png,1,Left pleural effusion with adjacent consolidation/atelectasis (parapneumonic effusion / pneumonia),Effusion|Consolidation|Atelectasis|Pneumonia,,correct
+qwen3.8-27b:zeroshot,00029469_012.png,2,Cardiogenic pulmonary edema with bilateral pleural effusions,Edema|Effusion,,correct
+qwen3.8-27b:zeroshot,00029469_012.png,3,Bilateral pneumonia / acute respiratory distress syndrome (ARDS),Pneumonia,,correct
+qwen3.8-27b:zeroshot,00029588_004.png,1,Multifocal pneumonia / acute respiratory distress syndrome (ARDS),Pneumonia,,incorrect
+qwen3.8-27b:zeroshot,00029588_004.png,2,Cardiogenic or non-cardiogenic pulmonary edema with reactive pleural effusion,Edema|Effusion,,correct
+qwen3.8-27b:zeroshot,00029588_004.png,3,Aspiration pneumonitis with secondary consolidation,Consolidation,,correct
+qwen3.8-27b:zeroshot,00007632_013.png,1,Normal / No acute finding,No Finding,,incorrect
+qwen3.8-27b:zeroshot,00007632_013.png,2,"Early or mild pulmonary hyperinflation (e.g., early COPD/asthma) not definitively demonstrated",Emphysema,,incorrect
+qwen3.8-27b:zeroshot,00007632_013.png,3,Subtle early interstitial or infectious process below the sensitivity of a single frontal film,,,oov

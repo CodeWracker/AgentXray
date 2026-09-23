@@ -29,7 +29,7 @@ gemma4-26b:zeroshot,Fibrosis,4,0,0.0
 gemma4-26b:zeroshot,Pleural_Thickening,4,0,0.0
 gemma4-26b:zeroshot,Hernia,4,0,0.0
 gemma4-26b:zeroshot,No Finding,3,3,1.0
-gemma4-26b:single,Atelectasis,9,0,0.0
+gemma4-26b:single,Atelectasis,9,1,0.1111111111111111
 gemma4-26b:single,Cardiomegaly,6,0,0.0
 gemma4-26b:single,Effusion,15,0,0.0
 gemma4-26b:single,Infiltration,17,0,0.0
@@ -61,18 +61,18 @@ gemma4-26b:council,Hernia,4,0,0.0
 gemma4-26b:council,No Finding,3,0,0.0
 qwen3.6-27b:zeroshot,Atelectasis,9,2,0.2222222222222222
 qwen3.6-27b:zeroshot,Cardiomegaly,6,0,0.0
-qwen3.6-27b:zeroshot,Effusion,15,0,0.0
+qwen3.6-27b:zeroshot,Effusion,15,6,0.4
 qwen3.6-27b:zeroshot,Infiltration,17,0,0.0
-qwen3.6-27b:zeroshot,Mass,5,0,0.0
-qwen3.6-27b:zeroshot,Nodule,7,0,0.0
-qwen3.6-27b:zeroshot,Pneumonia,5,0,0.0
-qwen3.6-27b:zeroshot,Pneumothorax,7,0,0.0
-qwen3.6-27b:zeroshot,Consolidation,6,0,0.0
-qwen3.6-27b:zeroshot,Edema,5,0,0.0
-qwen3.6-27b:zeroshot,Emphysema,5,0,0.0
+qwen3.6-27b:zeroshot,Mass,5,1,0.2
+qwen3.6-27b:zeroshot,Nodule,7,1,0.14285714285714285
+qwen3.6-27b:zeroshot,Pneumonia,5,2,0.4
+qwen3.6-27b:zeroshot,Pneumothorax,7,2,0.2857142857142857
+qwen3.6-27b:zeroshot,Consolidation,6,1,0.16666666666666666
+qwen3.6-27b:zeroshot,Edema,5,3,0.6
+qwen3.6-27b:zeroshot,Emphysema,5,1,0.2
 qwen3.6-27b:zeroshot,Fibrosis,4,0,0.0
 qwen3.6-27b:zeroshot,Pleural_Thickening,4,0,0.0
-qwen3.6-27b:zeroshot,Hernia,4,0,0.0
+qwen3.6-27b:zeroshot,Hernia,4,1,0.25
 qwen3.6-27b:zeroshot,No Finding,3,0,0.0
 qwen3.6-27b:single,Atelectasis,9,0,0.0
 qwen3.6-27b:single,Cardiomegaly,6,0,0.0
@@ -105,15 +105,15 @@ qwen3.6-27b:council,Pleural_Thickening,4,0,0.0
 qwen3.6-27b:council,Hernia,4,0,0.0
 qwen3.6-27b:council,No Finding,3,0,0.0
 qwen3.8-27b:zeroshot,Atelectasis,9,2,0.2222222222222222
-qwen3.8-27b:zeroshot,Cardiomegaly,6,1,0.16666666666666666
-qwen3.8-27b:zeroshot,Effusion,15,1,0.06666666666666667
+qwen3.8-27b:zeroshot,Cardiomegaly,6,2,0.3333333333333333
+qwen3.8-27b:zeroshot,Effusion,15,4,0.26666666666666666
 qwen3.8-27b:zeroshot,Infiltration,17,0,0.0
-qwen3.8-27b:zeroshot,Mass,5,0,0.0
+qwen3.8-27b:zeroshot,Mass,5,1,0.2
 qwen3.8-27b:zeroshot,Nodule,7,0,0.0
-qwen3.8-27b:zeroshot,Pneumonia,5,0,0.0
+qwen3.8-27b:zeroshot,Pneumonia,5,2,0.4
 qwen3.8-27b:zeroshot,Pneumothorax,7,0,0.0
-qwen3.8-27b:zeroshot,Consolidation,6,1,0.16666666666666666
-qwen3.8-27b:zeroshot,Edema,5,0,0.0
+qwen3.8-27b:zeroshot,Consolidation,6,4,0.6666666666666666
+qwen3.8-27b:zeroshot,Edema,5,2,0.4
 qwen3.8-27b:zeroshot,Emphysema,5,0,0.0
 qwen3.8-27b:zeroshot,Fibrosis,4,0,0.0
 qwen3.8-27b:zeroshot,Pleural_Thickening,4,0,0.0

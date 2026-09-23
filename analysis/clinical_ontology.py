@@ -265,7 +265,7 @@ ONTOLOGY = {
 }
 
 
-MATCHER_VERSION = "2"
+MATCHER_VERSION = "3"
 
 # gatilhos no esquema do NegEx (Chapman et al., 2001), com janela de ate NEG_WINDOW tokens dentro da clausula
 PRE_NEGATION = ["no evidence of", "no signs of", "no sign of", "negative for", "absence of", "free of",
@@ -294,8 +294,15 @@ def _term_regex(term: str) -> re.Pattern:
 
 
 _SYNONYM_PATTERNS = [(cls, _term_regex(syn)) for cls, info in ONTOLOGY.items() for syn in info["synonyms"]]
-_PRE = [_term_regex(t) for t in PRE_NEGATION]
-_POST = [_term_regex(t) for t in POST_NEGATION]
+def _exact_regex(term: str) -> re.Pattern:
+    # gatilhos sao expressoes fixas: sem o plural opcional dos sinonimos ("not" nao pode casar "notes")
+    return re.compile(r"(?<![a-z0-9])" + re.escape(term) + r"(?![a-z0-9])")
+
+
+_PRE = [_exact_regex(t) for t in PRE_NEGATION]
+_POST = [_exact_regex(t) for t in POST_NEGATION]
+# "no finding of X" e "no findings suggestive of X" negam X; nao afirmam exame normal
+_NOT_NORMALITY = re.compile(r"\s+(?:of|to suggest|suggest\w*|for|consistent with|related to)\b")
 _PSEUDO = [re.compile(r"(?<![a-z0-9])" + t + r"(?![a-z0-9])") for t in PSEUDO_NEGATION]
 
 
@@ -333,6 +340,8 @@ def project_hypothesis(text: str) -> dict:
     found = []
     for cls, pat in _SYNONYM_PATTERNS:
         for m in pat.finditer(t):
+            if cls == "No Finding" and m.group(0).startswith("no ") and _NOT_NORMALITY.match(t, m.end()):
+                continue
             found.append((m.start(), m.end(), cls))
     # a correspondencia mais longa vence quando uma esta contida em outra de classe diferente
     found.sort(key=lambda x: (-(x[1] - x[0]), x[0]))

@@ -1,3 +1,5 @@
 condition,lexicon_gap,out_of_label_space,non_diagnostic,pending
 gemma4-26b:zeroshot,0,0,0,31
-qwen3.6-27b:zeroshot,0,0,0,2
+gemma4-26b:single,0,0,0,1
+qwen3.6-27b:zeroshot,0,0,0,15
+qwen3.8-27b:zeroshot,0,0,0,6
