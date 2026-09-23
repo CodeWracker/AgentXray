@@ -22,3 +22,4 @@ results/harness-selftest/runs/
 results/v4c/
 results/v4-zeroshot-sem-tokens/
 analysis/leakage_run.log
+results/v4-gemma-antes-da-correcao/
