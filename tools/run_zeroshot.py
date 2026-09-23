@@ -31,6 +31,10 @@ def encode_image(img_path: pathlib.Path) -> str:
     return base64.b64encode(img_path.read_bytes()).decode("utf-8")
 
 
+# tokens da ultima resposta (campo usage do LiteLLM), gravados por caso em _usage/
+LAST_USAGE: dict = {}
+
+
 def query_zeroshot(image_path: pathlib.Path, model: str, base_url: str, api_key: str) -> dict:
     b64_img = encode_image(image_path)
     prompt_text = (
@@ -86,6 +90,8 @@ def query_zeroshot(image_path: pathlib.Path, model: str, base_url: str, api_key:
     if res is None:
         raise last_error
 
+    LAST_USAGE.clear()
+    LAST_USAGE.update(res.get("usage") or {})
     msg = res["choices"][0]["message"]
     # alguns modelos devolvem a resposta so no campo de raciocinio
     content = msg.get("content") or msg.get("reasoning_content") or ""
@@ -167,6 +173,9 @@ def main():
         try:
             parsed = query_zeroshot(img_path, args.model, args.base_url, api_key)
             out_json_path.write_text(json.dumps(parsed, indent=2, ensure_ascii=False) + "\n")
+            usage_dir = out_dir / "_usage"
+            usage_dir.mkdir(exist_ok=True)
+            (usage_dir / out_json_path.name).write_text(json.dumps({"elapsed_s": round(time.time() - t0, 2), "usage": dict(LAST_USAGE)}, indent=2) + "\n")
             dx = parsed.get("differential_diagnosis", [])
             eval_res = evaluate_differential_diagnosis(dx, it.get("finding_labels", []))
             eval_res["elapsed_s"] = round(time.time() - t0, 2)
