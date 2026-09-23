@@ -1,0 +1,915 @@
+{
+ "weights": "densenet121-res224-mimic_ch",
+ "seen_chestxray14": false,
+ "classes": [
+  "Atelectasis",
+  "Cardiomegaly",
+  "Consolidation",
+  "Edema",
+  "Effusion",
+  "Pneumonia",
+  "Pneumothorax"
+ ],
+ "predictions": {
+  "00022416_019.png": {
+   "scores": {
+    "Atelectasis": 0.7971419095993042,
+    "Consolidation": 0.5480211973190308,
+    "Pneumothorax": 0.5418837070465088,
+    "Edema": 0.7216358184814453,
+    "Effusion": 0.8394069671630859,
+    "Pneumonia": 0.5349694490432739,
+    "Cardiomegaly": 0.7970064878463745
+   },
+   "ranked_classes": [
+    "Effusion",
+    "Atelectasis",
+    "Cardiomegaly",
+    "Edema",
+    "Consolidation",
+    "Pneumothorax",
+    "Pneumonia"
+   ]
+  },
+  "00006304_004.png": {
+   "scores": {
+    "Atelectasis": 0.6064094305038452,
+    "Consolidation": 0.5059263706207275,
+    "Pneumothorax": 0.3920385241508484,
+    "Edema": 0.5805974006652832,
+    "Effusion": 0.5234920382499695,
+    "Pneumonia": 0.5148336887359619,
+    "Cardiomegaly": 0.6393018960952759
+   },
+   "ranked_classes": [
+    "Cardiomegaly",
+    "Atelectasis",
+    "Edema",
+    "Effusion",
+    "Pneumonia",
+    "Consolidation",
+    "Pneumothorax"
+   ]
+  },
+  "00001075_047.png": {
+   "scores": {
+    "Atelectasis": 0.11563782393932343,
+    "Consolidation": 0.05288715660572052,
+    "Pneumothorax": 0.06611611694097519,
+    "Edema": 0.029854711145162582,
+    "Effusion": 0.012197712436318398,
+    "Pneumonia": 0.0864100381731987,
+    "Cardiomegaly": 0.1762082874774933
+   },
+   "ranked_classes": [
+    "Cardiomegaly",
+    "Atelectasis",
+    "Pneumonia",
+    "Pneumothorax",
+    "Consolidation",
+    "Edema",
+    "Effusion"
+   ]
+  },
+  "00013249_045.png": {
+   "scores": {
+    "Atelectasis": 0.7604271173477173,
+    "Consolidation": 0.5271384716033936,
+    "Pneumothorax": 0.519978404045105,
+    "Edema": 0.5765708088874817,
+    "Effusion": 0.7358449697494507,
+    "Pneumonia": 0.5358157157897949,
+    "Cardiomegaly": 0.7455123662948608
+   },
+   "ranked_classes": [
+    "Atelectasis",
+    "Cardiomegaly",
+    "Effusion",
+    "Edema",
+    "Pneumonia",
+    "Consolidation",
+    "Pneumothorax"
+   ]
+  },
+  "00011702_072.png": {
+   "scores": {
+    "Atelectasis": 0.7672297358512878,
+    "Consolidation": 0.5621449947357178,
+    "Pneumothorax": 0.5320472717285156,
+    "Edema": 0.8462759256362915,
+    "Effusion": 0.8219679594039917,
+    "Pneumonia": 0.5672855377197266,
+    "Cardiomegaly": 0.8247314691543579
+   },
+   "ranked_classes": [
+    "Edema",
+    "Cardiomegaly",
+    "Effusion",
+    "Atelectasis",
+    "Pneumonia",
+    "Consolidation",
+    "Pneumothorax"
+   ]
+  },
+  "00010447_027.png": {
+   "scores": {
+    "Atelectasis": 0.5624359846115112,
+    "Consolidation": 0.5122343301773071,
+    "Pneumothorax": 0.5012317299842834,
+    "Edema": 0.8819608688354492,
+    "Effusion": 0.6218857765197754,
+    "Pneumonia": 0.5079025626182556,
+    "Cardiomegaly": 0.736297607421875
+   },
+   "ranked_classes": [
+    "Edema",
+    "Cardiomegaly",
+    "Effusion",
+    "Atelectasis",
+    "Consolidation",
+    "Pneumonia",
+    "Pneumothorax"
+   ]
+  },
+  "00007322_007.png": {
+   "scores": {
+    "Atelectasis": 0.7339668869972229,
+    "Consolidation": 0.5070109963417053,
+    "Pneumothorax": 0.5542987585067749,
+    "Edema": 0.5106055736541748,
+    "Effusion": 0.6225677728652954,
+    "Pneumonia": 0.5033661127090454,
+    "Cardiomegaly": 0.7549350261688232
+   },
+   "ranked_classes": [
+    "Cardiomegaly",
+    "Atelectasis",
+    "Effusion",
+    "Pneumothorax",
+    "Edema",
+    "Consolidation",
+    "Pneumonia"
+   ]
+  },
+  "00022416_056.png": {
+   "scores": {
+    "Atelectasis": 0.7080230712890625,
+    "Consolidation": 0.5448192954063416,
+    "Pneumothorax": 0.5365307331085205,
+    "Edema": 0.6049231290817261,
+    "Effusion": 0.6736513376235962,
+    "Pneumonia": 0.5391480922698975,
+    "Cardiomegaly": 0.6831403970718384
+   },
+   "ranked_classes": [
+    "Atelectasis",
+    "Cardiomegaly",
+    "Effusion",
+    "Edema",
+    "Consolidation",
+    "Pneumonia",
+    "Pneumothorax"
+   ]
+  },
+  "00004911_016.png": {
+   "scores": {
+    "Atelectasis": 0.47483962774276733,
+    "Consolidation": 0.5061482191085815,
+    "Pneumothorax": 0.5051602721214294,
+    "Edema": 0.3999492824077606,
+    "Effusion": 0.17531593143939972,
+    "Pneumonia": 0.5402308702468872,
+    "Cardiomegaly": 0.1574772447347641
+   },
+   "ranked_classes": [
+    "Pneumonia",
+    "Consolidation",
+    "Pneumothorax",
+    "Atelectasis",
+    "Edema",
+    "Effusion",
+    "Cardiomegaly"
+   ]
+  },
+  "00019651_003.png": {
+   "scores": {
+    "Atelectasis": 0.5750601291656494,
+    "Consolidation": 0.5092251300811768,
+    "Pneumothorax": 0.5043506622314453,
+    "Edema": 0.4193629324436188,
+    "Effusion": 0.3882240951061249,
+    "Pneumonia": 0.5160881280899048,
+    "Cardiomegaly": 0.5879774689674377
+   },
+   "ranked_classes": [
+    "Cardiomegaly",
+    "Atelectasis",
+    "Pneumonia",
+    "Consolidation",
+    "Pneumothorax",
+    "Edema",
+    "Effusion"
+   ]
+  },
+  "00022084_000.png": {
+   "scores": {
+    "Atelectasis": 0.7749391198158264,
+    "Consolidation": 0.6120783090591431,
+    "Pneumothorax": 0.5931239128112793,
+    "Edema": 0.6943744421005249,
+    "Effusion": 0.6920992732048035,
+    "Pneumonia": 0.5550925135612488,
+    "Cardiomegaly": 0.7815650105476379
+   },
+   "ranked_classes": [
+    "Cardiomegaly",
+    "Atelectasis",
+    "Edema",
+    "Effusion",
+    "Consolidation",
+    "Pneumothorax",
+    "Pneumonia"
+   ]
+  },
+  "00029469_012.png": {
+   "scores": {
+    "Atelectasis": 0.852922797203064,
+    "Consolidation": 0.6352503299713135,
+    "Pneumothorax": 0.5428571105003357,
+    "Edema": 0.9786992073059082,
+    "Effusion": 0.9253314733505249,
+    "Pneumonia": 0.6318613290786743,
+    "Cardiomegaly": 0.8938590884208679
+   },
+   "ranked_classes": [
+    "Edema",
+    "Effusion",
+    "Cardiomegaly",
+    "Atelectasis",
+    "Consolidation",
+    "Pneumonia",
+    "Pneumothorax"
+   ]
+  },
+  "00029588_004.png": {
+   "scores": {
+    "Atelectasis": 0.6723796129226685,
+    "Consolidation": 0.5200661420822144,
+    "Pneumothorax": 0.5220358371734619,
+    "Edema": 0.5955830812454224,
+    "Effusion": 0.6751683950424194,
+    "Pneumonia": 0.5059350728988647,
+    "Cardiomegaly": 0.6583811640739441
+   },
+   "ranked_classes": [
+    "Effusion",
+    "Atelectasis",
+    "Cardiomegaly",
+    "Edema",
+    "Pneumothorax",
+    "Consolidation",
+    "Pneumonia"
+   ]
+  },
+  "00007632_013.png": {
+   "scores": {
+    "Atelectasis": 0.2019856721162796,
+    "Consolidation": 0.03243519365787506,
+    "Pneumothorax": 0.4762222468852997,
+    "Edema": 0.0008818937931209803,
+    "Effusion": 0.04189465567469597,
+    "Pneumonia": 0.12628568708896637,
+    "Cardiomegaly": 0.018858006224036217
+   },
+   "ranked_classes": [
+    "Pneumothorax",
+    "Atelectasis",
+    "Pneumonia",
+    "Effusion",
+    "Consolidation",
+    "Cardiomegaly",
+    "Edema"
+   ]
+  },
+  "00022098_007.png": {
+   "scores": {
+    "Atelectasis": 0.6936315894126892,
+    "Consolidation": 0.5141780376434326,
+    "Pneumothorax": 0.5081948637962341,
+    "Edema": 0.9276204109191895,
+    "Effusion": 0.7977142333984375,
+    "Pneumonia": 0.5124289989471436,
+    "Cardiomegaly": 0.7726950645446777
+   },
+   "ranked_classes": [
+    "Edema",
+    "Effusion",
+    "Cardiomegaly",
+    "Atelectasis",
+    "Consolidation",
+    "Pneumonia",
+    "Pneumothorax"
+   ]
+  },
+  "00003803_002.png": {
+   "scores": {
+    "Atelectasis": 0.5477942228317261,
+    "Consolidation": 0.42314428091049194,
+    "Pneumothorax": 0.5342104434967041,
+    "Edema": 0.502095639705658,
+    "Effusion": 0.2870289385318756,
+    "Pneumonia": 0.18636775016784668,
+    "Cardiomegaly": 0.6680933833122253
+   },
+   "ranked_classes": [
+    "Cardiomegaly",
+    "Atelectasis",
+    "Pneumothorax",
+    "Edema",
+    "Consolidation",
+    "Effusion",
+    "Pneumonia"
+   ]
+  },
+  "00003072_028.png": {
+   "scores": {
+    "Atelectasis": 0.7672815322875977,
+    "Consolidation": 0.6519259214401245,
+    "Pneumothorax": 0.6299648284912109,
+    "Edema": 0.5834109783172607,
+    "Effusion": 0.8381772041320801,
+    "Pneumonia": 0.6464748382568359,
+    "Cardiomegaly": 0.5821094512939453
+   },
+   "ranked_classes": [
+    "Effusion",
+    "Atelectasis",
+    "Consolidation",
+    "Pneumonia",
+    "Pneumothorax",
+    "Edema",
+    "Cardiomegaly"
+   ]
+  },
+  "00008911_026.png": {
+   "scores": {
+    "Atelectasis": 0.7152316570281982,
+    "Consolidation": 0.5393935441970825,
+    "Pneumothorax": 0.5904935598373413,
+    "Edema": 0.5304309129714966,
+    "Effusion": 0.6709739565849304,
+    "Pneumonia": 0.5432859659194946,
+    "Cardiomegaly": 0.7264389395713806
+   },
+   "ranked_classes": [
+    "Cardiomegaly",
+    "Atelectasis",
+    "Effusion",
+    "Pneumothorax",
+    "Pneumonia",
+    "Consolidation",
+    "Edema"
+   ]
+  },
+  "00005089_007.png": {
+   "scores": {
+    "Atelectasis": 0.763012170791626,
+    "Consolidation": 0.5962287187576294,
+    "Pneumothorax": 0.587288498878479,
+    "Edema": 0.08211326599121094,
+    "Effusion": 0.7557516098022461,
+    "Pneumonia": 0.5419779419898987,
+    "Cardiomegaly": 0.5861455798149109
+   },
+   "ranked_classes": [
+    "Atelectasis",
+    "Effusion",
+    "Consolidation",
+    "Pneumothorax",
+    "Cardiomegaly",
+    "Pneumonia",
+    "Edema"
+   ]
+  },
+  "00005609_025.png": {
+   "scores": {
+    "Atelectasis": 0.7601290941238403,
+    "Consolidation": 0.5128352642059326,
+    "Pneumothorax": 0.6050297021865845,
+    "Edema": 0.518948495388031,
+    "Effusion": 0.6512318253517151,
+    "Pneumonia": 0.5118715763092041,
+    "Cardiomegaly": 0.8147708177566528
+   },
+   "ranked_classes": [
+    "Cardiomegaly",
+    "Atelectasis",
+    "Effusion",
+    "Pneumothorax",
+    "Edema",
+    "Consolidation",
+    "Pneumonia"
+   ]
+  },
+  "00013659_029.png": {
+   "scores": {
+    "Atelectasis": 0.6362639665603638,
+    "Consolidation": 0.5243708491325378,
+    "Pneumothorax": 0.5090001225471497,
+    "Edema": 0.790673553943634,
+    "Effusion": 0.7051256895065308,
+    "Pneumonia": 0.5093878507614136,
+    "Cardiomegaly": 0.7632370591163635
+   },
+   "ranked_classes": [
+    "Edema",
+    "Cardiomegaly",
+    "Effusion",
+    "Atelectasis",
+    "Consolidation",
+    "Pneumonia",
+    "Pneumothorax"
+   ]
+  },
+  "00021463_005.png": {
+   "scores": {
+    "Atelectasis": 0.7076089382171631,
+    "Consolidation": 0.5857551097869873,
+    "Pneumothorax": 0.5640647411346436,
+    "Edema": 0.82322096824646,
+    "Effusion": 0.7599135041236877,
+    "Pneumonia": 0.5777413249015808,
+    "Cardiomegaly": 0.7872359752655029
+   },
+   "ranked_classes": [
+    "Edema",
+    "Cardiomegaly",
+    "Effusion",
+    "Atelectasis",
+    "Consolidation",
+    "Pneumonia",
+    "Pneumothorax"
+   ]
+  },
+  "00000003_004.png": {
+   "scores": {
+    "Atelectasis": 0.1587129831314087,
+    "Consolidation": 0.5060340166091919,
+    "Pneumothorax": 0.5171159505844116,
+    "Edema": 0.5001686215400696,
+    "Effusion": 0.14811307191848755,
+    "Pneumonia": 0.5149028301239014,
+    "Cardiomegaly": 0.4066275656223297
+   },
+   "ranked_classes": [
+    "Pneumothorax",
+    "Pneumonia",
+    "Consolidation",
+    "Edema",
+    "Cardiomegaly",
+    "Atelectasis",
+    "Effusion"
+   ]
+  },
+  "00020915_000.png": {
+   "scores": {
+    "Atelectasis": 0.41870778799057007,
+    "Consolidation": 0.043483372777700424,
+    "Pneumothorax": 0.5016926527023315,
+    "Edema": 0.0060935840010643005,
+    "Effusion": 0.1101474016904831,
+    "Pneumonia": 0.09087806195020676,
+    "Cardiomegaly": 0.04132790490984917
+   },
+   "ranked_classes": [
+    "Pneumothorax",
+    "Atelectasis",
+    "Effusion",
+    "Pneumonia",
+    "Consolidation",
+    "Cardiomegaly",
+    "Edema"
+   ]
+  },
+  "00010120_019.png": {
+   "scores": {
+    "Atelectasis": 0.11923131346702576,
+    "Consolidation": 0.028056902810931206,
+    "Pneumothorax": 0.5005665421485901,
+    "Edema": 0.0028423734474927187,
+    "Effusion": 0.03748606890439987,
+    "Pneumonia": 0.06906795501708984,
+    "Cardiomegaly": 0.02039569802582264
+   },
+   "ranked_classes": [
+    "Pneumothorax",
+    "Atelectasis",
+    "Pneumonia",
+    "Effusion",
+    "Consolidation",
+    "Cardiomegaly",
+    "Edema"
+   ]
+  },
+  "00029159_015.png": {
+   "scores": {
+    "Atelectasis": 0.6769751310348511,
+    "Consolidation": 0.5094345808029175,
+    "Pneumothorax": 0.5015741586685181,
+    "Edema": 0.9753440618515015,
+    "Effusion": 0.7966017723083496,
+    "Pneumonia": 0.5087208151817322,
+    "Cardiomegaly": 0.8205745220184326
+   },
+   "ranked_classes": [
+    "Edema",
+    "Cardiomegaly",
+    "Effusion",
+    "Atelectasis",
+    "Consolidation",
+    "Pneumonia",
+    "Pneumothorax"
+   ]
+  },
+  "00026194_000.png": {
+   "scores": {
+    "Atelectasis": 0.5536206960678101,
+    "Consolidation": 0.5007051229476929,
+    "Pneumothorax": 0.4350561201572418,
+    "Edema": 0.3251868188381195,
+    "Effusion": 0.27715617418289185,
+    "Pneumonia": 0.32692521810531616,
+    "Cardiomegaly": 0.5232362151145935
+   },
+   "ranked_classes": [
+    "Atelectasis",
+    "Cardiomegaly",
+    "Consolidation",
+    "Pneumothorax",
+    "Pneumonia",
+    "Edema",
+    "Effusion"
+   ]
+  },
+  "00022726_011.png": {
+   "scores": {
+    "Atelectasis": 0.5426619052886963,
+    "Consolidation": 0.5286511778831482,
+    "Pneumothorax": 0.5123489499092102,
+    "Edema": 0.508044958114624,
+    "Effusion": 0.5177642107009888,
+    "Pneumonia": 0.531775712966919,
+    "Cardiomegaly": 0.5299941301345825
+   },
+   "ranked_classes": [
+    "Atelectasis",
+    "Pneumonia",
+    "Cardiomegaly",
+    "Consolidation",
+    "Effusion",
+    "Pneumothorax",
+    "Edema"
+   ]
+  },
+  "00017403_002.png": {
+   "scores": {
+    "Atelectasis": 0.7607744932174683,
+    "Consolidation": 0.546215295791626,
+    "Pneumothorax": 0.587152361869812,
+    "Edema": 0.5348867774009705,
+    "Effusion": 0.7138554453849792,
+    "Pneumonia": 0.5420290231704712,
+    "Cardiomegaly": 0.78314608335495
+   },
+   "ranked_classes": [
+    "Cardiomegaly",
+    "Atelectasis",
+    "Effusion",
+    "Pneumothorax",
+    "Consolidation",
+    "Pneumonia",
+    "Edema"
+   ]
+  },
+  "00014822_025.png": {
+   "scores": {
+    "Atelectasis": 0.8091410398483276,
+    "Consolidation": 0.57177734375,
+    "Pneumothorax": 0.525353193283081,
+    "Edema": 0.9630769491195679,
+    "Effusion": 0.8820001482963562,
+    "Pneumonia": 0.5547559261322021,
+    "Cardiomegaly": 0.9144441485404968
+   },
+   "ranked_classes": [
+    "Edema",
+    "Cardiomegaly",
+    "Effusion",
+    "Atelectasis",
+    "Consolidation",
+    "Pneumonia",
+    "Pneumothorax"
+   ]
+  },
+  "00013648_018.png": {
+   "scores": {
+    "Atelectasis": 0.5652741193771362,
+    "Consolidation": 0.2893352508544922,
+    "Pneumothorax": 0.5123366117477417,
+    "Edema": 0.500312864780426,
+    "Effusion": 0.5170372724533081,
+    "Pneumonia": 0.2183513194322586,
+    "Cardiomegaly": 0.549308717250824
+   },
+   "ranked_classes": [
+    "Atelectasis",
+    "Cardiomegaly",
+    "Effusion",
+    "Pneumothorax",
+    "Edema",
+    "Consolidation",
+    "Pneumonia"
+   ]
+  },
+  "00027726_005.png": {
+   "scores": {
+    "Atelectasis": 0.25297653675079346,
+    "Consolidation": 0.5016077160835266,
+    "Pneumothorax": 0.5132904052734375,
+    "Edema": 0.5028340816497803,
+    "Effusion": 0.2562624514102936,
+    "Pneumonia": 0.4866887331008911,
+    "Cardiomegaly": 0.5016103982925415
+   },
+   "ranked_classes": [
+    "Pneumothorax",
+    "Edema",
+    "Cardiomegaly",
+    "Consolidation",
+    "Pneumonia",
+    "Effusion",
+    "Atelectasis"
+   ]
+  },
+  "00030557_000.png": {
+   "scores": {
+    "Atelectasis": 0.6009687185287476,
+    "Consolidation": 0.5003664493560791,
+    "Pneumothorax": 0.5031585693359375,
+    "Edema": 0.6905931234359741,
+    "Effusion": 0.5785571932792664,
+    "Pneumonia": 0.3679031431674957,
+    "Cardiomegaly": 0.6889113783836365
+   },
+   "ranked_classes": [
+    "Edema",
+    "Cardiomegaly",
+    "Atelectasis",
+    "Effusion",
+    "Pneumothorax",
+    "Consolidation",
+    "Pneumonia"
+   ]
+  },
+  "00013670_049.png": {
+   "scores": {
+    "Atelectasis": 0.7665660977363586,
+    "Consolidation": 0.5506051182746887,
+    "Pneumothorax": 0.5146278738975525,
+    "Edema": 0.647835373878479,
+    "Effusion": 0.7216761708259583,
+    "Pneumonia": 0.5701538920402527,
+    "Cardiomegaly": 0.7347994446754456
+   },
+   "ranked_classes": [
+    "Atelectasis",
+    "Cardiomegaly",
+    "Effusion",
+    "Edema",
+    "Pneumonia",
+    "Consolidation",
+    "Pneumothorax"
+   ]
+  },
+  "00000733_000.png": {
+   "scores": {
+    "Atelectasis": 0.7563570737838745,
+    "Consolidation": 0.5328192114830017,
+    "Pneumothorax": 0.6268719434738159,
+    "Edema": 0.5198058485984802,
+    "Effusion": 0.655121922492981,
+    "Pneumonia": 0.5212187170982361,
+    "Cardiomegaly": 0.7466484308242798
+   },
+   "ranked_classes": [
+    "Atelectasis",
+    "Cardiomegaly",
+    "Effusion",
+    "Pneumothorax",
+    "Consolidation",
+    "Pneumonia",
+    "Edema"
+   ]
+  },
+  "00029159_003.png": {
+   "scores": {
+    "Atelectasis": 0.6142852306365967,
+    "Consolidation": 0.5036983489990234,
+    "Pneumothorax": 0.5078001022338867,
+    "Edema": 0.6937178373336792,
+    "Effusion": 0.6473585963249207,
+    "Pneumonia": 0.3975500762462616,
+    "Cardiomegaly": 0.6942751407623291
+   },
+   "ranked_classes": [
+    "Cardiomegaly",
+    "Edema",
+    "Effusion",
+    "Atelectasis",
+    "Pneumothorax",
+    "Consolidation",
+    "Pneumonia"
+   ]
+  },
+  "00010007_062.png": {
+   "scores": {
+    "Atelectasis": 0.7552270293235779,
+    "Consolidation": 0.5622029304504395,
+    "Pneumothorax": 0.5175905227661133,
+    "Edema": 0.881452202796936,
+    "Effusion": 0.8674792647361755,
+    "Pneumonia": 0.534021258354187,
+    "Cardiomegaly": 0.8280444145202637
+   },
+   "ranked_classes": [
+    "Edema",
+    "Effusion",
+    "Cardiomegaly",
+    "Atelectasis",
+    "Consolidation",
+    "Pneumonia",
+    "Pneumothorax"
+   ]
+  },
+  "00021463_004.png": {
+   "scores": {
+    "Atelectasis": 0.726094126701355,
+    "Consolidation": 0.5042656660079956,
+    "Pneumothorax": 0.528944194316864,
+    "Edema": 0.19033826887607574,
+    "Effusion": 0.7127153873443604,
+    "Pneumonia": 0.3202960789203644,
+    "Cardiomegaly": 0.539429783821106
+   },
+   "ranked_classes": [
+    "Atelectasis",
+    "Effusion",
+    "Cardiomegaly",
+    "Pneumothorax",
+    "Consolidation",
+    "Pneumonia",
+    "Edema"
+   ]
+  },
+  "00018253_048.png": {
+   "scores": {
+    "Atelectasis": 0.8261728882789612,
+    "Consolidation": 0.5820616483688354,
+    "Pneumothorax": 0.5393310785293579,
+    "Edema": 0.8337067365646362,
+    "Effusion": 0.865097165107727,
+    "Pneumonia": 0.552224338054657,
+    "Cardiomegaly": 0.852096438407898
+   },
+   "ranked_classes": [
+    "Effusion",
+    "Cardiomegaly",
+    "Edema",
+    "Atelectasis",
+    "Consolidation",
+    "Pneumonia",
+    "Pneumothorax"
+   ]
+  },
+  "00014731_016.png": {
+   "scores": {
+    "Atelectasis": 0.8288112282752991,
+    "Consolidation": 0.6259547472000122,
+    "Pneumothorax": 0.5671597719192505,
+    "Edema": 0.6110531091690063,
+    "Effusion": 0.7778635025024414,
+    "Pneumonia": 0.6064854860305786,
+    "Cardiomegaly": 0.6651955246925354
+   },
+   "ranked_classes": [
+    "Atelectasis",
+    "Effusion",
+    "Cardiomegaly",
+    "Consolidation",
+    "Edema",
+    "Pneumonia",
+    "Pneumothorax"
+   ]
+  },
+  "00011237_112.png": {
+   "scores": {
+    "Atelectasis": 0.7746379971504211,
+    "Consolidation": 0.5584740042686462,
+    "Pneumothorax": 0.5145436525344849,
+    "Edema": 0.8842886090278625,
+    "Effusion": 0.816759467124939,
+    "Pneumonia": 0.568517804145813,
+    "Cardiomegaly": 0.8013629913330078
+   },
+   "ranked_classes": [
+    "Edema",
+    "Effusion",
+    "Cardiomegaly",
+    "Atelectasis",
+    "Pneumonia",
+    "Consolidation",
+    "Pneumothorax"
+   ]
+  },
+  "00013391_005.png": {
+   "scores": {
+    "Atelectasis": 0.8945515751838684,
+    "Consolidation": 0.6422176361083984,
+    "Pneumothorax": 0.6792901754379272,
+    "Edema": 0.5464057922363281,
+    "Effusion": 0.9150093793869019,
+    "Pneumonia": 0.5417070388793945,
+    "Cardiomegaly": 0.7901853322982788
+   },
+   "ranked_classes": [
+    "Effusion",
+    "Atelectasis",
+    "Cardiomegaly",
+    "Pneumothorax",
+    "Consolidation",
+    "Edema",
+    "Pneumonia"
+   ]
+  },
+  "00017747_053.png": {
+   "scores": {
+    "Atelectasis": 0.5753906965255737,
+    "Consolidation": 0.38861551880836487,
+    "Pneumothorax": 0.502850353717804,
+    "Edema": 0.09978967159986496,
+    "Effusion": 0.1913737654685974,
+    "Pneumonia": 0.3324424922466278,
+    "Cardiomegaly": 0.2609453499317169
+   },
+   "ranked_classes": [
+    "Atelectasis",
+    "Pneumothorax",
+    "Consolidation",
+    "Pneumonia",
+    "Cardiomegaly",
+    "Effusion",
+    "Edema"
+   ]
+  },
+  "00008295_022.png": {
+   "scores": {
+    "Atelectasis": 0.5460320711135864,
+    "Consolidation": 0.5168755650520325,
+    "Pneumothorax": 0.5191352963447571,
+    "Edema": 0.5058801174163818,
+    "Effusion": 0.40003740787506104,
+    "Pneumonia": 0.5132981538772583,
+    "Cardiomegaly": 0.5715471506118774
+   },
+   "ranked_classes": [
+    "Cardiomegaly",
+    "Atelectasis",
+    "Pneumothorax",
+    "Consolidation",
+    "Pneumonia",
+    "Edema",
+    "Effusion"
+   ]
+  },
+  "00007750_008.png": {
+   "scores": {
+    "Atelectasis": 0.5947649478912354,
+    "Consolidation": 0.5157577991485596,
+    "Pneumothorax": 0.535944938659668,
+    "Edema": 0.5149611234664917,
+    "Effusion": 0.5618544816970825,
+    "Pneumonia": 0.5167542695999146,
+    "Cardiomegaly": 0.557453989982605
+   },
+   "ranked_classes": [
+    "Atelectasis",
+    "Effusion",
+    "Cardiomegaly",
+    "Pneumothorax",
+    "Pneumonia",
+    "Consolidation",
+    "Edema"
+   ]
+  }
+ }
+}

@@ -1,4 +1,139 @@
 condition,image,position,text,classes,negated,outcome
+baseline:biomedclip-zeroshot,00022416_019.png,1,edema,Edema,,incorrect
+baseline:biomedclip-zeroshot,00022416_019.png,2,atelectasis,Atelectasis,,correct
+baseline:biomedclip-zeroshot,00022416_019.png,3,effusion,Effusion,,correct
+baseline:biomedclip-zeroshot,00006304_004.png,1,edema,Edema,,incorrect
+baseline:biomedclip-zeroshot,00006304_004.png,2,pleural thickening,Pleural_Thickening,,incorrect
+baseline:biomedclip-zeroshot,00006304_004.png,3,atelectasis,Atelectasis,,correct
+baseline:biomedclip-zeroshot,00001075_047.png,1,hernia,Hernia,,incorrect
+baseline:biomedclip-zeroshot,00001075_047.png,2,normal,No Finding,,incorrect
+baseline:biomedclip-zeroshot,00001075_047.png,3,pleural thickening,Pleural_Thickening,,incorrect
+baseline:biomedclip-zeroshot,00013249_045.png,1,cardiomegaly,Cardiomegaly,,correct
+baseline:biomedclip-zeroshot,00013249_045.png,2,edema,Edema,,incorrect
+baseline:biomedclip-zeroshot,00013249_045.png,3,atelectasis,Atelectasis,,incorrect
+baseline:biomedclip-zeroshot,00011702_072.png,1,edema,Edema,,incorrect
+baseline:biomedclip-zeroshot,00011702_072.png,2,pleural thickening,Pleural_Thickening,,incorrect
+baseline:biomedclip-zeroshot,00011702_072.png,3,pneumonia,Pneumonia,,incorrect
+baseline:biomedclip-zeroshot,00010447_027.png,1,edema,Edema,,incorrect
+baseline:biomedclip-zeroshot,00010447_027.png,2,consolidation,Consolidation,,incorrect
+baseline:biomedclip-zeroshot,00010447_027.png,3,pneumonia,Pneumonia,,incorrect
+baseline:biomedclip-zeroshot,00007322_007.png,1,edema,Edema,,incorrect
+baseline:biomedclip-zeroshot,00007322_007.png,2,emphysema,Emphysema,,incorrect
+baseline:biomedclip-zeroshot,00007322_007.png,3,pleural thickening,Pleural_Thickening,,incorrect
+baseline:biomedclip-zeroshot,00022416_056.png,1,effusion,Effusion,,correct
+baseline:biomedclip-zeroshot,00022416_056.png,2,edema,Edema,,incorrect
+baseline:biomedclip-zeroshot,00022416_056.png,3,pneumonia,Pneumonia,,incorrect
+baseline:biomedclip-zeroshot,00004911_016.png,1,hernia,Hernia,,incorrect
+baseline:biomedclip-zeroshot,00004911_016.png,2,emphysema,Emphysema,,incorrect
+baseline:biomedclip-zeroshot,00004911_016.png,3,nodule,Nodule,,correct
+baseline:biomedclip-zeroshot,00019651_003.png,1,mass,Mass,,correct
+baseline:biomedclip-zeroshot,00019651_003.png,2,nodule,Nodule,,incorrect
+baseline:biomedclip-zeroshot,00019651_003.png,3,consolidation,Consolidation,,incorrect
+baseline:biomedclip-zeroshot,00022084_000.png,1,pleural thickening,Pleural_Thickening,,incorrect
+baseline:biomedclip-zeroshot,00022084_000.png,2,edema,Edema,,correct
+baseline:biomedclip-zeroshot,00022084_000.png,3,pneumonia,Pneumonia,,correct
+baseline:biomedclip-zeroshot,00029469_012.png,1,pneumonia,Pneumonia,,correct
+baseline:biomedclip-zeroshot,00029469_012.png,2,edema,Edema,,correct
+baseline:biomedclip-zeroshot,00029469_012.png,3,pleural thickening,Pleural_Thickening,,incorrect
+baseline:biomedclip-zeroshot,00029588_004.png,1,consolidation,Consolidation,,correct
+baseline:biomedclip-zeroshot,00029588_004.png,2,pleural thickening,Pleural_Thickening,,incorrect
+baseline:biomedclip-zeroshot,00029588_004.png,3,edema,Edema,,incorrect
+baseline:biomedclip-zeroshot,00007632_013.png,1,hernia,Hernia,,incorrect
+baseline:biomedclip-zeroshot,00007632_013.png,2,emphysema,Emphysema,,incorrect
+baseline:biomedclip-zeroshot,00007632_013.png,3,normal,No Finding,,incorrect
+baseline:biomedclip-zeroshot,00022098_007.png,1,pleural thickening,Pleural_Thickening,,incorrect
+baseline:biomedclip-zeroshot,00022098_007.png,2,edema,Edema,,incorrect
+baseline:biomedclip-zeroshot,00022098_007.png,3,atelectasis,Atelectasis,,incorrect
+baseline:biomedclip-zeroshot,00003803_002.png,1,pleural thickening,Pleural_Thickening,,incorrect
+baseline:biomedclip-zeroshot,00003803_002.png,2,hernia,Hernia,,incorrect
+baseline:biomedclip-zeroshot,00003803_002.png,3,pneumothorax,Pneumothorax,,correct
+baseline:biomedclip-zeroshot,00003072_028.png,1,pneumothorax,Pneumothorax,,correct
+baseline:biomedclip-zeroshot,00003072_028.png,2,hernia,Hernia,,incorrect
+baseline:biomedclip-zeroshot,00003072_028.png,3,emphysema,Emphysema,,correct
+baseline:biomedclip-zeroshot,00008911_026.png,1,pneumothorax,Pneumothorax,,incorrect
+baseline:biomedclip-zeroshot,00008911_026.png,2,consolidation,Consolidation,,incorrect
+baseline:biomedclip-zeroshot,00008911_026.png,3,infiltration,Infiltration,,incorrect
+baseline:biomedclip-zeroshot,00005089_007.png,1,pleural thickening,Pleural_Thickening,,incorrect
+baseline:biomedclip-zeroshot,00005089_007.png,2,infiltration,Infiltration,,incorrect
+baseline:biomedclip-zeroshot,00005089_007.png,3,hernia,Hernia,,incorrect
+baseline:biomedclip-zeroshot,00005609_025.png,1,pleural thickening,Pleural_Thickening,,incorrect
+baseline:biomedclip-zeroshot,00005609_025.png,2,hernia,Hernia,,incorrect
+baseline:biomedclip-zeroshot,00005609_025.png,3,effusion,Effusion,,incorrect
+baseline:biomedclip-zeroshot,00013659_029.png,1,atelectasis,Atelectasis,,incorrect
+baseline:biomedclip-zeroshot,00013659_029.png,2,edema,Edema,,incorrect
+baseline:biomedclip-zeroshot,00013659_029.png,3,effusion,Effusion,,incorrect
+baseline:biomedclip-zeroshot,00021463_005.png,1,pleural thickening,Pleural_Thickening,,incorrect
+baseline:biomedclip-zeroshot,00021463_005.png,2,hernia,Hernia,,correct
+baseline:biomedclip-zeroshot,00021463_005.png,3,atelectasis,Atelectasis,,correct
+baseline:biomedclip-zeroshot,00000003_004.png,1,pleural thickening,Pleural_Thickening,,incorrect
+baseline:biomedclip-zeroshot,00000003_004.png,2,hernia,Hernia,,correct
+baseline:biomedclip-zeroshot,00000003_004.png,3,atelectasis,Atelectasis,,incorrect
+baseline:biomedclip-zeroshot,00020915_000.png,1,normal,No Finding,,incorrect
+baseline:biomedclip-zeroshot,00020915_000.png,2,nodule,Nodule,,incorrect
+baseline:biomedclip-zeroshot,00020915_000.png,3,emphysema,Emphysema,,incorrect
+baseline:biomedclip-zeroshot,00010120_019.png,1,normal,No Finding,,incorrect
+baseline:biomedclip-zeroshot,00010120_019.png,2,nodule,Nodule,,incorrect
+baseline:biomedclip-zeroshot,00010120_019.png,3,emphysema,Emphysema,,incorrect
+baseline:biomedclip-zeroshot,00029159_015.png,1,edema,Edema,,incorrect
+baseline:biomedclip-zeroshot,00029159_015.png,2,pneumonia,Pneumonia,,incorrect
+baseline:biomedclip-zeroshot,00029159_015.png,3,infiltration,Infiltration,,correct
+baseline:biomedclip-zeroshot,00026194_000.png,1,hernia,Hernia,,incorrect
+baseline:biomedclip-zeroshot,00026194_000.png,2,normal,No Finding,,incorrect
+baseline:biomedclip-zeroshot,00026194_000.png,3,nodule,Nodule,,correct
+baseline:biomedclip-zeroshot,00022726_011.png,1,nodule,Nodule,,correct
+baseline:biomedclip-zeroshot,00022726_011.png,2,hernia,Hernia,,incorrect
+baseline:biomedclip-zeroshot,00022726_011.png,3,pneumothorax,Pneumothorax,,incorrect
+baseline:biomedclip-zeroshot,00017403_002.png,1,edema,Edema,,incorrect
+baseline:biomedclip-zeroshot,00017403_002.png,2,atelectasis,Atelectasis,,correct
+baseline:biomedclip-zeroshot,00017403_002.png,3,pneumonia,Pneumonia,,incorrect
+baseline:biomedclip-zeroshot,00014822_025.png,1,edema,Edema,,incorrect
+baseline:biomedclip-zeroshot,00014822_025.png,2,atelectasis,Atelectasis,,incorrect
+baseline:biomedclip-zeroshot,00014822_025.png,3,pneumonia,Pneumonia,,incorrect
+baseline:biomedclip-zeroshot,00013648_018.png,1,mass,Mass,,incorrect
+baseline:biomedclip-zeroshot,00013648_018.png,2,hernia,Hernia,,incorrect
+baseline:biomedclip-zeroshot,00013648_018.png,3,nodule,Nodule,,incorrect
+baseline:biomedclip-zeroshot,00027726_005.png,1,hernia,Hernia,,incorrect
+baseline:biomedclip-zeroshot,00027726_005.png,2,normal,No Finding,,correct
+baseline:biomedclip-zeroshot,00027726_005.png,3,nodule,Nodule,,incorrect
+baseline:biomedclip-zeroshot,00030557_000.png,1,pleural thickening,Pleural_Thickening,,incorrect
+baseline:biomedclip-zeroshot,00030557_000.png,2,edema,Edema,,incorrect
+baseline:biomedclip-zeroshot,00030557_000.png,3,infiltration,Infiltration,,incorrect
+baseline:biomedclip-zeroshot,00013670_049.png,1,consolidation,Consolidation,,correct
+baseline:biomedclip-zeroshot,00013670_049.png,2,edema,Edema,,incorrect
+baseline:biomedclip-zeroshot,00013670_049.png,3,infiltration,Infiltration,,incorrect
+baseline:biomedclip-zeroshot,00000733_000.png,1,normal,No Finding,,incorrect
+baseline:biomedclip-zeroshot,00000733_000.png,2,emphysema,Emphysema,,incorrect
+baseline:biomedclip-zeroshot,00000733_000.png,3,hernia,Hernia,,incorrect
+baseline:biomedclip-zeroshot,00029159_003.png,1,pleural thickening,Pleural_Thickening,,incorrect
+baseline:biomedclip-zeroshot,00029159_003.png,2,hernia,Hernia,,incorrect
+baseline:biomedclip-zeroshot,00029159_003.png,3,fibrosis,Fibrosis,,incorrect
+baseline:biomedclip-zeroshot,00010007_062.png,1,edema,Edema,,incorrect
+baseline:biomedclip-zeroshot,00010007_062.png,2,effusion,Effusion,,correct
+baseline:biomedclip-zeroshot,00010007_062.png,3,pleural thickening,Pleural_Thickening,,correct
+baseline:biomedclip-zeroshot,00021463_004.png,1,pleural thickening,Pleural_Thickening,,correct
+baseline:biomedclip-zeroshot,00021463_004.png,2,hernia,Hernia,,correct
+baseline:biomedclip-zeroshot,00021463_004.png,3,effusion,Effusion,,incorrect
+baseline:biomedclip-zeroshot,00018253_048.png,1,pneumonia,Pneumonia,,incorrect
+baseline:biomedclip-zeroshot,00018253_048.png,2,consolidation,Consolidation,,incorrect
+baseline:biomedclip-zeroshot,00018253_048.png,3,atelectasis,Atelectasis,,correct
+baseline:biomedclip-zeroshot,00014731_016.png,1,emphysema,Emphysema,,correct
+baseline:biomedclip-zeroshot,00014731_016.png,2,pneumothorax,Pneumothorax,,correct
+baseline:biomedclip-zeroshot,00014731_016.png,3,hernia,Hernia,,incorrect
+baseline:biomedclip-zeroshot,00011237_112.png,1,edema,Edema,,correct
+baseline:biomedclip-zeroshot,00011237_112.png,2,pneumonia,Pneumonia,,correct
+baseline:biomedclip-zeroshot,00011237_112.png,3,consolidation,Consolidation,,incorrect
+baseline:biomedclip-zeroshot,00013391_005.png,1,consolidation,Consolidation,,incorrect
+baseline:biomedclip-zeroshot,00013391_005.png,2,hernia,Hernia,,incorrect
+baseline:biomedclip-zeroshot,00013391_005.png,3,fibrosis,Fibrosis,,incorrect
+baseline:biomedclip-zeroshot,00017747_053.png,1,emphysema,Emphysema,,correct
+baseline:biomedclip-zeroshot,00017747_053.png,2,pneumothorax,Pneumothorax,,correct
+baseline:biomedclip-zeroshot,00017747_053.png,3,infiltration,Infiltration,,incorrect
+baseline:biomedclip-zeroshot,00008295_022.png,1,atelectasis,Atelectasis,,correct
+baseline:biomedclip-zeroshot,00008295_022.png,2,hernia,Hernia,,incorrect
+baseline:biomedclip-zeroshot,00008295_022.png,3,pleural thickening,Pleural_Thickening,,incorrect
+baseline:biomedclip-zeroshot,00007750_008.png,1,atelectasis,Atelectasis,,correct
+baseline:biomedclip-zeroshot,00007750_008.png,2,consolidation,Consolidation,,incorrect
+baseline:biomedclip-zeroshot,00007750_008.png,3,infiltration,Infiltration,,incorrect
 baseline,00022416_019.png,1,pneumonia,Pneumonia,,incorrect
 baseline,00022416_019.png,2,effusion,Effusion,,correct
 baseline,00022416_019.png,3,infiltration,Infiltration,,correct
@@ -134,6 +269,816 @@ baseline,00008295_022.png,3,effusion,Effusion,,correct
 baseline,00007750_008.png,1,effusion,Effusion,,correct
 baseline,00007750_008.png,2,atelectasis,Atelectasis,,correct
 baseline,00007750_008.png,3,consolidation,Consolidation,,incorrect
+baseline:densenet121-res224-chex,00022416_019.png,1,cardiomegaly,Cardiomegaly,,incorrect
+baseline:densenet121-res224-chex,00022416_019.png,2,effusion,Effusion,,correct
+baseline:densenet121-res224-chex,00022416_019.png,3,atelectasis,Atelectasis,,correct
+baseline:densenet121-res224-chex,00006304_004.png,1,atelectasis,Atelectasis,,correct
+baseline:densenet121-res224-chex,00006304_004.png,2,edema,Edema,,incorrect
+baseline:densenet121-res224-chex,00006304_004.png,3,cardiomegaly,Cardiomegaly,,correct
+baseline:densenet121-res224-chex,00001075_047.png,1,atelectasis,Atelectasis,,correct
+baseline:densenet121-res224-chex,00001075_047.png,2,edema,Edema,,incorrect
+baseline:densenet121-res224-chex,00001075_047.png,3,consolidation,Consolidation,,incorrect
+baseline:densenet121-res224-chex,00013249_045.png,1,cardiomegaly,Cardiomegaly,,correct
+baseline:densenet121-res224-chex,00013249_045.png,2,effusion,Effusion,,incorrect
+baseline:densenet121-res224-chex,00013249_045.png,3,atelectasis,Atelectasis,,incorrect
+baseline:densenet121-res224-chex,00011702_072.png,1,cardiomegaly,Cardiomegaly,,correct
+baseline:densenet121-res224-chex,00011702_072.png,2,effusion,Effusion,,incorrect
+baseline:densenet121-res224-chex,00011702_072.png,3,atelectasis,Atelectasis,,incorrect
+baseline:densenet121-res224-chex,00010447_027.png,1,edema,Edema,,incorrect
+baseline:densenet121-res224-chex,00010447_027.png,2,atelectasis,Atelectasis,,incorrect
+baseline:densenet121-res224-chex,00010447_027.png,3,effusion,Effusion,,correct
+baseline:densenet121-res224-chex,00007322_007.png,1,effusion,Effusion,,incorrect
+baseline:densenet121-res224-chex,00007322_007.png,2,atelectasis,Atelectasis,,incorrect
+baseline:densenet121-res224-chex,00007322_007.png,3,cardiomegaly,Cardiomegaly,,incorrect
+baseline:densenet121-res224-chex,00022416_056.png,1,edema,Edema,,incorrect
+baseline:densenet121-res224-chex,00022416_056.png,2,effusion,Effusion,,correct
+baseline:densenet121-res224-chex,00022416_056.png,3,cardiomegaly,Cardiomegaly,,incorrect
+baseline:densenet121-res224-chex,00004911_016.png,1,atelectasis,Atelectasis,,incorrect
+baseline:densenet121-res224-chex,00004911_016.png,2,pneumonia,Pneumonia,,incorrect
+baseline:densenet121-res224-chex,00004911_016.png,3,edema,Edema,,incorrect
+baseline:densenet121-res224-chex,00019651_003.png,1,edema,Edema,,correct
+baseline:densenet121-res224-chex,00019651_003.png,2,atelectasis,Atelectasis,,incorrect
+baseline:densenet121-res224-chex,00019651_003.png,3,consolidation,Consolidation,,incorrect
+baseline:densenet121-res224-chex,00022084_000.png,1,edema,Edema,,correct
+baseline:densenet121-res224-chex,00022084_000.png,2,effusion,Effusion,,incorrect
+baseline:densenet121-res224-chex,00022084_000.png,3,cardiomegaly,Cardiomegaly,,incorrect
+baseline:densenet121-res224-chex,00029469_012.png,1,cardiomegaly,Cardiomegaly,,incorrect
+baseline:densenet121-res224-chex,00029469_012.png,2,atelectasis,Atelectasis,,incorrect
+baseline:densenet121-res224-chex,00029469_012.png,3,effusion,Effusion,,correct
+baseline:densenet121-res224-chex,00029588_004.png,1,effusion,Effusion,,correct
+baseline:densenet121-res224-chex,00029588_004.png,2,cardiomegaly,Cardiomegaly,,correct
+baseline:densenet121-res224-chex,00029588_004.png,3,atelectasis,Atelectasis,,incorrect
+baseline:densenet121-res224-chex,00007632_013.png,1,pneumothorax,Pneumothorax,,correct
+baseline:densenet121-res224-chex,00007632_013.png,2,atelectasis,Atelectasis,,incorrect
+baseline:densenet121-res224-chex,00007632_013.png,3,pneumonia,Pneumonia,,incorrect
+baseline:densenet121-res224-chex,00022098_007.png,1,atelectasis,Atelectasis,,incorrect
+baseline:densenet121-res224-chex,00022098_007.png,2,effusion,Effusion,,correct
+baseline:densenet121-res224-chex,00022098_007.png,3,cardiomegaly,Cardiomegaly,,incorrect
+baseline:densenet121-res224-chex,00003803_002.png,1,edema,Edema,,incorrect
+baseline:densenet121-res224-chex,00003803_002.png,2,consolidation,Consolidation,,incorrect
+baseline:densenet121-res224-chex,00003803_002.png,3,atelectasis,Atelectasis,,incorrect
+baseline:densenet121-res224-chex,00003072_028.png,1,atelectasis,Atelectasis,,incorrect
+baseline:densenet121-res224-chex,00003072_028.png,2,effusion,Effusion,,correct
+baseline:densenet121-res224-chex,00003072_028.png,3,edema,Edema,,incorrect
+baseline:densenet121-res224-chex,00008911_026.png,1,edema,Edema,,incorrect
+baseline:densenet121-res224-chex,00008911_026.png,2,atelectasis,Atelectasis,,incorrect
+baseline:densenet121-res224-chex,00008911_026.png,3,cardiomegaly,Cardiomegaly,,incorrect
+baseline:densenet121-res224-chex,00005089_007.png,1,atelectasis,Atelectasis,,incorrect
+baseline:densenet121-res224-chex,00005089_007.png,2,effusion,Effusion,,incorrect
+baseline:densenet121-res224-chex,00005089_007.png,3,consolidation,Consolidation,,incorrect
+baseline:densenet121-res224-chex,00005609_025.png,1,edema,Edema,,incorrect
+baseline:densenet121-res224-chex,00005609_025.png,2,consolidation,Consolidation,,incorrect
+baseline:densenet121-res224-chex,00005609_025.png,3,atelectasis,Atelectasis,,incorrect
+baseline:densenet121-res224-chex,00013659_029.png,1,cardiomegaly,Cardiomegaly,,incorrect
+baseline:densenet121-res224-chex,00013659_029.png,2,atelectasis,Atelectasis,,incorrect
+baseline:densenet121-res224-chex,00013659_029.png,3,effusion,Effusion,,incorrect
+baseline:densenet121-res224-chex,00021463_005.png,1,atelectasis,Atelectasis,,correct
+baseline:densenet121-res224-chex,00021463_005.png,2,edema,Edema,,correct
+baseline:densenet121-res224-chex,00021463_005.png,3,effusion,Effusion,,correct
+baseline:densenet121-res224-chex,00000003_004.png,1,edema,Edema,,incorrect
+baseline:densenet121-res224-chex,00000003_004.png,2,atelectasis,Atelectasis,,incorrect
+baseline:densenet121-res224-chex,00000003_004.png,3,effusion,Effusion,,incorrect
+baseline:densenet121-res224-chex,00020915_000.png,1,atelectasis,Atelectasis,,incorrect
+baseline:densenet121-res224-chex,00020915_000.png,2,pneumonia,Pneumonia,,incorrect
+baseline:densenet121-res224-chex,00020915_000.png,3,edema,Edema,,incorrect
+baseline:densenet121-res224-chex,00010120_019.png,1,atelectasis,Atelectasis,,correct
+baseline:densenet121-res224-chex,00010120_019.png,2,edema,Edema,,incorrect
+baseline:densenet121-res224-chex,00010120_019.png,3,pneumothorax,Pneumothorax,,incorrect
+baseline:densenet121-res224-chex,00029159_015.png,1,cardiomegaly,Cardiomegaly,,incorrect
+baseline:densenet121-res224-chex,00029159_015.png,2,effusion,Effusion,,correct
+baseline:densenet121-res224-chex,00029159_015.png,3,atelectasis,Atelectasis,,incorrect
+baseline:densenet121-res224-chex,00026194_000.png,1,edema,Edema,,incorrect
+baseline:densenet121-res224-chex,00026194_000.png,2,atelectasis,Atelectasis,,incorrect
+baseline:densenet121-res224-chex,00026194_000.png,3,consolidation,Consolidation,,incorrect
+baseline:densenet121-res224-chex,00022726_011.png,1,effusion,Effusion,,incorrect
+baseline:densenet121-res224-chex,00022726_011.png,2,atelectasis,Atelectasis,,incorrect
+baseline:densenet121-res224-chex,00022726_011.png,3,edema,Edema,,incorrect
+baseline:densenet121-res224-chex,00017403_002.png,1,edema,Edema,,incorrect
+baseline:densenet121-res224-chex,00017403_002.png,2,effusion,Effusion,,incorrect
+baseline:densenet121-res224-chex,00017403_002.png,3,atelectasis,Atelectasis,,correct
+baseline:densenet121-res224-chex,00014822_025.png,1,effusion,Effusion,,incorrect
+baseline:densenet121-res224-chex,00014822_025.png,2,cardiomegaly,Cardiomegaly,,incorrect
+baseline:densenet121-res224-chex,00014822_025.png,3,atelectasis,Atelectasis,,incorrect
+baseline:densenet121-res224-chex,00013648_018.png,1,edema,Edema,,incorrect
+baseline:densenet121-res224-chex,00013648_018.png,2,pneumothorax,Pneumothorax,,incorrect
+baseline:densenet121-res224-chex,00013648_018.png,3,atelectasis,Atelectasis,,incorrect
+baseline:densenet121-res224-chex,00027726_005.png,1,atelectasis,Atelectasis,,incorrect
+baseline:densenet121-res224-chex,00027726_005.png,2,edema,Edema,,incorrect
+baseline:densenet121-res224-chex,00027726_005.png,3,pneumothorax,Pneumothorax,,incorrect
+baseline:densenet121-res224-chex,00030557_000.png,1,effusion,Effusion,,incorrect
+baseline:densenet121-res224-chex,00030557_000.png,2,atelectasis,Atelectasis,,incorrect
+baseline:densenet121-res224-chex,00030557_000.png,3,cardiomegaly,Cardiomegaly,,incorrect
+baseline:densenet121-res224-chex,00013670_049.png,1,effusion,Effusion,,incorrect
+baseline:densenet121-res224-chex,00013670_049.png,2,edema,Edema,,incorrect
+baseline:densenet121-res224-chex,00013670_049.png,3,atelectasis,Atelectasis,,incorrect
+baseline:densenet121-res224-chex,00000733_000.png,1,edema,Edema,,incorrect
+baseline:densenet121-res224-chex,00000733_000.png,2,atelectasis,Atelectasis,,incorrect
+baseline:densenet121-res224-chex,00000733_000.png,3,consolidation,Consolidation,,incorrect
+baseline:densenet121-res224-chex,00029159_003.png,1,atelectasis,Atelectasis,,incorrect
+baseline:densenet121-res224-chex,00029159_003.png,2,effusion,Effusion,,incorrect
+baseline:densenet121-res224-chex,00029159_003.png,3,edema,Edema,,incorrect
+baseline:densenet121-res224-chex,00010007_062.png,1,cardiomegaly,Cardiomegaly,,incorrect
+baseline:densenet121-res224-chex,00010007_062.png,2,effusion,Effusion,,correct
+baseline:densenet121-res224-chex,00010007_062.png,3,atelectasis,Atelectasis,,incorrect
+baseline:densenet121-res224-chex,00021463_004.png,1,atelectasis,Atelectasis,,incorrect
+baseline:densenet121-res224-chex,00021463_004.png,2,effusion,Effusion,,incorrect
+baseline:densenet121-res224-chex,00021463_004.png,3,edema,Edema,,incorrect
+baseline:densenet121-res224-chex,00018253_048.png,1,edema,Edema,,incorrect
+baseline:densenet121-res224-chex,00018253_048.png,2,effusion,Effusion,,correct
+baseline:densenet121-res224-chex,00018253_048.png,3,cardiomegaly,Cardiomegaly,,incorrect
+baseline:densenet121-res224-chex,00014731_016.png,1,atelectasis,Atelectasis,,incorrect
+baseline:densenet121-res224-chex,00014731_016.png,2,effusion,Effusion,,incorrect
+baseline:densenet121-res224-chex,00014731_016.png,3,consolidation,Consolidation,,incorrect
+baseline:densenet121-res224-chex,00011237_112.png,1,cardiomegaly,Cardiomegaly,,incorrect
+baseline:densenet121-res224-chex,00011237_112.png,2,effusion,Effusion,,incorrect
+baseline:densenet121-res224-chex,00011237_112.png,3,atelectasis,Atelectasis,,incorrect
+baseline:densenet121-res224-chex,00013391_005.png,1,cardiomegaly,Cardiomegaly,,incorrect
+baseline:densenet121-res224-chex,00013391_005.png,2,effusion,Effusion,,incorrect
+baseline:densenet121-res224-chex,00013391_005.png,3,edema,Edema,,incorrect
+baseline:densenet121-res224-chex,00017747_053.png,1,atelectasis,Atelectasis,,incorrect
+baseline:densenet121-res224-chex,00017747_053.png,2,effusion,Effusion,,incorrect
+baseline:densenet121-res224-chex,00017747_053.png,3,consolidation,Consolidation,,incorrect
+baseline:densenet121-res224-chex,00008295_022.png,1,edema,Edema,,incorrect
+baseline:densenet121-res224-chex,00008295_022.png,2,atelectasis,Atelectasis,,correct
+baseline:densenet121-res224-chex,00008295_022.png,3,consolidation,Consolidation,,incorrect
+baseline:densenet121-res224-chex,00007750_008.png,1,edema,Edema,,incorrect
+baseline:densenet121-res224-chex,00007750_008.png,2,consolidation,Consolidation,,incorrect
+baseline:densenet121-res224-chex,00007750_008.png,3,atelectasis,Atelectasis,,correct
+baseline:densenet121-res224-mimic_ch,00022416_019.png,1,effusion,Effusion,,correct
+baseline:densenet121-res224-mimic_ch,00022416_019.png,2,atelectasis,Atelectasis,,correct
+baseline:densenet121-res224-mimic_ch,00022416_019.png,3,cardiomegaly,Cardiomegaly,,incorrect
+baseline:densenet121-res224-mimic_ch,00006304_004.png,1,cardiomegaly,Cardiomegaly,,correct
+baseline:densenet121-res224-mimic_ch,00006304_004.png,2,atelectasis,Atelectasis,,correct
+baseline:densenet121-res224-mimic_ch,00006304_004.png,3,edema,Edema,,incorrect
+baseline:densenet121-res224-mimic_ch,00001075_047.png,1,cardiomegaly,Cardiomegaly,,correct
+baseline:densenet121-res224-mimic_ch,00001075_047.png,2,atelectasis,Atelectasis,,correct
+baseline:densenet121-res224-mimic_ch,00001075_047.png,3,pneumonia,Pneumonia,,incorrect
+baseline:densenet121-res224-mimic_ch,00013249_045.png,1,atelectasis,Atelectasis,,incorrect
+baseline:densenet121-res224-mimic_ch,00013249_045.png,2,cardiomegaly,Cardiomegaly,,correct
+baseline:densenet121-res224-mimic_ch,00013249_045.png,3,effusion,Effusion,,incorrect
+baseline:densenet121-res224-mimic_ch,00011702_072.png,1,edema,Edema,,incorrect
+baseline:densenet121-res224-mimic_ch,00011702_072.png,2,cardiomegaly,Cardiomegaly,,correct
+baseline:densenet121-res224-mimic_ch,00011702_072.png,3,effusion,Effusion,,incorrect
+baseline:densenet121-res224-mimic_ch,00010447_027.png,1,edema,Edema,,incorrect
+baseline:densenet121-res224-mimic_ch,00010447_027.png,2,cardiomegaly,Cardiomegaly,,correct
+baseline:densenet121-res224-mimic_ch,00010447_027.png,3,effusion,Effusion,,correct
+baseline:densenet121-res224-mimic_ch,00007322_007.png,1,cardiomegaly,Cardiomegaly,,incorrect
+baseline:densenet121-res224-mimic_ch,00007322_007.png,2,atelectasis,Atelectasis,,incorrect
+baseline:densenet121-res224-mimic_ch,00007322_007.png,3,effusion,Effusion,,incorrect
+baseline:densenet121-res224-mimic_ch,00022416_056.png,1,atelectasis,Atelectasis,,incorrect
+baseline:densenet121-res224-mimic_ch,00022416_056.png,2,cardiomegaly,Cardiomegaly,,incorrect
+baseline:densenet121-res224-mimic_ch,00022416_056.png,3,effusion,Effusion,,correct
+baseline:densenet121-res224-mimic_ch,00004911_016.png,1,pneumonia,Pneumonia,,incorrect
+baseline:densenet121-res224-mimic_ch,00004911_016.png,2,consolidation,Consolidation,,correct
+baseline:densenet121-res224-mimic_ch,00004911_016.png,3,pneumothorax,Pneumothorax,,incorrect
+baseline:densenet121-res224-mimic_ch,00019651_003.png,1,cardiomegaly,Cardiomegaly,,incorrect
+baseline:densenet121-res224-mimic_ch,00019651_003.png,2,atelectasis,Atelectasis,,incorrect
+baseline:densenet121-res224-mimic_ch,00019651_003.png,3,pneumonia,Pneumonia,,incorrect
+baseline:densenet121-res224-mimic_ch,00022084_000.png,1,cardiomegaly,Cardiomegaly,,incorrect
+baseline:densenet121-res224-mimic_ch,00022084_000.png,2,atelectasis,Atelectasis,,incorrect
+baseline:densenet121-res224-mimic_ch,00022084_000.png,3,edema,Edema,,correct
+baseline:densenet121-res224-mimic_ch,00029469_012.png,1,edema,Edema,,correct
+baseline:densenet121-res224-mimic_ch,00029469_012.png,2,effusion,Effusion,,correct
+baseline:densenet121-res224-mimic_ch,00029469_012.png,3,cardiomegaly,Cardiomegaly,,incorrect
+baseline:densenet121-res224-mimic_ch,00029588_004.png,1,effusion,Effusion,,correct
+baseline:densenet121-res224-mimic_ch,00029588_004.png,2,atelectasis,Atelectasis,,incorrect
+baseline:densenet121-res224-mimic_ch,00029588_004.png,3,cardiomegaly,Cardiomegaly,,correct
+baseline:densenet121-res224-mimic_ch,00007632_013.png,1,pneumothorax,Pneumothorax,,correct
+baseline:densenet121-res224-mimic_ch,00007632_013.png,2,atelectasis,Atelectasis,,incorrect
+baseline:densenet121-res224-mimic_ch,00007632_013.png,3,pneumonia,Pneumonia,,incorrect
+baseline:densenet121-res224-mimic_ch,00022098_007.png,1,edema,Edema,,incorrect
+baseline:densenet121-res224-mimic_ch,00022098_007.png,2,effusion,Effusion,,correct
+baseline:densenet121-res224-mimic_ch,00022098_007.png,3,cardiomegaly,Cardiomegaly,,incorrect
+baseline:densenet121-res224-mimic_ch,00003803_002.png,1,cardiomegaly,Cardiomegaly,,incorrect
+baseline:densenet121-res224-mimic_ch,00003803_002.png,2,atelectasis,Atelectasis,,incorrect
+baseline:densenet121-res224-mimic_ch,00003803_002.png,3,pneumothorax,Pneumothorax,,correct
+baseline:densenet121-res224-mimic_ch,00003072_028.png,1,effusion,Effusion,,correct
+baseline:densenet121-res224-mimic_ch,00003072_028.png,2,atelectasis,Atelectasis,,incorrect
+baseline:densenet121-res224-mimic_ch,00003072_028.png,3,consolidation,Consolidation,,incorrect
+baseline:densenet121-res224-mimic_ch,00008911_026.png,1,cardiomegaly,Cardiomegaly,,incorrect
+baseline:densenet121-res224-mimic_ch,00008911_026.png,2,atelectasis,Atelectasis,,incorrect
+baseline:densenet121-res224-mimic_ch,00008911_026.png,3,effusion,Effusion,,incorrect
+baseline:densenet121-res224-mimic_ch,00005089_007.png,1,atelectasis,Atelectasis,,incorrect
+baseline:densenet121-res224-mimic_ch,00005089_007.png,2,effusion,Effusion,,incorrect
+baseline:densenet121-res224-mimic_ch,00005089_007.png,3,consolidation,Consolidation,,incorrect
+baseline:densenet121-res224-mimic_ch,00005609_025.png,1,cardiomegaly,Cardiomegaly,,incorrect
+baseline:densenet121-res224-mimic_ch,00005609_025.png,2,atelectasis,Atelectasis,,incorrect
+baseline:densenet121-res224-mimic_ch,00005609_025.png,3,effusion,Effusion,,incorrect
+baseline:densenet121-res224-mimic_ch,00013659_029.png,1,edema,Edema,,incorrect
+baseline:densenet121-res224-mimic_ch,00013659_029.png,2,cardiomegaly,Cardiomegaly,,incorrect
+baseline:densenet121-res224-mimic_ch,00013659_029.png,3,effusion,Effusion,,incorrect
+baseline:densenet121-res224-mimic_ch,00021463_005.png,1,edema,Edema,,correct
+baseline:densenet121-res224-mimic_ch,00021463_005.png,2,cardiomegaly,Cardiomegaly,,incorrect
+baseline:densenet121-res224-mimic_ch,00021463_005.png,3,effusion,Effusion,,correct
+baseline:densenet121-res224-mimic_ch,00000003_004.png,1,pneumothorax,Pneumothorax,,incorrect
+baseline:densenet121-res224-mimic_ch,00000003_004.png,2,pneumonia,Pneumonia,,incorrect
+baseline:densenet121-res224-mimic_ch,00000003_004.png,3,consolidation,Consolidation,,incorrect
+baseline:densenet121-res224-mimic_ch,00020915_000.png,1,pneumothorax,Pneumothorax,,incorrect
+baseline:densenet121-res224-mimic_ch,00020915_000.png,2,atelectasis,Atelectasis,,incorrect
+baseline:densenet121-res224-mimic_ch,00020915_000.png,3,effusion,Effusion,,incorrect
+baseline:densenet121-res224-mimic_ch,00010120_019.png,1,pneumothorax,Pneumothorax,,incorrect
+baseline:densenet121-res224-mimic_ch,00010120_019.png,2,atelectasis,Atelectasis,,correct
+baseline:densenet121-res224-mimic_ch,00010120_019.png,3,pneumonia,Pneumonia,,incorrect
+baseline:densenet121-res224-mimic_ch,00029159_015.png,1,edema,Edema,,incorrect
+baseline:densenet121-res224-mimic_ch,00029159_015.png,2,cardiomegaly,Cardiomegaly,,incorrect
+baseline:densenet121-res224-mimic_ch,00029159_015.png,3,effusion,Effusion,,correct
+baseline:densenet121-res224-mimic_ch,00026194_000.png,1,atelectasis,Atelectasis,,incorrect
+baseline:densenet121-res224-mimic_ch,00026194_000.png,2,cardiomegaly,Cardiomegaly,,incorrect
+baseline:densenet121-res224-mimic_ch,00026194_000.png,3,consolidation,Consolidation,,incorrect
+baseline:densenet121-res224-mimic_ch,00022726_011.png,1,atelectasis,Atelectasis,,incorrect
+baseline:densenet121-res224-mimic_ch,00022726_011.png,2,pneumonia,Pneumonia,,incorrect
+baseline:densenet121-res224-mimic_ch,00022726_011.png,3,cardiomegaly,Cardiomegaly,,incorrect
+baseline:densenet121-res224-mimic_ch,00017403_002.png,1,cardiomegaly,Cardiomegaly,,incorrect
+baseline:densenet121-res224-mimic_ch,00017403_002.png,2,atelectasis,Atelectasis,,correct
+baseline:densenet121-res224-mimic_ch,00017403_002.png,3,effusion,Effusion,,incorrect
+baseline:densenet121-res224-mimic_ch,00014822_025.png,1,edema,Edema,,incorrect
+baseline:densenet121-res224-mimic_ch,00014822_025.png,2,cardiomegaly,Cardiomegaly,,incorrect
+baseline:densenet121-res224-mimic_ch,00014822_025.png,3,effusion,Effusion,,incorrect
+baseline:densenet121-res224-mimic_ch,00013648_018.png,1,atelectasis,Atelectasis,,incorrect
+baseline:densenet121-res224-mimic_ch,00013648_018.png,2,cardiomegaly,Cardiomegaly,,incorrect
+baseline:densenet121-res224-mimic_ch,00013648_018.png,3,effusion,Effusion,,incorrect
+baseline:densenet121-res224-mimic_ch,00027726_005.png,1,pneumothorax,Pneumothorax,,incorrect
+baseline:densenet121-res224-mimic_ch,00027726_005.png,2,edema,Edema,,incorrect
+baseline:densenet121-res224-mimic_ch,00027726_005.png,3,cardiomegaly,Cardiomegaly,,incorrect
+baseline:densenet121-res224-mimic_ch,00030557_000.png,1,edema,Edema,,incorrect
+baseline:densenet121-res224-mimic_ch,00030557_000.png,2,cardiomegaly,Cardiomegaly,,incorrect
+baseline:densenet121-res224-mimic_ch,00030557_000.png,3,atelectasis,Atelectasis,,incorrect
+baseline:densenet121-res224-mimic_ch,00013670_049.png,1,atelectasis,Atelectasis,,incorrect
+baseline:densenet121-res224-mimic_ch,00013670_049.png,2,cardiomegaly,Cardiomegaly,,incorrect
+baseline:densenet121-res224-mimic_ch,00013670_049.png,3,effusion,Effusion,,incorrect
+baseline:densenet121-res224-mimic_ch,00000733_000.png,1,atelectasis,Atelectasis,,incorrect
+baseline:densenet121-res224-mimic_ch,00000733_000.png,2,cardiomegaly,Cardiomegaly,,incorrect
+baseline:densenet121-res224-mimic_ch,00000733_000.png,3,effusion,Effusion,,incorrect
+baseline:densenet121-res224-mimic_ch,00029159_003.png,1,cardiomegaly,Cardiomegaly,,incorrect
+baseline:densenet121-res224-mimic_ch,00029159_003.png,2,edema,Edema,,incorrect
+baseline:densenet121-res224-mimic_ch,00029159_003.png,3,effusion,Effusion,,incorrect
+baseline:densenet121-res224-mimic_ch,00010007_062.png,1,edema,Edema,,incorrect
+baseline:densenet121-res224-mimic_ch,00010007_062.png,2,effusion,Effusion,,correct
+baseline:densenet121-res224-mimic_ch,00010007_062.png,3,cardiomegaly,Cardiomegaly,,incorrect
+baseline:densenet121-res224-mimic_ch,00021463_004.png,1,atelectasis,Atelectasis,,incorrect
+baseline:densenet121-res224-mimic_ch,00021463_004.png,2,effusion,Effusion,,incorrect
+baseline:densenet121-res224-mimic_ch,00021463_004.png,3,cardiomegaly,Cardiomegaly,,incorrect
+baseline:densenet121-res224-mimic_ch,00018253_048.png,1,effusion,Effusion,,correct
+baseline:densenet121-res224-mimic_ch,00018253_048.png,2,cardiomegaly,Cardiomegaly,,incorrect
+baseline:densenet121-res224-mimic_ch,00018253_048.png,3,edema,Edema,,incorrect
+baseline:densenet121-res224-mimic_ch,00014731_016.png,1,atelectasis,Atelectasis,,incorrect
+baseline:densenet121-res224-mimic_ch,00014731_016.png,2,effusion,Effusion,,incorrect
+baseline:densenet121-res224-mimic_ch,00014731_016.png,3,cardiomegaly,Cardiomegaly,,incorrect
+baseline:densenet121-res224-mimic_ch,00011237_112.png,1,edema,Edema,,correct
+baseline:densenet121-res224-mimic_ch,00011237_112.png,2,effusion,Effusion,,incorrect
+baseline:densenet121-res224-mimic_ch,00011237_112.png,3,cardiomegaly,Cardiomegaly,,incorrect
+baseline:densenet121-res224-mimic_ch,00013391_005.png,1,effusion,Effusion,,incorrect
+baseline:densenet121-res224-mimic_ch,00013391_005.png,2,atelectasis,Atelectasis,,incorrect
+baseline:densenet121-res224-mimic_ch,00013391_005.png,3,cardiomegaly,Cardiomegaly,,incorrect
+baseline:densenet121-res224-mimic_ch,00017747_053.png,1,atelectasis,Atelectasis,,incorrect
+baseline:densenet121-res224-mimic_ch,00017747_053.png,2,pneumothorax,Pneumothorax,,correct
+baseline:densenet121-res224-mimic_ch,00017747_053.png,3,consolidation,Consolidation,,incorrect
+baseline:densenet121-res224-mimic_ch,00008295_022.png,1,cardiomegaly,Cardiomegaly,,incorrect
+baseline:densenet121-res224-mimic_ch,00008295_022.png,2,atelectasis,Atelectasis,,correct
+baseline:densenet121-res224-mimic_ch,00008295_022.png,3,pneumothorax,Pneumothorax,,correct
+baseline:densenet121-res224-mimic_ch,00007750_008.png,1,atelectasis,Atelectasis,,correct
+baseline:densenet121-res224-mimic_ch,00007750_008.png,2,effusion,Effusion,,correct
+baseline:densenet121-res224-mimic_ch,00007750_008.png,3,cardiomegaly,Cardiomegaly,,incorrect
+baseline:densenet121-res224-mimic_nb,00022416_019.png,1,effusion,Effusion,,correct
+baseline:densenet121-res224-mimic_nb,00022416_019.png,2,edema,Edema,,incorrect
+baseline:densenet121-res224-mimic_nb,00022416_019.png,3,atelectasis,Atelectasis,,correct
+baseline:densenet121-res224-mimic_nb,00006304_004.png,1,atelectasis,Atelectasis,,correct
+baseline:densenet121-res224-mimic_nb,00006304_004.png,2,cardiomegaly,Cardiomegaly,,correct
+baseline:densenet121-res224-mimic_nb,00006304_004.png,3,edema,Edema,,incorrect
+baseline:densenet121-res224-mimic_nb,00001075_047.png,1,cardiomegaly,Cardiomegaly,,correct
+baseline:densenet121-res224-mimic_nb,00001075_047.png,2,edema,Edema,,incorrect
+baseline:densenet121-res224-mimic_nb,00001075_047.png,3,atelectasis,Atelectasis,,correct
+baseline:densenet121-res224-mimic_nb,00013249_045.png,1,effusion,Effusion,,incorrect
+baseline:densenet121-res224-mimic_nb,00013249_045.png,2,cardiomegaly,Cardiomegaly,,correct
+baseline:densenet121-res224-mimic_nb,00013249_045.png,3,atelectasis,Atelectasis,,incorrect
+baseline:densenet121-res224-mimic_nb,00011702_072.png,1,effusion,Effusion,,incorrect
+baseline:densenet121-res224-mimic_nb,00011702_072.png,2,edema,Edema,,incorrect
+baseline:densenet121-res224-mimic_nb,00011702_072.png,3,atelectasis,Atelectasis,,incorrect
+baseline:densenet121-res224-mimic_nb,00010447_027.png,1,edema,Edema,,incorrect
+baseline:densenet121-res224-mimic_nb,00010447_027.png,2,cardiomegaly,Cardiomegaly,,correct
+baseline:densenet121-res224-mimic_nb,00010447_027.png,3,atelectasis,Atelectasis,,incorrect
+baseline:densenet121-res224-mimic_nb,00007322_007.png,1,atelectasis,Atelectasis,,incorrect
+baseline:densenet121-res224-mimic_nb,00007322_007.png,2,cardiomegaly,Cardiomegaly,,incorrect
+baseline:densenet121-res224-mimic_nb,00007322_007.png,3,effusion,Effusion,,incorrect
+baseline:densenet121-res224-mimic_nb,00022416_056.png,1,effusion,Effusion,,correct
+baseline:densenet121-res224-mimic_nb,00022416_056.png,2,atelectasis,Atelectasis,,incorrect
+baseline:densenet121-res224-mimic_nb,00022416_056.png,3,edema,Edema,,incorrect
+baseline:densenet121-res224-mimic_nb,00004911_016.png,1,pneumonia,Pneumonia,,incorrect
+baseline:densenet121-res224-mimic_nb,00004911_016.png,2,atelectasis,Atelectasis,,incorrect
+baseline:densenet121-res224-mimic_nb,00004911_016.png,3,edema,Edema,,incorrect
+baseline:densenet121-res224-mimic_nb,00019651_003.png,1,atelectasis,Atelectasis,,incorrect
+baseline:densenet121-res224-mimic_nb,00019651_003.png,2,pneumonia,Pneumonia,,incorrect
+baseline:densenet121-res224-mimic_nb,00019651_003.png,3,cardiomegaly,Cardiomegaly,,incorrect
+baseline:densenet121-res224-mimic_nb,00022084_000.png,1,edema,Edema,,correct
+baseline:densenet121-res224-mimic_nb,00022084_000.png,2,atelectasis,Atelectasis,,incorrect
+baseline:densenet121-res224-mimic_nb,00022084_000.png,3,effusion,Effusion,,incorrect
+baseline:densenet121-res224-mimic_nb,00029469_012.png,1,effusion,Effusion,,correct
+baseline:densenet121-res224-mimic_nb,00029469_012.png,2,edema,Edema,,correct
+baseline:densenet121-res224-mimic_nb,00029469_012.png,3,atelectasis,Atelectasis,,incorrect
+baseline:densenet121-res224-mimic_nb,00029588_004.png,1,edema,Edema,,incorrect
+baseline:densenet121-res224-mimic_nb,00029588_004.png,2,effusion,Effusion,,correct
+baseline:densenet121-res224-mimic_nb,00029588_004.png,3,atelectasis,Atelectasis,,incorrect
+baseline:densenet121-res224-mimic_nb,00007632_013.png,1,pneumothorax,Pneumothorax,,correct
+baseline:densenet121-res224-mimic_nb,00007632_013.png,2,pneumonia,Pneumonia,,incorrect
+baseline:densenet121-res224-mimic_nb,00007632_013.png,3,atelectasis,Atelectasis,,incorrect
+baseline:densenet121-res224-mimic_nb,00022098_007.png,1,edema,Edema,,incorrect
+baseline:densenet121-res224-mimic_nb,00022098_007.png,2,atelectasis,Atelectasis,,incorrect
+baseline:densenet121-res224-mimic_nb,00022098_007.png,3,effusion,Effusion,,correct
+baseline:densenet121-res224-mimic_nb,00003803_002.png,1,pneumonia,Pneumonia,,incorrect
+baseline:densenet121-res224-mimic_nb,00003803_002.png,2,consolidation,Consolidation,,incorrect
+baseline:densenet121-res224-mimic_nb,00003803_002.png,3,edema,Edema,,incorrect
+baseline:densenet121-res224-mimic_nb,00003072_028.png,1,effusion,Effusion,,correct
+baseline:densenet121-res224-mimic_nb,00003072_028.png,2,atelectasis,Atelectasis,,incorrect
+baseline:densenet121-res224-mimic_nb,00003072_028.png,3,edema,Edema,,incorrect
+baseline:densenet121-res224-mimic_nb,00008911_026.png,1,cardiomegaly,Cardiomegaly,,incorrect
+baseline:densenet121-res224-mimic_nb,00008911_026.png,2,atelectasis,Atelectasis,,incorrect
+baseline:densenet121-res224-mimic_nb,00008911_026.png,3,effusion,Effusion,,incorrect
+baseline:densenet121-res224-mimic_nb,00005089_007.png,1,effusion,Effusion,,incorrect
+baseline:densenet121-res224-mimic_nb,00005089_007.png,2,atelectasis,Atelectasis,,incorrect
+baseline:densenet121-res224-mimic_nb,00005089_007.png,3,cardiomegaly,Cardiomegaly,,incorrect
+baseline:densenet121-res224-mimic_nb,00005609_025.png,1,consolidation,Consolidation,,incorrect
+baseline:densenet121-res224-mimic_nb,00005609_025.png,2,pneumonia,Pneumonia,,incorrect
+baseline:densenet121-res224-mimic_nb,00005609_025.png,3,cardiomegaly,Cardiomegaly,,incorrect
+baseline:densenet121-res224-mimic_nb,00013659_029.png,1,edema,Edema,,incorrect
+baseline:densenet121-res224-mimic_nb,00013659_029.png,2,cardiomegaly,Cardiomegaly,,incorrect
+baseline:densenet121-res224-mimic_nb,00013659_029.png,3,effusion,Effusion,,incorrect
+baseline:densenet121-res224-mimic_nb,00021463_005.png,1,edema,Edema,,correct
+baseline:densenet121-res224-mimic_nb,00021463_005.png,2,effusion,Effusion,,correct
+baseline:densenet121-res224-mimic_nb,00021463_005.png,3,atelectasis,Atelectasis,,correct
+baseline:densenet121-res224-mimic_nb,00000003_004.png,1,pneumonia,Pneumonia,,incorrect
+baseline:densenet121-res224-mimic_nb,00000003_004.png,2,consolidation,Consolidation,,incorrect
+baseline:densenet121-res224-mimic_nb,00000003_004.png,3,pneumothorax,Pneumothorax,,incorrect
+baseline:densenet121-res224-mimic_nb,00020915_000.png,1,atelectasis,Atelectasis,,incorrect
+baseline:densenet121-res224-mimic_nb,00020915_000.png,2,pneumothorax,Pneumothorax,,incorrect
+baseline:densenet121-res224-mimic_nb,00020915_000.png,3,pneumonia,Pneumonia,,incorrect
+baseline:densenet121-res224-mimic_nb,00010120_019.png,1,pneumothorax,Pneumothorax,,incorrect
+baseline:densenet121-res224-mimic_nb,00010120_019.png,2,pneumonia,Pneumonia,,incorrect
+baseline:densenet121-res224-mimic_nb,00010120_019.png,3,atelectasis,Atelectasis,,correct
+baseline:densenet121-res224-mimic_nb,00029159_015.png,1,edema,Edema,,incorrect
+baseline:densenet121-res224-mimic_nb,00029159_015.png,2,effusion,Effusion,,correct
+baseline:densenet121-res224-mimic_nb,00029159_015.png,3,atelectasis,Atelectasis,,incorrect
+baseline:densenet121-res224-mimic_nb,00026194_000.png,1,atelectasis,Atelectasis,,incorrect
+baseline:densenet121-res224-mimic_nb,00026194_000.png,2,cardiomegaly,Cardiomegaly,,incorrect
+baseline:densenet121-res224-mimic_nb,00026194_000.png,3,edema,Edema,,incorrect
+baseline:densenet121-res224-mimic_nb,00022726_011.png,1,pneumonia,Pneumonia,,incorrect
+baseline:densenet121-res224-mimic_nb,00022726_011.png,2,atelectasis,Atelectasis,,incorrect
+baseline:densenet121-res224-mimic_nb,00022726_011.png,3,consolidation,Consolidation,,incorrect
+baseline:densenet121-res224-mimic_nb,00017403_002.png,1,cardiomegaly,Cardiomegaly,,incorrect
+baseline:densenet121-res224-mimic_nb,00017403_002.png,2,atelectasis,Atelectasis,,correct
+baseline:densenet121-res224-mimic_nb,00017403_002.png,3,effusion,Effusion,,incorrect
+baseline:densenet121-res224-mimic_nb,00014822_025.png,1,edema,Edema,,incorrect
+baseline:densenet121-res224-mimic_nb,00014822_025.png,2,effusion,Effusion,,incorrect
+baseline:densenet121-res224-mimic_nb,00014822_025.png,3,atelectasis,Atelectasis,,incorrect
+baseline:densenet121-res224-mimic_nb,00013648_018.png,1,pneumothorax,Pneumothorax,,incorrect
+baseline:densenet121-res224-mimic_nb,00013648_018.png,2,atelectasis,Atelectasis,,incorrect
+baseline:densenet121-res224-mimic_nb,00013648_018.png,3,edema,Edema,,incorrect
+baseline:densenet121-res224-mimic_nb,00027726_005.png,1,edema,Edema,,incorrect
+baseline:densenet121-res224-mimic_nb,00027726_005.png,2,pneumonia,Pneumonia,,incorrect
+baseline:densenet121-res224-mimic_nb,00027726_005.png,3,atelectasis,Atelectasis,,incorrect
+baseline:densenet121-res224-mimic_nb,00030557_000.png,1,atelectasis,Atelectasis,,incorrect
+baseline:densenet121-res224-mimic_nb,00030557_000.png,2,edema,Edema,,incorrect
+baseline:densenet121-res224-mimic_nb,00030557_000.png,3,effusion,Effusion,,incorrect
+baseline:densenet121-res224-mimic_nb,00013670_049.png,1,atelectasis,Atelectasis,,incorrect
+baseline:densenet121-res224-mimic_nb,00013670_049.png,2,cardiomegaly,Cardiomegaly,,incorrect
+baseline:densenet121-res224-mimic_nb,00013670_049.png,3,effusion,Effusion,,incorrect
+baseline:densenet121-res224-mimic_nb,00000733_000.png,1,pneumonia,Pneumonia,,incorrect
+baseline:densenet121-res224-mimic_nb,00000733_000.png,2,consolidation,Consolidation,,incorrect
+baseline:densenet121-res224-mimic_nb,00000733_000.png,3,pneumothorax,Pneumothorax,,incorrect
+baseline:densenet121-res224-mimic_nb,00029159_003.png,1,effusion,Effusion,,incorrect
+baseline:densenet121-res224-mimic_nb,00029159_003.png,2,edema,Edema,,incorrect
+baseline:densenet121-res224-mimic_nb,00029159_003.png,3,atelectasis,Atelectasis,,incorrect
+baseline:densenet121-res224-mimic_nb,00010007_062.png,1,effusion,Effusion,,correct
+baseline:densenet121-res224-mimic_nb,00010007_062.png,2,cardiomegaly,Cardiomegaly,,incorrect
+baseline:densenet121-res224-mimic_nb,00010007_062.png,3,atelectasis,Atelectasis,,incorrect
+baseline:densenet121-res224-mimic_nb,00021463_004.png,1,effusion,Effusion,,incorrect
+baseline:densenet121-res224-mimic_nb,00021463_004.png,2,atelectasis,Atelectasis,,incorrect
+baseline:densenet121-res224-mimic_nb,00021463_004.png,3,pneumothorax,Pneumothorax,,incorrect
+baseline:densenet121-res224-mimic_nb,00018253_048.png,1,effusion,Effusion,,correct
+baseline:densenet121-res224-mimic_nb,00018253_048.png,2,atelectasis,Atelectasis,,correct
+baseline:densenet121-res224-mimic_nb,00018253_048.png,3,edema,Edema,,incorrect
+baseline:densenet121-res224-mimic_nb,00014731_016.png,1,atelectasis,Atelectasis,,incorrect
+baseline:densenet121-res224-mimic_nb,00014731_016.png,2,effusion,Effusion,,incorrect
+baseline:densenet121-res224-mimic_nb,00014731_016.png,3,pneumonia,Pneumonia,,correct
+baseline:densenet121-res224-mimic_nb,00011237_112.png,1,effusion,Effusion,,incorrect
+baseline:densenet121-res224-mimic_nb,00011237_112.png,2,edema,Edema,,correct
+baseline:densenet121-res224-mimic_nb,00011237_112.png,3,atelectasis,Atelectasis,,incorrect
+baseline:densenet121-res224-mimic_nb,00013391_005.png,1,effusion,Effusion,,incorrect
+baseline:densenet121-res224-mimic_nb,00013391_005.png,2,atelectasis,Atelectasis,,incorrect
+baseline:densenet121-res224-mimic_nb,00013391_005.png,3,edema,Edema,,incorrect
+baseline:densenet121-res224-mimic_nb,00017747_053.png,1,atelectasis,Atelectasis,,incorrect
+baseline:densenet121-res224-mimic_nb,00017747_053.png,2,effusion,Effusion,,incorrect
+baseline:densenet121-res224-mimic_nb,00017747_053.png,3,pneumonia,Pneumonia,,incorrect
+baseline:densenet121-res224-mimic_nb,00008295_022.png,1,cardiomegaly,Cardiomegaly,,incorrect
+baseline:densenet121-res224-mimic_nb,00008295_022.png,2,pneumonia,Pneumonia,,incorrect
+baseline:densenet121-res224-mimic_nb,00008295_022.png,3,consolidation,Consolidation,,incorrect
+baseline:densenet121-res224-mimic_nb,00007750_008.png,1,pneumonia,Pneumonia,,incorrect
+baseline:densenet121-res224-mimic_nb,00007750_008.png,2,consolidation,Consolidation,,incorrect
+baseline:densenet121-res224-mimic_nb,00007750_008.png,3,edema,Edema,,incorrect
+baseline:densenet121-res224-nih,00022416_019.png,1,atelectasis,Atelectasis,,correct
+baseline:densenet121-res224-nih,00022416_019.png,2,effusion,Effusion,,correct
+baseline:densenet121-res224-nih,00022416_019.png,3,cardiomegaly,Cardiomegaly,,incorrect
+baseline:densenet121-res224-nih,00006304_004.png,1,cardiomegaly,Cardiomegaly,,correct
+baseline:densenet121-res224-nih,00006304_004.png,2,infiltration,Infiltration,,incorrect
+baseline:densenet121-res224-nih,00006304_004.png,3,effusion,Effusion,,incorrect
+baseline:densenet121-res224-nih,00001075_047.png,1,cardiomegaly,Cardiomegaly,,correct
+baseline:densenet121-res224-nih,00001075_047.png,2,infiltration,Infiltration,,incorrect
+baseline:densenet121-res224-nih,00001075_047.png,3,pneumothorax,Pneumothorax,,incorrect
+baseline:densenet121-res224-nih,00013249_045.png,1,infiltration,Infiltration,,correct
+baseline:densenet121-res224-nih,00013249_045.png,2,atelectasis,Atelectasis,,incorrect
+baseline:densenet121-res224-nih,00013249_045.png,3,consolidation,Consolidation,,incorrect
+baseline:densenet121-res224-nih,00011702_072.png,1,effusion,Effusion,,incorrect
+baseline:densenet121-res224-nih,00011702_072.png,2,infiltration,Infiltration,,correct
+baseline:densenet121-res224-nih,00011702_072.png,3,atelectasis,Atelectasis,,incorrect
+baseline:densenet121-res224-nih,00010447_027.png,1,infiltration,Infiltration,,correct
+baseline:densenet121-res224-nih,00010447_027.png,2,nodule,Nodule,,incorrect
+baseline:densenet121-res224-nih,00010447_027.png,3,edema,Edema,,incorrect
+baseline:densenet121-res224-nih,00007322_007.png,1,atelectasis,Atelectasis,,incorrect
+baseline:densenet121-res224-nih,00007322_007.png,2,pneumothorax,Pneumothorax,,incorrect
+baseline:densenet121-res224-nih,00007322_007.png,3,emphysema,Emphysema,,incorrect
+baseline:densenet121-res224-nih,00022416_056.png,1,effusion,Effusion,,correct
+baseline:densenet121-res224-nih,00022416_056.png,2,mass,Mass,,incorrect
+baseline:densenet121-res224-nih,00022416_056.png,3,nodule,Nodule,,incorrect
+baseline:densenet121-res224-nih,00004911_016.png,1,nodule,Nodule,,correct
+baseline:densenet121-res224-nih,00004911_016.png,2,fibrosis,Fibrosis,,incorrect
+baseline:densenet121-res224-nih,00004911_016.png,3,mass,Mass,,incorrect
+baseline:densenet121-res224-nih,00019651_003.png,1,mass,Mass,,correct
+baseline:densenet121-res224-nih,00019651_003.png,2,infiltration,Infiltration,,incorrect
+baseline:densenet121-res224-nih,00019651_003.png,3,nodule,Nodule,,incorrect
+baseline:densenet121-res224-nih,00022084_000.png,1,infiltration,Infiltration,,incorrect
+baseline:densenet121-res224-nih,00022084_000.png,2,edema,Edema,,correct
+baseline:densenet121-res224-nih,00022084_000.png,3,nodule,Nodule,,incorrect
+baseline:densenet121-res224-nih,00029469_012.png,1,infiltration,Infiltration,,correct
+baseline:densenet121-res224-nih,00029469_012.png,2,effusion,Effusion,,correct
+baseline:densenet121-res224-nih,00029469_012.png,3,pneumothorax,Pneumothorax,,incorrect
+baseline:densenet121-res224-nih,00029588_004.png,1,infiltration,Infiltration,,incorrect
+baseline:densenet121-res224-nih,00029588_004.png,2,pneumothorax,Pneumothorax,,incorrect
+baseline:densenet121-res224-nih,00029588_004.png,3,consolidation,Consolidation,,correct
+baseline:densenet121-res224-nih,00007632_013.png,1,infiltration,Infiltration,,incorrect
+baseline:densenet121-res224-nih,00007632_013.png,2,fibrosis,Fibrosis,,incorrect
+baseline:densenet121-res224-nih,00007632_013.png,3,pneumonia,Pneumonia,,incorrect
+baseline:densenet121-res224-nih,00022098_007.png,1,cardiomegaly,Cardiomegaly,,incorrect
+baseline:densenet121-res224-nih,00022098_007.png,2,infiltration,Infiltration,,correct
+baseline:densenet121-res224-nih,00022098_007.png,3,atelectasis,Atelectasis,,incorrect
+baseline:densenet121-res224-nih,00003803_002.png,1,nodule,Nodule,,incorrect
+baseline:densenet121-res224-nih,00003803_002.png,2,fibrosis,Fibrosis,,incorrect
+baseline:densenet121-res224-nih,00003803_002.png,3,pleural thickening,Pleural_Thickening,,incorrect
+baseline:densenet121-res224-nih,00003072_028.png,1,effusion,Effusion,,correct
+baseline:densenet121-res224-nih,00003072_028.png,2,fibrosis,Fibrosis,,correct
+baseline:densenet121-res224-nih,00003072_028.png,3,pneumothorax,Pneumothorax,,correct
+baseline:densenet121-res224-nih,00008911_026.png,1,atelectasis,Atelectasis,,incorrect
+baseline:densenet121-res224-nih,00008911_026.png,2,pneumothorax,Pneumothorax,,incorrect
+baseline:densenet121-res224-nih,00008911_026.png,3,emphysema,Emphysema,,correct
+baseline:densenet121-res224-nih,00005089_007.png,1,atelectasis,Atelectasis,,incorrect
+baseline:densenet121-res224-nih,00005089_007.png,2,pneumonia,Pneumonia,,incorrect
+baseline:densenet121-res224-nih,00005089_007.png,3,infiltration,Infiltration,,incorrect
+baseline:densenet121-res224-nih,00005609_025.png,1,atelectasis,Atelectasis,,incorrect
+baseline:densenet121-res224-nih,00005609_025.png,2,effusion,Effusion,,incorrect
+baseline:densenet121-res224-nih,00005609_025.png,3,pneumothorax,Pneumothorax,,incorrect
+baseline:densenet121-res224-nih,00013659_029.png,1,pleural thickening,Pleural_Thickening,,correct
+baseline:densenet121-res224-nih,00013659_029.png,2,infiltration,Infiltration,,correct
+baseline:densenet121-res224-nih,00013659_029.png,3,consolidation,Consolidation,,incorrect
+baseline:densenet121-res224-nih,00021463_005.png,1,effusion,Effusion,,correct
+baseline:densenet121-res224-nih,00021463_005.png,2,infiltration,Infiltration,,correct
+baseline:densenet121-res224-nih,00021463_005.png,3,atelectasis,Atelectasis,,correct
+baseline:densenet121-res224-nih,00000003_004.png,1,atelectasis,Atelectasis,,incorrect
+baseline:densenet121-res224-nih,00000003_004.png,2,effusion,Effusion,,incorrect
+baseline:densenet121-res224-nih,00000003_004.png,3,hernia,Hernia,,correct
+baseline:densenet121-res224-nih,00020915_000.png,1,atelectasis,Atelectasis,,incorrect
+baseline:densenet121-res224-nih,00020915_000.png,2,nodule,Nodule,,incorrect
+baseline:densenet121-res224-nih,00020915_000.png,3,fibrosis,Fibrosis,,incorrect
+baseline:densenet121-res224-nih,00010120_019.png,1,nodule,Nodule,,incorrect
+baseline:densenet121-res224-nih,00010120_019.png,2,mass,Mass,,incorrect
+baseline:densenet121-res224-nih,00010120_019.png,3,infiltration,Infiltration,,correct
+baseline:densenet121-res224-nih,00029159_015.png,1,infiltration,Infiltration,,correct
+baseline:densenet121-res224-nih,00029159_015.png,2,pneumothorax,Pneumothorax,,incorrect
+baseline:densenet121-res224-nih,00029159_015.png,3,consolidation,Consolidation,,incorrect
+baseline:densenet121-res224-nih,00026194_000.png,1,infiltration,Infiltration,,correct
+baseline:densenet121-res224-nih,00026194_000.png,2,nodule,Nodule,,correct
+baseline:densenet121-res224-nih,00026194_000.png,3,edema,Edema,,incorrect
+baseline:densenet121-res224-nih,00022726_011.png,1,nodule,Nodule,,correct
+baseline:densenet121-res224-nih,00022726_011.png,2,mass,Mass,,correct
+baseline:densenet121-res224-nih,00022726_011.png,3,infiltration,Infiltration,,incorrect
+baseline:densenet121-res224-nih,00017403_002.png,1,atelectasis,Atelectasis,,correct
+baseline:densenet121-res224-nih,00017403_002.png,2,emphysema,Emphysema,,incorrect
+baseline:densenet121-res224-nih,00017403_002.png,3,pneumothorax,Pneumothorax,,incorrect
+baseline:densenet121-res224-nih,00014822_025.png,1,infiltration,Infiltration,,incorrect
+baseline:densenet121-res224-nih,00014822_025.png,2,atelectasis,Atelectasis,,incorrect
+baseline:densenet121-res224-nih,00014822_025.png,3,effusion,Effusion,,incorrect
+baseline:densenet121-res224-nih,00013648_018.png,1,nodule,Nodule,,incorrect
+baseline:densenet121-res224-nih,00013648_018.png,2,fibrosis,Fibrosis,,incorrect
+baseline:densenet121-res224-nih,00013648_018.png,3,infiltration,Infiltration,,incorrect
+baseline:densenet121-res224-nih,00027726_005.png,1,infiltration,Infiltration,,incorrect
+baseline:densenet121-res224-nih,00027726_005.png,2,pleural thickening,Pleural_Thickening,,incorrect
+baseline:densenet121-res224-nih,00027726_005.png,3,hernia,Hernia,,incorrect
+baseline:densenet121-res224-nih,00030557_000.png,1,infiltration,Infiltration,,incorrect
+baseline:densenet121-res224-nih,00030557_000.png,2,nodule,Nodule,,incorrect
+baseline:densenet121-res224-nih,00030557_000.png,3,consolidation,Consolidation,,incorrect
+baseline:densenet121-res224-nih,00013670_049.png,1,effusion,Effusion,,incorrect
+baseline:densenet121-res224-nih,00013670_049.png,2,infiltration,Infiltration,,incorrect
+baseline:densenet121-res224-nih,00013670_049.png,3,atelectasis,Atelectasis,,incorrect
+baseline:densenet121-res224-nih,00000733_000.png,1,nodule,Nodule,,correct
+baseline:densenet121-res224-nih,00000733_000.png,2,fibrosis,Fibrosis,,incorrect
+baseline:densenet121-res224-nih,00000733_000.png,3,pleural thickening,Pleural_Thickening,,incorrect
+baseline:densenet121-res224-nih,00029159_003.png,1,infiltration,Infiltration,,incorrect
+baseline:densenet121-res224-nih,00029159_003.png,2,consolidation,Consolidation,,incorrect
+baseline:densenet121-res224-nih,00029159_003.png,3,pneumothorax,Pneumothorax,,incorrect
+baseline:densenet121-res224-nih,00010007_062.png,1,effusion,Effusion,,correct
+baseline:densenet121-res224-nih,00010007_062.png,2,infiltration,Infiltration,,correct
+baseline:densenet121-res224-nih,00010007_062.png,3,mass,Mass,,incorrect
+baseline:densenet121-res224-nih,00021463_004.png,1,atelectasis,Atelectasis,,incorrect
+baseline:densenet121-res224-nih,00021463_004.png,2,effusion,Effusion,,incorrect
+baseline:densenet121-res224-nih,00021463_004.png,3,hernia,Hernia,,correct
+baseline:densenet121-res224-nih,00018253_048.png,1,infiltration,Infiltration,,correct
+baseline:densenet121-res224-nih,00018253_048.png,2,pneumothorax,Pneumothorax,,incorrect
+baseline:densenet121-res224-nih,00018253_048.png,3,effusion,Effusion,,correct
+baseline:densenet121-res224-nih,00014731_016.png,1,nodule,Nodule,,incorrect
+baseline:densenet121-res224-nih,00014731_016.png,2,mass,Mass,,correct
+baseline:densenet121-res224-nih,00014731_016.png,3,infiltration,Infiltration,,incorrect
+baseline:densenet121-res224-nih,00011237_112.png,1,infiltration,Infiltration,,correct
+baseline:densenet121-res224-nih,00011237_112.png,2,atelectasis,Atelectasis,,incorrect
+baseline:densenet121-res224-nih,00011237_112.png,3,pneumothorax,Pneumothorax,,incorrect
+baseline:densenet121-res224-nih,00013391_005.png,1,effusion,Effusion,,incorrect
+baseline:densenet121-res224-nih,00013391_005.png,2,infiltration,Infiltration,,correct
+baseline:densenet121-res224-nih,00013391_005.png,3,atelectasis,Atelectasis,,incorrect
+baseline:densenet121-res224-nih,00017747_053.png,1,nodule,Nodule,,incorrect
+baseline:densenet121-res224-nih,00017747_053.png,2,mass,Mass,,incorrect
+baseline:densenet121-res224-nih,00017747_053.png,3,effusion,Effusion,,incorrect
+baseline:densenet121-res224-nih,00008295_022.png,1,mass,Mass,,incorrect
+baseline:densenet121-res224-nih,00008295_022.png,2,effusion,Effusion,,correct
+baseline:densenet121-res224-nih,00008295_022.png,3,nodule,Nodule,,incorrect
+baseline:densenet121-res224-nih,00007750_008.png,1,mass,Mass,,incorrect
+baseline:densenet121-res224-nih,00007750_008.png,2,nodule,Nodule,,incorrect
+baseline:densenet121-res224-nih,00007750_008.png,3,effusion,Effusion,,correct
+baseline:densenet121-res224-pc,00022416_019.png,1,infiltration,Infiltration,,correct
+baseline:densenet121-res224-pc,00022416_019.png,2,pneumonia,Pneumonia,,incorrect
+baseline:densenet121-res224-pc,00022416_019.png,3,effusion,Effusion,,correct
+baseline:densenet121-res224-pc,00006304_004.png,1,infiltration,Infiltration,,incorrect
+baseline:densenet121-res224-pc,00006304_004.png,2,cardiomegaly,Cardiomegaly,,correct
+baseline:densenet121-res224-pc,00006304_004.png,3,edema,Edema,,incorrect
+baseline:densenet121-res224-pc,00001075_047.png,1,cardiomegaly,Cardiomegaly,,correct
+baseline:densenet121-res224-pc,00001075_047.png,2,atelectasis,Atelectasis,,correct
+baseline:densenet121-res224-pc,00001075_047.png,3,nodule,Nodule,,incorrect
+baseline:densenet121-res224-pc,00013249_045.png,1,infiltration,Infiltration,,correct
+baseline:densenet121-res224-pc,00013249_045.png,2,pneumonia,Pneumonia,,incorrect
+baseline:densenet121-res224-pc,00013249_045.png,3,cardiomegaly,Cardiomegaly,,correct
+baseline:densenet121-res224-pc,00011702_072.png,1,infiltration,Infiltration,,correct
+baseline:densenet121-res224-pc,00011702_072.png,2,effusion,Effusion,,incorrect
+baseline:densenet121-res224-pc,00011702_072.png,3,pneumonia,Pneumonia,,incorrect
+baseline:densenet121-res224-pc,00010447_027.png,1,infiltration,Infiltration,,correct
+baseline:densenet121-res224-pc,00010447_027.png,2,effusion,Effusion,,correct
+baseline:densenet121-res224-pc,00010447_027.png,3,pneumonia,Pneumonia,,incorrect
+baseline:densenet121-res224-pc,00007322_007.png,1,effusion,Effusion,,incorrect
+baseline:densenet121-res224-pc,00007322_007.png,2,infiltration,Infiltration,,incorrect
+baseline:densenet121-res224-pc,00007322_007.png,3,cardiomegaly,Cardiomegaly,,incorrect
+baseline:densenet121-res224-pc,00022416_056.png,1,infiltration,Infiltration,,incorrect
+baseline:densenet121-res224-pc,00022416_056.png,2,effusion,Effusion,,correct
+baseline:densenet121-res224-pc,00022416_056.png,3,edema,Edema,,incorrect
+baseline:densenet121-res224-pc,00004911_016.png,1,infiltration,Infiltration,,incorrect
+baseline:densenet121-res224-pc,00004911_016.png,2,effusion,Effusion,,incorrect
+baseline:densenet121-res224-pc,00004911_016.png,3,pneumonia,Pneumonia,,incorrect
+baseline:densenet121-res224-pc,00019651_003.png,1,infiltration,Infiltration,,incorrect
+baseline:densenet121-res224-pc,00019651_003.png,2,pneumonia,Pneumonia,,incorrect
+baseline:densenet121-res224-pc,00019651_003.png,3,cardiomegaly,Cardiomegaly,,incorrect
+baseline:densenet121-res224-pc,00022084_000.png,1,effusion,Effusion,,incorrect
+baseline:densenet121-res224-pc,00022084_000.png,2,infiltration,Infiltration,,incorrect
+baseline:densenet121-res224-pc,00022084_000.png,3,pneumonia,Pneumonia,,correct
+baseline:densenet121-res224-pc,00029469_012.png,1,infiltration,Infiltration,,correct
+baseline:densenet121-res224-pc,00029469_012.png,2,effusion,Effusion,,correct
+baseline:densenet121-res224-pc,00029469_012.png,3,pneumonia,Pneumonia,,correct
+baseline:densenet121-res224-pc,00029588_004.png,1,infiltration,Infiltration,,incorrect
+baseline:densenet121-res224-pc,00029588_004.png,2,pneumonia,Pneumonia,,incorrect
+baseline:densenet121-res224-pc,00029588_004.png,3,effusion,Effusion,,correct
+baseline:densenet121-res224-pc,00007632_013.png,1,effusion,Effusion,,correct
+baseline:densenet121-res224-pc,00007632_013.png,2,nodule,Nodule,,incorrect
+baseline:densenet121-res224-pc,00007632_013.png,3,emphysema,Emphysema,,incorrect
+baseline:densenet121-res224-pc,00022098_007.png,1,effusion,Effusion,,correct
+baseline:densenet121-res224-pc,00022098_007.png,2,infiltration,Infiltration,,correct
+baseline:densenet121-res224-pc,00022098_007.png,3,pneumonia,Pneumonia,,incorrect
+baseline:densenet121-res224-pc,00003803_002.png,1,infiltration,Infiltration,,correct
+baseline:densenet121-res224-pc,00003803_002.png,2,pneumonia,Pneumonia,,incorrect
+baseline:densenet121-res224-pc,00003803_002.png,3,consolidation,Consolidation,,incorrect
+baseline:densenet121-res224-pc,00003072_028.png,1,effusion,Effusion,,correct
+baseline:densenet121-res224-pc,00003072_028.png,2,infiltration,Infiltration,,incorrect
+baseline:densenet121-res224-pc,00003072_028.png,3,mass,Mass,,incorrect
+baseline:densenet121-res224-pc,00008911_026.png,1,infiltration,Infiltration,,incorrect
+baseline:densenet121-res224-pc,00008911_026.png,2,pneumonia,Pneumonia,,incorrect
+baseline:densenet121-res224-pc,00008911_026.png,3,effusion,Effusion,,incorrect
+baseline:densenet121-res224-pc,00005089_007.png,1,effusion,Effusion,,incorrect
+baseline:densenet121-res224-pc,00005089_007.png,2,atelectasis,Atelectasis,,incorrect
+baseline:densenet121-res224-pc,00005089_007.png,3,infiltration,Infiltration,,incorrect
+baseline:densenet121-res224-pc,00005609_025.png,1,infiltration,Infiltration,,incorrect
+baseline:densenet121-res224-pc,00005609_025.png,2,pneumonia,Pneumonia,,incorrect
+baseline:densenet121-res224-pc,00005609_025.png,3,nodule,Nodule,,incorrect
+baseline:densenet121-res224-pc,00013659_029.png,1,effusion,Effusion,,incorrect
+baseline:densenet121-res224-pc,00013659_029.png,2,infiltration,Infiltration,,correct
+baseline:densenet121-res224-pc,00013659_029.png,3,pleural thickening,Pleural_Thickening,,correct
+baseline:densenet121-res224-pc,00021463_005.png,1,infiltration,Infiltration,,correct
+baseline:densenet121-res224-pc,00021463_005.png,2,pneumonia,Pneumonia,,incorrect
+baseline:densenet121-res224-pc,00021463_005.png,3,fibrosis,Fibrosis,,incorrect
+baseline:densenet121-res224-pc,00000003_004.png,1,infiltration,Infiltration,,incorrect
+baseline:densenet121-res224-pc,00000003_004.png,2,nodule,Nodule,,incorrect
+baseline:densenet121-res224-pc,00000003_004.png,3,pneumonia,Pneumonia,,incorrect
+baseline:densenet121-res224-pc,00020915_000.png,1,hernia,Hernia,,correct
+baseline:densenet121-res224-pc,00020915_000.png,2,infiltration,Infiltration,,incorrect
+baseline:densenet121-res224-pc,00020915_000.png,3,pneumonia,Pneumonia,,incorrect
+baseline:densenet121-res224-pc,00010120_019.png,1,nodule,Nodule,,incorrect
+baseline:densenet121-res224-pc,00010120_019.png,2,pneumothorax,Pneumothorax,,incorrect
+baseline:densenet121-res224-pc,00010120_019.png,3,emphysema,Emphysema,,incorrect
+baseline:densenet121-res224-pc,00029159_015.png,1,infiltration,Infiltration,,correct
+baseline:densenet121-res224-pc,00029159_015.png,2,pneumonia,Pneumonia,,incorrect
+baseline:densenet121-res224-pc,00029159_015.png,3,effusion,Effusion,,correct
+baseline:densenet121-res224-pc,00026194_000.png,1,pneumonia,Pneumonia,,incorrect
+baseline:densenet121-res224-pc,00026194_000.png,2,infiltration,Infiltration,,correct
+baseline:densenet121-res224-pc,00026194_000.png,3,consolidation,Consolidation,,incorrect
+baseline:densenet121-res224-pc,00022726_011.png,1,infiltration,Infiltration,,incorrect
+baseline:densenet121-res224-pc,00022726_011.png,2,pneumonia,Pneumonia,,incorrect
+baseline:densenet121-res224-pc,00022726_011.png,3,nodule,Nodule,,correct
+baseline:densenet121-res224-pc,00017403_002.png,1,infiltration,Infiltration,,incorrect
+baseline:densenet121-res224-pc,00017403_002.png,2,pneumonia,Pneumonia,,incorrect
+baseline:densenet121-res224-pc,00017403_002.png,3,edema,Edema,,incorrect
+baseline:densenet121-res224-pc,00014822_025.png,1,infiltration,Infiltration,,incorrect
+baseline:densenet121-res224-pc,00014822_025.png,2,pneumonia,Pneumonia,,incorrect
+baseline:densenet121-res224-pc,00014822_025.png,3,pleural thickening,Pleural_Thickening,,incorrect
+baseline:densenet121-res224-pc,00013648_018.png,1,nodule,Nodule,,incorrect
+baseline:densenet121-res224-pc,00013648_018.png,2,mass,Mass,,incorrect
+baseline:densenet121-res224-pc,00013648_018.png,3,effusion,Effusion,,incorrect
+baseline:densenet121-res224-pc,00027726_005.png,1,nodule,Nodule,,incorrect
+baseline:densenet121-res224-pc,00027726_005.png,2,pleural thickening,Pleural_Thickening,,incorrect
+baseline:densenet121-res224-pc,00027726_005.png,3,pneumothorax,Pneumothorax,,incorrect
+baseline:densenet121-res224-pc,00030557_000.png,1,pneumonia,Pneumonia,,incorrect
+baseline:densenet121-res224-pc,00030557_000.png,2,cardiomegaly,Cardiomegaly,,incorrect
+baseline:densenet121-res224-pc,00030557_000.png,3,atelectasis,Atelectasis,,incorrect
+baseline:densenet121-res224-pc,00013670_049.png,1,infiltration,Infiltration,,incorrect
+baseline:densenet121-res224-pc,00013670_049.png,2,pneumonia,Pneumonia,,incorrect
+baseline:densenet121-res224-pc,00013670_049.png,3,effusion,Effusion,,incorrect
+baseline:densenet121-res224-pc,00000733_000.png,1,infiltration,Infiltration,,incorrect
+baseline:densenet121-res224-pc,00000733_000.png,2,pneumonia,Pneumonia,,incorrect
+baseline:densenet121-res224-pc,00000733_000.png,3,consolidation,Consolidation,,incorrect
+baseline:densenet121-res224-pc,00029159_003.png,1,infiltration,Infiltration,,incorrect
+baseline:densenet121-res224-pc,00029159_003.png,2,effusion,Effusion,,incorrect
+baseline:densenet121-res224-pc,00029159_003.png,3,pneumonia,Pneumonia,,incorrect
+baseline:densenet121-res224-pc,00010007_062.png,1,effusion,Effusion,,correct
+baseline:densenet121-res224-pc,00010007_062.png,2,cardiomegaly,Cardiomegaly,,incorrect
+baseline:densenet121-res224-pc,00010007_062.png,3,infiltration,Infiltration,,correct
+baseline:densenet121-res224-pc,00021463_004.png,1,hernia,Hernia,,correct
+baseline:densenet121-res224-pc,00021463_004.png,2,effusion,Effusion,,incorrect
+baseline:densenet121-res224-pc,00021463_004.png,3,infiltration,Infiltration,,correct
+baseline:densenet121-res224-pc,00018253_048.png,1,effusion,Effusion,,correct
+baseline:densenet121-res224-pc,00018253_048.png,2,infiltration,Infiltration,,correct
+baseline:densenet121-res224-pc,00018253_048.png,3,pleural thickening,Pleural_Thickening,,correct
+baseline:densenet121-res224-pc,00014731_016.png,1,infiltration,Infiltration,,incorrect
+baseline:densenet121-res224-pc,00014731_016.png,2,pneumonia,Pneumonia,,correct
+baseline:densenet121-res224-pc,00014731_016.png,3,mass,Mass,,correct
+baseline:densenet121-res224-pc,00011237_112.png,1,effusion,Effusion,,incorrect
+baseline:densenet121-res224-pc,00011237_112.png,2,infiltration,Infiltration,,correct
+baseline:densenet121-res224-pc,00011237_112.png,3,pneumonia,Pneumonia,,correct
+baseline:densenet121-res224-pc,00013391_005.png,1,effusion,Effusion,,incorrect
+baseline:densenet121-res224-pc,00013391_005.png,2,cardiomegaly,Cardiomegaly,,incorrect
+baseline:densenet121-res224-pc,00013391_005.png,3,infiltration,Infiltration,,correct
+baseline:densenet121-res224-pc,00017747_053.png,1,effusion,Effusion,,incorrect
+baseline:densenet121-res224-pc,00017747_053.png,2,pneumonia,Pneumonia,,incorrect
+baseline:densenet121-res224-pc,00017747_053.png,3,infiltration,Infiltration,,incorrect
+baseline:densenet121-res224-pc,00008295_022.png,1,mass,Mass,,incorrect
+baseline:densenet121-res224-pc,00008295_022.png,2,infiltration,Infiltration,,incorrect
+baseline:densenet121-res224-pc,00008295_022.png,3,pneumonia,Pneumonia,,incorrect
+baseline:densenet121-res224-pc,00007750_008.png,1,infiltration,Infiltration,,incorrect
+baseline:densenet121-res224-pc,00007750_008.png,2,pneumonia,Pneumonia,,incorrect
+baseline:densenet121-res224-pc,00007750_008.png,3,edema,Edema,,incorrect
+baseline:resnet50-res512-all,00022416_019.png,1,effusion,Effusion,,correct
+baseline:resnet50-res512-all,00022416_019.png,2,infiltration,Infiltration,,correct
+baseline:resnet50-res512-all,00022416_019.png,3,pneumonia,Pneumonia,,incorrect
+baseline:resnet50-res512-all,00006304_004.png,1,infiltration,Infiltration,,incorrect
+baseline:resnet50-res512-all,00006304_004.png,2,atelectasis,Atelectasis,,correct
+baseline:resnet50-res512-all,00006304_004.png,3,effusion,Effusion,,incorrect
+baseline:resnet50-res512-all,00001075_047.png,1,atelectasis,Atelectasis,,correct
+baseline:resnet50-res512-all,00001075_047.png,2,infiltration,Infiltration,,incorrect
+baseline:resnet50-res512-all,00001075_047.png,3,cardiomegaly,Cardiomegaly,,correct
+baseline:resnet50-res512-all,00013249_045.png,1,infiltration,Infiltration,,correct
+baseline:resnet50-res512-all,00013249_045.png,2,cardiomegaly,Cardiomegaly,,correct
+baseline:resnet50-res512-all,00013249_045.png,3,pneumonia,Pneumonia,,incorrect
+baseline:resnet50-res512-all,00011702_072.png,1,effusion,Effusion,,incorrect
+baseline:resnet50-res512-all,00011702_072.png,2,infiltration,Infiltration,,correct
+baseline:resnet50-res512-all,00011702_072.png,3,atelectasis,Atelectasis,,incorrect
+baseline:resnet50-res512-all,00010447_027.png,1,pneumonia,Pneumonia,,incorrect
+baseline:resnet50-res512-all,00010447_027.png,2,infiltration,Infiltration,,correct
+baseline:resnet50-res512-all,00010447_027.png,3,consolidation,Consolidation,,incorrect
+baseline:resnet50-res512-all,00007322_007.png,1,infiltration,Infiltration,,incorrect
+baseline:resnet50-res512-all,00007322_007.png,2,effusion,Effusion,,incorrect
+baseline:resnet50-res512-all,00007322_007.png,3,atelectasis,Atelectasis,,incorrect
+baseline:resnet50-res512-all,00022416_056.png,1,effusion,Effusion,,correct
+baseline:resnet50-res512-all,00022416_056.png,2,infiltration,Infiltration,,incorrect
+baseline:resnet50-res512-all,00022416_056.png,3,pneumonia,Pneumonia,,incorrect
+baseline:resnet50-res512-all,00004911_016.png,1,nodule,Nodule,,correct
+baseline:resnet50-res512-all,00004911_016.png,2,mass,Mass,,incorrect
+baseline:resnet50-res512-all,00004911_016.png,3,effusion,Effusion,,incorrect
+baseline:resnet50-res512-all,00019651_003.png,1,infiltration,Infiltration,,incorrect
+baseline:resnet50-res512-all,00019651_003.png,2,mass,Mass,,correct
+baseline:resnet50-res512-all,00019651_003.png,3,atelectasis,Atelectasis,,incorrect
+baseline:resnet50-res512-all,00022084_000.png,1,nodule,Nodule,,incorrect
+baseline:resnet50-res512-all,00022084_000.png,2,infiltration,Infiltration,,incorrect
+baseline:resnet50-res512-all,00022084_000.png,3,pneumonia,Pneumonia,,correct
+baseline:resnet50-res512-all,00029469_012.png,1,infiltration,Infiltration,,correct
+baseline:resnet50-res512-all,00029469_012.png,2,effusion,Effusion,,correct
+baseline:resnet50-res512-all,00029469_012.png,3,pneumonia,Pneumonia,,correct
+baseline:resnet50-res512-all,00029588_004.png,1,pneumonia,Pneumonia,,incorrect
+baseline:resnet50-res512-all,00029588_004.png,2,infiltration,Infiltration,,incorrect
+baseline:resnet50-res512-all,00029588_004.png,3,effusion,Effusion,,correct
+baseline:resnet50-res512-all,00007632_013.png,1,infiltration,Infiltration,,incorrect
+baseline:resnet50-res512-all,00007632_013.png,2,nodule,Nodule,,incorrect
+baseline:resnet50-res512-all,00007632_013.png,3,effusion,Effusion,,correct
+baseline:resnet50-res512-all,00022098_007.png,1,atelectasis,Atelectasis,,incorrect
+baseline:resnet50-res512-all,00022098_007.png,2,effusion,Effusion,,correct
+baseline:resnet50-res512-all,00022098_007.png,3,infiltration,Infiltration,,correct
+baseline:resnet50-res512-all,00003803_002.png,1,infiltration,Infiltration,,correct
+baseline:resnet50-res512-all,00003803_002.png,2,pneumothorax,Pneumothorax,,correct
+baseline:resnet50-res512-all,00003803_002.png,3,pneumonia,Pneumonia,,incorrect
+baseline:resnet50-res512-all,00003072_028.png,1,effusion,Effusion,,correct
+baseline:resnet50-res512-all,00003072_028.png,2,pleural thickening,Pleural_Thickening,,incorrect
+baseline:resnet50-res512-all,00003072_028.png,3,pneumothorax,Pneumothorax,,correct
+baseline:resnet50-res512-all,00008911_026.png,1,emphysema,Emphysema,,correct
+baseline:resnet50-res512-all,00008911_026.png,2,pneumothorax,Pneumothorax,,incorrect
+baseline:resnet50-res512-all,00008911_026.png,3,infiltration,Infiltration,,incorrect
+baseline:resnet50-res512-all,00005089_007.png,1,pleural thickening,Pleural_Thickening,,incorrect
+baseline:resnet50-res512-all,00005089_007.png,2,effusion,Effusion,,incorrect
+baseline:resnet50-res512-all,00005089_007.png,3,pneumothorax,Pneumothorax,,incorrect
+baseline:resnet50-res512-all,00005609_025.png,1,atelectasis,Atelectasis,,incorrect
+baseline:resnet50-res512-all,00005609_025.png,2,effusion,Effusion,,incorrect
+baseline:resnet50-res512-all,00005609_025.png,3,infiltration,Infiltration,,incorrect
+baseline:resnet50-res512-all,00013659_029.png,1,infiltration,Infiltration,,correct
+baseline:resnet50-res512-all,00013659_029.png,2,effusion,Effusion,,incorrect
+baseline:resnet50-res512-all,00013659_029.png,3,atelectasis,Atelectasis,,incorrect
+baseline:resnet50-res512-all,00021463_005.png,1,infiltration,Infiltration,,correct
+baseline:resnet50-res512-all,00021463_005.png,2,effusion,Effusion,,correct
+baseline:resnet50-res512-all,00021463_005.png,3,edema,Edema,,correct
+baseline:resnet50-res512-all,00000003_004.png,1,hernia,Hernia,,correct
+baseline:resnet50-res512-all,00000003_004.png,2,atelectasis,Atelectasis,,incorrect
+baseline:resnet50-res512-all,00000003_004.png,3,infiltration,Infiltration,,incorrect
+baseline:resnet50-res512-all,00020915_000.png,1,hernia,Hernia,,correct
+baseline:resnet50-res512-all,00020915_000.png,2,mass,Mass,,incorrect
+baseline:resnet50-res512-all,00020915_000.png,3,atelectasis,Atelectasis,,incorrect
+baseline:resnet50-res512-all,00010120_019.png,1,infiltration,Infiltration,,correct
+baseline:resnet50-res512-all,00010120_019.png,2,nodule,Nodule,,incorrect
+baseline:resnet50-res512-all,00010120_019.png,3,effusion,Effusion,,incorrect
+baseline:resnet50-res512-all,00029159_015.png,1,pneumonia,Pneumonia,,incorrect
+baseline:resnet50-res512-all,00029159_015.png,2,infiltration,Infiltration,,correct
+baseline:resnet50-res512-all,00029159_015.png,3,consolidation,Consolidation,,incorrect
+baseline:resnet50-res512-all,00026194_000.png,1,infiltration,Infiltration,,correct
+baseline:resnet50-res512-all,00026194_000.png,2,pneumonia,Pneumonia,,incorrect
+baseline:resnet50-res512-all,00026194_000.png,3,atelectasis,Atelectasis,,incorrect
+baseline:resnet50-res512-all,00022726_011.png,1,nodule,Nodule,,correct
+baseline:resnet50-res512-all,00022726_011.png,2,mass,Mass,,correct
+baseline:resnet50-res512-all,00022726_011.png,3,pneumothorax,Pneumothorax,,incorrect
+baseline:resnet50-res512-all,00017403_002.png,1,pneumonia,Pneumonia,,incorrect
+baseline:resnet50-res512-all,00017403_002.png,2,infiltration,Infiltration,,incorrect
+baseline:resnet50-res512-all,00017403_002.png,3,atelectasis,Atelectasis,,correct
+baseline:resnet50-res512-all,00014822_025.png,1,pneumothorax,Pneumothorax,,incorrect
+baseline:resnet50-res512-all,00014822_025.png,2,atelectasis,Atelectasis,,incorrect
+baseline:resnet50-res512-all,00014822_025.png,3,infiltration,Infiltration,,incorrect
+baseline:resnet50-res512-all,00013648_018.png,1,infiltration,Infiltration,,incorrect
+baseline:resnet50-res512-all,00013648_018.png,2,mass,Mass,,incorrect
+baseline:resnet50-res512-all,00013648_018.png,3,pleural thickening,Pleural_Thickening,,incorrect
+baseline:resnet50-res512-all,00027726_005.png,1,infiltration,Infiltration,,incorrect
+baseline:resnet50-res512-all,00027726_005.png,2,nodule,Nodule,,incorrect
+baseline:resnet50-res512-all,00027726_005.png,3,pleural thickening,Pleural_Thickening,,incorrect
+baseline:resnet50-res512-all,00030557_000.png,1,infiltration,Infiltration,,incorrect
+baseline:resnet50-res512-all,00030557_000.png,2,atelectasis,Atelectasis,,incorrect
+baseline:resnet50-res512-all,00030557_000.png,3,pneumothorax,Pneumothorax,,incorrect
+baseline:resnet50-res512-all,00013670_049.png,1,pneumonia,Pneumonia,,incorrect
+baseline:resnet50-res512-all,00013670_049.png,2,infiltration,Infiltration,,incorrect
+baseline:resnet50-res512-all,00013670_049.png,3,consolidation,Consolidation,,correct
+baseline:resnet50-res512-all,00000733_000.png,1,pleural thickening,Pleural_Thickening,,incorrect
+baseline:resnet50-res512-all,00000733_000.png,2,fibrosis,Fibrosis,,incorrect
+baseline:resnet50-res512-all,00000733_000.png,3,nodule,Nodule,,correct
+baseline:resnet50-res512-all,00029159_003.png,1,atelectasis,Atelectasis,,incorrect
+baseline:resnet50-res512-all,00029159_003.png,2,infiltration,Infiltration,,incorrect
+baseline:resnet50-res512-all,00029159_003.png,3,effusion,Effusion,,incorrect
+baseline:resnet50-res512-all,00010007_062.png,1,infiltration,Infiltration,,correct
+baseline:resnet50-res512-all,00010007_062.png,2,pneumonia,Pneumonia,,incorrect
+baseline:resnet50-res512-all,00010007_062.png,3,effusion,Effusion,,correct
+baseline:resnet50-res512-all,00021463_004.png,1,effusion,Effusion,,incorrect
+baseline:resnet50-res512-all,00021463_004.png,2,infiltration,Infiltration,,correct
+baseline:resnet50-res512-all,00021463_004.png,3,atelectasis,Atelectasis,,incorrect
+baseline:resnet50-res512-all,00018253_048.png,1,infiltration,Infiltration,,correct
+baseline:resnet50-res512-all,00018253_048.png,2,effusion,Effusion,,correct
+baseline:resnet50-res512-all,00018253_048.png,3,atelectasis,Atelectasis,,correct
+baseline:resnet50-res512-all,00014731_016.png,1,pneumothorax,Pneumothorax,,correct
+baseline:resnet50-res512-all,00014731_016.png,2,emphysema,Emphysema,,correct
+baseline:resnet50-res512-all,00014731_016.png,3,nodule,Nodule,,incorrect
+baseline:resnet50-res512-all,00011237_112.png,1,pneumonia,Pneumonia,,correct
+baseline:resnet50-res512-all,00011237_112.png,2,infiltration,Infiltration,,correct
+baseline:resnet50-res512-all,00011237_112.png,3,effusion,Effusion,,incorrect
+baseline:resnet50-res512-all,00013391_005.png,1,pneumothorax,Pneumothorax,,incorrect
+baseline:resnet50-res512-all,00013391_005.png,2,pneumonia,Pneumonia,,correct
+baseline:resnet50-res512-all,00013391_005.png,3,infiltration,Infiltration,,correct
+baseline:resnet50-res512-all,00017747_053.png,1,pneumothorax,Pneumothorax,,correct
+baseline:resnet50-res512-all,00017747_053.png,2,emphysema,Emphysema,,correct
+baseline:resnet50-res512-all,00017747_053.png,3,infiltration,Infiltration,,incorrect
+baseline:resnet50-res512-all,00008295_022.png,1,emphysema,Emphysema,,incorrect
+baseline:resnet50-res512-all,00008295_022.png,2,pneumothorax,Pneumothorax,,correct
+baseline:resnet50-res512-all,00008295_022.png,3,atelectasis,Atelectasis,,correct
+baseline:resnet50-res512-all,00007750_008.png,1,effusion,Effusion,,correct
+baseline:resnet50-res512-all,00007750_008.png,2,infiltration,Infiltration,,incorrect
+baseline:resnet50-res512-all,00007750_008.png,3,atelectasis,Atelectasis,,correct
 gemma4-26b:zeroshot,00022416_019.png,1,Congestive heart failure (pulmonary edema and pleural effusions),Edema|Effusion,,correct
 gemma4-26b:zeroshot,00022416_019.png,2,Multifocal pneumonia,Pneumonia,,incorrect
 gemma4-26b:zeroshot,00022416_019.png,3,Acute Respiratory Distress Syndrome (ARDS),,,oov
@@ -258,9 +1203,9 @@ gemma4-26b:zeroshot,00008295_022.png,3,Right-sided atelectasis,Atelectasis,,corr
 gemma4-26b:zeroshot,00007750_008.png,1,Residual right pleural effusion or atelectasis,Effusion|Atelectasis,,correct
 gemma4-26b:zeroshot,00007750_008.png,2,Right lower lobe pneumonia,Pneumonia,,incorrect
 gemma4-26b:zeroshot,00007750_008.png,3,Post-procedural changes following chest tube insertion,,,oov
-gemma4-26b:single,00006304_004.png,1,Congestive heart failure,,,oov
-gemma4-26b:single,00006304_004.png,2,Atelectasis,Atelectasis,,correct
-gemma4-26b:single,00006304_004.png,3,Pneumonia,Pneumonia,,incorrect
+gemma4-26b:council,00022726_011.png,1,Pulmonary neoplasm (primary lung cancer),Mass,,correct
+gemma4-26b:council,00022726_011.png,2,"Granulomatous disease (e.g., sarcoidosis)",,,oov
+gemma4-26b:council,00022726_011.png,3,"Infectious process (e.g., focal pneumonia or abscess)",Pneumonia,,incorrect
 qwen3.6-27b:zeroshot,00022416_019.png,1,Acute Respiratory Distress Syndrome (ARDS) / Non-cardiogenic Pulmonary Edema,Edema,,incorrect
 qwen3.6-27b:zeroshot,00022416_019.png,2,Cardiogenic Pulmonary Edema / Congestive Heart Failure,Edema,,incorrect
 qwen3.6-27b:zeroshot,00022416_019.png,3,Multilobar Pneumonia,Pneumonia,,incorrect
@@ -276,8 +1221,8 @@ qwen3.6-27b:zeroshot,00013249_045.png,3,Respiratory Distress Syndrome (RDS) or B
 qwen3.6-27b:zeroshot,00011702_072.png,1,Left lower lobe pneumonia with parapneumonic effusion,Pneumonia|Effusion,,incorrect
 qwen3.6-27b:zeroshot,00011702_072.png,2,Pulmonary edema / Congestive heart failure,Edema,,incorrect
 qwen3.6-27b:zeroshot,00011702_072.png,3,Left lower lobe atelectasis,Atelectasis,,incorrect
-qwen3.6-27b:zeroshot,00010447_027.png,1,Multifocal pneumonia (bacterial or viral),Pneumonia,,incorrect
-qwen3.6-27b:zeroshot,00010447_027.png,2,Pulmonary edema (cardiogenic or non-cardiogenic),Edema,,incorrect
+qwen3.6-27b:zeroshot,00010447_027.png,1,Multifocal pneumonia,Pneumonia,,incorrect
+qwen3.6-27b:zeroshot,00010447_027.png,2,Pulmonary edema,Edema,,incorrect
 qwen3.6-27b:zeroshot,00010447_027.png,3,Acute Respiratory Distress Syndrome (ARDS),,,oov
 qwen3.6-27b:zeroshot,00007322_007.png,1,Cardiogenic pulmonary edema / Congestive heart failure,Edema,,incorrect
 qwen3.6-27b:zeroshot,00007322_007.png,2,Multifocal pneumonia / Acute Respiratory Distress Syndrome (ARDS),Pneumonia,,incorrect
@@ -342,18 +1287,93 @@ qwen3.6-27b:zeroshot,00029159_015.png,3,Multifocal Pneumonia / Severe Sepsis,Pne
 qwen3.6-27b:zeroshot,00026194_000.png,1,Normal chest radiograph,No Finding,,incorrect
 qwen3.6-27b:zeroshot,00026194_000.png,2,Mild bronchitis,,,oov
 qwen3.6-27b:zeroshot,00026194_000.png,3,Early viral pneumonia,Pneumonia,,incorrect
+qwen3.6-27b:zeroshot,00017403_002.png,1,Left lower lobe pneumonia,Pneumonia,,incorrect
+qwen3.6-27b:zeroshot,00017403_002.png,2,Atelectasis,Atelectasis,,correct
+qwen3.6-27b:zeroshot,00017403_002.png,3,Congestive heart failure,,,oov
+qwen3.6-27b:zeroshot,00014822_025.png,1,Right-sided pleural effusion/empyema with chest tube drainage,Effusion,,incorrect
+qwen3.6-27b:zeroshot,00014822_025.png,2,Right upper lobe consolidation or mass lesion,Consolidation|Mass,,correct
+qwen3.6-27b:zeroshot,00014822_025.png,3,Bilateral pneumonia or pulmonary edema,Pneumonia|Edema,,incorrect
+qwen3.6-27b:zeroshot,00013648_018.png,1,No acute cardiopulmonary abnormality,,,oov
+qwen3.6-27b:zeroshot,00013648_018.png,2,Port placement,,,oov
+qwen3.6-27b:zeroshot,00013648_018.png,3,Normal variant,No Finding,,correct
+qwen3.6-27b:zeroshot,00027726_005.png,1,Normal / No acute finding,No Finding,,correct
+qwen3.6-27b:zeroshot,00027726_005.png,2,Healthy lungs,,,oov
+qwen3.6-27b:zeroshot,00027726_005.png,3,No evidence of pneumonia or heart failure,,Pneumonia,oov
+qwen3.6-27b:zeroshot,00030557_000.png,1,Normal chest radiograph,No Finding,,correct
+qwen3.6-27b:zeroshot,00030557_000.png,2,No acute cardiopulmonary disease,No Finding,,correct
+qwen3.6-27b:zeroshot,00030557_000.png,3,Early interstitial lung disease (unlikely given clear fields),,,oov
+qwen3.6-27b:zeroshot,00013670_049.png,1,Large right pleural effusion with compressive atelectasis,Effusion|Atelectasis,,incorrect
+qwen3.6-27b:zeroshot,00013670_049.png,2,Complete right lung atelectasis (collapse),Atelectasis,,incorrect
+qwen3.6-27b:zeroshot,00013670_049.png,3,Severe right-sided pneumonia/consolidation,Pneumonia|Consolidation,,correct
+qwen3.6-27b:zeroshot,00000733_000.png,1,Normal chest radiograph,No Finding,,incorrect
+qwen3.6-27b:zeroshot,00000733_000.png,2,Early or subtle pneumonia,Pneumonia,,incorrect
+qwen3.6-27b:zeroshot,00000733_000.png,3,Mild atelectasis,Atelectasis,,incorrect
+qwen3.6-27b:zeroshot,00029159_003.png,1,Normal / No acute finding,No Finding,,incorrect
+qwen3.6-27b:zeroshot,00029159_003.png,2,Mild atelectasis,Atelectasis,,incorrect
+qwen3.6-27b:zeroshot,00029159_003.png,3,Early pneumonia,Pneumonia,,incorrect
+qwen3.6-27b:zeroshot,00010007_062.png,1,Post-operative pulmonary edema and atelectasis,Edema|Atelectasis,,incorrect
+qwen3.6-27b:zeroshot,00010007_062.png,2,Hospital-acquired pneumonia,Pneumonia,,incorrect
+qwen3.6-27b:zeroshot,00010007_062.png,3,Bilateral pleural effusions,Effusion,,correct
+qwen3.6-27b:zeroshot,00021463_004.png,1,Left pleural effusion with compressive atelectasis,Effusion|Atelectasis,,incorrect
+qwen3.6-27b:zeroshot,00021463_004.png,2,Left lower lobe pneumonia,Pneumonia,,incorrect
+qwen3.6-27b:zeroshot,00021463_004.png,3,Malignancy,,,oov
+qwen3.6-27b:zeroshot,00018253_048.png,1,"Right pleural effusion (likely transudative given cardiomegaly, but exudative cannot be excluded)",Effusion|Cardiomegaly,,correct
+qwen3.6-27b:zeroshot,00018253_048.png,2,Right lower lobe pneumonia,Pneumonia,,incorrect
+qwen3.6-27b:zeroshot,00018253_048.png,3,Atelectasis,Atelectasis,,correct
+qwen3.6-27b:zeroshot,00014731_016.png,1,"Metastatic disease (e.g., renal cell carcinoma, sarcoma, choriocarcinoma)",,,oov
+qwen3.6-27b:zeroshot,00014731_016.png,2,Septic emboli,,,oov
+qwen3.6-27b:zeroshot,00014731_016.png,3,"Fungal infection (e.g., coccidioidomycosis)",,,oov
+qwen3.6-27b:zeroshot,00011237_112.png,1,Pulmonary Edema (Cardiogenic),Edema,,correct
+qwen3.6-27b:zeroshot,00011237_112.png,2,Multifocal Pneumonia / Acute Respiratory Distress Syndrome (ARDS),Pneumonia,,correct
+qwen3.6-27b:zeroshot,00011237_112.png,3,Right Pleural Effusion,Effusion,,incorrect
+qwen3.6-27b:zeroshot,00013391_005.png,1,Right-sided pneumonia with parapneumonic effusion/empyema,Pneumonia|Effusion,,correct
+qwen3.6-27b:zeroshot,00013391_005.png,2,"Malignancy (e.g., bronchogenic carcinoma) with post-obstructive pneumonia and pleural effusion",Pneumonia|Effusion,,correct
+qwen3.6-27b:zeroshot,00013391_005.png,3,Pulmonary hemorrhage,,,oov
+qwen3.6-27b:zeroshot,00017747_053.png,1,Traumatic pneumothorax secondary to rib fractures,Pneumothorax,,correct
+qwen3.6-27b:zeroshot,00017747_053.png,2,Pulmonary contusion,,,oov
+qwen3.6-27b:zeroshot,00017747_053.png,3,Small right pleural effusion/hemothorax,Effusion,,incorrect
+qwen3.6-27b:zeroshot,00008295_022.png,1,Post-operative pneumothorax,Pneumothorax,,correct
+qwen3.6-27b:zeroshot,00008295_022.png,2,Residual pneumothorax despite chest tube placement,Pneumothorax,,correct
+qwen3.6-27b:zeroshot,00008295_022.png,3,Right upper lobe atelectasis or consolidation,Atelectasis|Consolidation,,correct
+qwen3.6-27b:zeroshot,00007750_008.png,1,Right lower lobe pneumonia,Pneumonia,,incorrect
+qwen3.6-27b:zeroshot,00007750_008.png,2,Right lower lobe atelectasis,Atelectasis,,correct
+qwen3.6-27b:zeroshot,00007750_008.png,3,Pleural effusion,Effusion,,correct
+qwen3.6-27b:single,00022416_019.png,1,Acute respiratory distress syndrome (ARDS) / severe bilateral pulmonary edema,Edema,,incorrect
+qwen3.6-27b:single,00022416_019.png,2,"Multifocal pneumonia (bilateral, right-predominant)",Pneumonia,,incorrect
+qwen3.6-27b:single,00022416_019.png,3,Volume overload with cardiogenic pulmonary edema and superimposed infection,Edema,,incorrect
+qwen3.6-27b:single,00006304_004.png,1,Right lower lobe pneumonia,Pneumonia,,incorrect
+qwen3.6-27b:single,00006304_004.png,2,Atelectasis (right lower lobe),Atelectasis,,correct
+qwen3.6-27b:single,00006304_004.png,3,Heart failure with pulmonary edema and pleural effusion,Edema|Effusion,,incorrect
+qwen3.6-27b:single,00001075_047.png,1,Discoid (plate-like) atelectasis,Atelectasis,,correct
+qwen3.6-27b:single,00001075_047.png,2,Focal fibrotic scarring,,,oov
+qwen3.6-27b:single,00001075_047.png,3,Normal / No acute finding,No Finding,,incorrect
+qwen3.6-27b:single,00013249_045.png,1,Cardiogenic pulmonary edema secondary to congenital or acquired heart disease,Edema,,incorrect
+qwen3.6-27b:single,00013249_045.png,2,Multifocal pneumonia with underlying cardiomegaly,Pneumonia|Cardiomegaly,,correct
+qwen3.6-27b:single,00013249_045.png,3,Acute respiratory distress syndrome (ARDS) with coexisting cardiac condition,,,oov
+qwen3.6-27b:single,00011702_072.png,1,Bilateral pleural effusions with compressive atelectasis,Effusion|Atelectasis,,incorrect
+qwen3.6-27b:single,00011702_072.png,2,Cardiogenic pulmonary edema with pleural effusions,Edema|Effusion,,incorrect
+qwen3.6-27b:single,00011702_072.png,3,Bilateral pneumonia (less likely given distribution),Pneumonia,,incorrect
+qwen3.6-27b:single,00010447_027.png,1,Severe multifocal bilateral pneumonia,Pneumonia,,incorrect
+qwen3.6-27b:single,00010447_027.png,2,ARDS (acute respiratory distress syndrome),,,oov
+qwen3.6-27b:single,00010447_027.png,3,Pulmonary edema (cardiogenic or non-cardiogenic),Edema,,incorrect
+qwen3.6-27b:single,00007322_007.png,1,Bilateral lower lobe atelectasis with superimposed pulmonary edema,Atelectasis|Edema,,incorrect
+qwen3.6-27b:single,00007322_007.png,2,Bilateral lower lobe pneumonia / consolidation,Pneumonia|Consolidation,,correct
+qwen3.6-27b:single,00007322_007.png,3,Small bilateral pleural effusions,Effusion,,incorrect
+qwen3.6-27b:single,00022416_056.png,1,Large left pleural effusion with associated atelectasis/consolidation,Effusion|Atelectasis|Consolidation,,correct
+qwen3.6-27b:single,00022416_056.png,2,Pleural effusion secondary to heart failure with bilateral pulmonary involvement,Effusion,,correct
+qwen3.6-27b:single,00022416_056.png,3,Parapneumonic effusion with underlying left lower lobe pneumonia,Effusion|Pneumonia,,correct
 qwen3.8-27b:zeroshot,00022416_019.png,1,Multifocal pneumonia with right parapneumonic pleural effusion,Pneumonia|Effusion,,correct
 qwen3.8-27b:zeroshot,00022416_019.png,2,Cardiogenic pulmonary edema with bilateral pleural effusions,Edema|Effusion,,correct
 qwen3.8-27b:zeroshot,00022416_019.png,3,Acute respiratory distress syndrome (non-cardiogenic pulmonary edema) with dependent consolidation/effusion,Edema|Consolidation|Effusion,,correct
-qwen3.8-27b:zeroshot,00006304_004.png,1,Congestive heart failure with cardiomegaly and mild pulmonary edema,Cardiomegaly|Edema,,correct
-qwen3.8-27b:zeroshot,00006304_004.png,2,Bibasilar atelectasis secondary to low lung volumes / postoperative or supine state,Atelectasis,,correct
-qwen3.8-27b:zeroshot,00006304_004.png,3,Left lower lobe pneumonia / consolidation,Pneumonia|Consolidation,,incorrect
-qwen3.8-27b:zeroshot,00001075_047.png,1,Normal chest radiograph with minor linear atelectasis (no acute finding),No Finding|Atelectasis,,correct
-qwen3.8-27b:zeroshot,00001075_047.png,2,Subsegmental / linear atelectasis (mucous plugging or post-inflammatory),Atelectasis,,correct
-qwen3.8-27b:zeroshot,00001075_047.png,3,Small pleural-based linear scar or focal pleural thickening,Pleural_Thickening,,incorrect
-qwen3.8-27b:zeroshot,00013249_045.png,1,Normal / no acute finding (mild atelectasis),No Finding|Atelectasis,,incorrect
-qwen3.8-27b:zeroshot,00013249_045.png,2,Early pneumonia or bronchiolitis,Pneumonia,,incorrect
-qwen3.8-27b:zeroshot,00013249_045.png,3,Cardiomegaly / early congestive heart failure,Cardiomegaly,,correct
+qwen3.8-27b:zeroshot,00006304_004.png,1,Cardiomegaly with mild pulmonary vascular congestion / congestive heart failure,Cardiomegaly|Edema,,correct
+qwen3.8-27b:zeroshot,00006304_004.png,2,Bibasilar atelectasis with possible early pneumonia,Atelectasis|Pneumonia,,correct
+qwen3.8-27b:zeroshot,00006304_004.png,3,Apparent cardiomegaly due to AP projection and low lung volumes (no acute cardiopulmonary process),Cardiomegaly,,correct
+qwen3.8-27b:zeroshot,00001075_047.png,1,Normal study / no acute finding with minor linear atelectasis,No Finding,Atelectasis,incorrect
+qwen3.8-27b:zeroshot,00001075_047.png,2,Focal linear (plate-like) atelectasis or subpleural scarring,Atelectasis,,correct
+qwen3.8-27b:zeroshot,00001075_047.png,3,"Early or resolving mild parenchymal process (e.g., post-infective change)",,,oov
+qwen3.8-27b:zeroshot,00013249_045.png,1,Pneumonia (right-sided consolidation) / bronchiolitis,Pneumonia|Consolidation,,incorrect
+qwen3.8-27b:zeroshot,00013249_045.png,2,Pulmonary edema / congestive heart failure,Edema,,incorrect
+qwen3.8-27b:zeroshot,00013249_045.png,3,Atelectasis / aspiration,Atelectasis,,incorrect
 qwen3.8-27b:zeroshot,00011702_072.png,1,Bilateral pleural effusions with compressive atelectasis in the setting of volume overload / congestive heart failure,Effusion|Atelectasis,,incorrect
 qwen3.8-27b:zeroshot,00011702_072.png,2,Bilateral pneumonia with associated parapneumonic effusions,Pneumonia|Effusion,,incorrect
 qwen3.8-27b:zeroshot,00011702_072.png,3,Pulmonary edema with secondary pleural effusions and basilar consolidation,Edema|Effusion|Consolidation,,incorrect
@@ -384,3 +1404,102 @@ qwen3.8-27b:zeroshot,00029588_004.png,3,Aspiration pneumonitis with secondary co
 qwen3.8-27b:zeroshot,00007632_013.png,1,Normal / No acute finding,No Finding,,incorrect
 qwen3.8-27b:zeroshot,00007632_013.png,2,"Early or mild pulmonary hyperinflation (e.g., early COPD/asthma) not definitively demonstrated",Emphysema,,incorrect
 qwen3.8-27b:zeroshot,00007632_013.png,3,Subtle early interstitial or infectious process below the sensitivity of a single frontal film,,,oov
+qwen3.8-27b:zeroshot,00022098_007.png,1,Left lower lobe atelectasis with possible small left pleural effusion,Atelectasis|Effusion,,correct
+qwen3.8-27b:zeroshot,00022098_007.png,2,Left lower lobe pneumonia (consolidation),Pneumonia|Consolidation,,incorrect
+qwen3.8-27b:zeroshot,00022098_007.png,3,Left pleural effusion with compressive atelectasis,Effusion|Atelectasis,,correct
+qwen3.8-27b:zeroshot,00003803_002.png,1,"Post-procedural changes with right chest tube in situ, subcutaneous emphysema, and right mid/lower zone atelectasis or consolidation",Emphysema|Atelectasis|Consolidation,,correct
+qwen3.8-27b:zeroshot,00003803_002.png,2,Right-sided pneumonia (bacterial) with associated pleural/parenchymal changes,Pneumonia,,incorrect
+qwen3.8-27b:zeroshot,00003803_002.png,3,Cavitary or mass-like right pulmonary lesion with surrounding inflammatory/obstructive opacity,Mass,,incorrect
+qwen3.8-27b:zeroshot,00003072_028.png,1,Left pneumothorax with contralateral right pleural effusion (primary finding),Pneumothorax|Effusion,,correct
+qwen3.8-27b:zeroshot,00003072_028.png,2,Malignant or parapneumonic pleural disease with secondary/obstructive left pneumothorax and right effusion,Pneumothorax|Effusion,,correct
+qwen3.8-27b:zeroshot,00003072_028.png,3,Iatrogenic left pneumothorax (post-biopsy/line placement) with unrelated right transudative or exudative effusion,Pneumothorax|Effusion,,correct
+qwen3.8-27b:zeroshot,00008911_026.png,1,Right pneumothorax with extensive subcutaneous emphysema (traumatic or iatrogenic) with chest drain in situ,Pneumothorax|Emphysema,,correct
+qwen3.8-27b:zeroshot,00008911_026.png,2,Traumatic chest wall injury with associated hemothorax/pneumothorax,Effusion|Pneumothorax,,incorrect
+qwen3.8-27b:zeroshot,00008911_026.png,3,"Visceral perforation (e.g., esophageal or tracheobronchial) with air tracking into the subcutaneous tissues",,,oov
+qwen3.8-27b:zeroshot,00005089_007.png,1,Left pleural effusion with compression atelectasis (parapneumonic or transudative),Effusion|Atelectasis,,incorrect
+qwen3.8-27b:zeroshot,00005089_007.png,2,Left lower lobe pneumonia/consolidation with reactive effusion,Pneumonia|Consolidation|Effusion,,incorrect
+qwen3.8-27b:zeroshot,00005089_007.png,3,Malignant pleural effusion or underlying left lower lobe mass,Effusion|Mass,,incorrect
+qwen3.8-27b:zeroshot,00005609_025.png,1,Right pleural effusion with compressive right lower lobe atelectasis,Effusion|Atelectasis,,incorrect
+qwen3.8-27b:zeroshot,00005609_025.png,2,Right lower lobe pneumonia/consolidation with parapneumonic effusion,Pneumonia|Consolidation|Effusion,,incorrect
+qwen3.8-27b:zeroshot,00005609_025.png,3,Right hemothorax (in the setting of central line/drain placement),Effusion,,incorrect
+qwen3.8-27b:zeroshot,00013659_029.png,1,Large left pleural effusion with compressive atelectasis,Effusion|Atelectasis,,incorrect
+qwen3.8-27b:zeroshot,00013659_029.png,2,"Complete left lung collapse (e.g., mucus plug or endobronchial obstruction)",Atelectasis,,incorrect
+qwen3.8-27b:zeroshot,00013659_029.png,3,Left-sided consolidation with parapneumonic effusion,Consolidation|Effusion,,incorrect
+qwen3.8-27b:zeroshot,00021463_005.png,1,Mild pulmonary edema / congestive heart failure (fluid overload),Edema,,correct
+qwen3.8-27b:zeroshot,00021463_005.png,2,Low lung volumes with dependent/retrocardiac atelectasis,Atelectasis,,correct
+qwen3.8-27b:zeroshot,00021463_005.png,3,Early interstitial pneumonia or asymmetric pulmonary congestion,Pneumonia,,incorrect
+qwen3.8-27b:zeroshot,00000003_004.png,1,No acute finding; incidental post-surgical clips (prior right breast/axillary surgery),No Finding,,incorrect
+qwen3.8-27b:zeroshot,00000003_004.png,2,Post-surgical changes with retained surgical clips,,,oov
+qwen3.8-27b:zeroshot,00000003_004.png,3,Retained metallic foreign bodies (less likely given clip morphology and distribution),,,oov
+qwen3.8-27b:zeroshot,00020915_000.png,1,Hiatal hernia (sliding or paraesophageal) with intrathoracic stomach,Hernia,,correct
+qwen3.8-27b:zeroshot,00020915_000.png,2,Normal gastric bubble / no acute cardiopulmonary finding,No Finding,,incorrect
+qwen3.8-27b:zeroshot,00020915_000.png,3,"Retrocardiac or posterior mediastinal mass (e.g., esophageal or mediastinal lesion) - less likely",Mass,,incorrect
+qwen3.8-27b:zeroshot,00010120_019.png,1,Normal / No acute finding,No Finding,,incorrect
+qwen3.8-27b:zeroshot,00010120_019.png,2,Early or subtle infectious/inflammatory process not yet radiographically apparent,,,oov
+qwen3.8-27b:zeroshot,00010120_019.png,3,Occult small pulmonary nodule or early interstitial process limited by single-projection sensitivity,Nodule,,incorrect
+qwen3.8-27b:zeroshot,00029159_015.png,1,Non-cardiogenic pulmonary edema / ARDS (diffuse alveolar damage),Edema,,incorrect
+qwen3.8-27b:zeroshot,00029159_015.png,2,Multifocal / aspiration pneumonia,Pneumonia,,incorrect
+qwen3.8-27b:zeroshot,00029159_015.png,3,Cardiogenic pulmonary edema with superimposed infection,Edema,,incorrect
+qwen3.8-27b:zeroshot,00026194_000.png,1,Normal / No acute finding,No Finding,,incorrect
+qwen3.8-27b:zeroshot,00026194_000.png,2,Early or resolving viral respiratory infection (mild perihilar/interstitial prominence),,,oov
+qwen3.8-27b:zeroshot,00026194_000.png,3,Mild reactive airway disease / bronchospasm,,,oov
+qwen3.8-27b:zeroshot,00022726_011.png,1,Normal / No acute finding,No Finding,,incorrect
+qwen3.8-27b:zeroshot,00022726_011.png,2,"Incidental surgical clips from prior surgery (e.g., cholecystectomy or abdominal procedure)",,,oov
+qwen3.8-27b:zeroshot,00022726_011.png,3,External radiopaque artifact / laterality marker,,,oov
+qwen3.8-27b:zeroshot,00017403_002.png,1,No acute cardiopulmonary process; findings limited by technique with probable bibasilar atelectasis,Atelectasis,,correct
+qwen3.8-27b:zeroshot,00017403_002.png,2,Bibasilar atelectasis / low lung volumes,Atelectasis,,correct
+qwen3.8-27b:zeroshot,00017403_002.png,3,Early or patchy pneumonia / consolidation (less likely given haziness and overlying soft tissue),Pneumonia|Consolidation,,incorrect
+qwen3.8-27b:zeroshot,00014822_025.png,1,Bibasilar atelectasis with small bilateral pleural effusions in a patient with support lines and a right chest tube (post-procedural/ICU chest),Atelectasis|Effusion,,incorrect
+qwen3.8-27b:zeroshot,00014822_025.png,2,Early/evolving pneumonia or aspiration-related airspace consolidation,Pneumonia|Consolidation,,incorrect
+qwen3.8-27b:zeroshot,00014822_025.png,3,Mild pulmonary edema / fluid overload with dependent opacities,Edema,,incorrect
+qwen3.8-27b:zeroshot,00013648_018.png,1,Normal chest radiograph / no acute cardiopulmonary finding,No Finding,,correct
+qwen3.8-27b:zeroshot,00013648_018.png,2,Incidental implanted or external radiopaque device (port/monitoring unit) over right chest wall,,,oov
+qwen3.8-27b:zeroshot,00013648_018.png,3,Prominent gastric bubble (normal variant) rather than pneumoperitoneum,No Finding,,correct
+qwen3.8-27b:zeroshot,00027726_005.png,1,Normal chest radiograph / No acute cardiopulmonary finding,No Finding,,correct
+qwen3.8-27b:zeroshot,00027726_005.png,2,Early or subtle infectious/inflammatory process not excluded on a single frontal view,,,oov
+qwen3.8-27b:zeroshot,00027726_005.png,3,"Technical or projectional artifact mimicking pathology (e.g., overlying soft tissue or skin fold)",,,oov
+qwen3.8-27b:zeroshot,00030557_000.png,1,Normal / No acute finding,No Finding,,correct
+qwen3.8-27b:zeroshot,00030557_000.png,2,Early or subtle parenchymal process not appreciable on a single frontal view,,,oov
+qwen3.8-27b:zeroshot,00030557_000.png,3,"Extrathoracic or soft-tissue cause of symptoms (e.g., musculoskeletal chest wall pain)",,,oov
+qwen3.8-27b:zeroshot,00013670_049.png,1,Right pleural effusion/hemothorax with possible hydropneumothorax and indwelling pleural drainage catheter,Effusion,,incorrect
+qwen3.8-27b:zeroshot,00013670_049.png,2,Parapneumonic effusion/empyema with adjacent consolidation or cavitary lung abscess,Effusion|Consolidation,,correct
+qwen3.8-27b:zeroshot,00013670_049.png,3,Post-procedural or traumatic right hemothorax/pneumothorax with atelectasis,Effusion|Pneumothorax|Atelectasis,,incorrect
+qwen3.8-27b:zeroshot,00000733_000.png,1,Normal / No acute finding,No Finding,,incorrect
+qwen3.8-27b:zeroshot,00000733_000.png,2,Early or occult pneumonia (not radiographically evident; consider if clinical suspicion persists),Pneumonia,,incorrect
+qwen3.8-27b:zeroshot,00000733_000.png,3,Mild subsegmental atelectasis (not clearly visualized on this single projection),Atelectasis,,incorrect
+qwen3.8-27b:zeroshot,00029159_003.png,1,Normal chest radiograph with appropriately positioned right-sided implanted venous port (no acute finding),No Finding,,incorrect
+qwen3.8-27b:zeroshot,00029159_003.png,2,"Catheter tip malposition (e.g., into the internal jugular, subclavian, or right atrium) requiring confirmation on a dedicated view or with prior comparison",,,oov
+qwen3.8-27b:zeroshot,00029159_003.png,3,Early or subtle parenchymal/pleural process not appreciable on this single projection,,,oov
+qwen3.8-27b:zeroshot,00010007_062.png,1,Post-operative bilateral pleural effusions with basilar atelectasis (most likely),Effusion|Atelectasis,,correct
+qwen3.8-27b:zeroshot,00010007_062.png,2,Pulmonary edema / volume overload in a post-cardiac surgery patient,Edema,,incorrect
+qwen3.8-27b:zeroshot,00010007_062.png,3,Hospital-acquired or aspiration pneumonia / consolidation,Pneumonia|Consolidation,,incorrect
+qwen3.8-27b:zeroshot,00021463_004.png,1,Left pleural effusion with compressive/adjacent left lower lobe atelectasis,Effusion|Atelectasis,,incorrect
+qwen3.8-27b:zeroshot,00021463_004.png,2,Left lower lobe pneumonia/consolidation with reactive pleural fluid,Pneumonia|Consolidation|Effusion,,incorrect
+qwen3.8-27b:zeroshot,00021463_004.png,3,"Cardiogenic or systemic cause of pleural effusion (e.g., heart failure, hypoalbuminemia) or pulmonary embolism with infarction",Effusion,,incorrect
+qwen3.8-27b:zeroshot,00018253_048.png,1,Right pleural effusion with compressive atelectasis/consolidation (parapneumonic effusion or empyema),Effusion|Atelectasis|Consolidation,,correct
+qwen3.8-27b:zeroshot,00018253_048.png,2,Right lower lobe pneumonia with associated parapneumonic effusion,Pneumonia|Effusion,,correct
+qwen3.8-27b:zeroshot,00018253_048.png,3,Hemothorax or malignant/complex effusion with underlying mass or collapse,Effusion|Mass,,correct
+qwen3.8-27b:zeroshot,00014731_016.png,1,"Post-procedural/iatrogenic pneumothorax with subcutaneous emphysema and chest tube in situ, superimposed on bilateral pulmonary metastases",Pneumothorax|Emphysema,,correct
+qwen3.8-27b:zeroshot,00014731_016.png,2,Bilateral pulmonary metastatic nodules with secondary pneumothorax and subcutaneous emphysema,Nodule|Pneumothorax|Emphysema,,correct
+qwen3.8-27b:zeroshot,00014731_016.png,3,Septic pulmonary emboli / cavitating infectious nodules complicated by pneumothorax and subcutaneous emphysema,Nodule|Pneumothorax|Emphysema,,correct
+qwen3.8-27b:zeroshot,00011237_112.png,1,Multifocal pneumonia / ARDS with bilateral airspace consolidation,Pneumonia|Consolidation,,correct
+qwen3.8-27b:zeroshot,00011237_112.png,2,Cardiogenic or non-cardiogenic pulmonary edema,Edema,,correct
+qwen3.8-27b:zeroshot,00011237_112.png,3,Aspiration pneumonitis,,,oov
+qwen3.8-27b:zeroshot,00013391_005.png,1,Complicated right-sided pneumonia with lung abscess / empyema (chest drain in situ),Pneumonia,,correct
+qwen3.8-27b:zeroshot,00013391_005.png,2,Right-sided pleural effusion with underlying parenchymal consolidation,Effusion|Consolidation,,incorrect
+qwen3.8-27b:zeroshot,00013391_005.png,3,Cavitating pulmonary mass / malignancy with post-obstructive consolidation,Mass|Consolidation,,incorrect
+qwen3.8-27b:zeroshot,00017747_053.png,1,Right pneumothorax with indwelling chest tube and subcutaneous emphysema (post-drainage),Pneumothorax|Emphysema,,correct
+qwen3.8-27b:zeroshot,00017747_053.png,2,Iatrogenic/traumatic right pneumothorax with air leak into subcutaneous tissues,Pneumothorax,,correct
+qwen3.8-27b:zeroshot,00017747_053.png,3,Right lung atelectasis/volume loss with overlying soft-tissue air,Atelectasis,,incorrect
+qwen3.8-27b:zeroshot,00008295_022.png,1,"Right pneumothorax with chest drain in situ (post-procedural, post-biopsy, or traumatic) with associated right lower lobe atelectasis/effusion",Pneumothorax|Atelectasis|Effusion,,correct
+qwen3.8-27b:zeroshot,00008295_022.png,2,Residual or recurrent right pneumothorax with malpositioned or partially functioning chest tube,Pneumothorax,,correct
+qwen3.8-27b:zeroshot,00008295_022.png,3,Right lower lobe collapse with parapneumonic effusion and secondary apical lucency mimicking pneumothorax,Effusion|Pneumothorax,,correct
+qwen3.8-27b:zeroshot,00007750_008.png,1,Residual right pleural effusion with compressive atelectasis (post-thoracostomy),Effusion|Atelectasis,,correct
+qwen3.8-27b:zeroshot,00007750_008.png,2,Right lower lobe consolidation / pneumonia,Consolidation|Pneumonia,,incorrect
+qwen3.8-27b:zeroshot,00007750_008.png,3,Resolving pneumothorax with re-expansion changes or hemothorax,Pneumothorax|Effusion,,correct
+qwen3.8-27b:single,00022416_019.png,1,"Pneumonia (multifocal airspace consolidation, right > left; infectious or aspiration)",Pneumonia|Consolidation,,correct
+qwen3.8-27b:single,00022416_019.png,2,Pulmonary edema / fluid overload (possible contributor to bilateral basal opacities),Edema,,incorrect
+qwen3.8-27b:single,00022416_019.png,3,Bilateral basilar atelectasis with small pleural effusions,Atelectasis|Effusion,,correct
+qwen3.8-27b:single,00006304_004.png,1,Cardiomegaly with mild basilar atelectasis; no acute cardiopulmonary process (monitored/ICU patient with central line and ECG leads),Cardiomegaly|Atelectasis,,correct
+qwen3.8-27b:single,00006304_004.png,2,Mild fluid overload/early pulmonary edema in the setting of cardiomegaly (not strongly supported; no cephalization or Kerley lines),Edema|Cardiomegaly,,correct
+qwen3.8-27b:single,00006304_004.png,3,Small pleural effusion or early basilar consolidation (not excluded; costophrenic angles partly obscured by overlying soft tissue),Effusion|Consolidation,,incorrect

@@ -28,7 +28,7 @@ PYTHON = EVAL / "tools" / "py"
 HARNESS_TEMPLATE = EVAL / "harness" / "opencode" / "run_template"
 AGENT_STEPS = 400
 # versoes em que o harness do opencode e gerado pela criacao da rodada (AGENTS.md, .opencode/, plugin)
-NATIVE_HARNESS = {"v4"}
+NATIVE_HARNESS = {"v4", "v4c"}  # v4c: vocabulario fechado, gerado por tools/make_closed_prompts.py
 
 
 def sha256(path: pathlib.Path) -> str:

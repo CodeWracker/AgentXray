@@ -21,12 +21,14 @@ EVAL = pathlib.Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(EVAL / "analysis"))
 from bbox_eval import compute_iou, extract_predicted_bboxes  # noqa: E402
 from clinical_ontology import project_hypothesis  # noqa: E402
-from exp1_metrics import MODELS, MODES, bootstrap_indices, ci, collect_agent, collect_zeroshot, resampled_mean  # noqa: E402
+from exp1_metrics import MODELS, VOCABS, bootstrap_indices, ci, collect_agent, collect_zeroshot, resampled_mean  # noqa: E402
 
 BENCH = "exp2_bbox_localization"
 MANIFEST = EVAL / "inputs" / "benchmarks" / BENCH / "manifest.json"
 OUT = EVAL / "analysis" / "exp2"
 THRESHOLDS = [0.1, 0.3, 0.5]
+# o degrau modelo + classificador e so do Exp 1 (os classificadores nao localizam)
+MODES = [("zeroshot", None), ("single", "single-agent"), ("council", "multi-agent-single-model")]
 
 
 def valid_localization(data) -> bool:
@@ -51,38 +53,40 @@ def main() -> int:
     OUT.mkdir(parents=True, exist_ok=True)
 
     case_rows, summary_rows = [], []
-    for model in MODELS:
-        for mode, mode_dir in MODES:
-            cases = (collect_zeroshot(model, images, BENCH, valid_localization) if mode == "zeroshot"
-                     else collect_agent(mode_dir, model, images, BENCH, valid_localization))
-            vec = {k: [] for k in ["iou", "iou_cls", "n_boxes"] + [f"hit{t}" for t in THRESHOLDS]
-                   + [f"hit{t}_cls" for t in THRESHOLDS]}
-            for img in images:
-                c = cases[img]
-                pred = extract_predicted_bboxes(c["data"]) if c["valid"] else []
-                ref_classes = set(project_hypothesis(ref[img]["label"])["classes"])
-                u = best_iou(pred, ref[img]["bbox"], None)
-                u_cls = best_iou(pred, ref[img]["bbox"], ref_classes)
-                vec["iou"].append(u)
-                vec["iou_cls"].append(u_cls)
-                vec["n_boxes"].append(len(pred))
-                for t in THRESHOLDS:
-                    vec[f"hit{t}"].append(float(u >= t))
-                    vec[f"hit{t}_cls"].append(float(u_cls >= t))
-                case_rows.append({"condition": f"{model}:{mode}", "model": model, "mode": mode, "image": img,
-                                  "finished": int(c["finished"]), "valid": int(c["valid"]), "source": c["source"],
-                                  "ref_label": ref[img]["label"], "n_boxes": len(pred),
-                                  "iou": round(u, 4), "iou_cls": round(u_cls, 4)})
-            finished = sum(cases[i]["finished"] for i in images)
-            valid = sum(cases[i]["valid"] for i in images)
-            row = {"condition": f"{model}:{mode}", "model": model, "mode": mode,
-                   "status": "complete" if finished == n_cases else "in_progress",
-                   "finished": finished, "valid": valid, "n_cases": n_cases}
-            for k, v in vec.items():
-                arr = np.array(v, dtype=float)
-                lo, hi = ci(resampled_mean(arr, idx))
-                row.update({k: float(arr.mean()), f"{k}_lo": lo, f"{k}_hi": hi})
-            summary_rows.append(row)
+    for (vocab, root), model, (mode, mode_dir) in ((v, m, md) for v in VOCABS for m in MODELS for md in MODES):
+        suffix = "" if vocab == "open" else ":closed"
+        cases = (collect_zeroshot(model, images, BENCH, valid_localization, root=root) if mode == "zeroshot"
+                 else collect_agent(mode_dir, model, images, BENCH, valid_localization, root=root))
+        if vocab == "closed" and not any(c["finished"] for c in cases.values()):
+            continue
+        vec = {k: [] for k in ["iou", "iou_cls", "n_boxes"] + [f"hit{t}" for t in THRESHOLDS]
+               + [f"hit{t}_cls" for t in THRESHOLDS]}
+        for img in images:
+            c = cases[img]
+            pred = extract_predicted_bboxes(c["data"]) if c["valid"] else []
+            ref_classes = set(project_hypothesis(ref[img]["label"])["classes"])
+            u = best_iou(pred, ref[img]["bbox"], None)
+            u_cls = best_iou(pred, ref[img]["bbox"], ref_classes)
+            vec["iou"].append(u)
+            vec["iou_cls"].append(u_cls)
+            vec["n_boxes"].append(len(pred))
+            for t in THRESHOLDS:
+                vec[f"hit{t}"].append(float(u >= t))
+                vec[f"hit{t}_cls"].append(float(u_cls >= t))
+            case_rows.append({"condition": f"{model}:{mode}{suffix}", "model": model, "mode": mode, "vocab": vocab, "image": img,
+                              "finished": int(c["finished"]), "valid": int(c["valid"]), "source": c["source"],
+                              "ref_label": ref[img]["label"], "n_boxes": len(pred),
+                              "iou": round(u, 4), "iou_cls": round(u_cls, 4)})
+        finished = sum(cases[i]["finished"] for i in images)
+        valid = sum(cases[i]["valid"] for i in images)
+        row = {"condition": f"{model}:{mode}{suffix}", "model": model, "mode": mode, "vocab": vocab,
+               "status": "complete" if finished == n_cases else "in_progress",
+               "finished": finished, "valid": valid, "n_cases": n_cases}
+        for k, v in vec.items():
+            arr = np.array(v, dtype=float)
+            lo, hi = ci(resampled_mean(arr, idx))
+            row.update({k: float(arr.mean()), f"{k}_lo": lo, f"{k}_hi": hi})
+        summary_rows.append(row)
 
     for name, rows in [("cases.csv", case_rows), ("summary.csv", summary_rows)]:
         with open(OUT / name, "w", newline="", encoding="utf-8") as f:

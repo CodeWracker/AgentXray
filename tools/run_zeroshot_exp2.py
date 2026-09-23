@@ -36,8 +36,21 @@ def encode_image(img_path: pathlib.Path) -> str:
 LAST_USAGE: dict = {}
 
 
-def query_zeroshot_localization(image_path: pathlib.Path, model: str, base_url: str, api_key: str) -> dict:
+def vocabulary_text() -> str:
+    from make_closed_prompts import EXP1_LABELS, EXP2_LABELS
+    return ("Every entry of \"differential_diagnosis\" must be exactly one of the following labels, written as shown, "
+            "with no other words; use No Finding only when no label applies, and do not repeat a label: "
+            + ", ".join(EXP1_LABELS) + ".\n"
+            "Every \"label\" in \"localized_lesions\" must be exactly one of the following labels, written as shown: "
+            + ", ".join(EXP2_LABELS) + ".\n")
+
+
+def query_zeroshot_localization(image_path: pathlib.Path, model: str, base_url: str, api_key: str,
+                                closed: bool = False) -> dict:
     b64_img = encode_image(image_path)
+    primary = ("Primary hypothesis (one label from the list below)" if closed
+               else "Primary hypothesis (most likely condition or Normal / No acute finding)")
+    box_label = "One label from the list below" if closed else "Name of the finding, in your own words"
     prompt_text = (
         f"You are analyzing this medical image `{image_path.name}` as a second-opinion support tool for a medical professional. "
         "Your objective is to identify and spatially localize any focal abnormalities using bounding boxes. "
@@ -47,12 +60,12 @@ def query_zeroshot_localization(image_path: pathlib.Path, model: str, base_url: 
         '  "findings": "Detailed description of visible radiological findings.",\n'
         '  "impression": "Overall primary clinical impression.",\n'
         '  "differential_diagnosis": [\n'
-        '    "Primary hypothesis (most likely condition or Normal / No acute finding)",\n'
+        f'    "{primary}",\n'
         '    "Secondary hypothesis"\n'
         '  ],\n'
         '  "localized_lesions": [\n'
         '    {\n'
-        '      "label": "Name of the finding, in your own words",\n'
+        f'      "label": "{box_label}",\n'
         '      "bbox": [x, y, w, h],\n'
         '      "confidence": "high",\n'
         '      "reasoning": "Visual evidence justifying this bounding box"\n'
@@ -63,7 +76,8 @@ def query_zeroshot_localization(image_path: pathlib.Path, model: str, base_url: 
         "Bounding box rules:\n"
         "- Coordinates [x, y, w, h] must be in original image pixels, where (x, y) is top-left and (w, h) are width and height.\n"
         "- If no focal abnormality is present, set \"localized_lesions\": [].\n"
-        "Do not include conversational filler. Output only the JSON block."
+        + (vocabulary_text() if closed else "")
+        + "Do not include conversational filler. Output only the JSON block."
     )
 
     payload = {
@@ -143,7 +157,7 @@ def main():
     parser.add_argument("--manifest", type=pathlib.Path, required=True)
     parser.add_argument("--max-cases", type=int, default=None)
     parser.add_argument("--base-url", default=os.environ.get("DGX_UFSC_BASE_URL", "http://localhost:4000"))
-    parser.add_argument("--version", default="v3", help="pasta da condicao em results/")
+    parser.add_argument("--version", default="v4", help="pasta da condicao em results/; terminada em c = vocabulario fechado")
     args = parser.parse_args()
 
     args.base_url = args.base_url.rstrip("/")
@@ -191,7 +205,7 @@ def main():
 
         t0 = time.time()
         try:
-            parsed = query_zeroshot_localization(img_path, args.model, args.base_url, api_key)
+            parsed = query_zeroshot_localization(img_path, args.model, args.base_url, api_key, closed=args.version.endswith("c"))
             out_json_path.write_text(json.dumps(parsed, indent=2, ensure_ascii=False) + "\n")
             usage_dir = out_dir / "_usage"
             usage_dir.mkdir(exist_ok=True)

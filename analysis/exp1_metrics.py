@@ -33,20 +33,30 @@ from align_diagnosis import CATEGORIES, K, score_case  # noqa: E402
 from clinical_ontology import LEXICON_VERSION, ONTOLOGY, normalize_text  # noqa: E402
 
 MANIFEST = EVAL / "inputs" / "benchmarks" / "exp1_image_level" / "manifest.json"
-# versao dos prompts cujas rodadas sao pontuadas (results/<versao>/); v2 revelava regiao e classes, v3 nao tinha o harness nativo
+# versao dos prompts cujas rodadas sao pontuadas (results/<versao>/); a condicao de vocabulario fechado fica em
+# results/<versao>c/ (prompts gerados por tools/make_closed_prompts.py)
 VERSION = os.environ.get("XRAY_RESULTS_VERSION", "v4")
 RESULTS = EVAL / "results" / VERSION
-# o baseline supervisionado nao depende de prompt: as predicoes ficam em um caminho fixo
-SUPERVISED = EVAL / "results" / "v2" / "supervised"
+VOCABS = [("open", RESULTS), ("closed", EVAL / "results" / f"{VERSION}c")]
+# os baselines de conjunto fechado nao dependem de prompt (analysis/eval_supervised_baselines.py)
+SUPERVISED = EVAL / "results" / "supervised"
 OUT = EVAL / "analysis" / "exp1"
 MODELS = ["gemma4-26b", "qwen3.6-27b", "qwen3.8-27b"]
-MODES = [("zeroshot", None), ("single", "single-agent"), ("council", "multi-agent-single-model")]
+# classificadores cujas saidas vao no prompt do degrau modelo + classificador (tools/run_zeroshot.py --classifier)
+HINT_CLASSIFIERS = {"clf_all": "densenet121-res224-all", "clf_pc": "densenet121-res224-pc"}
+# (modo, pasta em results/<versao>/<bench>/ ou None para zero-shot, pasta do zero-shot)
+MODES = [("zeroshot", None, "zeroshot"),
+         *[(m, None, f"zeroshot_clf-{w}") for m, w in HINT_CLASSIFIERS.items()],
+         ("single", "single-agent", None), ("council", "multi-agent-single-model", None)]
 BASELINE = "densenet121-res224-all"
 B = 10_000
 SEED = 42
 AUDIT_CATEGORIES = ["lexicon_gap", "out_of_label_space", "non_diagnostic"]
 METRICS = ["hit1", "hit3", "mrr3", "recall3", "precision3", "f1", "hit1_f"]
-PAIRS = [("single", "zeroshot"), ("council", "single"), ("council", "zeroshot")]
+# comparacoes pareadas dentro de um modelo e de um vocabulario; "baseline" e o classificador sozinho
+PAIRS = [("single", "zeroshot"), ("council", "single"), ("council", "zeroshot"),
+         ("clf_all", "baseline"), ("clf_all", "zeroshot"), ("single", "clf_all"), ("single", "baseline"),
+         ("clf_pc", "baseline:densenet121-res224-pc")]
 
 
 def load_json(path: pathlib.Path):
@@ -61,9 +71,9 @@ def valid_differential(data) -> bool:
 
 
 def collect_agent(mode_dir: str, model: str, images: list[str], bench: str = "exp1_image_level",
-                  valid=valid_differential, rep: str = "r1") -> dict:
+                  valid=valid_differential, rep: str = "r1", root: pathlib.Path = RESULTS) -> dict:
     """Por imagem: a rodada valida mais recente da repeticao pedida; senao, marca tentativa terminada sem saida valida."""
-    base = RESULTS / bench / mode_dir / model
+    base = root / bench / mode_dir / model
     runs: dict[str, list[pathlib.Path]] = {}
     if base.exists():
         for rd in sorted(p for p in base.iterdir() if p.is_dir()):
@@ -88,8 +98,9 @@ def collect_agent(mode_dir: str, model: str, images: list[str], bench: str = "ex
     return out
 
 
-def collect_zeroshot(model: str, images: list[str], bench: str = "exp1_image_level", valid=valid_differential) -> dict:
-    base = RESULTS / "zeroshot" / bench / model
+def collect_zeroshot(model: str, images: list[str], bench: str = "exp1_image_level", valid=valid_differential,
+                     root: pathlib.Path = RESULTS, zs_dir: str = "zeroshot") -> dict:
+    base = root / zs_dir / bench / model
     # o zero-shot so grava arquivo quando a resposta e analisada; o marcador indica que o manifesto foi percorrido
     passed = (base / "_complete.json").exists()
     out = {}
@@ -101,24 +112,37 @@ def collect_zeroshot(model: str, images: list[str], bench: str = "exp1_image_lev
     return out
 
 
-def collect_baseline(images: list[str]) -> dict:
-    data = load_json(SUPERVISED / "exp1_image_level" / BASELINE / "predictions.json") or {}
+def collect_baseline(images: list[str], weights: str = BASELINE) -> dict:
+    data = load_json(SUPERVISED / "exp1_image_level" / weights / "predictions.json") or {}
     preds = data.get("predictions", {})
     out = {}
     for img in images:
         p = preds.get(img)
         # cada posicao e uma unica classe, escrita pelo seu sinonimo canonico para passar pela mesma projecao
         hyps = [ONTOLOGY[c]["synonyms"][0] for c in p["ranked_classes"][:K]] if p else []
-        out[img] = {"finished": bool(p), "valid": bool(p), "source": BASELINE if p else "", "hypotheses": hyps}
+        out[img] = {"finished": bool(p), "valid": bool(p), "source": weights if p else "", "hypotheses": hyps}
     return out
 
 
+def baseline_id(weights: str) -> str:
+    # o classificador da caixa de ferramentas mantem o id "baseline" usado pelas tabelas
+    return "baseline" if weights == BASELINE else f"baseline:{weights}"
+
+
 def conditions(images: list[str]) -> list[dict]:
-    conds = [{"id": "baseline", "model": BASELINE, "mode": "supervised", "cases": collect_baseline(images)}]
-    for model in MODELS:
-        for mode, mode_dir in MODES:
-            cases = collect_zeroshot(model, images) if mode == "zeroshot" else collect_agent(mode_dir, model, images)
-            conds.append({"id": f"{model}:{mode}", "model": model, "mode": mode, "cases": cases})
+    weights_dirs = sorted(p.name for p in (SUPERVISED / "exp1_image_level").glob("*") if p.is_dir())
+    conds = [{"id": baseline_id(w), "model": w, "mode": "supervised", "vocab": "closed",
+              "cases": collect_baseline(images, w)} for w in weights_dirs]
+    for vocab, root in VOCABS:
+        suffix = "" if vocab == "open" else ":closed"
+        for model in MODELS:
+            for mode, mode_dir, zs_dir in MODES:
+                cases = (collect_zeroshot(model, images, root=root, zs_dir=zs_dir) if mode_dir is None
+                         else collect_agent(mode_dir, model, images, root=root))
+                if vocab == "closed" and not any(c["finished"] for c in cases.values()):
+                    continue  # condicao fechada ainda nao rodada
+                conds.append({"id": f"{model}:{mode}{suffix}", "model": model, "mode": mode, "vocab": vocab,
+                              "cases": cases})
     return conds
 
 
@@ -161,7 +185,7 @@ def main() -> int:
             s = score_case(c["hypotheses"], gt[img])
             scored.append((img, c, s))
             case_rows.append({
-                "condition": cond["id"], "model": cond["model"], "mode": cond["mode"], "image": img,
+                "condition": cond["id"], "model": cond["model"], "mode": cond["mode"], "vocab": cond["vocab"], "image": img,
                 "finished": int(c["finished"]), "valid": int(c["valid"]), "source": c["source"],
                 "gt": "|".join(gt[img]), "asserted": "|".join(s["asserted"]),
                 "n": s["n"], "n_oov": s["n_oov"], "n_correct": s["n_correct"], "n_incorrect": s["n_incorrect"],
@@ -191,7 +215,7 @@ def main() -> int:
 
         finished = sum(c["finished"] for _, c, _ in scored)
         valid = sum(c["valid"] for _, c, _ in scored)
-        row = {"condition": cond["id"], "model": cond["model"], "mode": cond["mode"],
+        row = {"condition": cond["id"], "model": cond["model"], "mode": cond["mode"], "vocab": cond["vocab"],
                "status": "complete" if finished == n_cases else "in_progress",
                "finished": finished, "valid": valid, "n_cases": n_cases, "valid_share": valid / n_cases}
         for m in METRICS + ["oov_rate", "any_oov", "total_oov", "empty"]:
@@ -220,16 +244,27 @@ def main() -> int:
                                    "hits": hits, "recall": hits / len(support)})
 
     paired_rows = []
+    status = {r["condition"]: r["status"] for r in summary_rows}
+
+    def pair(model, label, ca, cb):
+        if ca not in vectors or cb not in vectors:
+            return
+        both = status.get(ca) == "complete" and status.get(cb) == "complete"
+        for m in ["hit1", "hit3", "mrr3", "recall3", "f1"]:
+            diff = vectors[ca][m] - vectors[cb][m]
+            lo, hi = ci(resampled_mean(diff, idx))
+            paired_rows.append({"model": model, "comparison": label, "metric": m,
+                                "both_complete": int(both), "diff": float(np.nanmean(diff)), "lo": lo, "hi": hi})
+
     for model in MODELS:
-        status = {r["condition"]: r["status"] for r in summary_rows}
-        for a, b in PAIRS:
-            ca, cb = f"{model}:{a}", f"{model}:{b}"
-            both = status.get(ca) == "complete" and status.get(cb) == "complete"
-            for m in ["hit1", "hit3", "mrr3", "recall3", "f1"]:
-                diff = vectors[ca][m] - vectors[cb][m]
-                lo, hi = ci(resampled_mean(diff, idx))
-                paired_rows.append({"model": model, "comparison": f"{a}-{b}", "metric": m,
-                                    "both_complete": int(both), "diff": float(np.nanmean(diff)), "lo": lo, "hi": hi})
+        for vocab, _ in VOCABS:
+            suffix = "" if vocab == "open" else ":closed"
+            for a, b in PAIRS:
+                cb = b if b.startswith("baseline") else f"{model}:{b}{suffix}"
+                pair(model, f"{a}-{b}{suffix}", f"{model}:{a}{suffix}", cb)
+        # quanto revelar o vocabulario muda cada metodo
+        for mode, _, _ in MODES:
+            pair(model, f"{mode}:closed-open", f"{model}:{mode}:closed", f"{model}:{mode}")
 
     audit_path = OUT / "oov_audit.csv"
     previous = {}

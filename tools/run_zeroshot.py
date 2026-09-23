@@ -35,8 +35,32 @@ def encode_image(img_path: pathlib.Path) -> str:
 LAST_USAGE: dict = {}
 
 
-def query_zeroshot(image_path: pathlib.Path, model: str, base_url: str, api_key: str) -> dict:
+def closed_vocabulary(version: str) -> bool:
+    # a condicao de vocabulario fechado usa as pastas de versao terminadas em "c" (prompts/v4c, results/v4c)
+    return version.endswith("c")
+
+
+def vocabulary_text() -> str:
+    from make_closed_prompts import EXP1_LABELS
+    return ("Every entry of \"differential_diagnosis\" must be exactly one of the following labels, written as shown, "
+            "with no other words; use No Finding only when no label applies, and do not repeat a label: "
+            + ", ".join(EXP1_LABELS) + ".\n")
+
+
+def classifier_text(pred: dict, weights: str) -> str:
+    ranked = sorted(pred["scores"].items(), key=lambda kv: kv[1], reverse=True)
+    return ("An automated classifier was run on this image before you: a DenseNet-121 from the TorchXRayVision library "
+            f"(weights {weights}). It outputs one score per label between 0 and 1, where higher means more likely and "
+            "0.5 is the classifier's operating threshold. It can be wrong. Its scores, from highest to lowest: "
+            + "; ".join(f"{c.replace('_', ' ')} {v:.2f}" for c, v in ranked)
+            + ". Use them together with your own inspection of the image.\n")
+
+
+def query_zeroshot(image_path: pathlib.Path, model: str, base_url: str, api_key: str, closed: bool = False,
+                   hint: str = "") -> dict:
     b64_img = encode_image(image_path)
+    primary = ("Primary hypothesis (one label from the list below)" if closed
+               else "Primary hypothesis (most likely condition or Normal / No acute finding)")
     prompt_text = (
         f"You are analyzing this medical image `{image_path.name}` as a second-opinion support tool for a medical professional. "
         "You do not have access to any external tools or code execution. Inspect the image directly with your vision "
@@ -46,13 +70,15 @@ def query_zeroshot(image_path: pathlib.Path, model: str, base_url: str, api_key:
         '  "findings": "Detailed description of visible radiological findings.",\n'
         '  "impression": "Overall primary clinical impression.",\n'
         '  "differential_diagnosis": [\n'
-        '    "Primary hypothesis (most likely condition or Normal / No acute finding)",\n'
+        f'    "{primary}",\n'
         '    "Secondary hypothesis",\n'
         '    "Tertiary hypothesis"\n'
         "  ],\n"
         '  "limitations": "Technical and projection limitations."\n'
         "}\n"
-        "Do not include any conversational filler. Output only the JSON block."
+        + hint
+        + (vocabulary_text() if closed else "")
+        + "Do not include any conversational filler. Output only the JSON block."
     )
 
     payload = {
@@ -125,8 +151,15 @@ def main():
     parser.add_argument("--manifest", type=pathlib.Path, required=True)
     parser.add_argument("--max-cases", type=int, default=None)
     parser.add_argument("--base-url", default=os.environ.get("DGX_UFSC_BASE_URL", "http://localhost:4000"))
-    parser.add_argument("--version", default="v3", help="pasta da condicao em results/")
+    parser.add_argument("--version", default="v4", help="pasta da condicao em results/; terminada em c = vocabulario fechado")
+    parser.add_argument("--classifier", help="pesos do TorchXRayVision cujas saidas entram no prompt (degrau modelo + classificador, "
+                        "sem ferramentas); le results/supervised/exp1_image_level/<pesos>/predictions.json")
     args = parser.parse_args()
+    closed = closed_vocabulary(args.version)
+    preds = None
+    if args.classifier:
+        pred_file = EVAL / "results" / "supervised" / "exp1_image_level" / args.classifier / "predictions.json"
+        preds = json.loads(pred_file.read_text(encoding="utf-8"))["predictions"]
 
     args.base_url = args.base_url.rstrip("/")
     api_key = os.environ.get("DGX_UFSC_API_KEY", "")
@@ -138,7 +171,8 @@ def main():
         items = items[: args.max_cases]
 
     bench_name = manifest_file.parent.name
-    out_dir = EVAL / "results" / args.version / "zeroshot" / bench_name / args.model
+    mode_dir = f"zeroshot_clf-{args.classifier}" if args.classifier else "zeroshot"
+    out_dir = EVAL / "results" / args.version / mode_dir / bench_name / args.model
     out_dir.mkdir(parents=True, exist_ok=True)
 
     nih_images = EVAL / "inputs" / "nih_chestxray" / "images"
@@ -171,7 +205,8 @@ def main():
 
         t0 = time.time()
         try:
-            parsed = query_zeroshot(img_path, args.model, args.base_url, api_key)
+            hint = classifier_text(preds[img_name], args.classifier) if preds is not None else ""
+            parsed = query_zeroshot(img_path, args.model, args.base_url, api_key, closed=closed, hint=hint)
             out_json_path.write_text(json.dumps(parsed, indent=2, ensure_ascii=False) + "\n")
             usage_dir = out_dir / "_usage"
             usage_dir.mkdir(exist_ok=True)

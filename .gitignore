@@ -19,3 +19,6 @@ results/v3/
 results/v4/
 results/v4-test/
 results/harness-selftest/runs/
+results/v4c/
+results/v4-zeroshot-sem-tokens/
+analysis/leakage_run.log
