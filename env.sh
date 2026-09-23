@@ -40,7 +40,13 @@ export npm_config_cache="$SANDBOX/npm-cache"
 # opencode: o CLI e instalado localmente dentro do projeto (nao globalmente em ~/.nvm), pois o
 # filesystem fora do volume persistente e efemero e some a cada reinicio do servidor
 export OPENCODE_CLI_PREFIX="$SANDBOX/opencode-cli"
-export PATH="$OPENCODE_CLI_PREFIX/node_modules/.bin:$PATH"
+
+# binarios de que o projeto depende ficam na pasta persistente (tudo fora de /home/jovyan/privado some quando o
+# container e recriado): uv, node/npm (usados pelo opencode para as dependencias do plugin), tectonic e opencode
+export PATH="$SANDBOX/bin:$SANDBOX/node/bin:$OPENCODE_CLI_PREFIX/node_modules/.bin:$PATH"
+
+# git com a configuracao do projeto (safe.directory e autor), sem depender do ~/.gitconfig do container
+export GIT_CONFIG_GLOBAL="$(cd "$EVAL/.." && pwd)/gitconfig-projeto"
 
 # credenciais do endpoint da DGX (arquivo fora do git)
 if [ -f "$EVAL/.env" ]; then
