@@ -61,14 +61,15 @@ def valid_differential(data) -> bool:
 
 
 def collect_agent(mode_dir: str, model: str, images: list[str], bench: str = "exp1_image_level",
-                  valid=valid_differential) -> dict:
-    """Por imagem: a rodada valida mais recente; senao, marca tentativa terminada sem saida valida."""
+                  valid=valid_differential, rep: str = "r1") -> dict:
+    """Por imagem: a rodada valida mais recente da repeticao pedida; senao, marca tentativa terminada sem saida valida."""
     base = RESULTS / bench / mode_dir / model
     runs: dict[str, list[pathlib.Path]] = {}
     if base.exists():
         for rd in sorted(p for p in base.iterdir() if p.is_dir()):
-            stem = rd.name[16:].rsplit("-r", 1)[0]
-            runs.setdefault(stem, []).append(rd)
+            stem, _, run_rep = rd.name[16:].rpartition("-")
+            if run_rep == rep:
+                runs.setdefault(stem, []).append(rd)
     out = {}
     for img in images:
         stem = pathlib.Path(img).stem
