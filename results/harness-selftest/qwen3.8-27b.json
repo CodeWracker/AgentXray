@@ -1,9 +1,10 @@
 {
   "model": "qwen3.8-27b",
   "session_directory_is_run_dir": true,
-  "session_directory": "/home/jovyan/privado/llm-xray-project/llm-xray-evaluation/results/harness-selftest/runs/qwen3.8-27b-vl3sgc38",
+  "session_directory": "/home/jovyan/privado/llm-xray-project/llm-xray-evaluation/results/harness-selftest/runs/qwen3.8-27b-oahaspgp",
   "outside_read_attempted": true,
   "outside_read_denied": true,
+  "own_read_ok": true,
   "outside_cat_attempted": true,
   "outside_cat_denied": true,
   "nudges": 0,

@@ -81,6 +81,12 @@ def harness_opencode_config(provider: str, model: str, run_dir: pathlib.Path) ->
     results = EVAL / "results"
     # arquivos do harness que o agente nao pode alterar: o log so e escrito pela ferramenta log_action
     protected = ["*agent_log*", "*harness_log*", "*harness.json*", "*.opencode*", "*opencode.json*", "*AGENTS.md*"]
+    # arquivos com rotulos do dataset ou com respostas e metricas de rodadas
+    leaks = ["*Data_Entry*", "*BBox_List*", "*benchmarks*", "*train_val_list*", "*test_list*", "*finding_labels*",
+             "*nih_chestxray/*.csv*", "*/analysis/*"]
+    run_rel = run_dir.resolve().relative_to(EVAL)
+    import torchxrayvision
+    txv_src = pathlib.Path(torchxrayvision.__file__).resolve().parent
     return {
         "$schema": "https://opencode.ai/config.json",
         "model": full,
@@ -96,12 +102,20 @@ def harness_opencode_config(provider: str, model: str, run_dir: pathlib.Path) ->
             "webfetch": "deny",
             "websearch": "deny",
             "external_directory": {"*": "deny", "/tmp/*": "allow"},
-            # dentro do repositorio, os resultados de outras rodadas contaminariam a analise
-            **{tool: {"*": "allow", f"*{results}*": "deny", f"{results}/**": "deny", f"{results}/*": "deny",
-                      f"{run_dir}/*": "allow", f"{run_dir}/**": "allow"} for tool in ["read", "list", "glob"]},
-            "edit": {"*": "deny", f"{run_dir}/*": "allow", f"{run_dir}/**": "allow", f"{os.environ['TMPDIR']}/*": "allow",
-                     "/tmp/*": "allow", **{p: "deny" for p in protected}},
-            "bash": {"*": "allow", f"*{results}*": "deny", "*../*": "deny", f"*{run_dir}*": "allow", **{p: "deny" for p in protected}},
+            # leitura pelas ferramentas do opencode: so a pasta da rodada, o codigo do torchxrayvision e /tmp. Tudo o
+            # mais do repositorio fica fechado (resultados de outras rodadas, manifestos e CSVs com rotulos, analises).
+            # O opencode casa o caminho absoluto ou o relativo a raiz do repositorio, por isso as duas formas.
+            **{tool: {"*": "deny",
+                      f"{run_dir}/*": "allow", f"{run_dir}/**": "allow", f"{run_rel}/*": "allow", f"{run_rel}/**": "allow",
+                      f"{txv_src}/*": "allow", f"{txv_src}/**": "allow", "/tmp/*": "allow", "/tmp/**": "allow"}
+               for tool in ["read", "list", "glob", "grep"]},
+            "edit": {"*": "deny", f"{run_dir}/*": "allow", f"{run_dir}/**": "allow", f"{run_rel}/*": "allow",
+                     f"{run_rel}/**": "allow", f"{os.environ['TMPDIR']}/*": "allow", "/tmp/*": "allow",
+                     **{p: "deny" for p in protected}},
+            # o bash nao tem como ser fechado por caminho (o agente roda o proprio codigo); estas regras barram os
+            # acessos diretos aos rotulos e a outras rodadas, e vem depois da liberacao da pasta da rodada
+            "bash": {"*": "allow", f"*{results}*": "deny", f"*{run_dir}*": "allow",
+                     **{p: "deny" for p in ["*../*", *leaks, *protected]}},
         },
     }
 

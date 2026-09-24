@@ -1,4 +1,4 @@
-// Plugin do harness AgentXray para o opencode (versao dos prompts v4).
+// Plugin do harness AgentXray para o opencode (prompts v4 e v4c).
 //
 // Copiado para <run>/.opencode/plugin/ pelo tools/new_run.py, que tambem liga <run>/.opencode/node_modules as
 // dependencias instaladas em harness/opencode/node_modules. Le a configuracao
@@ -79,7 +79,9 @@ export const XrayHarness: Plugin = async ({ directory }) => {
       if (open) {
         append(harnessLog, { time: new Date().toISOString(), kind: "blocked", session: input.sessionID, tool: input.tool, call: input.callID, unlogged: open })
         throw new Error(
-          `Protocol: your previous action (${open.tool}) is not in your agent log. Call log_action for it first, then repeat this call.`,
+          `Protocol: this call was not executed. Your previous tool call (${open.tool}) is not recorded in your agent log yet; ` +
+            `it counts as an action even if it failed or its result was unexpected. Call log_action now to record it and what ` +
+            `happened, and only then repeat this call. Repeating this call before log_action will be blocked again.`,
         )
       }
       pending.set(input.sessionID, { tool: input.tool, callID: input.callID })

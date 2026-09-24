@@ -24,7 +24,8 @@ import tempfile
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 from new_run import EVAL, PYTHON  # noqa: E402
-from run_opencode import opencode_config, summarize  # noqa: E402
+from new_run import harness_opencode_config  # noqa: E402
+from run_opencode import summarize  # noqa: E402
 
 PROMPT = """Do exactly these steps, one tool call each, and then reply DONE:
 1. Run the bash command: pwd
@@ -33,7 +34,8 @@ PROMPT = """Do exactly these steps, one tool call each, and then reply DONE:
 3. Run the bash command: cat {outside}
    (it may be denied; that is expected, just continue).
 4. Run the bash command: {python} -c "import torchxrayvision; print('txv', torchxrayvision.__version__)"
-5. Use the task tool with subagent_type "analyst" and ask it to create the file {sub} containing the word ok."""
+5. Use the task tool with subagent_type "analyst" and ask it to create the file {sub} containing the word ok.
+6. Use the read tool on own.txt (a file in the current directory)."""
 NUDGE = "Not all steps are done yet. If your previous message contained a tool call written as plain text, it was not executed. Continue with the remaining steps."
 
 
@@ -48,9 +50,15 @@ def selftest(model: str, provider: str) -> dict:
     base = EVAL / "results" / "harness-selftest" / "runs"
     base.mkdir(parents=True, exist_ok=True)
     run_dir = pathlib.Path(tempfile.mkdtemp(prefix=f"{model}-", dir=base))
-    (run_dir / "opencode.json").write_text(json.dumps(opencode_config(provider, model, run_dir), indent=2))
+    # mesma configuracao das rodadas (permissoes incluidas); o subagente analyst vem do modelo de rodada
+    (run_dir / "opencode.json").write_text(json.dumps(harness_opencode_config(provider, model, run_dir), indent=2))
+    agent_md = EVAL / "harness" / "opencode" / "run_template" / ".opencode" / "agent" / "analyst.md"
+    (run_dir / ".opencode" / "agent").mkdir(parents=True)
+    (run_dir / ".opencode" / "agent" / "analyst.md").write_text(
+        agent_md.read_text(encoding="utf-8").replace("{{MODEL_NAME}}", model))
     outside = next((EVAL / "results" / "v1").rglob("*.png.json"))
     sub = run_dir / "sub.txt"
+    (run_dir / "own.txt").write_text("own file\n")
     events = run_dir / "events.jsonl"
     message, nudges = PROMPT.format(outside=outside, python=PYTHON, sub=sub), 0
     while True:
@@ -70,6 +78,7 @@ def selftest(model: str, provider: str) -> dict:
 
     tool_parts = [p for m in main["messages"] for p in m["parts"] if p.get("type") == "tool"]
     reads_outside = [p for p in tool_parts if p["tool"] == "read" and str(outside) in json.dumps(p["state"].get("input", {}))]
+    reads_own = [p for p in tool_parts if p["tool"] == "read" and "own.txt" in json.dumps(p["state"].get("input", {}))]
     cats_outside = [p for p in tool_parts if p["tool"] == "bash" and f"cat {outside}" in json.dumps(p["state"].get("input", {}))]
     bash_out = " ".join(str(p["state"].get("output", "")) for p in tool_parts if p["tool"] == "bash")
     if reads_outside:
@@ -80,6 +89,7 @@ def selftest(model: str, provider: str) -> dict:
         "session_directory": main["info"].get("directory"),
         "outside_read_attempted": bool(reads_outside),
         "outside_read_denied": bool(reads_outside) and all(p["state"].get("status") == "error" for p in reads_outside),
+        "own_read_ok": bool(reads_own) and any(p["state"].get("status") == "completed" for p in reads_own),
         "outside_cat_attempted": bool(cats_outside),
         "outside_cat_denied": bool(cats_outside) and all(p["state"].get("status") == "error" for p in cats_outside),
         "nudges": nudges,
@@ -88,7 +98,7 @@ def selftest(model: str, provider: str) -> dict:
         "subagent_file_written": sub.exists() and "ok" in sub.read_text().lower(),
     }
     result["subagent_same_model"] = bool(result["subagents"]) and all(s["model"] == model for s in result["subagents"])
-    result["passed"] = all(result[k] for k in ["session_directory_is_run_dir", "outside_read_denied", "outside_cat_denied", "project_python_works",
+    result["passed"] = all(result[k] for k in ["session_directory_is_run_dir", "outside_read_denied", "own_read_ok", "outside_cat_denied", "project_python_works",
                                                 "subagent_same_model", "subagent_file_written"])
     shutil.rmtree(run_dir)
     return result

@@ -1,9 +1,10 @@
 {
   "model": "gemma4-26b",
   "session_directory_is_run_dir": true,
-  "session_directory": "/home/jovyan/privado/llm-xray-project/llm-xray-evaluation/results/harness-selftest/runs/gemma4-26b-2iftk7um",
+  "session_directory": "/home/jovyan/privado/llm-xray-project/llm-xray-evaluation/results/harness-selftest/runs/gemma4-26b-5xxl1kva",
   "outside_read_attempted": true,
   "outside_read_denied": true,
+  "own_read_ok": true,
   "outside_cat_attempted": true,
   "outside_cat_denied": true,
   "nudges": 0,
