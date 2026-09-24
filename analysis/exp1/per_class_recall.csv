@@ -183,17 +183,17 @@ gemma4-26b:council,Atelectasis,9,0,0.0
 gemma4-26b:council,Cardiomegaly,6,0,0.0
 gemma4-26b:council,Effusion,15,0,0.0
 gemma4-26b:council,Infiltration,17,0,0.0
-gemma4-26b:council,Mass,5,1,0.2
+gemma4-26b:council,Mass,5,0,0.0
 gemma4-26b:council,Nodule,7,0,0.0
 gemma4-26b:council,Pneumonia,5,0,0.0
 gemma4-26b:council,Pneumothorax,7,0,0.0
-gemma4-26b:council,Consolidation,6,0,0.0
+gemma4-26b:council,Consolidation,6,1,0.16666666666666666
 gemma4-26b:council,Edema,5,0,0.0
 gemma4-26b:council,Emphysema,5,0,0.0
 gemma4-26b:council,Fibrosis,4,0,0.0
 gemma4-26b:council,Pleural_Thickening,4,0,0.0
 gemma4-26b:council,Hernia,4,0,0.0
-gemma4-26b:council,No Finding,3,0,0.0
+gemma4-26b:council,No Finding,3,3,1.0
 qwen3.6-27b:zeroshot,Atelectasis,9,6,0.6666666666666666
 qwen3.6-27b:zeroshot,Cardiomegaly,6,0,0.0
 qwen3.6-27b:zeroshot,Effusion,15,9,0.6
@@ -239,21 +239,21 @@ qwen3.6-27b:clf_pc,Fibrosis,4,0,0.0
 qwen3.6-27b:clf_pc,Pleural_Thickening,4,0,0.0
 qwen3.6-27b:clf_pc,Hernia,4,0,0.0
 qwen3.6-27b:clf_pc,No Finding,3,0,0.0
-qwen3.6-27b:single,Atelectasis,9,2,0.2222222222222222
+qwen3.6-27b:single,Atelectasis,9,4,0.4444444444444444
 qwen3.6-27b:single,Cardiomegaly,6,1,0.16666666666666666
-qwen3.6-27b:single,Effusion,15,1,0.06666666666666667
+qwen3.6-27b:single,Effusion,15,6,0.4
 qwen3.6-27b:single,Infiltration,17,0,0.0
-qwen3.6-27b:single,Mass,5,0,0.0
-qwen3.6-27b:single,Nodule,7,0,0.0
-qwen3.6-27b:single,Pneumonia,5,0,0.0
-qwen3.6-27b:single,Pneumothorax,7,0,0.0
+qwen3.6-27b:single,Mass,5,1,0.2
+qwen3.6-27b:single,Nodule,7,1,0.14285714285714285
+qwen3.6-27b:single,Pneumonia,5,2,0.4
+qwen3.6-27b:single,Pneumothorax,7,1,0.14285714285714285
 qwen3.6-27b:single,Consolidation,6,2,0.3333333333333333
-qwen3.6-27b:single,Edema,5,0,0.0
-qwen3.6-27b:single,Emphysema,5,0,0.0
+qwen3.6-27b:single,Edema,5,3,0.6
+qwen3.6-27b:single,Emphysema,5,2,0.4
 qwen3.6-27b:single,Fibrosis,4,0,0.0
 qwen3.6-27b:single,Pleural_Thickening,4,0,0.0
-qwen3.6-27b:single,Hernia,4,0,0.0
-qwen3.6-27b:single,No Finding,3,0,0.0
+qwen3.6-27b:single,Hernia,4,1,0.25
+qwen3.6-27b:single,No Finding,3,2,0.6666666666666666
 qwen3.6-27b:council,Atelectasis,9,0,0.0
 qwen3.6-27b:council,Cardiomegaly,6,0,0.0
 qwen3.6-27b:council,Effusion,15,0,0.0
@@ -314,15 +314,15 @@ qwen3.8-27b:clf_pc,Fibrosis,4,0,0.0
 qwen3.8-27b:clf_pc,Pleural_Thickening,4,0,0.0
 qwen3.8-27b:clf_pc,Hernia,4,0,0.0
 qwen3.8-27b:clf_pc,No Finding,3,0,0.0
-qwen3.8-27b:single,Atelectasis,9,2,0.2222222222222222
-qwen3.8-27b:single,Cardiomegaly,6,1,0.16666666666666666
-qwen3.8-27b:single,Effusion,15,1,0.06666666666666667
-qwen3.8-27b:single,Infiltration,17,0,0.0
+qwen3.8-27b:single,Atelectasis,9,3,0.3333333333333333
+qwen3.8-27b:single,Cardiomegaly,6,2,0.3333333333333333
+qwen3.8-27b:single,Effusion,15,2,0.13333333333333333
+qwen3.8-27b:single,Infiltration,17,1,0.058823529411764705
 qwen3.8-27b:single,Mass,5,0,0.0
 qwen3.8-27b:single,Nodule,7,0,0.0
 qwen3.8-27b:single,Pneumonia,5,0,0.0
 qwen3.8-27b:single,Pneumothorax,7,0,0.0
-qwen3.8-27b:single,Consolidation,6,1,0.16666666666666666
+qwen3.8-27b:single,Consolidation,6,3,0.5
 qwen3.8-27b:single,Edema,5,0,0.0
 qwen3.8-27b:single,Emphysema,5,0,0.0
 qwen3.8-27b:single,Fibrosis,4,0,0.0

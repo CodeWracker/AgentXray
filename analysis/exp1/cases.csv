@@ -494,87 +494,87 @@ gemma4-26b:clf_pc,gemma4-26b,clf_pc,open,00013391_005.png,0,0,,Infiltration|Pneu
 gemma4-26b:clf_pc,gemma4-26b,clf_pc,open,00017747_053.png,0,0,,Emphysema|Pneumothorax,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
 gemma4-26b:clf_pc,gemma4-26b,clf_pc,open,00008295_022.png,0,0,,Atelectasis|Effusion|Pneumothorax,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
 gemma4-26b:clf_pc,gemma4-26b,clf_pc,open,00007750_008.png,0,0,,Atelectasis|Effusion|Pneumothorax,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
-gemma4-26b:single,gemma4-26b,single,open,00022416_019.png,1,0,,Atelectasis|Consolidation|Effusion|Infiltration,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
-gemma4-26b:single,gemma4-26b,single,open,00006304_004.png,1,0,,Atelectasis|Cardiomegaly,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
-gemma4-26b:single,gemma4-26b,single,open,00001075_047.png,1,0,,Atelectasis|Cardiomegaly,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
-gemma4-26b:single,gemma4-26b,single,open,00013249_045.png,1,0,,Cardiomegaly|Infiltration,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
-gemma4-26b:single,gemma4-26b,single,open,00011702_072.png,1,0,,Cardiomegaly|Infiltration,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
-gemma4-26b:single,gemma4-26b,single,open,00010447_027.png,1,0,,Cardiomegaly|Effusion|Infiltration,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
-gemma4-26b:single,gemma4-26b,single,open,00007322_007.png,1,0,,Consolidation,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
-gemma4-26b:single,gemma4-26b,single,open,00022416_056.png,1,0,,Consolidation|Effusion,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
-gemma4-26b:single,gemma4-26b,single,open,00004911_016.png,1,0,,Consolidation|Nodule,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
-gemma4-26b:single,gemma4-26b,single,open,00019651_003.png,1,0,,Edema|Mass,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
-gemma4-26b:single,gemma4-26b,single,open,00022084_000.png,1,0,,Edema|Pneumonia,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
-gemma4-26b:single,gemma4-26b,single,open,00029469_012.png,1,0,,Edema|Effusion|Infiltration|Pneumonia,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
-gemma4-26b:single,gemma4-26b,single,open,00029588_004.png,1,0,,Cardiomegaly|Consolidation|Effusion,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
-gemma4-26b:single,gemma4-26b,single,open,00007632_013.png,1,0,,Effusion|Pneumothorax,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
-gemma4-26b:single,gemma4-26b,single,open,00022098_007.png,1,0,,Effusion|Infiltration,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
-gemma4-26b:single,gemma4-26b,single,open,00003803_002.png,1,0,,Effusion|Emphysema|Infiltration|Pneumothorax,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
-gemma4-26b:single,gemma4-26b,single,open,00003072_028.png,1,0,,Effusion|Emphysema|Fibrosis|Nodule|Pneumothorax,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
-gemma4-26b:single,gemma4-26b,single,open,00008911_026.png,1,0,,Emphysema,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
-gemma4-26b:single,gemma4-26b,single,open,00005089_007.png,1,0,,Fibrosis,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
-gemma4-26b:single,gemma4-26b,single,open,00005609_025.png,1,0,,Fibrosis,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
-gemma4-26b:single,gemma4-26b,single,open,00013659_029.png,1,0,,Fibrosis|Infiltration|Pleural_Thickening,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
-gemma4-26b:single,gemma4-26b,single,open,00021463_005.png,1,0,,Atelectasis|Edema|Effusion|Hernia|Infiltration,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
-gemma4-26b:single,gemma4-26b,single,open,00000003_004.png,1,0,,Hernia,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
-gemma4-26b:single,gemma4-26b,single,open,00020915_000.png,1,0,,Hernia,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
-gemma4-26b:single,gemma4-26b,single,open,00010120_019.png,1,0,,Atelectasis|Infiltration,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
-gemma4-26b:single,gemma4-26b,single,open,00029159_015.png,1,0,,Effusion|Infiltration,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
-gemma4-26b:single,gemma4-26b,single,open,00026194_000.png,1,0,,Infiltration|Nodule,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
-gemma4-26b:single,gemma4-26b,single,open,00022726_011.png,1,0,,Mass|Nodule,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
-gemma4-26b:single,gemma4-26b,single,open,00017403_002.png,1,0,,Atelectasis|Mass,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
-gemma4-26b:single,gemma4-26b,single,open,00014822_025.png,1,0,,Mass,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
-gemma4-26b:single,gemma4-26b,single,open,00013648_018.png,1,0,,No Finding,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
-gemma4-26b:single,gemma4-26b,single,open,00027726_005.png,1,0,,No Finding,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
-gemma4-26b:single,gemma4-26b,single,open,00030557_000.png,1,0,,No Finding,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
-gemma4-26b:single,gemma4-26b,single,open,00013670_049.png,1,0,,Consolidation|Nodule,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
-gemma4-26b:single,gemma4-26b,single,open,00000733_000.png,1,0,,Nodule,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
-gemma4-26b:single,gemma4-26b,single,open,00029159_003.png,1,0,,Nodule,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
-gemma4-26b:single,gemma4-26b,single,open,00010007_062.png,1,0,,Effusion|Infiltration|Pleural_Thickening,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
-gemma4-26b:single,gemma4-26b,single,open,00021463_004.png,1,0,,Hernia|Infiltration|Pleural_Thickening,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
-gemma4-26b:single,gemma4-26b,single,open,00018253_048.png,1,0,,Atelectasis|Effusion|Infiltration|Pleural_Thickening,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
-gemma4-26b:single,gemma4-26b,single,open,00014731_016.png,1,0,,Emphysema|Mass|Pneumonia|Pneumothorax,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
-gemma4-26b:single,gemma4-26b,single,open,00011237_112.png,1,0,,Edema|Infiltration|Pneumonia,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
-gemma4-26b:single,gemma4-26b,single,open,00013391_005.png,1,0,,Infiltration|Pneumonia,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
-gemma4-26b:single,gemma4-26b,single,open,00017747_053.png,1,0,,Emphysema|Pneumothorax,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
-gemma4-26b:single,gemma4-26b,single,open,00008295_022.png,1,0,,Atelectasis|Effusion|Pneumothorax,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
-gemma4-26b:single,gemma4-26b,single,open,00007750_008.png,1,0,,Atelectasis|Effusion|Pneumothorax,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
-gemma4-26b:council,gemma4-26b,council,open,00022416_019.png,1,0,,Atelectasis|Consolidation|Effusion|Infiltration,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
-gemma4-26b:council,gemma4-26b,council,open,00006304_004.png,1,0,,Atelectasis|Cardiomegaly,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
-gemma4-26b:council,gemma4-26b,council,open,00001075_047.png,1,0,,Atelectasis|Cardiomegaly,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
-gemma4-26b:council,gemma4-26b,council,open,00013249_045.png,1,0,,Cardiomegaly|Infiltration,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
-gemma4-26b:council,gemma4-26b,council,open,00011702_072.png,1,0,,Cardiomegaly|Infiltration,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
-gemma4-26b:council,gemma4-26b,council,open,00010447_027.png,1,0,,Cardiomegaly|Effusion|Infiltration,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
-gemma4-26b:council,gemma4-26b,council,open,00007322_007.png,1,0,,Consolidation,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
-gemma4-26b:council,gemma4-26b,council,open,00022416_056.png,1,0,,Consolidation|Effusion,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
-gemma4-26b:council,gemma4-26b,council,open,00004911_016.png,1,0,,Consolidation|Nodule,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
-gemma4-26b:council,gemma4-26b,council,open,00019651_003.png,1,0,,Edema|Mass,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
-gemma4-26b:council,gemma4-26b,council,open,00022084_000.png,1,0,,Edema|Pneumonia,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
-gemma4-26b:council,gemma4-26b,council,open,00029469_012.png,1,0,,Edema|Effusion|Infiltration|Pneumonia,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
-gemma4-26b:council,gemma4-26b,council,open,00029588_004.png,1,0,,Cardiomegaly|Consolidation|Effusion,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
-gemma4-26b:council,gemma4-26b,council,open,00007632_013.png,1,0,,Effusion|Pneumothorax,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
-gemma4-26b:council,gemma4-26b,council,open,00022098_007.png,1,0,,Effusion|Infiltration,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
-gemma4-26b:council,gemma4-26b,council,open,00003803_002.png,1,0,,Effusion|Emphysema|Infiltration|Pneumothorax,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
-gemma4-26b:council,gemma4-26b,council,open,00003072_028.png,1,0,,Effusion|Emphysema|Fibrosis|Nodule|Pneumothorax,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
-gemma4-26b:council,gemma4-26b,council,open,00008911_026.png,1,0,,Emphysema,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
-gemma4-26b:council,gemma4-26b,council,open,00005089_007.png,1,0,,Fibrosis,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
-gemma4-26b:council,gemma4-26b,council,open,00005609_025.png,1,0,,Fibrosis,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
-gemma4-26b:council,gemma4-26b,council,open,00013659_029.png,1,0,,Fibrosis|Infiltration|Pleural_Thickening,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
-gemma4-26b:council,gemma4-26b,council,open,00021463_005.png,1,0,,Atelectasis|Edema|Effusion|Hernia|Infiltration,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
-gemma4-26b:council,gemma4-26b,council,open,00000003_004.png,1,0,,Hernia,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
-gemma4-26b:council,gemma4-26b,council,open,00020915_000.png,1,0,,Hernia,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
-gemma4-26b:council,gemma4-26b,council,open,00010120_019.png,1,0,,Atelectasis|Infiltration,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
-gemma4-26b:council,gemma4-26b,council,open,00029159_015.png,1,0,,Effusion|Infiltration,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
-gemma4-26b:council,gemma4-26b,council,open,00026194_000.png,1,0,,Infiltration|Nodule,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
-gemma4-26b:council,gemma4-26b,council,open,00022726_011.png,1,1,20260923-134741-00022726_011-r1,Mass|Nodule,Mass|Pneumonia,3,1,1,1,1,1,1,1.0,0.5,0.5,0.5,0.3333,partial_oov_hit,1
+gemma4-26b:single,gemma4-26b,single,open,00022416_019.png,0,0,,Atelectasis|Consolidation|Effusion|Infiltration,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
+gemma4-26b:single,gemma4-26b,single,open,00006304_004.png,0,0,,Atelectasis|Cardiomegaly,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
+gemma4-26b:single,gemma4-26b,single,open,00001075_047.png,0,0,,Atelectasis|Cardiomegaly,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
+gemma4-26b:single,gemma4-26b,single,open,00013249_045.png,0,0,,Cardiomegaly|Infiltration,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
+gemma4-26b:single,gemma4-26b,single,open,00011702_072.png,0,0,,Cardiomegaly|Infiltration,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
+gemma4-26b:single,gemma4-26b,single,open,00010447_027.png,0,0,,Cardiomegaly|Effusion|Infiltration,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
+gemma4-26b:single,gemma4-26b,single,open,00007322_007.png,0,0,,Consolidation,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
+gemma4-26b:single,gemma4-26b,single,open,00022416_056.png,0,0,,Consolidation|Effusion,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
+gemma4-26b:single,gemma4-26b,single,open,00004911_016.png,0,0,,Consolidation|Nodule,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
+gemma4-26b:single,gemma4-26b,single,open,00019651_003.png,0,0,,Edema|Mass,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
+gemma4-26b:single,gemma4-26b,single,open,00022084_000.png,0,0,,Edema|Pneumonia,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
+gemma4-26b:single,gemma4-26b,single,open,00029469_012.png,0,0,,Edema|Effusion|Infiltration|Pneumonia,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
+gemma4-26b:single,gemma4-26b,single,open,00029588_004.png,0,0,,Cardiomegaly|Consolidation|Effusion,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
+gemma4-26b:single,gemma4-26b,single,open,00007632_013.png,0,0,,Effusion|Pneumothorax,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
+gemma4-26b:single,gemma4-26b,single,open,00022098_007.png,0,0,,Effusion|Infiltration,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
+gemma4-26b:single,gemma4-26b,single,open,00003803_002.png,0,0,,Effusion|Emphysema|Infiltration|Pneumothorax,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
+gemma4-26b:single,gemma4-26b,single,open,00003072_028.png,0,0,,Effusion|Emphysema|Fibrosis|Nodule|Pneumothorax,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
+gemma4-26b:single,gemma4-26b,single,open,00008911_026.png,0,0,,Emphysema,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
+gemma4-26b:single,gemma4-26b,single,open,00005089_007.png,0,0,,Fibrosis,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
+gemma4-26b:single,gemma4-26b,single,open,00005609_025.png,0,0,,Fibrosis,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
+gemma4-26b:single,gemma4-26b,single,open,00013659_029.png,0,0,,Fibrosis|Infiltration|Pleural_Thickening,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
+gemma4-26b:single,gemma4-26b,single,open,00021463_005.png,0,0,,Atelectasis|Edema|Effusion|Hernia|Infiltration,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
+gemma4-26b:single,gemma4-26b,single,open,00000003_004.png,0,0,,Hernia,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
+gemma4-26b:single,gemma4-26b,single,open,00020915_000.png,0,0,,Hernia,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
+gemma4-26b:single,gemma4-26b,single,open,00010120_019.png,0,0,,Atelectasis|Infiltration,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
+gemma4-26b:single,gemma4-26b,single,open,00029159_015.png,0,0,,Effusion|Infiltration,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
+gemma4-26b:single,gemma4-26b,single,open,00026194_000.png,0,0,,Infiltration|Nodule,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
+gemma4-26b:single,gemma4-26b,single,open,00022726_011.png,0,0,,Mass|Nodule,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
+gemma4-26b:single,gemma4-26b,single,open,00017403_002.png,0,0,,Atelectasis|Mass,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
+gemma4-26b:single,gemma4-26b,single,open,00014822_025.png,0,0,,Mass,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
+gemma4-26b:single,gemma4-26b,single,open,00013648_018.png,0,0,,No Finding,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
+gemma4-26b:single,gemma4-26b,single,open,00027726_005.png,0,0,,No Finding,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
+gemma4-26b:single,gemma4-26b,single,open,00030557_000.png,0,0,,No Finding,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
+gemma4-26b:single,gemma4-26b,single,open,00013670_049.png,0,0,,Consolidation|Nodule,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
+gemma4-26b:single,gemma4-26b,single,open,00000733_000.png,0,0,,Nodule,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
+gemma4-26b:single,gemma4-26b,single,open,00029159_003.png,0,0,,Nodule,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
+gemma4-26b:single,gemma4-26b,single,open,00010007_062.png,0,0,,Effusion|Infiltration|Pleural_Thickening,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
+gemma4-26b:single,gemma4-26b,single,open,00021463_004.png,0,0,,Hernia|Infiltration|Pleural_Thickening,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
+gemma4-26b:single,gemma4-26b,single,open,00018253_048.png,0,0,,Atelectasis|Effusion|Infiltration|Pleural_Thickening,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
+gemma4-26b:single,gemma4-26b,single,open,00014731_016.png,0,0,,Emphysema|Mass|Pneumonia|Pneumothorax,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
+gemma4-26b:single,gemma4-26b,single,open,00011237_112.png,0,0,,Edema|Infiltration|Pneumonia,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
+gemma4-26b:single,gemma4-26b,single,open,00013391_005.png,0,0,,Infiltration|Pneumonia,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
+gemma4-26b:single,gemma4-26b,single,open,00017747_053.png,0,0,,Emphysema|Pneumothorax,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
+gemma4-26b:single,gemma4-26b,single,open,00008295_022.png,0,0,,Atelectasis|Effusion|Pneumothorax,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
+gemma4-26b:single,gemma4-26b,single,open,00007750_008.png,0,0,,Atelectasis|Effusion|Pneumothorax,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
+gemma4-26b:council,gemma4-26b,council,open,00022416_019.png,0,0,,Atelectasis|Consolidation|Effusion|Infiltration,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
+gemma4-26b:council,gemma4-26b,council,open,00006304_004.png,0,0,,Atelectasis|Cardiomegaly,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
+gemma4-26b:council,gemma4-26b,council,open,00001075_047.png,0,0,,Atelectasis|Cardiomegaly,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
+gemma4-26b:council,gemma4-26b,council,open,00013249_045.png,0,0,,Cardiomegaly|Infiltration,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
+gemma4-26b:council,gemma4-26b,council,open,00011702_072.png,0,0,,Cardiomegaly|Infiltration,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
+gemma4-26b:council,gemma4-26b,council,open,00010447_027.png,0,0,,Cardiomegaly|Effusion|Infiltration,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
+gemma4-26b:council,gemma4-26b,council,open,00007322_007.png,0,0,,Consolidation,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
+gemma4-26b:council,gemma4-26b,council,open,00022416_056.png,0,0,,Consolidation|Effusion,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
+gemma4-26b:council,gemma4-26b,council,open,00004911_016.png,0,0,,Consolidation|Nodule,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
+gemma4-26b:council,gemma4-26b,council,open,00019651_003.png,0,0,,Edema|Mass,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
+gemma4-26b:council,gemma4-26b,council,open,00022084_000.png,0,0,,Edema|Pneumonia,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
+gemma4-26b:council,gemma4-26b,council,open,00029469_012.png,0,0,,Edema|Effusion|Infiltration|Pneumonia,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
+gemma4-26b:council,gemma4-26b,council,open,00029588_004.png,0,0,,Cardiomegaly|Consolidation|Effusion,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
+gemma4-26b:council,gemma4-26b,council,open,00007632_013.png,0,0,,Effusion|Pneumothorax,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
+gemma4-26b:council,gemma4-26b,council,open,00022098_007.png,0,0,,Effusion|Infiltration,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
+gemma4-26b:council,gemma4-26b,council,open,00003803_002.png,0,0,,Effusion|Emphysema|Infiltration|Pneumothorax,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
+gemma4-26b:council,gemma4-26b,council,open,00003072_028.png,0,0,,Effusion|Emphysema|Fibrosis|Nodule|Pneumothorax,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
+gemma4-26b:council,gemma4-26b,council,open,00008911_026.png,0,0,,Emphysema,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
+gemma4-26b:council,gemma4-26b,council,open,00005089_007.png,0,0,,Fibrosis,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
+gemma4-26b:council,gemma4-26b,council,open,00005609_025.png,0,0,,Fibrosis,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
+gemma4-26b:council,gemma4-26b,council,open,00013659_029.png,0,0,,Fibrosis|Infiltration|Pleural_Thickening,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
+gemma4-26b:council,gemma4-26b,council,open,00021463_005.png,0,0,,Atelectasis|Edema|Effusion|Hernia|Infiltration,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
+gemma4-26b:council,gemma4-26b,council,open,00000003_004.png,0,0,,Hernia,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
+gemma4-26b:council,gemma4-26b,council,open,00020915_000.png,0,0,,Hernia,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
+gemma4-26b:council,gemma4-26b,council,open,00010120_019.png,0,0,,Atelectasis|Infiltration,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
+gemma4-26b:council,gemma4-26b,council,open,00029159_015.png,0,0,,Effusion|Infiltration,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
+gemma4-26b:council,gemma4-26b,council,open,00026194_000.png,0,0,,Infiltration|Nodule,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
+gemma4-26b:council,gemma4-26b,council,open,00022726_011.png,0,0,,Mass|Nodule,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
 gemma4-26b:council,gemma4-26b,council,open,00017403_002.png,0,0,,Atelectasis|Mass,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
 gemma4-26b:council,gemma4-26b,council,open,00014822_025.png,0,0,,Mass,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
-gemma4-26b:council,gemma4-26b,council,open,00013648_018.png,0,0,,No Finding,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
-gemma4-26b:council,gemma4-26b,council,open,00027726_005.png,0,0,,No Finding,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
-gemma4-26b:council,gemma4-26b,council,open,00030557_000.png,0,0,,No Finding,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
-gemma4-26b:council,gemma4-26b,council,open,00013670_049.png,0,0,,Consolidation|Nodule,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
-gemma4-26b:council,gemma4-26b,council,open,00000733_000.png,0,0,,Nodule,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
-gemma4-26b:council,gemma4-26b,council,open,00029159_003.png,0,0,,Nodule,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
+gemma4-26b:council,gemma4-26b,council,open,00013648_018.png,1,1,20260923-150117-00013648_018-r1,No Finding,No Finding|Nodule,3,1,1,1,1,1,1,1.0,1.0,0.5,0.6667,0.3333,partial_oov_hit,1
+gemma4-26b:council,gemma4-26b,council,open,00027726_005.png,1,1,20260923-150910-00027726_005-r1,No Finding,No Finding|Infiltration|Fibrosis|Nodule,3,0,1,2,1,1,1,1.0,1.0,0.25,0.4,0.0,no_oov_hit,1
+gemma4-26b:council,gemma4-26b,council,open,00030557_000.png,1,1,20260923-180235-00030557_000-r1,No Finding,Edema|Infiltration|Pneumonia|No Finding,3,0,1,2,3,0,1,0.3333,1.0,0.25,0.4,0.0,no_oov_hit,0
+gemma4-26b:council,gemma4-26b,council,open,00013670_049.png,1,1,20260923-191300-00013670_049-r1,Consolidation|Nodule,Edema|Pneumonia|Consolidation|Atelectasis,3,0,1,2,2,0,1,0.5,0.5,0.25,0.3333,0.0,no_oov_hit,0
+gemma4-26b:council,gemma4-26b,council,open,00000733_000.png,1,1,20260923-192819-00000733_000-r1,Nodule,No Finding,3,2,0,1,,0,0,0.0,0.0,0.0,0.0,0.6667,partial_oov_miss,0
+gemma4-26b:council,gemma4-26b,council,open,00029159_003.png,1,1,20260923-215900-00029159_003-r1,Nodule,,3,3,0,0,,0,0,0.0,0.0,,0.0,1.0,total_oov,0
 gemma4-26b:council,gemma4-26b,council,open,00010007_062.png,0,0,,Effusion|Infiltration|Pleural_Thickening,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
 gemma4-26b:council,gemma4-26b,council,open,00021463_004.png,0,0,,Hernia|Infiltration|Pleural_Thickening,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
 gemma4-26b:council,gemma4-26b,council,open,00018253_048.png,0,0,,Atelectasis|Effusion|Infiltration|Pleural_Thickening,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
@@ -727,30 +727,30 @@ qwen3.6-27b:single,qwen3.6-27b,single,open,00011702_072.png,1,1,20260923-120603-
 qwen3.6-27b:single,qwen3.6-27b,single,open,00010447_027.png,1,1,20260923-122925-00010447_027-r1,Cardiomegaly|Effusion|Infiltration,Pneumonia|Edema,3,1,0,2,,0,0,0.0,0.0,0.0,0.0,0.3333,partial_oov_miss,0
 qwen3.6-27b:single,qwen3.6-27b,single,open,00007322_007.png,1,1,20260923-125456-00007322_007-r1,Consolidation,Atelectasis|Edema|Pneumonia|Consolidation|Effusion,3,0,1,2,2,0,1,0.5,1.0,0.2,0.3333,0.0,no_oov_hit,0
 qwen3.6-27b:single,qwen3.6-27b,single,open,00022416_056.png,1,1,20260923-131651-00022416_056-r1,Consolidation|Effusion,Effusion|Atelectasis|Consolidation|Pneumonia,3,0,3,0,1,1,1,1.0,1.0,0.5,0.6667,0.0,no_oov_hit,1
-qwen3.6-27b:single,qwen3.6-27b,single,open,00004911_016.png,0,0,,Consolidation|Nodule,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
-qwen3.6-27b:single,qwen3.6-27b,single,open,00019651_003.png,0,0,,Edema|Mass,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
-qwen3.6-27b:single,qwen3.6-27b,single,open,00022084_000.png,0,0,,Edema|Pneumonia,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
-qwen3.6-27b:single,qwen3.6-27b,single,open,00029469_012.png,0,0,,Edema|Effusion|Infiltration|Pneumonia,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
-qwen3.6-27b:single,qwen3.6-27b,single,open,00029588_004.png,0,0,,Cardiomegaly|Consolidation|Effusion,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
-qwen3.6-27b:single,qwen3.6-27b,single,open,00007632_013.png,0,0,,Effusion|Pneumothorax,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
-qwen3.6-27b:single,qwen3.6-27b,single,open,00022098_007.png,0,0,,Effusion|Infiltration,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
-qwen3.6-27b:single,qwen3.6-27b,single,open,00003803_002.png,0,0,,Effusion|Emphysema|Infiltration|Pneumothorax,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
-qwen3.6-27b:single,qwen3.6-27b,single,open,00003072_028.png,0,0,,Effusion|Emphysema|Fibrosis|Nodule|Pneumothorax,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
-qwen3.6-27b:single,qwen3.6-27b,single,open,00008911_026.png,0,0,,Emphysema,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
-qwen3.6-27b:single,qwen3.6-27b,single,open,00005089_007.png,0,0,,Fibrosis,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
-qwen3.6-27b:single,qwen3.6-27b,single,open,00005609_025.png,0,0,,Fibrosis,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
-qwen3.6-27b:single,qwen3.6-27b,single,open,00013659_029.png,0,0,,Fibrosis|Infiltration|Pleural_Thickening,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
-qwen3.6-27b:single,qwen3.6-27b,single,open,00021463_005.png,0,0,,Atelectasis|Edema|Effusion|Hernia|Infiltration,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
-qwen3.6-27b:single,qwen3.6-27b,single,open,00000003_004.png,0,0,,Hernia,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
-qwen3.6-27b:single,qwen3.6-27b,single,open,00020915_000.png,0,0,,Hernia,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
-qwen3.6-27b:single,qwen3.6-27b,single,open,00010120_019.png,0,0,,Atelectasis|Infiltration,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
-qwen3.6-27b:single,qwen3.6-27b,single,open,00029159_015.png,0,0,,Effusion|Infiltration,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
-qwen3.6-27b:single,qwen3.6-27b,single,open,00026194_000.png,0,0,,Infiltration|Nodule,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
-qwen3.6-27b:single,qwen3.6-27b,single,open,00022726_011.png,0,0,,Mass|Nodule,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
-qwen3.6-27b:single,qwen3.6-27b,single,open,00017403_002.png,0,0,,Atelectasis|Mass,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
-qwen3.6-27b:single,qwen3.6-27b,single,open,00014822_025.png,0,0,,Mass,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
-qwen3.6-27b:single,qwen3.6-27b,single,open,00013648_018.png,0,0,,No Finding,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
-qwen3.6-27b:single,qwen3.6-27b,single,open,00027726_005.png,0,0,,No Finding,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
+qwen3.6-27b:single,qwen3.6-27b,single,open,00004911_016.png,1,1,20260923-133142-00004911_016-r1,Consolidation|Nodule,Nodule,3,2,1,0,3,0,1,0.3333,0.5,1.0,0.6667,0.6667,partial_oov_hit,1
+qwen3.6-27b:single,qwen3.6-27b,single,open,00019651_003.png,1,1,20260923-141641-00019651_003-r1,Edema|Mass,,3,3,0,0,,0,0,0.0,0.0,,0.0,1.0,total_oov,0
+qwen3.6-27b:single,qwen3.6-27b,single,open,00022084_000.png,1,1,20260923-143446-00022084_000-r1,Edema|Pneumonia,Pneumonia|Edema,3,0,3,0,1,1,1,1.0,1.0,1.0,1.0,0.0,no_oov_hit,1
+qwen3.6-27b:single,qwen3.6-27b,single,open,00029469_012.png,1,1,20260923-145843-00029469_012-r1,Edema|Effusion|Infiltration|Pneumonia,Pneumonia|Effusion|Edema,3,0,3,0,1,1,1,1.0,0.75,1.0,0.8571,0.0,no_oov_hit,1
+qwen3.6-27b:single,qwen3.6-27b,single,open,00029588_004.png,1,1,20260923-152515-00029588_004-r1,Cardiomegaly|Consolidation|Effusion,Pneumonia|Effusion|Edema|Atelectasis,3,0,2,1,1,1,1,1.0,0.3333,0.25,0.2857,0.0,no_oov_hit,1
+qwen3.6-27b:single,qwen3.6-27b,single,open,00007632_013.png,1,1,20260923-160405-00007632_013-r1,Effusion|Pneumothorax,Emphysema,3,2,0,1,,0,0,0.0,0.0,0.0,0.0,0.6667,partial_oov_miss,0
+qwen3.6-27b:single,qwen3.6-27b,single,open,00022098_007.png,1,1,20260923-161830-00022098_007-r1,Effusion|Infiltration,Pneumonia|Effusion|Atelectasis,3,0,3,0,1,1,1,1.0,0.5,0.3333,0.4,0.0,no_oov_hit,1
+qwen3.6-27b:single,qwen3.6-27b,single,open,00003803_002.png,1,1,20260923-163502-00003803_002-r1,Effusion|Emphysema|Infiltration|Pneumothorax,Effusion|Atelectasis|Pneumonia|Consolidation,3,1,2,0,1,1,1,1.0,0.25,0.25,0.25,0.3333,partial_oov_hit,1
+qwen3.6-27b:single,qwen3.6-27b,single,open,00003072_028.png,1,1,20260923-171305-00003072_028-r1,Effusion|Emphysema|Fibrosis|Nodule|Pneumothorax,Pneumothorax|Emphysema|Effusion|Pneumonia|Consolidation,3,1,2,0,1,1,1,1.0,0.6,0.6,0.6,0.3333,partial_oov_hit,1
+qwen3.6-27b:single,qwen3.6-27b,single,open,00008911_026.png,1,1,20260923-173403-00008911_026-r1,Emphysema,Pneumothorax|Emphysema,3,0,3,0,1,1,1,1.0,1.0,0.5,0.6667,0.0,no_oov_hit,1
+qwen3.6-27b:single,qwen3.6-27b,single,open,00005089_007.png,1,1,20260923-175526-00005089_007-r1,Fibrosis,Effusion|Pleural_Thickening,3,0,0,3,,0,0,0.0,0.0,0.0,0.0,0.0,no_oov_miss,0
+qwen3.6-27b:single,qwen3.6-27b,single,open,00005609_025.png,1,1,20260923-190212-00005609_025-r1,Fibrosis,Effusion|Atelectasis|Consolidation|Pneumonia,3,0,0,3,,0,0,0.0,0.0,0.0,0.0,0.0,no_oov_miss,0
+qwen3.6-27b:single,qwen3.6-27b,single,open,00013659_029.png,1,1,20260923-192446-00013659_029-r1,Fibrosis|Infiltration|Pleural_Thickening,Atelectasis|Effusion,3,0,0,3,,0,0,0.0,0.0,0.0,0.0,0.0,no_oov_miss,0
+qwen3.6-27b:single,qwen3.6-27b,single,open,00021463_005.png,1,1,20260923-194303-00021463_005-r1,Atelectasis|Edema|Effusion|Hernia|Infiltration,Edema|No Finding,3,1,1,1,1,1,1,1.0,0.2,0.5,0.2857,0.3333,partial_oov_hit,1
+qwen3.6-27b:single,qwen3.6-27b,single,open,00000003_004.png,1,1,20260923-200154-00000003_004-r1,Hernia,Fibrosis|No Finding,3,1,0,2,,0,0,0.0,0.0,0.0,0.0,0.3333,partial_oov_miss,0
+qwen3.6-27b:single,qwen3.6-27b,single,open,00020915_000.png,1,1,20260923-201439-00020915_000-r1,Hernia,Hernia|No Finding|Cardiomegaly,3,0,1,2,1,1,1,1.0,1.0,0.3333,0.5,0.0,no_oov_hit,1
+qwen3.6-27b:single,qwen3.6-27b,single,open,00010120_019.png,1,1,20260923-204241-00010120_019-r1,Atelectasis|Infiltration,No Finding|Atelectasis,3,1,1,1,2,0,1,0.5,0.5,0.5,0.5,0.3333,partial_oov_hit,0
+qwen3.6-27b:single,qwen3.6-27b,single,open,00029159_015.png,1,1,20260923-210149-00029159_015-r1,Effusion|Infiltration,Pneumonia|Consolidation|Edema,3,1,0,2,,0,0,0.0,0.0,0.0,0.0,0.3333,partial_oov_miss,0
+qwen3.6-27b:single,qwen3.6-27b,single,open,00026194_000.png,1,1,20260923-213434-00026194_000-r1,Infiltration|Nodule,Pneumonia|No Finding,3,1,0,2,,0,0,0.0,0.0,0.0,0.0,0.3333,partial_oov_miss,0
+qwen3.6-27b:single,qwen3.6-27b,single,open,00022726_011.png,1,1,20260923-231055-00022726_011-r1,Mass|Nodule,Mass,3,2,1,0,3,0,1,0.3333,0.5,1.0,0.6667,0.6667,partial_oov_hit,1
+qwen3.6-27b:single,qwen3.6-27b,single,open,00017403_002.png,1,1,20260923-233516-00017403_002-r1,Atelectasis|Mass,Pneumonia|Consolidation|Atelectasis|Effusion,3,0,2,1,2,0,1,0.5,0.5,0.25,0.3333,0.0,no_oov_hit,0
+qwen3.6-27b:single,qwen3.6-27b,single,open,00014822_025.png,1,1,20260924-002650-00014822_025-r1,Mass,Pneumonia|Effusion|Edema,3,1,0,2,,0,0,0.0,0.0,0.0,0.0,0.3333,partial_oov_miss,0
+qwen3.6-27b:single,qwen3.6-27b,single,open,00013648_018.png,1,1,20260924-004113-00013648_018-r1,No Finding,No Finding,3,2,1,0,1,1,1,1.0,1.0,1.0,1.0,0.6667,partial_oov_hit,1
+qwen3.6-27b:single,qwen3.6-27b,single,open,00027726_005.png,1,1,20260924-010041-00027726_005-r1,No Finding,No Finding,3,2,1,0,1,1,1,1.0,1.0,1.0,1.0,0.6667,partial_oov_hit,1
 qwen3.6-27b:single,qwen3.6-27b,single,open,00030557_000.png,0,0,,No Finding,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
 qwen3.6-27b:single,qwen3.6-27b,single,open,00013670_049.png,0,0,,Consolidation|Nodule,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
 qwen3.6-27b:single,qwen3.6-27b,single,open,00000733_000.png,0,0,,Nodule,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
@@ -946,13 +946,13 @@ qwen3.8-27b:clf_pc,qwen3.8-27b,clf_pc,open,00008295_022.png,0,0,,Atelectasis|Eff
 qwen3.8-27b:clf_pc,qwen3.8-27b,clf_pc,open,00007750_008.png,0,0,,Atelectasis|Effusion|Pneumothorax,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
 qwen3.8-27b:single,qwen3.8-27b,single,open,00022416_019.png,1,1,20260923-103540-00022416_019-r1,Atelectasis|Consolidation|Effusion|Infiltration,Pneumonia|Consolidation|Edema|Atelectasis|Effusion,3,0,2,1,1,1,1,1.0,0.75,0.6,0.6667,0.0,no_oov_hit,1
 qwen3.8-27b:single,qwen3.8-27b,single,open,00006304_004.png,1,1,20260923-120519-00006304_004-r1,Atelectasis|Cardiomegaly,Cardiomegaly|Atelectasis|Edema|Effusion|Consolidation,3,0,2,1,1,1,1,1.0,1.0,0.4,0.5714,0.0,no_oov_hit,1
-qwen3.8-27b:single,qwen3.8-27b,single,open,00001075_047.png,0,0,,Atelectasis|Cardiomegaly,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
-qwen3.8-27b:single,qwen3.8-27b,single,open,00013249_045.png,0,0,,Cardiomegaly|Infiltration,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
-qwen3.8-27b:single,qwen3.8-27b,single,open,00011702_072.png,0,0,,Cardiomegaly|Infiltration,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
-qwen3.8-27b:single,qwen3.8-27b,single,open,00010447_027.png,0,0,,Cardiomegaly|Effusion|Infiltration,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
-qwen3.8-27b:single,qwen3.8-27b,single,open,00007322_007.png,0,0,,Consolidation,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
-qwen3.8-27b:single,qwen3.8-27b,single,open,00022416_056.png,0,0,,Consolidation|Effusion,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
-qwen3.8-27b:single,qwen3.8-27b,single,open,00004911_016.png,0,0,,Consolidation|Nodule,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
+qwen3.8-27b:single,qwen3.8-27b,single,open,00001075_047.png,1,1,20260923-135341-00001075_047-r1,Atelectasis|Cardiomegaly,No Finding|Atelectasis|Effusion,3,0,1,2,2,0,1,0.5,0.5,0.3333,0.4,0.0,no_oov_hit,0
+qwen3.8-27b:single,qwen3.8-27b,single,open,00013249_045.png,1,1,20260923-160438-00013249_045-r1,Cardiomegaly|Infiltration,Cardiomegaly|Edema|Pneumonia|Consolidation,3,0,2,1,1,1,1,1.0,0.5,0.25,0.3333,0.0,no_oov_hit,1
+qwen3.8-27b:single,qwen3.8-27b,single,open,00011702_072.png,1,1,20260923-174858-00011702_072-r1,Cardiomegaly|Infiltration,Effusion|Atelectasis|Edema|Pneumonia|Consolidation,3,0,0,3,,0,0,0.0,0.0,0.0,0.0,0.0,no_oov_miss,0
+qwen3.8-27b:single,qwen3.8-27b,single,open,00010447_027.png,1,1,20260923-185127-00010447_027-r1,Cardiomegaly|Effusion|Infiltration,Edema|Infiltration|Pneumonia,3,1,1,1,1,1,1,1.0,0.3333,0.3333,0.3333,0.3333,partial_oov_hit,1
+qwen3.8-27b:single,qwen3.8-27b,single,open,00007322_007.png,1,1,20260923-195957-00007322_007-r1,Consolidation,Effusion|Atelectasis|Edema|Consolidation|Pneumonia,3,0,1,2,3,0,1,0.3333,1.0,0.2,0.3333,0.0,no_oov_hit,0
+qwen3.8-27b:single,qwen3.8-27b,single,open,00022416_056.png,1,1,20260923-210756-00022416_056-r1,Consolidation|Effusion,Consolidation|Pneumonia|Effusion|Edema|Atelectasis,3,0,2,1,1,1,1,1.0,1.0,0.4,0.5714,0.0,no_oov_hit,1
+qwen3.8-27b:single,qwen3.8-27b,single,open,00004911_016.png,1,1,20260923-222749-00004911_016-r1,Consolidation|Nodule,Pneumothorax|Emphysema,3,1,0,2,,0,0,0.0,0.0,0.0,0.0,0.3333,partial_oov_miss,0
 qwen3.8-27b:single,qwen3.8-27b,single,open,00019651_003.png,0,0,,Edema|Mass,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
 qwen3.8-27b:single,qwen3.8-27b,single,open,00022084_000.png,0,0,,Edema|Pneumonia,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0
 qwen3.8-27b:single,qwen3.8-27b,single,open,00029469_012.png,0,0,,Edema|Effusion|Infiltration|Pneumonia,,0,0,0,0,,0,0,0.0,0.0,,0.0,,empty,0

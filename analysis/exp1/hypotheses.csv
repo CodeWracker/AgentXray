@@ -1203,9 +1203,24 @@ gemma4-26b:zeroshot,00008295_022.png,3,Right-sided atelectasis,Atelectasis,,corr
 gemma4-26b:zeroshot,00007750_008.png,1,Residual right pleural effusion or atelectasis,Effusion|Atelectasis,,correct
 gemma4-26b:zeroshot,00007750_008.png,2,Right lower lobe pneumonia,Pneumonia,,incorrect
 gemma4-26b:zeroshot,00007750_008.png,3,Post-procedural changes following chest tube insertion,,,oov
-gemma4-26b:council,00022726_011.png,1,Pulmonary neoplasm (primary lung cancer),Mass,,correct
-gemma4-26b:council,00022726_011.png,2,"Granulomatous disease (e.g., sarcoidosis)",,,oov
-gemma4-26b:council,00022726_011.png,3,"Infectious process (e.g., focal pneumonia or abscess)",Pneumonia,,incorrect
+gemma4-26b:council,00013648_018.png,1,Normal / No acute finding,No Finding,,correct
+gemma4-26b:council,00013648_018.png,2,Subtle pulmonary nodule (low suspicion),Nodule,,incorrect
+gemma4-26b:council,00013648_018.png,3,Subtle interstitial thickening (low suspicion),,,oov
+gemma4-26b:council,00027726_005.png,1,Normal / No acute finding (visual inspection),No Finding,,correct
+gemma4-26b:council,00027726_005.png,2,Subtle interstitial disease (Infiltration/Fibrosis scoring),Infiltration|Fibrosis,,incorrect
+gemma4-26b:council,00027726_005.png,3,Subtle pulmonary nodules (Nodule scoring),Nodule,,incorrect
+gemma4-26b:council,00030557_000.png,1,Pulmonary edema (likely due to high CLIP score),Edema,,incorrect
+gemma4-26b:council,00030557_000.png,2,Infiltration/Pneumonia (supported by DenseNet score),Infiltration|Pneumonia,,incorrect
+gemma4-26b:council,00030557_000.png,3,"Normal radiograph with obscuration by soft tissue (most likely, given visual inspection)",No Finding,,correct
+gemma4-26b:council,00013670_049.png,1,Pulmonary edema,Edema,,incorrect
+gemma4-26b:council,00013670_049.png,2,Pneumonia / Consolidation,Pneumonia|Consolidation,,correct
+gemma4-26b:council,00013670_049.png,3,Atelectasis,Atelectasis,,incorrect
+gemma4-26b:council,00000733_000.png,1,Normal / No acute finding,No Finding,,incorrect
+gemma4-26b:council,00000733_000.png,2,Right hilar lymphadenopathy,,,oov
+gemma4-26b:council,00000733_000.png,3,Right hilar vascular prominence,,,oov
+gemma4-26b:council,00029159_003.png,1,Pneumoperitoneum (most likely),,,oov
+gemma4-26b:council,00029159_003.png,2,Post-procedural air (given the medical device presence),,,oov
+gemma4-26b:council,00029159_003.png,3,Perforated viscus,,,oov
 qwen3.6-27b:zeroshot,00022416_019.png,1,Acute Respiratory Distress Syndrome (ARDS) / Non-cardiogenic Pulmonary Edema,Edema,,incorrect
 qwen3.6-27b:zeroshot,00022416_019.png,2,Cardiogenic Pulmonary Edema / Congestive Heart Failure,Edema,,incorrect
 qwen3.6-27b:zeroshot,00022416_019.png,3,Multilobar Pneumonia,Pneumonia,,incorrect
@@ -1362,6 +1377,78 @@ qwen3.6-27b:single,00007322_007.png,3,Small bilateral pleural effusions,Effusion
 qwen3.6-27b:single,00022416_056.png,1,Large left pleural effusion with associated atelectasis/consolidation,Effusion|Atelectasis|Consolidation,,correct
 qwen3.6-27b:single,00022416_056.png,2,Pleural effusion secondary to heart failure with bilateral pulmonary involvement,Effusion,,correct
 qwen3.6-27b:single,00022416_056.png,3,Parapneumonic effusion with underlying left lower lobe pneumonia,Effusion|Pneumonia,,correct
+qwen3.6-27b:single,00004911_016.png,1,Pulmonary metastasis,,,oov
+qwen3.6-27b:single,00004911_016.png,2,Primary lung malignancy,,,oov
+qwen3.6-27b:single,00004911_016.png,3,Solitary pulmonary nodule (benign vs malignant),Nodule,,correct
+qwen3.6-27b:single,00019651_003.png,1,"Primary lung malignancy (e.g., lung adenocarcinoma or squamous cell carcinoma) with bulky hilar lymphadenopathy",,,oov
+qwen3.6-27b:single,00019651_003.png,2,Lymphoma,,,oov
+qwen3.6-27b:single,00019651_003.png,3,Metastatic disease to mediastinal/hilar lymph nodes,,,oov
+qwen3.6-27b:single,00022084_000.png,1,Multifocal pneumonia (bacterial or viral/atypical),Pneumonia,,correct
+qwen3.6-27b:single,00022084_000.png,2,Pulmonary edema (cardiogenic or non-cardiogenic/ARDS),Edema,,correct
+qwen3.6-27b:single,00022084_000.png,3,"Atypical infection with interstitial predominant pattern (mycoplasma, viral, or organizing pneumonia)",Pneumonia,,correct
+qwen3.6-27b:single,00029469_012.png,1,"Bilateral pneumonia, left greater than right, with associated left pleural effusion",Pneumonia|Effusion,,correct
+qwen3.6-27b:single,00029469_012.png,2,Pulmonary edema with superimposed pneumonia,Edema|Pneumonia,,correct
+qwen3.6-27b:single,00029469_012.png,3,Malignancy with post-obstructive pneumonia and pleural effusion,Pneumonia|Effusion,,correct
+qwen3.6-27b:single,00029588_004.png,1,Pneumonia with parapneumonic effusion,Pneumonia|Effusion,,correct
+qwen3.6-27b:single,00029588_004.png,2,Pulmonary edema with unilateral predominance,Edema,,incorrect
+qwen3.6-27b:single,00029588_004.png,3,Pleural effusion with compressive atelectasis,Effusion|Atelectasis,,correct
+qwen3.6-27b:single,00007632_013.png,1,COPD with emphysema,Emphysema,,incorrect
+qwen3.6-27b:single,00007632_013.png,2,Alpha-1 antitrypsin deficiency,,,oov
+qwen3.6-27b:single,00007632_013.png,3,Asthma with air trapping,,,oov
+qwen3.6-27b:single,00022098_007.png,1,Left lower lobe pneumonia with parapneumonic effusion,Pneumonia|Effusion,,correct
+qwen3.6-27b:single,00022098_007.png,2,Left lower lobe atelectasis with associated pleural effusion,Atelectasis|Effusion,,correct
+qwen3.6-27b:single,00022098_007.png,3,Pleural effusion with compressive atelectasis,Effusion|Atelectasis,,correct
+qwen3.6-27b:single,00003803_002.png,1,Right pleural effusion with compressive atelectasis (post-chest tube placement),Effusion|Atelectasis,,correct
+qwen3.6-27b:single,00003803_002.png,2,Right lower lobe pneumonia/consolidation with parapneumonic effusion,Pneumonia|Consolidation|Effusion,,correct
+qwen3.6-27b:single,00003803_002.png,3,Post-procedural changes following thoracic surgery or trauma,,,oov
+qwen3.6-27b:single,00003072_028.png,1,Traumatic or iatrogenic pneumothorax with chest tube placement (most likely given chest tube and subcutaneous emphysema),Pneumothorax|Emphysema,,correct
+qwen3.6-27b:single,00003072_028.png,2,Right-sided pleural effusion with concurrent pneumonia/consolidation,Effusion|Pneumonia|Consolidation,,correct
+qwen3.6-27b:single,00003072_028.png,3,Post-operative or post-procedural changes with bilateral complications,,,oov
+qwen3.6-27b:single,00008911_026.png,1,Traumatic pneumothorax with associated subcutaneous emphysema (blunt or penetrating chest trauma),Pneumothorax|Emphysema,,correct
+qwen3.6-27b:single,00008911_026.png,2,"Iatrogenic pneumothorax and subcutaneous emphysema (post-procedural, e.g., post-lung biopsy, line placement, or mechanical ventilation barotrauma)",Pneumothorax|Emphysema,,correct
+qwen3.6-27b:single,00008911_026.png,3,Spontaneous pneumothorax with subcutaneous emphysema (secondary to ruptured bleb or underlying lung disease such as COPD/bronchiectasis),Pneumothorax|Emphysema,,correct
+qwen3.6-27b:single,00005089_007.png,1,Left pleural effusion secondary to congestive heart failure or parapneumonic effusion,Effusion,,incorrect
+qwen3.6-27b:single,00005089_007.png,2,Malignant pleural effusion with pleural thickening,Effusion|Pleural_Thickening,,incorrect
+qwen3.6-27b:single,00005089_007.png,3,Tuberculous pleural effusion,Effusion,,incorrect
+qwen3.6-27b:single,00005609_025.png,1,Right pleural effusion with compressive atelectasis,Effusion|Atelectasis,,incorrect
+qwen3.6-27b:single,00005609_025.png,2,Right lower lobe consolidation (pneumonia),Consolidation|Pneumonia,,incorrect
+qwen3.6-27b:single,00005609_025.png,3,Right lower lobe collapse (atelectasis) without significant effusion,Atelectasis,Effusion,incorrect
+qwen3.6-27b:single,00013659_029.png,1,"Complete left lung collapse/atelectasis from endobronchial obstruction (mucus plug, tumor, or foreign body)",Atelectasis,,incorrect
+qwen3.6-27b:single,00013659_029.png,2,Combined left lung collapse with pleural effusion,Atelectasis|Effusion,,incorrect
+qwen3.6-27b:single,00013659_029.png,3,Massive left pleural effusion with compressive atelectasis,Effusion|Atelectasis,,incorrect
+qwen3.6-27b:single,00021463_005.png,1,Interstitial pulmonary edema (cardiogenic or non-cardiogenic),Edema,,correct
+qwen3.6-27b:single,00021463_005.png,2,Interstitial lung disease (chronic fibrotic process),,,oov
+qwen3.6-27b:single,00021463_005.png,3,Normal / No acute finding (if interstitial pattern is attributable to low lung volumes or technical factors),No Finding,,incorrect
+qwen3.6-27b:single,00000003_004.png,1,Post-surgical changes from prior right breast surgery with axillary lymph node dissection,,,oov
+qwen3.6-27b:single,00000003_004.png,2,Post-radiation fibrosis of right upper lung zone (if radiation therapy was administered),Fibrosis,,incorrect
+qwen3.6-27b:single,00000003_004.png,3,Normal / No acute finding,No Finding,,incorrect
+qwen3.6-27b:single,00020915_000.png,1,Large hiatal hernia with intrathoracic stomach,Hernia,,correct
+qwen3.6-27b:single,00020915_000.png,2,Normal / No acute finding (for pulmonary parenchyma),No Finding,,incorrect
+qwen3.6-27b:single,00020915_000.png,3,Cardiomegaly (cannot be accurately assessed due to retrocardiac opacity),Cardiomegaly,,incorrect
+qwen3.6-27b:single,00010120_019.png,1,Normal / No acute finding,No Finding,,incorrect
+qwen3.6-27b:single,00010120_019.png,2,Minimal atelectasis (not clearly visible),Atelectasis,,correct
+qwen3.6-27b:single,00010120_019.png,3,Early interstitial process (not supported by current imaging),,,oov
+qwen3.6-27b:single,00029159_015.png,1,Acute Respiratory Distress Syndrome (ARDS),,,oov
+qwen3.6-27b:single,00029159_015.png,2,Severe bilateral pneumonia / multifocal consolidation,Pneumonia|Consolidation,,incorrect
+qwen3.6-27b:single,00029159_015.png,3,Cardiogenic pulmonary edema,Edema,,incorrect
+qwen3.6-27b:single,00026194_000.png,1,Mild interstitial pneumonia (viral or atypical),Pneumonia,,incorrect
+qwen3.6-27b:single,00026194_000.png,2,Normal variant with asymmetric interstitial markings,No Finding,,incorrect
+qwen3.6-27b:single,00026194_000.png,3,Early bronchiolitis with peribronchial thickening,,,oov
+qwen3.6-27b:single,00022726_011.png,1,Pulmonary metastases (hematogenous spread from extrathoracic primary),,,oov
+qwen3.6-27b:single,00022726_011.png,2,Miliary tuberculosis or other granulomatous infection,,,oov
+qwen3.6-27b:single,00022726_011.png,3,Primary lung neoplasm with intrapulmonary metastases,Mass,,correct
+qwen3.6-27b:single,00017403_002.png,1,Left lower lobe pneumonia / consolidation,Pneumonia|Consolidation,,incorrect
+qwen3.6-27b:single,00017403_002.png,2,Left lower lobe atelectasis,Atelectasis,,correct
+qwen3.6-27b:single,00017403_002.png,3,Small left pleural effusion with associated compressive atelectasis,Effusion|Atelectasis,,correct
+qwen3.6-27b:single,00014822_025.png,1,Multifocal pneumonia with right-sided pleural effusion,Pneumonia|Effusion,,incorrect
+qwen3.6-27b:single,00014822_025.png,2,"Cardiogenic pulmonary edema (asymmetric, right-predominant)",Edema,,incorrect
+qwen3.6-27b:single,00014822_025.png,3,Acute respiratory distress syndrome (ARDS) with asymmetric involvement,,,oov
+qwen3.6-27b:single,00013648_018.png,1,Normal chest radiograph with implanted venous access port,No Finding,,correct
+qwen3.6-27b:single,00013648_018.png,2,Indwelling port-a-cath with appropriate positioning,,,oov
+qwen3.6-27b:single,00013648_018.png,3,"Consider underlying condition requiring long-term venous access (e.g., malignancy requiring chemotherapy)",,,oov
+qwen3.6-27b:single,00027726_005.png,1,Normal / No acute finding,No Finding,,correct
+qwen3.6-27b:single,00027726_005.png,2,Very early or subtle interstitial process (not visualized),,,oov
+qwen3.6-27b:single,00027726_005.png,3,Minimal pleural disease below resolution limit,,,oov
 qwen3.8-27b:zeroshot,00022416_019.png,1,Multifocal pneumonia with right parapneumonic pleural effusion,Pneumonia|Effusion,,correct
 qwen3.8-27b:zeroshot,00022416_019.png,2,Cardiogenic pulmonary edema with bilateral pleural effusions,Edema|Effusion,,correct
 qwen3.8-27b:zeroshot,00022416_019.png,3,Acute respiratory distress syndrome (non-cardiogenic pulmonary edema) with dependent consolidation/effusion,Edema|Consolidation|Effusion,,correct
@@ -1503,3 +1590,24 @@ qwen3.8-27b:single,00022416_019.png,3,Bilateral basilar atelectasis with small p
 qwen3.8-27b:single,00006304_004.png,1,Cardiomegaly with mild basilar atelectasis; no acute cardiopulmonary process (monitored/ICU patient with central line and ECG leads),Cardiomegaly|Atelectasis,,correct
 qwen3.8-27b:single,00006304_004.png,2,Mild fluid overload/early pulmonary edema in the setting of cardiomegaly (not strongly supported; no cephalization or Kerley lines),Edema|Cardiomegaly,,correct
 qwen3.8-27b:single,00006304_004.png,3,Small pleural effusion or early basilar consolidation (not excluded; costophrenic angles partly obscured by overlying soft tissue),Effusion|Consolidation,,incorrect
+qwen3.8-27b:single,00001075_047.png,1,Normal / No acute finding - the left linear density is a visible oblique (major) fissure,No Finding,,incorrect
+qwen3.8-27b:single,00001075_047.png,2,Mild linear (subsegmental) atelectasis of the left lower zone (benign),Atelectasis,,correct
+qwen3.8-27b:single,00001075_047.png,3,"Small trace left pleural effusion (considered but not supported: sharp costophrenic angles, no meniscus, effusion scores ~0.02 on both pathology models)",Effusion,,incorrect
+qwen3.8-27b:single,00013249_045.png,1,Cardiomegaly with pulmonary edema/vascular congestion (congestive heart failure),Cardiomegaly|Edema,,correct
+qwen3.8-27b:single,00013249_045.png,2,Bilateral pneumonia/consolidation,Pneumonia|Consolidation,,incorrect
+qwen3.8-27b:single,00013249_045.png,3,"Pulmonary edema from fluid overload, with apparent (partly magnified) cardiomegaly",Edema|Cardiomegaly,,correct
+qwen3.8-27b:single,00011702_072.png,1,Bilateral pleural effusions with compressive/basal atelectasis (left > right),Effusion|Atelectasis,,incorrect
+qwen3.8-27b:single,00011702_072.png,2,Pulmonary edema / fluid overload (with or without effusions),Edema|Effusion,,incorrect
+qwen3.8-27b:single,00011702_072.png,3,Bilateral pneumonia / consolidation (superimposed or alternative explanation),Pneumonia|Consolidation,,incorrect
+qwen3.8-27b:single,00010447_027.png,1,Bilateral pulmonary edema / diffuse alveolar infiltrate (cardiogenic or non-cardiogenic),Edema|Infiltration,,correct
+qwen3.8-27b:single,00010447_027.png,2,Bilateral (multifocal) pneumonia / diffuse infection,Pneumonia,,incorrect
+qwen3.8-27b:single,00010447_027.png,3,Acute respiratory distress syndrome (ARDS) / diffuse alveolar damage,,,oov
+qwen3.8-27b:single,00007322_007.png,1,"Pleural effusion (left greater than right), with or without adjacent atelectasis",Effusion|Atelectasis,,incorrect
+qwen3.8-27b:single,00007322_007.png,2,Basal atelectasis (left lower lobe predominant) in the supine/intubated state,Atelectasis,,incorrect
+qwen3.8-27b:single,00007322_007.png,3,"Pulmonary edema / early consolidation (pneumonia) - less likely given the left predominance and smooth, dependent opacity",Edema|Consolidation|Pneumonia,,correct
+qwen3.8-27b:single,00022416_056.png,1,Multifocal bilateral lower-lobe consolidation (pneumonia) with bilateral pleural effusion,Consolidation|Pneumonia|Effusion,,correct
+qwen3.8-27b:single,00022416_056.png,2,Pulmonary edema (cardiogenic or non-cardiogenic/ARDS),Edema,,incorrect
+qwen3.8-27b:single,00022416_056.png,3,Bilateral pleural effusion with compressive atelectasis,Effusion|Atelectasis,,correct
+qwen3.8-27b:single,00004911_016.png,1,"Right pneumothorax (residual/partial) with a right pleural drainage catheter in situ, in a post-surgical patient with surgical clips",Pneumothorax,,incorrect
+qwen3.8-27b:single,00004911_016.png,2,"Large right apical bulla (emphysema) with a right pleural drainage catheter in situ, in a post-surgical patient with surgical clips",Emphysema,,incorrect
+qwen3.8-27b:single,00004911_016.png,3,"Post-surgical chest with a right pleural drainage catheter and surgical clips in situ, without a definite acute pulmonary process (right upper-zone hyperlucency positional or technical)",,,oov
