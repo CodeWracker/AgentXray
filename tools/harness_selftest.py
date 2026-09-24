@@ -24,7 +24,7 @@ import tempfile
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 from new_run import EVAL, PYTHON  # noqa: E402
-from new_run import harness_opencode_config  # noqa: E402
+from new_run import create_run  # noqa: E402
 from run_opencode import summarize  # noqa: E402
 
 PROMPT = """Do exactly these steps, one tool call each, and then reply DONE:
@@ -35,7 +35,8 @@ PROMPT = """Do exactly these steps, one tool call each, and then reply DONE:
    (it may be denied; that is expected, just continue).
 4. Run the bash command: {python} -c "import torchxrayvision; print('txv', torchxrayvision.__version__)"
 5. Use the task tool with subagent_type "analyst" and ask it to create the file {sub} containing the word ok.
-6. Use the read tool on own.txt (a file in the current directory)."""
+6. Use the read tool on own.txt (a file in the current directory).
+After every step, call log_action to record it (agent main, phase test); the harness refuses the next step until you do."""
 NUDGE = "Not all steps are done yet. If your previous message contained a tool call written as plain text, it was not executed. Continue with the remaining steps."
 
 
@@ -46,16 +47,9 @@ def export(sid: str, target: pathlib.Path, cwd: pathlib.Path) -> dict:
 
 
 def selftest(model: str, provider: str) -> dict:
-    # dentro de results/, como uma rodada de verdade, para testar o bloqueio das rodadas vizinhas
-    base = EVAL / "results" / "harness-selftest" / "runs"
-    base.mkdir(parents=True, exist_ok=True)
-    run_dir = pathlib.Path(tempfile.mkdtemp(prefix=f"{model}-", dir=base))
-    # mesma configuracao das rodadas (permissoes incluidas); o subagente analyst vem do modelo de rodada
-    (run_dir / "opencode.json").write_text(json.dumps(harness_opencode_config(provider, model, run_dir), indent=2))
-    agent_md = EVAL / "harness" / "opencode" / "run_template" / ".opencode" / "agent" / "analyst.md"
-    (run_dir / ".opencode" / "agent").mkdir(parents=True)
-    (run_dir / ".opencode" / "agent" / "analyst.md").write_text(
-        agent_md.read_text(encoding="utf-8").replace("{{MODEL_NAME}}", model))
+    # uma rodada montada pelo mesmo create_run das filas: opencode.json, AGENTS.md, plugin e harness.json reais
+    image = EVAL / "inputs" / "nih_chestxray" / "images" / "00022416_019.png"
+    run_dir = create_run("single", model, [image], version="v4", harness="opencode", results_name="harness-selftest/runs")
     outside = next((EVAL / "results" / "v1").rglob("*.png.json"))
     sub = run_dir / "sub.txt"
     (run_dir / "own.txt").write_text("own file\n")

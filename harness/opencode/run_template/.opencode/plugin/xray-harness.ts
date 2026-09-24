@@ -5,12 +5,52 @@
 // da rodada em <run>/harness.json. Faz tres coisas:
 //   1. oferece a ferramenta log_action, com que o agente registra cada acao no log estruturado;
 //   2. bloqueia a proxima acao de uma sessao enquanto a anterior nao for registrada (log completo por construcao);
-//   3. grava o registro do harness: cada chamada de ferramenta, cada bloqueio e os parametros enviados ao modelo.
+//   3. grava o registro do harness: cada chamada de ferramenta, cada bloqueio e os parametros enviados ao modelo;
+//   4. bloqueia qualquer chamada que cite um caminho fora da pasta da rodada (argumentos, comandos de shell e o
+//      conteudo dos arquivos escritos), salvo /tmp, o temporario do sandbox e os caminhos so de leitura do harness.json.
 import { appendFileSync, mkdirSync, readFileSync } from "node:fs"
-import { dirname, join } from "node:path"
+import { dirname, isAbsolute, join, resolve } from "node:path"
 import { tool, type Plugin } from "@opencode-ai/plugin"
 
-type RunConfig = { analysis_dir: string; agent_log: string; harness_log: string; mode: string }
+type Paths = { read_write: string[]; read_only: string[]; forbidden_roots: string[] }
+type RunConfig = { analysis_dir: string; agent_log: string; harness_log: string; mode: string; paths?: Paths }
+
+// o que casa como caminho absoluto dentro de um texto (comando de shell ou conteudo de arquivo)
+const ABS_PATH = /(?:^|[\s'"=:(,\[{])((?:~|\/)[^\s'"`;|&<>(),\]}]*)/g
+// ".." como componente de caminho
+const PARENT = /(?:^|[\s'"=:(,\/])\.\.(?:\/|$|[\s'"),])/
+
+const under = (path: string, root: string) => path === root || path.startsWith(root.endsWith("/") ? root : root + "/")
+
+// devolve o primeiro caminho proibido citado nos argumentos da chamada, ou null
+function outsidePath(tool: string, args: Record<string, unknown>, cwd: string, paths: Paths): string | null {
+  const allowed = [...paths.read_write, ...paths.read_only]
+  const forbidden = (p: string) => {
+    if (p.startsWith("~")) return true
+    const abs = resolve(cwd, p)
+    return paths.forbidden_roots.some((r) => under(abs, r)) && !allowed.some((r) => under(abs, r))
+  }
+  // argumentos que sao caminhos (read, write, edit, list, glob, grep): so a lista liberada
+  for (const key of ["filePath", "path"]) {
+    const value = args[key]
+    if (typeof value !== "string" || !value) continue
+    if (PARENT.test(value) || value.startsWith("~")) return value
+    const abs = isAbsolute(value) ? value : resolve(cwd, value)
+    const roots = ["write", "edit"].includes(tool) ? paths.read_write : allowed
+    if (!roots.some((r) => under(abs, r))) return value
+  }
+  // textos livres: comando de shell, padroes de busca e conteudo escrito
+  for (const key of ["command", "pattern", "include", "content", "newString"]) {
+    const value = args[key]
+    if (typeof value !== "string" || !value) continue
+    if (key !== "pattern" && key !== "include" && PARENT.test(value)) return ".."
+    for (const m of value.matchAll(ABS_PATH)) {
+      if (m[1] === "/" || m[1].startsWith("//")) continue
+      if (forbidden(m[1])) return m[1]
+    }
+  }
+  return null
+}
 
 // ferramentas que nao contam como acao do protocolo: o proprio log e a lista de tarefas interna
 const EXEMPT = new Set(["log_action", "todowrite", "todoread"])
@@ -75,6 +115,16 @@ export const XrayHarness: Plugin = async ({ directory }) => {
 
     "tool.execute.before": async (input, output) => {
       if (EXEMPT.has(input.tool)) return
+      if (config.paths && input.tool !== "task") {
+        const bad = outsidePath(input.tool, (output.args ?? {}) as Record<string, unknown>, directory, config.paths)
+        if (bad) {
+          append(harnessLog, { time: new Date().toISOString(), kind: "path_blocked", session: input.sessionID, tool: input.tool, call: input.callID, path: String(bad).slice(0, 300) })
+          throw new Error(
+            `Protocol: this call was not executed because it refers to a path outside your run directory (${String(bad).slice(0, 120)}). ` +
+              `Work only with files inside your run directory; /tmp is available for temporary files. Paths with ".." or "~" are not allowed.`,
+          )
+        }
+      }
       const open = pending.get(input.sessionID)
       if (open) {
         append(harnessLog, { time: new Date().toISOString(), kind: "blocked", session: input.sessionID, tool: input.tool, call: input.callID, unlogged: open })

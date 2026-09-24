@@ -14,6 +14,7 @@ import argparse
 import datetime
 import hashlib
 import json
+import os
 import pathlib
 import platform
 import shutil
@@ -84,9 +85,6 @@ def harness_opencode_config(provider: str, model: str, run_dir: pathlib.Path) ->
     # arquivos com rotulos do dataset ou com respostas e metricas de rodadas
     leaks = ["*Data_Entry*", "*BBox_List*", "*benchmarks*", "*train_val_list*", "*test_list*", "*finding_labels*",
              "*nih_chestxray/*.csv*", "*/analysis/*"]
-    run_rel = run_dir.resolve().relative_to(EVAL)
-    import torchxrayvision
-    txv_src = pathlib.Path(torchxrayvision.__file__).resolve().parent
     return {
         "$schema": "https://opencode.ai/config.json",
         "model": full,
@@ -101,17 +99,12 @@ def harness_opencode_config(provider: str, model: str, run_dir: pathlib.Path) ->
             "question": "deny",
             "webfetch": "deny",
             "websearch": "deny",
-            "external_directory": {"*": "deny", "/tmp/*": "allow"},
-            # leitura pelas ferramentas do opencode: so a pasta da rodada, o codigo do torchxrayvision e /tmp. Tudo o
-            # mais do repositorio fica fechado (resultados de outras rodadas, manifestos e CSVs com rotulos, analises).
-            # O opencode casa o caminho absoluto ou o relativo a raiz do repositorio, por isso as duas formas.
-            **{tool: {"*": "deny",
-                      f"{run_dir}/*": "allow", f"{run_dir}/**": "allow", f"{run_rel}/*": "allow", f"{run_rel}/**": "allow",
-                      f"{txv_src}/*": "allow", f"{txv_src}/**": "allow", "/tmp/*": "allow", "/tmp/**": "allow"}
-               for tool in ["read", "list", "glob", "grep"]},
-            "edit": {"*": "deny", f"{run_dir}/*": "allow", f"{run_dir}/**": "allow", f"{run_rel}/*": "allow",
-                     f"{run_rel}/**": "allow", f"{os.environ['TMPDIR']}/*": "allow", "/tmp/*": "allow",
-                     **{p: "deny" for p in protected}},
+            # os caminhos sao controlados pelo plugin do harness (harness.json, chave "paths"): as ferramentas de
+            # arquivo so alcancam a pasta da rodada, /tmp, o temporario do sandbox e os caminhos so de leitura; aqui o
+            # opencode so protege os arquivos do harness
+            "external_directory": {"*": "allow"},
+            **{tool: {"*": "allow"} for tool in ["read", "list", "glob", "grep"]},
+            "edit": {"*": "allow", **{p: "deny" for p in protected}},
             # o bash nao tem como ser fechado por caminho (o agente roda o proprio codigo); estas regras barram os
             # acessos diretos aos rotulos e a outras rodadas, e vem depois da liberacao da pasta da rodada
             "bash": {"*": "allow", f"*{results}*": "deny", f"*{run_dir}*": "allow",
@@ -139,6 +132,12 @@ def write_native_harness(run_dir: pathlib.Path, version: str, mode: str, model: 
         "agent_log": f"{stem}_analysis/provenance/agent_log.jsonl",
         "harness_log": "harness_log.jsonl",
         "mode": mode,
+        # caminhos que o plugin libera; todo o resto de /home e /root e bloqueado em qualquer ferramenta
+        "paths": {
+            "read_write": [str(run_dir.resolve()), "/tmp", os.environ["TMPDIR"]],
+            "read_only": [str(PYTHON), str(EVAL / ".venv"), str(MODELS_DIR)],
+            "forbidden_roots": ["/home", "/root"],
+        },
     }, indent=2) + "\n")
     return shared
 
