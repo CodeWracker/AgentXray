@@ -30,6 +30,7 @@ import pathlib
 import subprocess
 import sys
 import time
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 from new_run import EVAL, create_run, MODES  # noqa: E402
@@ -115,7 +116,7 @@ def export_sessions(run_dir: pathlib.Path, ids: list[str]) -> None:
 
 
 def run_one(mode: str, model: str, image: pathlib.Path, provider: str, timeout_min: int, label: str,
-            max_nudges: int, version: str = "v2", results_name: str | None = None) -> pathlib.Path:
+            max_nudges: int, version: str = "v2", results_name: str | None = None, workers: int = 1) -> pathlib.Path:
     dest_mode_dir = EVAL / "results" / (results_name or version) / MODES[mode] / model
     if dest_mode_dir.exists():
         for existing in dest_mode_dir.glob(f"*-{label}"):
@@ -176,6 +177,8 @@ def run_one(mode: str, model: str, image: pathlib.Path, provider: str, timeout_m
         "attempts": attempts,
         "final_json_written": final_json.exists(),
         "elapsed_s": round(elapsed, 1),
+        # casos rodando ao mesmo tempo no mesmo modelo: o tempo de parede so e comparavel entre rodadas de mesmo valor
+        "concurrent_workers": workers,
         "check_passed": check.returncode == 0,
         "check_output": check.stdout[-4000:],
         **summary,
@@ -199,6 +202,7 @@ def main() -> int:
     parser.add_argument("--max-nudges", type=int, default=None, help="retomadas automáticas se faltar o JSON final")
     parser.add_argument("--version", default="v2", help="versão dos prompts (v1 ou v2)")
     parser.add_argument("--results-name", help="pasta da condição em results/ (padrão: v2, ou v1-runner para a v1)")
+    parser.add_argument("--workers", type=int, default=1, help="casos simultâneos no mesmo modelo (registrado em harness_result.json)")
     args = parser.parse_args()
 
     if args.manifest:
@@ -227,11 +231,19 @@ def main() -> int:
         results_name = args.results_name or ("v1-runner" if args.version == "v1" else None)
 
     effective_nudges = args.max_nudges if args.max_nudges is not None else (40 if args.mode == "agents" else 5)
-    for rep in range(1, args.repeat + 1):
-        for image in images:
-            label = f"{image.stem.split('-')[0]}-r{rep}"
-            run_one(args.mode, args.model, image.resolve(), args.provider, args.timeout, label, effective_nudges,
-                    args.version, results_name)
+    jobs = [(image, f"{image.stem.split('-')[0]}-r{rep}") for rep in range(1, args.repeat + 1) for image in images]
+
+    def run(job):
+        image, label = job
+        return run_one(args.mode, args.model, image.resolve(), args.provider, args.timeout, label, effective_nudges,
+                       args.version, results_name, args.workers)
+
+    # cada caso roda em processos opencode próprios; as threads só esperam por eles
+    with ThreadPoolExecutor(max_workers=max(args.workers, 1)) as pool:
+        futures = {pool.submit(run, job): job for job in jobs}
+        for future in as_completed(futures):
+            if future.exception():
+                print(f"[{time.strftime('%H:%M:%S')}] ERRO em {futures[future][1]}: {future.exception()!r}", flush=True)
     return 0
 
 
