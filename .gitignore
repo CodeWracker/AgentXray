@@ -24,3 +24,4 @@ results/v4-zeroshot-sem-tokens/
 analysis/leakage_run.log
 results/v4-gemma-antes-da-correcao/
 results/config-antiga-*/
+results/zeroshot-limite-*/

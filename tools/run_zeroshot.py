@@ -25,6 +25,8 @@ from align_diagnosis import evaluate_differential_diagnosis
 # quando o DGX_UFSC_BASE_URL e um tunel (ngrok) que pode estourar cota de banda, cai para o
 # LiteLLM local, alcancavel diretamente no mesmo host da DGX
 LOCAL_LITELLM_FALLBACK = "http://127.0.0.1:4000"
+THINKING_BUDGET = 6000
+ANSWER_BUDGET = 4000
 
 
 def encode_image(img_path: pathlib.Path) -> str:
@@ -93,7 +95,10 @@ def query_zeroshot(image_path: pathlib.Path, model: str, base_url: str, api_key:
             }
         ],
         "temperature": 0.0,
-        "max_tokens": 6000,
+        # orcamento de pensamento: o servidor encerra o raciocinio em THINKING_BUDGET tokens e o modelo ainda tem
+        # ANSWER_BUDGET tokens para a resposta; um max_tokens unico cortaria o raciocinio antes do JSON
+        "thinking_token_budget": THINKING_BUDGET,
+        "max_tokens": THINKING_BUDGET + ANSWER_BUDGET,
     }
 
     urls_to_try = [base_url] if base_url == LOCAL_LITELLM_FALLBACK else [base_url, LOCAL_LITELLM_FALLBACK]
@@ -118,6 +123,8 @@ def query_zeroshot(image_path: pathlib.Path, model: str, base_url: str, api_key:
 
     LAST_USAGE.clear()
     LAST_USAGE.update(res.get("usage") or {})
+    LAST_USAGE["finish_reason"] = res["choices"][0].get("finish_reason")
+    LAST_USAGE["thinking_token_budget"] = THINKING_BUDGET
     msg = res["choices"][0]["message"]
     # alguns modelos devolvem a resposta so no campo de raciocinio
     content = msg.get("content") or msg.get("reasoning_content") or ""
