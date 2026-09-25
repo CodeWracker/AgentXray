@@ -1,9 +1,9 @@
 experiment,model,mode,vocab,status,n,chest_recognized
 exp1,gemma4-26b,zeroshot,open,complete,45,1.0
-exp1,gemma4-26b,single,open,in_progress,42,1.0
+exp1,gemma4-26b,single,open,in_progress,45,1.0
 exp1,gemma4-26b,council,open,in_progress,0,
 exp1,qwen3.6-27b,zeroshot,open,complete,45,1.0
-exp1,qwen3.6-27b,single,open,in_progress,33,1.0
+exp1,qwen3.6-27b,single,open,in_progress,43,1.0
 exp1,qwen3.6-27b,council,open,in_progress,0,
 exp1,qwen3.8-27b,zeroshot,open,complete,45,1.0
 exp1,qwen3.8-27b,single,open,in_progress,3,1.0
@@ -23,7 +23,7 @@ exp1,gemma4-26b,council,closed,in_progress,0,
 exp1,qwen3.6-27b,zeroshot,closed,complete,45,1.0
 exp1,qwen3.6-27b,single,closed,in_progress,0,
 exp1,qwen3.6-27b,council,closed,in_progress,0,
-exp1,qwen3.8-27b,zeroshot,closed,in_progress,19,1.0
+exp1,qwen3.8-27b,zeroshot,closed,complete,45,1.0
 exp1,qwen3.8-27b,single,closed,in_progress,0,
 exp1,qwen3.8-27b,council,closed,in_progress,0,
 exp2,gemma4-26b,zeroshot,closed,complete,48,0.9791666666666666
@@ -32,6 +32,6 @@ exp2,gemma4-26b,council,closed,in_progress,0,
 exp2,qwen3.6-27b,zeroshot,closed,complete,48,1.0
 exp2,qwen3.6-27b,single,closed,in_progress,0,
 exp2,qwen3.6-27b,council,closed,in_progress,0,
-exp2,qwen3.8-27b,zeroshot,closed,in_progress,0,
+exp2,qwen3.8-27b,zeroshot,closed,complete,48,1.0
 exp2,qwen3.8-27b,single,closed,in_progress,0,
 exp2,qwen3.8-27b,council,closed,in_progress,0,

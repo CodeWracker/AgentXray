@@ -113,7 +113,7 @@ def query_zeroshot(image_path: pathlib.Path, model: str, base_url: str, api_key:
             },
         )
         try:
-            with urllib.request.urlopen(req, timeout=180) as resp:
+            with urllib.request.urlopen(req, timeout=1800) as resp:
                 res = json.loads(resp.read().decode("utf-8"))
             break
         except (urllib.error.URLError, urllib.error.HTTPError) as e:

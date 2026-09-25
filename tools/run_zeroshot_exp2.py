@@ -116,7 +116,7 @@ def query_zeroshot_localization(image_path: pathlib.Path, model: str, base_url: 
             },
         )
         try:
-            with urllib.request.urlopen(req, timeout=300) as resp:
+            with urllib.request.urlopen(req, timeout=1800) as resp:
                 res = json.loads(resp.read().decode("utf-8"))
             break
         except (urllib.error.URLError, urllib.error.HTTPError) as e:

@@ -1,9 +1,9 @@
 experiment,model,mode,vocab,status,n,valid_json,check_passed,reproduce_ok,timed_out,median_nudges,median_log_action_ratio,median_blocked,median_path_blocked,tools_declared
-exp1,gemma4-26b,single,open,in_progress,42,0.7857142857142857,0.0,0.23333333333333334,0.0,1.0,0.916,2.0,0.0,0.023809523809523808
+exp1,gemma4-26b,single,open,in_progress,45,0.8444444444444444,0.0,0.21621621621621623,0.022222222222222223,1.0,0.933,2.0,0.0,0.022222222222222223
 exp1,gemma4-26b,council,open,in_progress,0,,,,,,,,,
-exp1,qwen3.6-27b,single,open,in_progress,33,0.9393939393939394,0.6666666666666666,0.8,0.0,0.0,0.6034999999999999,22.0,0.0,0.9393939393939394
+exp1,qwen3.6-27b,single,open,in_progress,43,1.0,0.6511627906976745,0.813953488372093,0.0,0.0,0.604,22.0,0.0,1.0
 exp1,qwen3.6-27b,council,open,in_progress,0,,,,,,,,,
-exp1,qwen3.8-27b,single,open,in_progress,3,0.6666666666666666,1.0,1.0,0.0,1.0,0.6719999999999999,28.0,4.0,0.6666666666666666
+exp1,qwen3.8-27b,single,open,in_progress,3,1.0,1.0,1.0,0.0,1.0,0.626,36.0,4.0,1.0
 exp1,qwen3.8-27b,council,open,in_progress,0,,,,,,,,,
 exp2,gemma4-26b,single,open,in_progress,0,,,,,,,,,
 exp2,gemma4-26b,council,open,in_progress,0,,,,,,,,,
