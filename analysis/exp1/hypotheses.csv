@@ -1584,6 +1584,27 @@ gemma4-26b:single,00008295_022.png,3,Pneumonia,Pneumonia,,incorrect
 gemma4-26b:single,00007750_008.png,1,Pleural effusion and consolidation,Effusion|Consolidation,,correct
 gemma4-26b:single,00007750_008.png,2,Pneumonia with parapneumonic effusion,Pneumonia|Effusion,,correct
 gemma4-26b:single,00007750_008.png,3,Atelectasis,Atelectasis,,correct
+gemma4-26b:council,00022416_019.png,1,Pleural effusion and atelectasis,Effusion|Atelectasis,,correct
+gemma4-26b:council,00022416_019.png,2,Pulmonary consolidation,Consolidation,,correct
+gemma4-26b:council,00022416_019.png,3,Pulmonary edema,Edema,,incorrect
+gemma4-26b:council,00006304_004.png,1,Cardiomegaly with pulmonary edema,Cardiomegaly|Edema,,correct
+gemma4-26b:council,00006304_004.png,2,Pleural effusion,Effusion,,incorrect
+gemma4-26b:council,00006304_004.png,3,Atelectasis/Infiltration,Atelectasis|Infiltration,,correct
+gemma4-26b:council,00001075_047.png,1,Normal / No acute finding,No Finding,,incorrect
+gemma4-26b:council,00001075_047.png,2,Subtle pleural effusion,Effusion,,incorrect
+gemma4-26b:council,00001075_047.png,3,Hilar lymphadenopathy or vascular congestion,Edema,,incorrect
+gemma4-26b:council,00013249_045.png,1,Congestive heart failure / Pulmonary edema,Edema,,incorrect
+gemma4-26b:council,00013249_045.png,2,Multifocal pneumonia or atelectasis,Pneumonia|Atelectasis,,incorrect
+gemma4-26b:council,00013249_045.png,3,ARDS (Acute Respiratory Distress Syndrome),,,oov
+gemma4-26b:council,00011702_072.png,1,Pulmonary edema,Edema,,incorrect
+gemma4-26b:council,00011702_072.png,2,Pneumonia,Pneumonia,,incorrect
+gemma4-26b:council,00011702_072.png,3,Atelectasis,Atelectasis,,incorrect
+gemma4-26b:council,00010447_027.png,1,Pulmonary edema,Edema,,incorrect
+gemma4-26b:council,00010447_027.png,2,Multifocal pneumonia,Pneumonia,,incorrect
+gemma4-26b:council,00010447_027.png,3,Pleural effusion,Effusion,,correct
+gemma4-26b:council,00022416_056.png,1,Pneumonia,Pneumonia,,incorrect
+gemma4-26b:council,00022416_056.png,2,Pleural effusion,Effusion,,correct
+gemma4-26b:council,00022416_056.png,3,Pulmonary edema,Edema,,incorrect
 qwen3.6-27b:zeroshot,00022416_019.png,1,Pulmonary Edema (Cardiogenic),Edema,,incorrect
 qwen3.6-27b:zeroshot,00022416_019.png,2,Acute Respiratory Distress Syndrome (ARDS),,,oov
 qwen3.6-27b:zeroshot,00022416_019.png,3,Bilateral Pneumonia,Pneumonia,,incorrect
@@ -2122,6 +2143,24 @@ qwen3.6-27b:council,00022416_019.png,3,Acute respiratory distress syndrome (ARDS
 qwen3.6-27b:council,00006304_004.png,1,Left lower lobe atelectasis with small left pleural effusion,Atelectasis|Effusion,,correct
 qwen3.6-27b:council,00006304_004.png,2,Left lower lobe pneumonia with parapneumonic effusion,Pneumonia|Effusion,,incorrect
 qwen3.6-27b:council,00006304_004.png,3,Pulmonary venous congestion with bibasilar atelectasis,Atelectasis,,correct
+qwen3.6-27b:council,00001075_047.png,1,Plate-like (discoid) atelectasis of the lingula,Atelectasis,,correct
+qwen3.6-27b:council,00001075_047.png,2,Chronic fibrotic scar / band-like atelectasis,Atelectasis,,correct
+qwen3.6-27b:council,00001075_047.png,3,Normal / No acute finding,No Finding,,incorrect
+qwen3.6-27b:council,00013249_045.png,1,Congestive heart failure / cardiogenic pulmonary edema,Edema,,incorrect
+qwen3.6-27b:council,00013249_045.png,2,Pneumonia / infectious consolidation,Pneumonia,,incorrect
+qwen3.6-27b:council,00013249_045.png,3,Mixed etiology or acute respiratory distress syndrome (ARDS),,,oov
+qwen3.6-27b:council,00011702_072.png,1,Pleural effusion (left > right) with compressive atelectasis,Effusion|Atelectasis,,incorrect
+qwen3.6-27b:council,00011702_072.png,2,Cardiogenic pulmonary edema with dependent pleural effusions,Edema|Effusion,,incorrect
+qwen3.6-27b:council,00011702_072.png,3,Parapneumonic effusion secondary to left lower lobe pneumonia,Effusion|Pneumonia,,incorrect
+qwen3.6-27b:council,00010447_027.png,1,Cardiogenic pulmonary edema with bilateral alveolar infiltrates,Edema|Infiltration,,correct
+qwen3.6-27b:council,00010447_027.png,2,Multifocal bilateral pneumonia (possibly hospital-acquired),Pneumonia,,incorrect
+qwen3.6-27b:council,00010447_027.png,3,Acute respiratory distress syndrome (ARDS),,,oov
+qwen3.6-27b:council,00007322_007.png,1,Pulmonary edema with associated atelectasis,Edema|Atelectasis,,incorrect
+qwen3.6-27b:council,00007322_007.png,2,Pneumonia with parapneumonic effusion,Pneumonia|Effusion,,incorrect
+qwen3.6-27b:council,00007322_007.png,3,ARDS with dependent atelectasis,Atelectasis,,incorrect
+qwen3.6-27b:council,00022416_056.png,1,Large right-sided pleural effusion with compressive atelectasis,Effusion|Atelectasis,,correct
+qwen3.6-27b:council,00022416_056.png,2,Massive right lung consolidation (pneumonia/ARDS),Consolidation|Pneumonia,,correct
+qwen3.6-27b:council,00022416_056.png,3,Combined pleural effusion and lung mass/tumor,Effusion|Mass,,correct
 qwen3.8-27b:zeroshot,00022416_019.png,1,Right pleural effusion with compressive atelectasis (parapneumonic effusion or transudative effusion in the setting of critical illness),Effusion|Atelectasis,,correct
 qwen3.8-27b:zeroshot,00022416_019.png,2,Right lower lobe pneumonia/consolidation with associated effusion,Pneumonia|Consolidation|Effusion,,correct
 qwen3.8-27b:zeroshot,00022416_019.png,3,Bilateral pulmonary edema with asymmetric right-sided effusion,Edema|Effusion,,correct
@@ -2581,6 +2620,30 @@ qwen3.8-27b:single,00003072_028.png,3,Spontaneous pneumothorax,Pneumothorax,,cor
 qwen3.8-27b:single,00008911_026.png,1,Right hemothorax (likely traumatic) with right chest tube in situ,Effusion,,incorrect
 qwen3.8-27b:single,00008911_026.png,2,"Large right pleural effusion of other etiology (e.g., parapneumonic/empyema, malignant, or post-procedural) with chest tube",Effusion,,incorrect
 qwen3.8-27b:single,00008911_026.png,3,Hydropneumothorax (associated pneumothorax) with chest tube,Pneumothorax,,incorrect
+qwen3.8-27b:single,00005089_007.png,1,Left pleural effusion (with or without adjacent basilar atelectasis),Effusion|Atelectasis,,incorrect
+qwen3.8-27b:single,00005089_007.png,2,Left lower lobe atelectasis (collapse),Atelectasis,,incorrect
+qwen3.8-27b:single,00005089_007.png,3,Left lower lobe consolidation (pneumonia),Consolidation|Pneumonia,,incorrect
+qwen3.8-27b:single,00005609_025.png,1,Right pleural effusion (with indwelling drainage catheter),Effusion,,incorrect
+qwen3.8-27b:single,00005609_025.png,2,Right basal consolidation (pneumonia),Consolidation|Pneumonia,,incorrect
+qwen3.8-27b:single,00005609_025.png,3,Right lower lobe collapse (atelectasis),Atelectasis,,incorrect
+qwen3.8-27b:single,00013659_029.png,1,"Left lower lobe atelectasis (collapse), possibly with an associated pleural effusion",Atelectasis|Effusion,,incorrect
+qwen3.8-27b:single,00013659_029.png,2,Left lower lobe / lingular consolidation (pneumonia),Consolidation|Pneumonia,,incorrect
+qwen3.8-27b:single,00013659_029.png,3,Left pleural effusion with associated atelectasis,Effusion|Atelectasis,,incorrect
+qwen3.8-27b:single,00021463_005.png,1,"Cardiomegaly (enlarged, globular cardiac silhouette; consider pericardial effusion)",Cardiomegaly|Effusion,,correct
+qwen3.8-27b:single,00021463_005.png,2,"Hiatal hernia (rounded, well-circumscribed retrocardiac opacity; no gas seen)",Hernia,,correct
+qwen3.8-27b:single,00021463_005.png,3,Left lower lobe collapse/consolidation or localized left pleural effusion,Consolidation|Effusion,,correct
+qwen3.8-27b:single,00000003_004.png,1,Elevated right hemidiaphragm (diaphragmatic eventration or true elevation) with surgical clips from prior surgery,,,oov
+qwen3.8-27b:single,00000003_004.png,2,Right diaphragmatic hernia,Hernia,,correct
+qwen3.8-27b:single,00000003_004.png,3,Normal-variant right hemidiaphragm with incidental surgical clips,No Finding,,incorrect
+qwen3.8-27b:single,00020915_000.png,1,"Hiatal hernia (retrocardiac air and soft-tissue density above the left hemidiaphragm, continuous with the gastric bubble)",Hernia,,correct
+qwen3.8-27b:single,00020915_000.png,2,Prominent gastric air bubble (normal variant) with an otherwise unremarkable chest radiograph,No Finding,,incorrect
+qwen3.8-27b:single,00020915_000.png,3,Normal chest radiograph / no acute finding,No Finding,,incorrect
+qwen3.8-27b:single,00010120_019.png,1,Normal / No acute finding,No Finding,,incorrect
+qwen3.8-27b:single,00010120_019.png,2,"Early or subtle pulmonary infiltrate (considered because a high-sensitivity classifier gave a weak, non-specific signal; not confirmed on visual review, localisation, or any other model)",Infiltration,,correct
+qwen3.8-27b:single,00010120_019.png,3,Mild atelectasis or normal anatomical/vascular variation (considered; not confirmed),Atelectasis|No Finding,,correct
+qwen3.8-27b:single,00029159_015.png,1,"Acute respiratory distress syndrome (ARDS) / non-cardiogenic pulmonary edema - diffuse bilateral alveolar opacities (most consistent with the diffuse, mid/lower-predominant alveolar and interstitial pattern in a critically ill patient with multiple support devices; heart not clearly enlarged)",Edema,,incorrect
+qwen3.8-27b:single,00029159_015.png,2,Severe bilateral pneumonia (alternative cause of the diffuse airspace opacification; possible underlying driver of ARDS),Pneumonia|Infiltration,,correct
+qwen3.8-27b:single,00029159_015.png,3,Cardiogenic pulmonary edema / volume overload (cardiac etiology; heart not clearly enlarged but assessment limited on this supine AP film),Edema,,incorrect
 gemma4-26b:zeroshot:closed,00022416_019.png,1,Edema,Edema,,incorrect
 gemma4-26b:zeroshot:closed,00022416_019.png,2,Cardiomegaly,Cardiomegaly,,incorrect
 gemma4-26b:zeroshot:closed,00022416_019.png,3,Effusion,Effusion,,correct

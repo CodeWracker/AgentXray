@@ -1,11 +1,11 @@
 experiment,model,mode,vocab,status,n,valid_json,check_passed,reproduce_ok,timed_out,median_nudges,median_log_action_ratio,median_blocked,median_path_blocked,tools_declared
 exp1,gemma4-26b,single,open,complete,45,0.8666666666666667,0.0,0.21052631578947367,0.022222222222222223,1.0,0.933,2.0,0.0,0.022222222222222223
-exp1,gemma4-26b,council,open,in_progress,0,,,,,,,,,
+exp1,gemma4-26b,council,open,in_progress,10,0.7,0.0,0.0,0.0,1.0,0.835,12.0,2.0,0.0
 exp1,qwen3.6-27b,single,open,complete,43,1.0,0.6511627906976745,0.813953488372093,0.0,0.0,0.604,22.0,0.0,1.0
-exp1,qwen3.6-27b,council,open,in_progress,4,0.5,0.5,0.5,0.0,0.0,0.499,81.5,18.0,0.5
-exp1,qwen3.8-27b,single,open,in_progress,20,0.9,0.8888888888888888,0.9444444444444444,0.0,0.0,0.68,33.5,4.0,0.9
+exp1,qwen3.6-27b,council,open,in_progress,10,0.9,0.375,0.75,0.0,0.0,0.5545,140.5,20.0,1.0
+exp1,qwen3.8-27b,single,open,in_progress,28,0.9285714285714286,0.8846153846153846,0.9230769230769231,0.0,0.0,0.6745000000000001,33.0,4.0,0.9285714285714286
 exp1,qwen3.8-27b,council,open,in_progress,0,,,,,,,,,
-exp2,gemma4-26b,single,open,in_progress,48,0.9375,0.0,0.10810810810810811,0.0,1.0,0.8845000000000001,3.0,0.0,0.0
+exp2,gemma4-26b,single,open,complete,48,0.9375,0.0,0.10810810810810811,0.0,1.0,0.882,3.0,0.0,0.0
 exp2,gemma4-26b,council,open,in_progress,0,,,,,,,,,
 exp2,qwen3.6-27b,single,open,complete,48,1.0,0.5416666666666666,0.75,0.0,0.0,0.6325000000000001,27.0,1.0,1.0
 exp2,qwen3.6-27b,council,open,in_progress,0,,,,,,,,,

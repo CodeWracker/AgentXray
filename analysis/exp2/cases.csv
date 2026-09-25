@@ -91,7 +91,7 @@ gemma4-26b:single,gemma4-26b,single,open,00008291_009.png,1,1,20260925-073550-00
 gemma4-26b:single,gemma4-26b,single,open,00029861_013.png,1,1,20260925-074151-00029861_013-r1,Pneumonia,1,0.6297,0.0
 gemma4-26b:single,gemma4-26b,single,open,00022141_030.png,1,1,20260925-074538-00022141_030-r1,Pneumothorax,1,0.0,0.0
 gemma4-26b:single,gemma4-26b,single,open,00009889_018.png,1,1,20260925-074828-00009889_018-r1,Pneumothorax,1,0.0,0.0
-gemma4-26b:single,gemma4-26b,single,open,00028861_009.png,0,0,,Pneumothorax,0,0.0,0.0
+gemma4-26b:single,gemma4-26b,single,open,00028861_009.png,1,0,,Pneumothorax,0,0.0,0.0
 gemma4-26b:single,gemma4-26b,single,open,00015530_147.png,1,1,20260925-080019-00015530_147-r1,Pneumothorax,2,0.0279,0.0
 gemma4-26b:single,gemma4-26b,single,open,00002106_000.png,1,1,20260925-080237-00002106_000-r1,Pneumothorax,1,0.0,0.0
 gemma4-26b:single,gemma4-26b,single,open,00020671_010.png,1,1,20260925-080517-00020671_010-r1,Pneumothorax,1,0.0447,0.0
