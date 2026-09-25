@@ -1,9 +1,9 @@
 experiment,model,mode,vocab,status,n,used_torchxrayvision,trusted_chest_model,used_inapplicable,trusted_inapplicable,used_biomedclip,used_medsam,used_cv_classic
-exp1,gemma4-26b,single,open,in_progress,23,0.9565217391304348,0.043478260869565216,0.0,0.0,0.043478260869565216,0.17391304347826086,0.9565217391304348
+exp1,gemma4-26b,single,open,in_progress,42,0.9047619047619048,0.023809523809523808,0.0,0.0,0.023809523809523808,0.11904761904761904,0.9285714285714286
 exp1,gemma4-26b,council,open,in_progress,0,,,,,,,
-exp1,qwen3.6-27b,single,open,in_progress,10,1.0,0.7,0.0,0.0,0.4,0.0,1.0
+exp1,qwen3.6-27b,single,open,in_progress,33,1.0,0.8181818181818182,0.09090909090909091,0.0,0.5757575757575758,0.0,1.0
 exp1,qwen3.6-27b,council,open,in_progress,0,,,,,,,
-exp1,qwen3.8-27b,single,open,in_progress,1,1.0,1.0,0.0,0.0,1.0,0.0,1.0
+exp1,qwen3.8-27b,single,open,in_progress,3,0.6666666666666666,0.6666666666666666,0.0,0.0,0.6666666666666666,0.0,1.0
 exp1,qwen3.8-27b,council,open,in_progress,0,,,,,,,
 exp2,gemma4-26b,single,open,in_progress,0,,,,,,,
 exp2,gemma4-26b,council,open,in_progress,0,,,,,,,

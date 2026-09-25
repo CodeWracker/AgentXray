@@ -253,7 +253,7 @@ qwen3.6-27b:single,Emphysema,5,1,0.2
 qwen3.6-27b:single,Fibrosis,4,0,0.0
 qwen3.6-27b:single,Pleural_Thickening,4,0,0.0
 qwen3.6-27b:single,Hernia,4,1,0.25
-qwen3.6-27b:single,No Finding,3,1,0.3333333333333333
+qwen3.6-27b:single,No Finding,3,2,0.6666666666666666
 qwen3.6-27b:council,Atelectasis,9,0,0.0
 qwen3.6-27b:council,Cardiomegaly,6,0,0.0
 qwen3.6-27b:council,Effusion,15,0,0.0
@@ -451,19 +451,19 @@ qwen3.6-27b:clf_all:closed,Hernia,4,3,0.75
 qwen3.6-27b:clf_all:closed,No Finding,3,3,1.0
 qwen3.6-27b:clf_pc:closed,Atelectasis,9,1,0.1111111111111111
 qwen3.6-27b:clf_pc:closed,Cardiomegaly,6,2,0.3333333333333333
-qwen3.6-27b:clf_pc:closed,Effusion,15,7,0.4666666666666667
-qwen3.6-27b:clf_pc:closed,Infiltration,17,6,0.35294117647058826
-qwen3.6-27b:clf_pc:closed,Mass,5,1,0.2
+qwen3.6-27b:clf_pc:closed,Effusion,15,10,0.6666666666666666
+qwen3.6-27b:clf_pc:closed,Infiltration,17,9,0.5294117647058824
+qwen3.6-27b:clf_pc:closed,Mass,5,3,0.6
 qwen3.6-27b:clf_pc:closed,Nodule,7,1,0.14285714285714285
-qwen3.6-27b:clf_pc:closed,Pneumonia,5,2,0.4
-qwen3.6-27b:clf_pc:closed,Pneumothorax,7,1,0.14285714285714285
+qwen3.6-27b:clf_pc:closed,Pneumonia,5,3,0.6
+qwen3.6-27b:clf_pc:closed,Pneumothorax,7,3,0.42857142857142855
 qwen3.6-27b:clf_pc:closed,Consolidation,6,1,0.16666666666666666
-qwen3.6-27b:clf_pc:closed,Edema,5,1,0.2
+qwen3.6-27b:clf_pc:closed,Edema,5,2,0.4
 qwen3.6-27b:clf_pc:closed,Emphysema,5,0,0.0
 qwen3.6-27b:clf_pc:closed,Fibrosis,4,0,0.0
 qwen3.6-27b:clf_pc:closed,Pleural_Thickening,4,0,0.0
-qwen3.6-27b:clf_pc:closed,Hernia,4,1,0.25
-qwen3.6-27b:clf_pc:closed,No Finding,3,0,0.0
+qwen3.6-27b:clf_pc:closed,Hernia,4,2,0.5
+qwen3.6-27b:clf_pc:closed,No Finding,3,3,1.0
 qwen3.6-27b:single:closed,Atelectasis,9,0,0.0
 qwen3.6-27b:single:closed,Cardiomegaly,6,0,0.0
 qwen3.6-27b:single:closed,Effusion,15,0,0.0
@@ -496,14 +496,14 @@ qwen3.6-27b:council:closed,Hernia,4,0,0.0
 qwen3.6-27b:council:closed,No Finding,3,0,0.0
 qwen3.8-27b:zeroshot:closed,Atelectasis,9,3,0.3333333333333333
 qwen3.8-27b:zeroshot:closed,Cardiomegaly,6,2,0.3333333333333333
-qwen3.8-27b:zeroshot:closed,Effusion,15,1,0.06666666666666667
+qwen3.8-27b:zeroshot:closed,Effusion,15,6,0.4
 qwen3.8-27b:zeroshot:closed,Infiltration,17,1,0.058823529411764705
-qwen3.8-27b:zeroshot:closed,Mass,5,0,0.0
-qwen3.8-27b:zeroshot:closed,Nodule,7,0,0.0
-qwen3.8-27b:zeroshot:closed,Pneumonia,5,0,0.0
-qwen3.8-27b:zeroshot:closed,Pneumothorax,7,0,0.0
-qwen3.8-27b:zeroshot:closed,Consolidation,6,0,0.0
-qwen3.8-27b:zeroshot:closed,Edema,5,0,0.0
+qwen3.8-27b:zeroshot:closed,Mass,5,1,0.2
+qwen3.8-27b:zeroshot:closed,Nodule,7,1,0.14285714285714285
+qwen3.8-27b:zeroshot:closed,Pneumonia,5,1,0.2
+qwen3.8-27b:zeroshot:closed,Pneumothorax,7,2,0.2857142857142857
+qwen3.8-27b:zeroshot:closed,Consolidation,6,2,0.3333333333333333
+qwen3.8-27b:zeroshot:closed,Edema,5,2,0.4
 qwen3.8-27b:zeroshot:closed,Emphysema,5,0,0.0
 qwen3.8-27b:zeroshot:closed,Fibrosis,4,0,0.0
 qwen3.8-27b:zeroshot:closed,Pleural_Thickening,4,0,0.0
