@@ -1566,6 +1566,9 @@ gemma4-26b:single,00010007_062.png,3,Atelectasis,Atelectasis,,incorrect
 gemma4-26b:single,00021463_004.png,1,Bilateral pleural effusions,Effusion,,incorrect
 gemma4-26b:single,00021463_004.png,2,Congestive heart failure,,,oov
 gemma4-26b:single,00021463_004.png,3,Atelectasis/Pneumonia at lung bases,Atelectasis|Pneumonia,,incorrect
+gemma4-26b:single,00018253_048.png,1,Right-sided pleural effusion,Effusion,,correct
+gemma4-26b:single,00018253_048.png,2,Right-sided pneumonia/consolidation,Pneumonia|Consolidation,,incorrect
+gemma4-26b:single,00018253_048.png,3,Pneumothorax (associated with subcutaneous emphysema),Pneumothorax|Emphysema,,incorrect
 gemma4-26b:single,00014731_016.png,1,Metastatic pulmonary disease,,,oov
 gemma4-26b:single,00014731_016.png,2,Multiple primary lung malignancies,,,oov
 gemma4-26b:single,00014731_016.png,3,Infectious granulomatous disease,,,oov
@@ -2518,15 +2521,36 @@ qwen3.8-27b:clf_pc,00008295_022.png,3,Right pleural effusion/empyema with adjace
 qwen3.8-27b:clf_pc,00007750_008.png,1,Right lower lobe pneumonia / consolidation,Pneumonia|Consolidation,,incorrect
 qwen3.8-27b:clf_pc,00007750_008.png,2,Pulmonary edema / fluid overload with dependent airspace opacity,Edema,,incorrect
 qwen3.8-27b:clf_pc,00007750_008.png,3,Right pleural effusion with compressive atelectasis,Effusion|Atelectasis,,correct
+qwen3.8-27b:single,00022416_019.png,1,Large right pleural effusion with adjacent right middle/basal-zone atelectasis/consolidation (dominant finding),Effusion|Atelectasis|Consolidation,,correct
+qwen3.8-27b:single,00022416_019.png,2,Right lower lobe pneumonia with parapneumonic effusion,Pneumonia|Effusion,,correct
+qwen3.8-27b:single,00022416_019.png,3,Decompensated heart failure / volume overload with bilateral pleural effusions (right greater than left) and pulmonary edema,Effusion|Edema,,correct
 qwen3.8-27b:single,00006304_004.png,1,Bilateral basilar atelectasis / low lung volumes (dependent crowding) with possible small left pleural effusion,Atelectasis|Effusion,,correct
 qwen3.8-27b:single,00006304_004.png,2,Early or mild bilateral lower-zone pneumonia / aspiration (consolidation),Pneumonia|Consolidation,,incorrect
 qwen3.8-27b:single,00006304_004.png,3,Mild pulmonary edema / fluid overload,Edema,,incorrect
+qwen3.8-27b:single,00001075_047.png,1,Normal / No acute finding,No Finding,,incorrect
+qwen3.8-27b:single,00001075_047.png,2,Right hemidiaphragm higher than the left - most likely a normal physiologic variant (liver),No Finding,,incorrect
+qwen3.8-27b:single,00001075_047.png,3,"Pathologic right hemidiaphragm elevation (hepatic enlargement, subphrenic process, phrenic nerve paresis/eventration) - not supported by the normal dome shape and clear overlying lung; retained only as a low-probability consideration",,No Finding,oov
+qwen3.8-27b:single,00013249_045.png,1,Congestive heart failure with pulmonary edema (congenital heart disease / cardiomyopathy),Edema,,incorrect
+qwen3.8-27b:single,00013249_045.png,2,Pneumonia (bilateral),Pneumonia,,incorrect
+qwen3.8-27b:single,00013249_045.png,3,Respiratory distress syndrome,,,oov
+qwen3.8-27b:single,00011702_072.png,1,"Bilateral basal opacities from atelectasis, consolidation, and/or pleural effusion (most likely explanation of the lower-zone densities)",Atelectasis|Consolidation|Effusion,,incorrect
+qwen3.8-27b:single,00011702_072.png,2,Pulmonary edema / fluid overload,Edema,,incorrect
+qwen3.8-27b:single,00011702_072.png,3,Pneumonia (focal or bilateral),Pneumonia,,incorrect
+qwen3.8-27b:single,00010447_027.png,1,"Pulmonary edema (cardiogenic and/or non-cardiogenic, e.g. ARDS)",Edema,,incorrect
+qwen3.8-27b:single,00010447_027.png,2,Multifocal / bilateral pneumonia (infectious infiltrate),Pneumonia|Infiltration,,correct
+qwen3.8-27b:single,00010447_027.png,3,Mixed cardiogenic pulmonary edema complicating multifocal pneumonia (or aspiration),Edema|Pneumonia,,incorrect
 qwen3.8-27b:single,00007322_007.png,1,"Bibasilar/mid-lung atelectasis (supine, intubated patient)",Atelectasis,,incorrect
 qwen3.8-27b:single,00007322_007.png,2,Early/mild bilateral pulmonary edema,Edema,,incorrect
 qwen3.8-27b:single,00007322_007.png,3,Early bilateral pneumonia/infiltrate (including aspiration or early ARDS),Pneumonia|Infiltration,,incorrect
 qwen3.8-27b:single,00022416_056.png,1,Large left pleural effusion (dominant finding; etiology not determinable on a single view),Effusion,,correct
 qwen3.8-27b:single,00022416_056.png,2,Right pleural effusion or pneumothorax (presumed indication for the right pigtail catheter; not definitively visualized on this single view),Effusion|Pneumothorax,,correct
 qwen3.8-27b:single,00022416_056.png,3,"Pulmonary edema, infiltrate, or atelectasis contributing to the opacities (coarse reticular markings; coexistent with effusion/collapse)",Edema|Infiltration|Atelectasis|Fibrosis|Effusion,,correct
+qwen3.8-27b:single,00004911_016.png,1,No acute cardiopulmonary abnormality; right-sided central venous catheter in appropriate position and multiple surgical clips (status post cardiac/thoracic surgery); the left mid-lung round opacity most likely a vascular structure (left pulmonary artery in cross-section),,,oov
+qwen3.8-27b:single,00004911_016.png,2,Indeterminate left mid-lung pulmonary nodule or perihilar lymph node (requires correlation with prior imaging or CT),Nodule,,correct
+qwen3.8-27b:single,00004911_016.png,3,Possible subtle non-displaced fracture of the right proximal humerus (indeterminate; not confirmed on visual re-examination),,,oov
+qwen3.8-27b:single,00019651_003.png,1,Primary: Pulmonary neoplasm (primary lung malignancy or lymphoma/benign tumour) presenting as a large well-circumscribed mass,Mass,,correct
+qwen3.8-27b:single,00019651_003.png,2,"Secondary: Pulmonary hydatid cyst (endemic area) - a large, rounded, well-circumscribed homogeneous 'coin lesion'",Nodule,,incorrect
+qwen3.8-27b:single,00019651_003.png,3,Tertiary: Round pneumonia / focal consolidation (rounded opacity in a young patient),Pneumonia|Consolidation,,incorrect
 gemma4-26b:zeroshot:closed,00022416_019.png,1,Edema,Edema,,incorrect
 gemma4-26b:zeroshot:closed,00022416_019.png,2,Cardiomegaly,Cardiomegaly,,incorrect
 gemma4-26b:zeroshot:closed,00022416_019.png,3,Effusion,Effusion,,correct
@@ -3439,6 +3463,9 @@ qwen3.8-27b:zeroshot:closed,00018253_048.png,3,Consolidation,Consolidation,,inco
 qwen3.8-27b:zeroshot:closed,00014731_016.png,1,Pneumothorax,Pneumothorax,,correct
 qwen3.8-27b:zeroshot:closed,00014731_016.png,2,Nodule,Nodule,,incorrect
 qwen3.8-27b:zeroshot:closed,00014731_016.png,3,Atelectasis,Atelectasis,,incorrect
+qwen3.8-27b:zeroshot:closed,00011237_112.png,1,Edema,Edema,,correct
+qwen3.8-27b:zeroshot:closed,00011237_112.png,2,Infiltration,Infiltration,,correct
+qwen3.8-27b:zeroshot:closed,00011237_112.png,3,Atelectasis,Atelectasis,,incorrect
 qwen3.8-27b:zeroshot:closed,00013391_005.png,1,Pneumonia,Pneumonia,,correct
 qwen3.8-27b:zeroshot:closed,00013391_005.png,2,Consolidation,Consolidation,,incorrect
 qwen3.8-27b:zeroshot:closed,00013391_005.png,3,Effusion,Effusion,,incorrect
@@ -3490,6 +3517,9 @@ qwen3.8-27b:clf_all:closed,00029469_012.png,3,Edema,Edema,,correct
 qwen3.8-27b:clf_all:closed,00029588_004.png,1,Pneumonia,Pneumonia,,incorrect
 qwen3.8-27b:clf_all:closed,00029588_004.png,2,Consolidation,Consolidation,,correct
 qwen3.8-27b:clf_all:closed,00029588_004.png,3,Effusion,Effusion,,correct
+qwen3.8-27b:clf_all:closed,00007632_013.png,1,Emphysema,Emphysema,,incorrect
+qwen3.8-27b:clf_all:closed,00007632_013.png,2,No Finding,No Finding,,incorrect
+qwen3.8-27b:clf_all:closed,00007632_013.png,3,Pleural Thickening,Pleural_Thickening,,incorrect
 qwen3.8-27b:clf_all:closed,00022098_007.png,1,Atelectasis,Atelectasis,,incorrect
 qwen3.8-27b:clf_all:closed,00022098_007.png,2,Pneumonia,Pneumonia,,incorrect
 qwen3.8-27b:clf_all:closed,00022098_007.png,3,Effusion,Effusion,,correct
@@ -3676,3 +3706,45 @@ qwen3.8-27b:clf_pc:closed,00014822_025.png,3,Atelectasis,Atelectasis,,incorrect
 qwen3.8-27b:clf_pc:closed,00013648_018.png,1,No Finding,No Finding,,correct
 qwen3.8-27b:clf_pc:closed,00013648_018.png,2,Nodule,Nodule,,incorrect
 qwen3.8-27b:clf_pc:closed,00013648_018.png,3,Effusion,Effusion,,incorrect
+qwen3.8-27b:clf_pc:closed,00027726_005.png,1,No Finding,No Finding,,correct
+qwen3.8-27b:clf_pc:closed,00027726_005.png,2,Nodule,Nodule,,incorrect
+qwen3.8-27b:clf_pc:closed,00027726_005.png,3,Pleural Thickening,Pleural_Thickening,,incorrect
+qwen3.8-27b:clf_pc:closed,00030557_000.png,1,No Finding,No Finding,,correct
+qwen3.8-27b:clf_pc:closed,00030557_000.png,2,Pneumonia,Pneumonia,,incorrect
+qwen3.8-27b:clf_pc:closed,00030557_000.png,3,Atelectasis,Atelectasis,,incorrect
+qwen3.8-27b:clf_pc:closed,00013670_049.png,1,Infiltration,Infiltration,,incorrect
+qwen3.8-27b:clf_pc:closed,00013670_049.png,2,Pneumonia,Pneumonia,,incorrect
+qwen3.8-27b:clf_pc:closed,00013670_049.png,3,Effusion,Effusion,,incorrect
+qwen3.8-27b:clf_pc:closed,00000733_000.png,1,Infiltration,Infiltration,,incorrect
+qwen3.8-27b:clf_pc:closed,00000733_000.png,2,Pneumonia,Pneumonia,,incorrect
+qwen3.8-27b:clf_pc:closed,00000733_000.png,3,Atelectasis,Atelectasis,,incorrect
+qwen3.8-27b:clf_pc:closed,00029159_003.png,1,Infiltration,Infiltration,,incorrect
+qwen3.8-27b:clf_pc:closed,00029159_003.png,2,Effusion,Effusion,,incorrect
+qwen3.8-27b:clf_pc:closed,00029159_003.png,3,Pneumonia,Pneumonia,,incorrect
+qwen3.8-27b:clf_pc:closed,00010007_062.png,1,Effusion,Effusion,,correct
+qwen3.8-27b:clf_pc:closed,00010007_062.png,2,Cardiomegaly,Cardiomegaly,,incorrect
+qwen3.8-27b:clf_pc:closed,00010007_062.png,3,Edema,Edema,,incorrect
+qwen3.8-27b:clf_pc:closed,00021463_004.png,1,Effusion,Effusion,,incorrect
+qwen3.8-27b:clf_pc:closed,00021463_004.png,2,Hernia,Hernia,,correct
+qwen3.8-27b:clf_pc:closed,00021463_004.png,3,Atelectasis,Atelectasis,,incorrect
+qwen3.8-27b:clf_pc:closed,00018253_048.png,1,Effusion,Effusion,,correct
+qwen3.8-27b:clf_pc:closed,00018253_048.png,2,Infiltration,Infiltration,,correct
+qwen3.8-27b:clf_pc:closed,00018253_048.png,3,Consolidation,Consolidation,,incorrect
+qwen3.8-27b:clf_pc:closed,00014731_016.png,1,Pneumothorax,Pneumothorax,,correct
+qwen3.8-27b:clf_pc:closed,00014731_016.png,2,Infiltration,Infiltration,,incorrect
+qwen3.8-27b:clf_pc:closed,00014731_016.png,3,Nodule,Nodule,,incorrect
+qwen3.8-27b:clf_pc:closed,00011237_112.png,1,Infiltration,Infiltration,,correct
+qwen3.8-27b:clf_pc:closed,00011237_112.png,2,Edema,Edema,,correct
+qwen3.8-27b:clf_pc:closed,00011237_112.png,3,Effusion,Effusion,,incorrect
+qwen3.8-27b:clf_pc:closed,00013391_005.png,1,Infiltration,Infiltration,,correct
+qwen3.8-27b:clf_pc:closed,00013391_005.png,2,Effusion,Effusion,,incorrect
+qwen3.8-27b:clf_pc:closed,00013391_005.png,3,Atelectasis,Atelectasis,,incorrect
+qwen3.8-27b:clf_pc:closed,00017747_053.png,1,Pneumothorax,Pneumothorax,,correct
+qwen3.8-27b:clf_pc:closed,00017747_053.png,2,Atelectasis,Atelectasis,,incorrect
+qwen3.8-27b:clf_pc:closed,00017747_053.png,3,Effusion,Effusion,,incorrect
+qwen3.8-27b:clf_pc:closed,00008295_022.png,1,Infiltration,Infiltration,,incorrect
+qwen3.8-27b:clf_pc:closed,00008295_022.png,2,Atelectasis,Atelectasis,,correct
+qwen3.8-27b:clf_pc:closed,00008295_022.png,3,Pneumonia,Pneumonia,,incorrect
+qwen3.8-27b:clf_pc:closed,00007750_008.png,1,Infiltration,Infiltration,,incorrect
+qwen3.8-27b:clf_pc:closed,00007750_008.png,2,Pneumonia,Pneumonia,,incorrect
+qwen3.8-27b:clf_pc:closed,00007750_008.png,3,Consolidation,Consolidation,,incorrect
