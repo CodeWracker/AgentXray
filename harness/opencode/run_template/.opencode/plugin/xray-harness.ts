@@ -15,10 +15,14 @@ import { tool, type Plugin } from "@opencode-ai/plugin"
 type Paths = { read_write: string[]; read_only: string[]; forbidden_roots: string[] }
 type RunConfig = { analysis_dir: string; agent_log: string; harness_log: string; mode: string; paths?: Paths }
 
-// o que casa como caminho absoluto dentro de um texto (comando de shell ou conteudo de arquivo)
-const ABS_PATH = /(?:^|[\s'"=:(,\[{])((?:~|\/)[^\s'"`;|&<>(),\]}]*)/g
-// ".." como componente de caminho
-const PARENT = /(?:^|[\s'"=:(,\/])\.\.(?:\/|$|[\s'"),])/
+// caminho absoluto ou relativo a home ("~/") dentro de um texto (comando de shell ou conteudo de arquivo); "~" seguido
+// de numero ou texto e so "aproximadamente" e nao conta
+const PATH_TOKEN = /(?:^|[\s'"=:(,\[{])((?:~\/|\/)[^\s'"`;|&<>(),\]}]*)/g
+// "../" em qualquer texto; ".." e "~" sozinhos so contam em comandos de shell (cd .., ls ~)
+const PARENT_PATH = /(?:^|[\s'"=:(,\/])\.\.\//
+const SHELL_BARE = /(?:^|[\s'"=;&|(])(?:\.\.|~)(?=$|[\s'";&|)])/
+// ".." como componente de um argumento de caminho
+const PARENT_SEGMENT = /(?:^|\/)\.\.(?:\/|$)/
 
 const under = (path: string, root: string) => path === root || path.startsWith(root.endsWith("/") ? root : root + "/")
 
@@ -26,7 +30,7 @@ const under = (path: string, root: string) => path === root || path.startsWith(r
 function outsidePath(tool: string, args: Record<string, unknown>, cwd: string, paths: Paths): string | null {
   const allowed = [...paths.read_write, ...paths.read_only]
   const forbidden = (p: string) => {
-    if (p.startsWith("~")) return true
+    if (p.startsWith("~/")) return true
     const abs = resolve(cwd, p)
     return paths.forbidden_roots.some((r) => under(abs, r)) && !allowed.some((r) => under(abs, r))
   }
@@ -34,7 +38,7 @@ function outsidePath(tool: string, args: Record<string, unknown>, cwd: string, p
   for (const key of ["filePath", "path"]) {
     const value = args[key]
     if (typeof value !== "string" || !value) continue
-    if (PARENT.test(value) || value.startsWith("~")) return value
+    if (PARENT_SEGMENT.test(value) || value.startsWith("~")) return value
     const abs = isAbsolute(value) ? value : resolve(cwd, value)
     const roots = ["write", "edit"].includes(tool) ? paths.read_write : allowed
     if (!roots.some((r) => under(abs, r))) return value
@@ -43,8 +47,9 @@ function outsidePath(tool: string, args: Record<string, unknown>, cwd: string, p
   for (const key of ["command", "pattern", "include", "content", "newString"]) {
     const value = args[key]
     if (typeof value !== "string" || !value) continue
-    if (key !== "pattern" && key !== "include" && PARENT.test(value)) return ".."
-    for (const m of value.matchAll(ABS_PATH)) {
+    if (key !== "pattern" && key !== "include" && PARENT_PATH.test(value)) return "../"
+    if (key === "command" && SHELL_BARE.test(value)) return value.match(SHELL_BARE)![0].trim()
+    for (const m of value.matchAll(PATH_TOKEN)) {
       if (m[1] === "/" || m[1].startsWith("//")) continue
       if (forbidden(m[1])) return m[1]
     }
