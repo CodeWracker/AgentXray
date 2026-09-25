@@ -6,10 +6,10 @@ gemma4-26b:council,gemma4-26b,council,open,densenet121-res224-all,in_progress,,0
 qwen3.6-27b:clf_all,qwen3.6-27b,clf_all,open,densenet121-res224-all,complete,1.0,45,27,13,18,8,3,0,7
 qwen3.6-27b:clf_pc,qwen3.6-27b,clf_pc,open,densenet121-res224-pc,complete,1.0,45,11,8,34,10,8,3,13
 qwen3.6-27b:single,qwen3.6-27b,single,open,densenet121-res224-all,complete,1.0,43,14,11,29,11,5,3,10
-qwen3.6-27b:council,qwen3.6-27b,council,open,densenet121-res224-all,in_progress,,0,0,0,0,0,0,0,0
+qwen3.6-27b:council,qwen3.6-27b,council,open,densenet121-res224-all,in_progress,0.75,2,0,0,2,1,0,1,0
 qwen3.8-27b:clf_all,qwen3.8-27b,clf_all,open,densenet121-res224-all,complete,1.0,45,29,21,16,7,2,2,5
 qwen3.8-27b:clf_pc,qwen3.8-27b,clf_pc,open,densenet121-res224-pc,complete,1.0,45,21,13,24,10,5,3,6
-qwen3.8-27b:single,qwen3.8-27b,single,open,densenet121-res224-all,in_progress,1.0,10,1,1,9,2,2,1,4
+qwen3.8-27b:single,qwen3.8-27b,single,open,densenet121-res224-all,in_progress,0.95,18,4,4,14,3,2,2,7
 qwen3.8-27b:council,qwen3.8-27b,council,open,densenet121-res224-all,in_progress,,0,0,0,0,0,0,0,0
 gemma4-26b:clf_all:closed,gemma4-26b,clf_all,closed,densenet121-res224-all,complete,1.0,45,30,12,15,5,2,0,8
 gemma4-26b:clf_pc:closed,gemma4-26b,clf_pc,closed,densenet121-res224-pc,complete,1.0,45,22,10,23,4,5,1,13

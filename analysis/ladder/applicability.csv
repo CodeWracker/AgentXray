@@ -2,12 +2,12 @@ experiment,model,mode,vocab,status,n,used_torchxrayvision,trusted_chest_model,us
 exp1,gemma4-26b,single,open,complete,45,0.9555555555555556,0.022222222222222223,0.0,0.0,0.044444444444444446,0.1111111111111111,0.9555555555555556
 exp1,gemma4-26b,council,open,in_progress,0,,,,,,,
 exp1,qwen3.6-27b,single,open,complete,43,1.0,0.9069767441860465,0.06976744186046512,0.0,0.4883720930232558,0.0,1.0
-exp1,qwen3.6-27b,council,open,in_progress,0,,,,,,,
-exp1,qwen3.8-27b,single,open,in_progress,11,1.0,0.9090909090909091,0.2727272727272727,0.0,0.8181818181818182,0.2727272727272727,1.0
+exp1,qwen3.6-27b,council,open,in_progress,4,0.75,0.5,0.0,0.0,0.75,0.0,0.75
+exp1,qwen3.8-27b,single,open,in_progress,20,0.95,0.9,0.3,0.0,0.8,0.15,0.95
 exp1,qwen3.8-27b,council,open,in_progress,0,,,,,,,
-exp2,gemma4-26b,single,open,in_progress,27,0.9629629629629629,0.0,0.0,0.0,0.0,0.037037037037037035,1.0
+exp2,gemma4-26b,single,open,in_progress,48,0.9375,0.0,0.0,0.0,0.0,0.08333333333333333,0.9791666666666666
 exp2,gemma4-26b,council,open,in_progress,0,,,,,,,
-exp2,qwen3.6-27b,single,open,in_progress,17,1.0,0.35294117647058826,0.0,0.0,0.23529411764705882,0.0,1.0
+exp2,qwen3.6-27b,single,open,complete,48,1.0,0.4791666666666667,0.020833333333333332,0.0,0.3958333333333333,0.0,1.0
 exp2,qwen3.6-27b,council,open,in_progress,0,,,,,,,
 exp2,qwen3.8-27b,single,open,in_progress,0,,,,,,,
 exp2,qwen3.8-27b,council,open,in_progress,0,,,,,,,

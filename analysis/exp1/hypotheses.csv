@@ -2116,6 +2116,12 @@ qwen3.6-27b:single,00008295_022.png,3,Traumatic right upper lung contusion with 
 qwen3.6-27b:single,00007750_008.png,1,Atelectasis with small right pleural effusion (most likely),Atelectasis|Effusion,,correct
 qwen3.6-27b:single,00007750_008.png,2,Right lower lobe pneumonia with parapneumonic effusion,Pneumonia|Effusion,,correct
 qwen3.6-27b:single,00007750_008.png,3,Post-obstructive atelectasis with effusion,Atelectasis|Effusion,,correct
+qwen3.6-27b:council,00022416_019.png,1,Pulmonary edema (cardiogenic or non-cardiogenic) with bilateral pleural effusions,Edema|Effusion,,correct
+qwen3.6-27b:council,00022416_019.png,2,Multifocal bilateral pneumonia with pleural effusions,Pneumonia|Effusion,,correct
+qwen3.6-27b:council,00022416_019.png,3,Acute respiratory distress syndrome (ARDS) with dependent opacities and effusions,Effusion,,correct
+qwen3.6-27b:council,00006304_004.png,1,Left lower lobe atelectasis with small left pleural effusion,Atelectasis|Effusion,,correct
+qwen3.6-27b:council,00006304_004.png,2,Left lower lobe pneumonia with parapneumonic effusion,Pneumonia|Effusion,,incorrect
+qwen3.6-27b:council,00006304_004.png,3,Pulmonary venous congestion with bibasilar atelectasis,Atelectasis,,correct
 qwen3.8-27b:zeroshot,00022416_019.png,1,Right pleural effusion with compressive atelectasis (parapneumonic effusion or transudative effusion in the setting of critical illness),Effusion|Atelectasis,,correct
 qwen3.8-27b:zeroshot,00022416_019.png,2,Right lower lobe pneumonia/consolidation with associated effusion,Pneumonia|Consolidation|Effusion,,correct
 qwen3.8-27b:zeroshot,00022416_019.png,3,Bilateral pulmonary edema with asymmetric right-sided effusion,Edema|Effusion,,correct
@@ -2551,6 +2557,30 @@ qwen3.8-27b:single,00004911_016.png,3,Possible subtle non-displaced fracture of 
 qwen3.8-27b:single,00019651_003.png,1,Primary: Pulmonary neoplasm (primary lung malignancy or lymphoma/benign tumour) presenting as a large well-circumscribed mass,Mass,,correct
 qwen3.8-27b:single,00019651_003.png,2,"Secondary: Pulmonary hydatid cyst (endemic area) - a large, rounded, well-circumscribed homogeneous 'coin lesion'",Nodule,,incorrect
 qwen3.8-27b:single,00019651_003.png,3,Tertiary: Round pneumonia / focal consolidation (rounded opacity in a young patient),Pneumonia|Consolidation,,incorrect
+qwen3.8-27b:single,00022084_000.png,1,Multifocal / diffuse pneumonia (infectious pneumonitis),Pneumonia,,correct
+qwen3.8-27b:single,00022084_000.png,2,"Pulmonary edema (cardiogenic or non-cardiogenic, e.g., ARDS)",Edema,,correct
+qwen3.8-27b:single,00022084_000.png,3,Diffuse interstitial lung disease or miliary/infiltrative process,,,oov
+qwen3.8-27b:single,00029469_012.png,1,"Pulmonary edema (cardiogenic and/or non-cardiogenic, e.g. ARDS) - diffuse bilateral basilar-predominant opacities",Edema,,correct
+qwen3.8-27b:single,00029469_012.png,2,Bilateral pneumonia / pulmonary infiltrate (infectious or aspiration) - patchy reticulonodular opacities,Pneumonia|Infiltration,,correct
+qwen3.8-27b:single,00029469_012.png,3,Left pleural effusion with underlying consolidation and/or atelectasis - dense left basilar opacity,Effusion|Consolidation|Atelectasis,,correct
+qwen3.8-27b:single,00029588_004.png,1,"Multifocal pneumonia / aspiration (airspace consolidation), right-sided and basal predominant",Pneumonia|Consolidation,,correct
+qwen3.8-27b:single,00029588_004.png,2,"Pulmonary edema (cardiogenic or non-cardiogenic/ARDS), possibly mixed with infection",Edema,,incorrect
+qwen3.8-27b:single,00029588_004.png,3,Right pleural effusion with adjacent atelectasis/consolidation contributing to the right basal opacity,Effusion|Atelectasis|Consolidation,,correct
+qwen3.8-27b:single,00007632_013.png,1,Normal / no acute finding,No Finding,,incorrect
+qwen3.8-27b:single,00007632_013.png,2,"Mild pulmonary hyperinflation / early emphysema (uncertain, unconfirmed)",Emphysema,,incorrect
+qwen3.8-27b:single,00007632_013.png,3,"Subtle interstitial or fibrotic change (very low likelihood; single-model borderline signal only, not confirmed)",,,oov
+qwen3.8-27b:single,00022098_007.png,1,Normal / No acute finding (left-base opacity due to superimposition of breast shadow and gastric gas),No Finding,,incorrect
+qwen3.8-27b:single,00022098_007.png,2,Left lower lobe atelectasis (retrocardiac opacity),Atelectasis,,incorrect
+qwen3.8-27b:single,00022098_007.png,3,Hiatal hernia (retrocardiac gas/soft-tissue mass),Hernia|Mass,,incorrect
+qwen3.8-27b:single,00003803_002.png,1,Right (residual/partially drained) pneumothorax with a right apical chest tube in situ,Pneumothorax,,correct
+qwen3.8-27b:single,00003803_002.png,2,"Right lower-zone atelectasis/post-surgical change with a pigtail drain, where the apical hyperlucency is a normal apex and the chest tube was placed for another indication (e.g., hemothorax/effusion)",Atelectasis|No Finding|Effusion,,correct
+qwen3.8-27b:single,00003803_002.png,3,"Post-traumatic or post-surgical right hemithorax (combined pneumothorax, hemothorax and surgical repair)",Pneumothorax|Effusion,,correct
+qwen3.8-27b:single,00003072_028.png,1,"Large left pneumothorax (chest tube in situ, no tension) plus moderate right pleural effusion with basilar atelectasis",Pneumothorax|Effusion|Atelectasis,,correct
+qwen3.8-27b:single,00003072_028.png,2,Left pneumothorax of iatrogenic or traumatic aetiology (chest tube and subcutaneous emphysema are consistent with recent instrumentation or trauma),Pneumothorax|Emphysema,,correct
+qwen3.8-27b:single,00003072_028.png,3,Spontaneous pneumothorax,Pneumothorax,,correct
+qwen3.8-27b:single,00008911_026.png,1,Right hemothorax (likely traumatic) with right chest tube in situ,Effusion,,incorrect
+qwen3.8-27b:single,00008911_026.png,2,"Large right pleural effusion of other etiology (e.g., parapneumonic/empyema, malignant, or post-procedural) with chest tube",Effusion,,incorrect
+qwen3.8-27b:single,00008911_026.png,3,Hydropneumothorax (associated pneumothorax) with chest tube,Pneumothorax,,incorrect
 gemma4-26b:zeroshot:closed,00022416_019.png,1,Edema,Edema,,incorrect
 gemma4-26b:zeroshot:closed,00022416_019.png,2,Cardiomegaly,Cardiomegaly,,incorrect
 gemma4-26b:zeroshot:closed,00022416_019.png,3,Effusion,Effusion,,correct
