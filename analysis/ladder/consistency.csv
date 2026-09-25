@@ -1,0 +1,4 @@
+model,status,finished_min_rep,cases_all_valid,top1_same_all_three,top1_pairwise_agreement,hit1_r1,hit1_r2,hit1_r3,hit1_sd_across_reps
+gemma4-26b,in_progress,0,0,,,0.15555555555555556,0.0,0.0,0.07332959212304938
+qwen3.6-27b,in_progress,0,0,,,0.08888888888888889,0.0,0.0,0.04190262407031393
+qwen3.8-27b,in_progress,0,0,,,0.0,0.0,0.0,0.0
