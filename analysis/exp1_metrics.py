@@ -139,8 +139,6 @@ def conditions(images: list[str]) -> list[dict]:
             for mode, mode_dir, zs_dir in MODES:
                 cases = (collect_zeroshot(model, images, root=root, zs_dir=zs_dir) if mode_dir is None
                          else collect_agent(mode_dir, model, images, root=root))
-                if vocab == "closed" and not any(c["finished"] for c in cases.values()):
-                    continue  # condicao fechada ainda nao rodada
                 conds.append({"id": f"{model}:{mode}{suffix}", "model": model, "mode": mode, "vocab": vocab,
                               "cases": cases})
     return conds

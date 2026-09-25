@@ -57,8 +57,6 @@ def main() -> int:
         suffix = "" if vocab == "open" else ":closed"
         cases = (collect_zeroshot(model, images, BENCH, valid_localization, root=root) if mode == "zeroshot"
                  else collect_agent(mode_dir, model, images, BENCH, valid_localization, root=root))
-        if vocab == "closed" and not any(c["finished"] for c in cases.values()):
-            continue
         vec = {k: [] for k in ["iou", "iou_cls", "n_boxes"] + [f"hit{t}" for t in THRESHOLDS]
                + [f"hit{t}_cls" for t in THRESHOLDS]}
         for img in images:
