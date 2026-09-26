@@ -2,7 +2,7 @@
 
 Every agent keeps a structured log of its own work. The log is part of the task and is evaluated.
 
-Right after each action, call the `log_action` tool once to record it, before taking the next action. An action is any other tool call: viewing an image, running a command or script, writing or editing a file, reading a file, searching, or starting a sub-agent. When you write your final answer, record it too, with the action `final_answer`. The harness blocks your next action while the previous one is not recorded; if that happens, record the previous action and repeat the call.
+Right after each action, call the `log_action` tool once to record it, before taking the next action. An action is any other tool call: viewing an image, running a command or script, writing or editing a file, reading a file, searching, or starting a sub-agent. When you write your final answer, record it too, with the action `final_answer`. The harness blocks your next action while the previous one is not recorded; if that happens, record the previous action and repeat the call. Every field listed below is required except the optional ones; an entry with a missing or empty field is rejected and the action stays unrecorded.
 
 Fields of `log_action`:
 

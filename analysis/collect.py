@@ -20,6 +20,9 @@ import sys
 EVAL = pathlib.Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(EVAL / "tools"))
 from agent_log import read_logs  # noqa: E402
+from check_run import check_inspection  # noqa: E402
+
+NUDGE_REASONS = ["final_json", "required_file", "tools_json", "reproduce", "inspection"]
 
 
 def static_analyze_scripts(scripts_dir: pathlib.Path) -> dict:
@@ -320,7 +323,7 @@ def collect_one(analysis_dir: pathlib.Path, results_root: pathlib.Path) -> dict 
     # escritas no log por shell (v3)
     not_actions = sum((tools_all or {}).get(t, 0) for t in ("log_action", "todowrite", "todoread"))
     harness_actions = (sum(tools_all.values()) if tools_all else 0) - log_writes - not_actions
-    blocked, path_blocked, harness_log = 0, 0, run_dir / "harness_log.jsonl"
+    blocked, path_blocked, log_rejected, harness_log = 0, 0, 0, run_dir / "harness_log.jsonl"
     if harness_log.exists():
         for line in harness_log.read_text(encoding="utf-8", errors="ignore").splitlines():
             try:
@@ -329,6 +332,12 @@ def collect_one(analysis_dir: pathlib.Path, results_root: pathlib.Path) -> dict 
                 continue
             blocked += kind == "blocked"
             path_blocked += kind == "path_blocked"
+            log_rejected += kind == "log_rejected"
+    # inspecao visual pelo registro do harness (read concluido sobre cada imagem de images/), valida tambem para
+    # rodadas anteriores a exigencia
+    inspection = check_inspection(run_dir, analysis_dir) if harness_log.exists() else None
+    by_reason = harness.get("nudges_by_reason", {})
+    enforced = "contract_first_attempt" in harness  # rodada feita com o contrato garantido pelo runner
     parts = pathlib.Path(str(run_dir.relative_to(results_root))).parts
     experiment = next((p for p in parts if p.startswith("exp")), "")
 
@@ -348,6 +357,12 @@ def collect_one(analysis_dir: pathlib.Path, results_root: pathlib.Path) -> dict 
         "final_json_written": final_json_path.exists(),
         "has_valid_json": has_valid_json,
         "check_passed": harness.get("check_passed"),
+        "contract_enforced": enforced,
+        # contrato cumprido ao fim da primeira sessao, antes de qualquer retomada
+        "contract_first_attempt": harness.get("contract_first_attempt", ""),
+        **{f"nudges_{r}": by_reason.get(r, 0) if enforced else "" for r in NUDGE_REASONS},
+        "remaining_problems": ";".join(harness.get("remaining_problems", [])),
+        "checker_s": harness.get("checker_s", ""),
         "tokens_input": tokens_all.get("input", 0),
         "tokens_output": tokens_all.get("output", 0),
         "tokens_reasoning": tokens_all.get("reasoning", 0),
@@ -391,6 +406,11 @@ def collect_one(analysis_dir: pathlib.Path, results_root: pathlib.Path) -> dict 
         "log_blocked_calls": blocked if harness_log.exists() else "",
         # chamadas recusadas pelo plugin por citarem caminho fora da pasta da rodada
         "path_blocked_calls": path_blocked if harness_log.exists() else "",
+        # entradas de log recusadas pelo plugin por campo ausente ou vazio
+        "log_rejected_calls": log_rejected if harness_log.exists() else "",
+        "inspection_images": inspection["images"] if inspection else "",
+        "inspection_opened": inspection["opened"] if inspection else "",
+        "inspection_complete": (not inspection["not_opened"]) if inspection else "",
         "log_action_ratio": round(len(log_actions) / harness_actions, 3) if (logs["files"] and harness_actions > 0) else "",
         "reproduce_ok": reproduce.get("ok"),
         "reproduce_outputs": reproduce.get("outputs", 0),

@@ -13,10 +13,13 @@ a diretórios de fora, executa `opencode run --format json` e salva na rodada:
   sessions/<id>.json      exportação completa da sessão principal e de cada subagente
   harness_result.json     código de saída, duração, tokens, chamadas de ferramenta e retomadas
 
-Se a sessão termina sem o JSON final (por exemplo, quando o modelo emite a chamada de ferramenta como
-texto e o servidor não a converte), o runner retoma a mesma sessão com uma mensagem neutra, até
---max-nudges vezes; o número de retomadas é registrado e é uma métrica da rodada.
   check_report.json       resultado de tools/check_run.py
+
+O harness garante o contrato da rodada: toda vez que a sessão termina, o runner roda tools/check_run.py (JSON
+final, arquivos exigidos, tools.json, reprodução byte a byte e inspeção visual das imagens geradas). Se algo
+falhou, retoma a mesma sessão com a lista exata das pendências, sem nada sobre o conteúdo da análise, até
+--max-nudges vezes ou o fim do tempo. Cada retomada fica registrada com os motivos; a conformidade na primeira
+tentativa, o número de retomadas e os motivos são métricas da rodada.
 
 O provedor (`DGX-UFSC`) está em harness/opencode/opencode.json, com URL e chave lidas do .env local.
 Como roda sob tools/py, o opencode herda o env.sh: configuração, sessões, cache e HOME ficam em
@@ -33,14 +36,19 @@ import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
+from check_run import agent_problems  # noqa: E402
 from new_run import EVAL, create_run, MODES  # noqa: E402
 
 AGENT_STEPS = 400
-# mensagem de retomada quando a sessão termina sem o JSON final; neutra quanto ao conteúdo da análise
+# mensagem de retomada quando a sessão termina sem cumprir o contrato; só aponta pendências verificáveis (arquivos,
+# reprodução, inspeção) e nada sobre o conteúdo da análise
 NUDGE = (
-    "The task is not complete yet: `{json}` does not exist. If your previous message contained a tool call "
-    "written as plain text, it was not executed. Continue from where you stopped and finish every step of the task."
+    "The task is not complete yet. An automated check of your run directory found these problems:\n\n{problems}\n\n"
+    "If your previous message contained a tool call written as plain text, it was not executed. Fix every problem "
+    "listed, keeping the analysis you already did, and finish every remaining step of the task."
 )
+# eventos do plugin contados em harness_result.json
+PLUGIN_EVENTS = {"blocked": "unlogged_action_blocks", "path_blocked": "path_blocks", "log_rejected": "log_rejections"}
 
 
 def opencode_config(provider: str, model: str, run_dir: pathlib.Path) -> dict:
@@ -103,6 +111,31 @@ def summarize(events_path: pathlib.Path) -> dict:
     return {"main_session": main_session, "child_sessions": child_sessions, "tokens_main_session": tokens, "tool_calls": tools}
 
 
+def check(run_dir: pathlib.Path) -> tuple[bool, list[tuple[str, str]], str]:
+    """Roda o verificador na rodada; devolve se passou, as pendências para o agente e a saída do verificador."""
+    proc = subprocess.run([sys.executable, str(EVAL / "tools" / "check_run.py"), str(run_dir)], capture_output=True, text=True)
+    report_path = run_dir / "check_report.json"
+    report = json.loads(report_path.read_text()) if report_path.exists() else {}
+    problems = [p for entry in report.values() for p in agent_problems(entry)]
+    if proc.returncode != 0 and not problems:  # falha que o agente não pode corrigir (log) ou pasta de análise ausente
+        problems = [] if report else [("final_json", "The analysis folder and the final JSON do not exist.")]
+    return proc.returncode == 0, problems, proc.stdout
+
+
+def plugin_counts(run_dir: pathlib.Path) -> dict:
+    counts = dict.fromkeys(PLUGIN_EVENTS.values(), 0)
+    log = run_dir / "harness_log.jsonl"
+    if log.exists():
+        for line in log.read_text(encoding="utf-8", errors="replace").splitlines():
+            try:
+                kind = json.loads(line).get("kind")
+            except json.JSONDecodeError:
+                continue
+            if kind in PLUGIN_EVENTS:
+                counts[PLUGIN_EVENTS[kind]] += 1
+    return counts
+
+
 def export_sessions(run_dir: pathlib.Path, ids: list[str]) -> None:
     out = run_dir / "sessions"
     out.mkdir(exist_ok=True)
@@ -158,29 +191,40 @@ def run_one(mode: str, model: str, image: pathlib.Path, provider: str, timeout_m
             except subprocess.TimeoutExpired:
                 attempts.append({"exit_code": None, "timed_out": True, "ended_at_s": round(time.time() - started, 1)})
                 break
-        # a sessão terminou sem o JSON final: pode ter sido uma chamada de ferramenta emitida como texto
-        # (o servidor não a converteu) ou uma parada prematura; retoma com uma mensagem neutra
-        if final_json.exists() or len(attempts) > max_nudges or time.time() >= deadline:
+        # a sessão terminou: o verificador decide se o contrato foi cumprido; se não, retoma com as pendências (a sessão
+        # pode ter parado cedo, esquecido um arquivo ou emitido uma chamada de ferramenta como texto)
+        passed, problems, _ = check(run_dir)
+        attempts[-1].update({"check_passed": passed, "problems": sorted({reason for reason, _ in problems}),
+                             "check_s": round(time.time() - started - attempts[-1]["ended_at_s"], 1)})
+        if passed or not problems or len(attempts) > max_nudges or time.time() >= deadline:
             break
-        message = NUDGE.format(json=final_json.relative_to(run_dir))
+        message = NUDGE.format(problems="\n".join(f"- {text}" for _, text in problems))
     elapsed = time.time() - started
     exit_code = attempts[-1].get("exit_code")
     timed_out = bool(attempts[-1].get("timed_out"))
 
     summary = summarize(events)
     export_sessions(run_dir, [s for s in [summary["main_session"], *summary["child_sessions"]] if s])
-    check = subprocess.run([sys.executable, str(EVAL / "tools" / "check_run.py"), str(run_dir)], capture_output=True, text=True)
+    passed, problems, check_output = check(run_dir)
+    nudged = attempts[:-1]
     result = {
         "exit_code": exit_code,
         "timed_out": timed_out,
-        "nudges": len(attempts) - 1,
+        "nudges": len(nudged),
+        # retomadas por motivo (uma retomada pode ter varios): final_json, required_file, tools_json, reproduce, inspection
+        "nudges_by_reason": {r: sum(r in a.get("problems", []) for a in nudged) for r in sorted({r for a in nudged for r in a.get("problems", [])})},
+        "contract_first_attempt": bool(attempts[0].get("check_passed")),
         "attempts": attempts,
         "final_json_written": final_json.exists(),
         "elapsed_s": round(elapsed, 1),
+        # parte do tempo de parede gasta pelo verificador entre as tentativas (reprodução em cópia limpa)
+        "checker_s": round(sum(a.get("check_s", 0) for a in attempts), 1),
         # casos rodando ao mesmo tempo no mesmo modelo: o tempo de parede so e comparavel entre rodadas de mesmo valor
         "concurrent_workers": workers,
-        "check_passed": check.returncode == 0,
-        "check_output": check.stdout[-4000:],
+        "check_passed": passed,
+        "remaining_problems": sorted({reason for reason, _ in problems}),
+        "check_output": check_output[-4000:],
+        **plugin_counts(run_dir),
         **summary,
     }
     (run_dir / "harness_result.json").write_text(json.dumps(result, indent=2, ensure_ascii=False) + "\n")
@@ -199,7 +243,7 @@ def main() -> int:
     parser.add_argument("--case-range", nargs=2, type=int, metavar=("START", "END"), help="fatia de indices [START, END) do manifest")
     parser.add_argument("--repeat", type=int, default=1)
     parser.add_argument("--timeout", type=int, default=120, help="minutos por sessão, somando as retomadas")
-    parser.add_argument("--max-nudges", type=int, default=None, help="retomadas automáticas se faltar o JSON final")
+    parser.add_argument("--max-nudges", type=int, default=None, help="retomadas automáticas enquanto o contrato não for cumprido")
     parser.add_argument("--version", default="v2", help="versão dos prompts (v1 ou v2)")
     parser.add_argument("--results-name", help="pasta da condição em results/ (padrão: v2, ou v1-runner para a v1)")
     parser.add_argument("--workers", type=int, default=1, help="casos simultâneos no mesmo modelo (registrado em harness_result.json)")
@@ -230,7 +274,7 @@ def main() -> int:
         images = args.images or sorted((EVAL / "inputs").glob("*.png"))
         results_name = args.results_name or ("v1-runner" if args.version == "v1" else None)
 
-    effective_nudges = args.max_nudges if args.max_nudges is not None else (40 if args.mode == "agents" else 5)
+    effective_nudges = args.max_nudges if args.max_nudges is not None else (40 if args.mode == "agents" else 8)
     jobs = [(image, f"{image.stem.split('-')[0]}-r{rep}") for rep in range(1, args.repeat + 1) for image in images]
 
     def run(job):

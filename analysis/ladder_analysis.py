@@ -263,6 +263,12 @@ def main() -> int:
     write_csv("consistency.csv", consistency())
     write_csv("cost.csv", cost(summary1, summary2))
     write_csv("compliance.csv", agent_table(summary1, summary2, [
+        ("first_attempt", flag("contract_first_attempt")),
+        # parcela das rodadas retomadas ao menos uma vez por cada verificacao
+        *[(f"nudged_{r}", (lambda r: lambda sel: share([num(x[f"nudges_{r}"]) > 0 if num(x[f"nudges_{r}"]) is not None else None
+                                                        for x in sel]))(r))
+          for r in ["final_json", "required_file", "tools_json", "reproduce", "inspection"]],
+        ("inspection_complete", flag("inspection_complete")), ("median_log_rejected", median_of("log_rejected_calls")),
         ("valid_json", flag("has_valid_json")), ("check_passed", flag("check_passed")),
         ("reproduce_ok", flag("reproduce_ok")), ("timed_out", flag("timed_out")),
         ("median_nudges", median_of("nudges")), ("median_log_action_ratio", median_of("log_action_ratio")),

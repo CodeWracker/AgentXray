@@ -4,7 +4,8 @@
 // dependencias instaladas em harness/opencode/node_modules. Le a configuracao
 // da rodada em <run>/harness.json. Faz tres coisas:
 //   1. oferece a ferramenta log_action, com que o agente registra cada acao no log estruturado;
-//   2. bloqueia a proxima acao de uma sessao enquanto a anterior nao for registrada (log completo por construcao);
+//   2. bloqueia a proxima acao de uma sessao enquanto a anterior nao for registrada (log completo por construcao) e
+//      recusa entradas do log com campo obrigatorio ausente ou vazio (log valido por construcao);
 //   3. grava o registro do harness: cada chamada de ferramenta, cada bloqueio e os parametros enviados ao modelo;
 //   4. bloqueia qualquer chamada que cite um caminho fora da pasta da rodada (argumentos, comandos de shell e o
 //      conteudo dos arquivos escritos), salvo /tmp, o temporario do sandbox e os caminhos so de leitura do harness.json.
@@ -60,6 +61,7 @@ function outsidePath(tool: string, args: Record<string, unknown>, cwd: string, p
 // ferramentas que nao contam como acao do protocolo: o proprio log e a lista de tarefas interna
 const EXEMPT = new Set(["log_action", "todowrite", "todoread"])
 const ACTIONS = ["view_image", "run_command", "write_file", "edit_file", "read_file", "search", "start_subagent", "final_answer"] as const
+const REQUIRED_LOG_FIELDS = ["agent", "phase", "action", "target", "purpose", "outcome"]
 
 function append(path: string, record: Record<string, unknown>) {
   mkdirSync(dirname(path), { recursive: true })
@@ -100,6 +102,17 @@ export const XrayHarness: Plugin = async ({ directory }) => {
           reason: tool.schema.string().optional().describe("why you trust them or not"),
         },
         async execute(args, context) {
+          // entrada incompleta nao entra no log: a acao continua pendente ate ser registrada com todos os campos
+          const missing = REQUIRED_LOG_FIELDS.filter((k) => typeof (args as Record<string, unknown>)[k] !== "string" || !String((args as Record<string, unknown>)[k]).trim())
+          if (!ACTIONS.includes(args.action as (typeof ACTIONS)[number]) && !missing.includes("action")) missing.push("action")
+          if (missing.length) {
+            append(harnessLog, { time: new Date().toISOString(), kind: "log_rejected", session: context.sessionID, missing })
+            throw new Error(
+              `Protocol: this log entry was not recorded because these fields are missing or empty: ${missing.join(", ")}. ` +
+                `Call log_action again with every required field (agent, phase, action, target, purpose, outcome); ` +
+                `action must be one of ${ACTIONS.join(", ")}. Your previous action is still unrecorded.`,
+            )
+          }
           const step = (steps.get(context.sessionID) ?? 0) + 1
           steps.set(context.sessionID, step)
           const covered = pending.get(context.sessionID)
