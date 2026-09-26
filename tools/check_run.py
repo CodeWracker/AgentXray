@@ -155,7 +155,8 @@ def check_reproduce(analysis: pathlib.Path, timeout: int) -> dict:
         except subprocess.TimeoutExpired:
             return {"ok": False, "error": f"timeout de {timeout}s"}
         if proc.returncode != 0:
-            return {"ok": False, "error": "reproduce.py falhou", "stderr": proc.stderr[-2000:]}
+            return {"ok": False, "error": "reproduce.py falhou", "returncode": proc.returncode,
+                    "stderr": proc.stderr[-2000:], "stdout": proc.stdout[-2000:]}
         produced = derived_outputs(clone)
 
     missing = sorted(set(expected) - set(produced))
@@ -201,9 +202,13 @@ def agent_problems(entry: dict) -> list[tuple[str, str]]:
     if rep and not rep["ok"]:
         if rep.get("error"):
             detail = rep["error"].replace("falhou", "failed").replace("timeout de", "timed out after")
-            tail = rep.get("stderr", "").strip()[-600:]
+            if "returncode" in rep:
+                detail += f" with exit code {rep['returncode']}"
+            err, out = rep.get("stderr", "").strip()[-600:], rep.get("stdout", "").strip()[-600:]
             problems.append(("reproduce", f"`scripts/reproduce.py`, run in a clean copy of the analysis folder, {detail}."
-                             + (f" Last lines of its error output:\n```\n{tail}\n```" if tail else "")))
+                             + (f" Last lines of its error output:\n```\n{err}\n```" if err else "")
+                             + (f" Last lines of its standard output:\n```\n{out}\n```" if out and not err else "")
+                             + (" It printed nothing." if not err and not out else "")))
         else:
             parts = []
             if rep["missing"]:
