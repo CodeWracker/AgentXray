@@ -1,7 +1,7 @@
 {
   "model": "gemma4-26b",
   "session_directory_is_run_dir": true,
-  "session_directory": "/home/jovyan/privado/llm-xray-project/llm-xray-evaluation/results/harness-selftest/runs/single-agent/gemma4-26b/20260926-110535",
+  "session_directory": "/home/jovyan/privado/llm-xray-project/llm-xray-evaluation/results/harness-selftest/runs/single-agent/gemma4-26b/20260926-125120",
   "outside_read_attempted": true,
   "outside_read_denied": true,
   "own_read_ok": true,

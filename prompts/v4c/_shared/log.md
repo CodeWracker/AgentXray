@@ -8,7 +8,7 @@ Fields of `log_action`:
 
 * `agent`: your name (`main` in single-agent runs, `ORCHESTRATOR` for the orchestrator of a council, and the persistent name you were given, such as `Agent_03`, for a sub-agent)
 * `phase`: short name of the stage of the workflow you are in (for example `first_look`, `analysis`, `inspection`, `synthesis`, `final`)
-* `action`: one of `view_image`, `run_command`, `write_file`, `edit_file`, `read_file`, `search`, `start_subagent`, `final_answer`
+* `action`: one of `view_image`, `run_command`, `write_file`, `edit_file`, `read_file`, `search`, `start_subagent`, `final_answer` (the kind of action, not the tool name: the `read` tool on an image is `view_image` and on any other file `read_file`, `bash` is `run_command`, `write` is `write_file`, `edit` is `edit_file`, `glob`, `grep` and `list` are `search`, and `task` is `start_subagent`)
 * `target`: the file, script, command or agent the action was applied to
 * `purpose`: the question this action was meant to answer
 * `outcome`: what you actually saw, measured or produced, in one or two sentences

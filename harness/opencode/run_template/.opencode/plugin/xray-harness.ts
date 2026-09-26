@@ -104,13 +104,21 @@ export const XrayHarness: Plugin = async ({ directory }) => {
         async execute(args, context) {
           // entrada incompleta nao entra no log: a acao continua pendente ate ser registrada com todos os campos
           const missing = REQUIRED_LOG_FIELDS.filter((k) => typeof (args as Record<string, unknown>)[k] !== "string" || !String((args as Record<string, unknown>)[k]).trim())
-          if (!ACTIONS.includes(args.action as (typeof ACTIONS)[number]) && !missing.includes("action")) missing.push("action")
-          if (missing.length) {
-            append(harnessLog, { time: new Date().toISOString(), kind: "log_rejected", session: context.sessionID, missing })
+          const badAction = !missing.includes("action") && !ACTIONS.includes(args.action as (typeof ACTIONS)[number])
+          if (missing.length || badAction) {
+            append(harnessLog, { time: new Date().toISOString(), kind: "log_rejected", session: context.sessionID, missing,
+                                 invalid_action: badAction ? String(args.action).slice(0, 80) : null })
+            const problems = [
+              ...(missing.length ? [`these fields are missing or empty: ${missing.join(", ")}`] : []),
+              ...(badAction ? [`action ${JSON.stringify(String(args.action).slice(0, 80))} is not an allowed value`] : []),
+            ]
             throw new Error(
-              `Protocol: this log entry was not recorded because these fields are missing or empty: ${missing.join(", ")}. ` +
-                `Call log_action again with every required field (agent, phase, action, target, purpose, outcome); ` +
-                `action must be one of ${ACTIONS.join(", ")}. Your previous action is still unrecorded.`,
+              `Protocol: this log entry was not recorded because ${problems.join("; ")}. ` +
+                `Call log_action again with every required field (agent, phase, action, target, purpose, outcome). ` +
+                `action is the kind of action, not the tool name, and must be exactly one of: ${ACTIONS.join(", ")} ` +
+                `(read tool on an image: view_image; read tool on another file: read_file; bash: run_command; ` +
+                `write: write_file; edit: edit_file; glob, grep or list: search; task: start_subagent). ` +
+                `Your previous action is still unrecorded.`,
             )
           }
           const step = (steps.get(context.sessionID) ?? 0) + 1
