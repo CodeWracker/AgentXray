@@ -153,14 +153,11 @@ def run_one(mode: str, model: str, image: pathlib.Path, provider: str, timeout_m
     dest_mode_dir = EVAL / "results" / (results_name or version) / MODES[mode] / model
     if dest_mode_dir.exists():
         for existing in dest_mode_dir.glob(f"*-{label}"):
+            # toda rodada concluida conta, inclusive as que falharam ou estouraram o tempo: refazer so as falhas
+            # daria ao modelo novas chances nos casos dificeis e enviesaria o resultado
             if (existing / "harness_result.json").exists():
-                try:
-                    h_info = json.loads((existing / "harness_result.json").read_text(encoding="utf-8"))
-                    if h_info.get("check_passed") or h_info.get("final_json_written"):
-                        print(f"[{time.strftime('%H:%M:%S')}] Pula {image.name}: rodada ja concluida em {existing.name}", flush=True)
-                        return existing
-                except Exception:
-                    pass
+                print(f"[{time.strftime('%H:%M:%S')}] Pula {image.name}: rodada ja concluida em {existing.name}", flush=True)
+                return existing
 
     run_dir = create_run(mode, model, [image], version=version, harness="opencode", label=label,
                          results_name=results_name)
