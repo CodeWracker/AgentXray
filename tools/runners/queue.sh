@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Fila completa de um modelo: condicao aberta (v4), degraus da escada e condicao fechada (v4c), em serie.
+# Fila completa de um modelo: zero-shot, agentes unicos (aberto, fechado e repeticoes) e depois conselhos, em serie.
 # Dentro de cada condicao do opencode, varios casos rodam ao mesmo tempo no mesmo motor: WORKERS_SINGLE para o
 # agente unico e WORKERS_COUNCIL para o conselho (cada conselho ja faz varias requisicoes simultaneas). O numero
 # fica registrado em cada harness_result.json. Os valores padrao sao os mesmos para os tres modelos, para o tempo
@@ -37,15 +37,16 @@ for clf in $CLASSIFIERS; do
         $PY llm-xray-evaluation/tools/run_zeroshot.py --version $version --classifier $clf --model "$MODEL" --manifest $EXP1
     done
 done
+# agentes unicos primeiro (decisao do usuario em 2026-09-27), conselhos depois
 step "3/9 agente unico aberto Exp 1";  single v4 $EXP1
 step "4/9 agente unico aberto Exp 2";  single v4 $EXP2
-step "5/9 conselho aberto Exp 1";      council v4 $EXP1
-step "6/9 conselho aberto Exp 2";      council v4 $EXP2
-step "7/9 agente unico fechado Exp 1 e 2"
+step "5/9 agente unico fechado Exp 1 e 2"
 single v4c $EXP1
 single v4c $EXP2
-step "8/9 repeticoes r2 e r3 do agente unico aberto Exp 1 (consistencia)"
+step "6/9 repeticoes r2 e r3 do agente unico aberto Exp 1 (consistencia)"
 single v4 $EXP1 --repeat 3
+step "7/9 conselho aberto Exp 1";      council v4 $EXP1
+step "8/9 conselho aberto Exp 2";      council v4 $EXP2
 step "9/9 conselho fechado Exp 1 e 2"
 council v4c $EXP1
 council v4c $EXP2
