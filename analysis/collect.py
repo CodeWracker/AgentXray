@@ -362,6 +362,9 @@ def collect_one(analysis_dir: pathlib.Path, results_root: pathlib.Path) -> dict 
         "contract_first_attempt": harness.get("contract_first_attempt", ""),
         **{f"nudges_{r}": by_reason.get(r, 0) if enforced else "" for r in NUDGE_REASONS},
         "remaining_problems": ";".join(harness.get("remaining_problems", [])),
+        # parada antecipada pelo runner: refusal_loop, stalled, startup_hang ou timed_out
+        "early_stop": harness.get("early_stop", ""),
+        "startup_restarts": harness.get("startup_restarts", ""),
         "checker_s": harness.get("checker_s", ""),
         "tokens_input": tokens_all.get("input", 0),
         "tokens_output": tokens_all.get("output", 0),

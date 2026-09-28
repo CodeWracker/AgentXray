@@ -30,6 +30,8 @@ import argparse
 import json
 import os
 import pathlib
+import shutil
+import signal
 import subprocess
 import sys
 import time
@@ -47,6 +49,14 @@ NUDGE = (
     "If your previous message contained a tool call written as plain text, it was not executed. Fix every problem "
     "listed, keeping the analysis you already did, and finish every remaining step of the task."
 )
+# paradas antecipadas: uma sessao sem nenhuma requisicao ao modelo nesse tempo travou na inicializacao e e reiniciada
+# (nao conta como tentativa do modelo); recusas seguidas do plugin sem nenhuma acao aceita entre elas encerram a sessao
+# (laco de recusas); as mesmas pendencias em tantas tentativas seguidas encerram as retomadas (pendencia estagnada)
+STARTUP_TIMEOUT_S = 600
+STARTUP_RETRIES = 3
+REFUSAL_LOOP = 30
+STALL_ATTEMPTS = 3
+REFUSALS = {"blocked", "log_rejected", "path_blocked"}
 # eventos do plugin contados em harness_result.json
 PLUGIN_EVENTS = {"blocked": "unlogged_action_blocks", "path_blocked": "path_blocks", "log_rejected": "log_rejections"}
 
@@ -136,16 +146,69 @@ def plugin_counts(run_dir: pathlib.Path) -> dict:
     return counts
 
 
-def export_sessions(run_dir: pathlib.Path, ids: list[str]) -> None:
+def export_sessions(run_dir: pathlib.Path, ids: list[str], env: dict | None = None) -> bool:
     out = run_dir / "sessions"
     out.mkdir(exist_ok=True)
+    ok = True
     for sid in ids:
         # direto para arquivo: por pipe, o opencode encerra antes de esvaziar a saída e o JSON sai truncado
         target = out / f"{sid}.json"
         with open(target, "w") as f:
-            proc = subprocess.run(["opencode", "export", sid], stdout=f, stderr=subprocess.DEVNULL)
+            proc = subprocess.run(["opencode", "export", sid], stdout=f, stderr=subprocess.DEVNULL, env=env)
         if proc.returncode != 0:
             target.unlink()
+            ok = False
+    return ok
+
+
+def harness_events(run_dir: pathlib.Path, offset: int) -> tuple[list[str], int]:
+    """Tipos dos eventos novos no registro do plugin desde o byte offset; devolve também o novo offset."""
+    log = run_dir / "harness_log.jsonl"
+    if not log.exists():
+        return [], offset
+    with open(log, "rb") as f:
+        f.seek(offset)
+        data = f.read()
+    end = data.rfind(b"\n") + 1  # só linhas completas
+    kinds = []
+    for line in data[:end].splitlines():
+        try:
+            kinds.append(json.loads(line).get("kind"))
+        except json.JSONDecodeError:
+            continue
+    return kinds, offset + end
+
+
+def run_attempt(cmd: list[str], run_dir: pathlib.Path, env: dict, events: pathlib.Path, deadline: float) -> dict:
+    """Uma sessão do opencode, vigiada: prazo total, travamento na inicialização e laço de recusas do plugin."""
+    log = run_dir / "harness_log.jsonl"
+    offset = log.stat().st_size if log.exists() else 0
+    begin, requests, streak = time.time(), 0, 0
+    with open(events, "a") as out, open(run_dir / "opencode_stderr.log", "a") as err:
+        # grupo de processos próprio: ao encerrar, nenhum filho do opencode fica para trás
+        proc = subprocess.Popen(cmd, cwd=run_dir, env=env, stdin=subprocess.DEVNULL, stdout=out, stderr=err,
+                                start_new_session=True)
+        stop = None
+        while proc.poll() is None:
+            time.sleep(5)
+            kinds, offset = harness_events(run_dir, offset)
+            for kind in kinds:
+                requests += kind == "chat_params"
+                streak = streak + 1 if kind in REFUSALS else (0 if kind == "tool_start" else streak)
+            if time.time() >= deadline:
+                stop = "timed_out"
+            elif not requests and time.time() - begin > STARTUP_TIMEOUT_S:
+                stop = "startup_hang"
+            elif streak >= REFUSAL_LOOP:
+                stop = "refusal_loop"
+            if stop:
+                try:
+                    os.killpg(proc.pid, signal.SIGKILL)
+                except ProcessLookupError:
+                    pass
+                proc.wait()
+                break
+    return {"exit_code": None if stop else proc.returncode, "stopped": stop, "model_requests": requests}
 
 
 def run_one(mode: str, model: str, image: pathlib.Path, provider: str, timeout_min: int, label: str,
@@ -171,29 +234,42 @@ def run_one(mode: str, model: str, image: pathlib.Path, provider: str, timeout_m
     started = time.time()
     deadline = started + timeout_min * 60
     attempts = []
+    startup_restarts = 0
     message = prompt
+    # banco do opencode próprio da rodada: com um banco comum, sessões abertas ao mesmo tempo disputam a trava e
+    # algumas travam na inicialização; as sessões são exportadas para a rodada e o banco é apagado no fim
+    data_home = pathlib.Path(os.environ["SANDBOX"]) / "opencode" / "runs" / model / run_dir.name
+    data_home.mkdir(parents=True, exist_ok=True)
+    # o opencode usa o PWD herdado, não o cwd do processo: sem isso a sessão abre no diretório do runner e o
+    # opencode.json da rodada (subagente, permissões) não é carregado
+    env = {**os.environ, "PWD": str(run_dir), "XDG_DATA_HOME": str(data_home)}
     while True:
         cmd = ["opencode", "run", "--model", f"{provider}/{model}", "--format", "json", "--auto", "--dir", str(run_dir)]
         session = summarize(events)["main_session"] if events.exists() else None
         cmd += ["--session", session] if session else ["--title", run_dir.name]
-        with open(events, "a") as out, open(run_dir / "opencode_stderr.log", "a") as err:
-            try:
-                # o opencode usa o PWD herdado, não o cwd do processo: sem isso a sessão abre no diretório
-                # do runner e o opencode.json da rodada (subagente, permissões) não é carregado
-                # sem stdin: o opencode run le a entrada padrao quando ela nao e um terminal e esperaria para sempre
-                proc = subprocess.run([*cmd, message], cwd=run_dir, env={**os.environ, "PWD": str(run_dir)},
-                                      stdin=subprocess.DEVNULL, stdout=out, stderr=err,
-                                      timeout=max(deadline - time.time(), 1))
-                attempts.append({"exit_code": proc.returncode, "ended_at_s": round(time.time() - started, 1)})
-            except subprocess.TimeoutExpired:
-                attempts.append({"exit_code": None, "timed_out": True, "ended_at_s": round(time.time() - started, 1)})
-                break
+        attempt = run_attempt([*cmd, message], run_dir, env, events, deadline)
+        if attempt["stopped"] == "startup_hang" and startup_restarts < STARTUP_RETRIES:
+            # travou antes da primeira requisição ao modelo: falha de infraestrutura, a mesma mensagem é reenviada
+            startup_restarts += 1
+            print(f"    reinicio: sessao sem requisicao ao modelo em {STARTUP_TIMEOUT_S}s", flush=True)
+            continue
+        attempt["ended_at_s"] = round(time.time() - started, 1)
+        if attempt["stopped"] == "timed_out":
+            attempt["timed_out"] = True
+        attempts.append(attempt)
+        if attempt["stopped"] in ("timed_out", "startup_hang"):
+            break
         # a sessão terminou: o verificador decide se o contrato foi cumprido; se não, retoma com as pendências (a sessão
         # pode ter parado cedo, esquecido um arquivo ou emitido uma chamada de ferramenta como texto)
         passed, problems, _ = check(run_dir)
         attempts[-1].update({"check_passed": passed, "problems": sorted({reason for reason, _ in problems}),
+                             "problem_texts": [text[:300] for _, text in problems],
                              "check_s": round(time.time() - started - attempts[-1]["ended_at_s"], 1)})
-        if passed or not problems or len(attempts) > max_nudges or time.time() >= deadline:
+        if passed or not problems or attempt["stopped"] == "refusal_loop" or len(attempts) > max_nudges or time.time() >= deadline:
+            break
+        recent = [a.get("problem_texts") for a in attempts[-STALL_ATTEMPTS:]]
+        if len(recent) == STALL_ATTEMPTS and all(r == recent[0] for r in recent):
+            attempts[-1]["stopped"] = "stalled"
             break
         message = NUDGE.format(problems="\n".join(f"- {text}" for _, text in problems))
     elapsed = time.time() - started
@@ -201,7 +277,8 @@ def run_one(mode: str, model: str, image: pathlib.Path, provider: str, timeout_m
     timed_out = bool(attempts[-1].get("timed_out"))
 
     summary = summarize(events)
-    export_sessions(run_dir, [s for s in [summary["main_session"], *summary["child_sessions"]] if s])
+    if export_sessions(run_dir, [s for s in [summary["main_session"], *summary["child_sessions"]] if s], env):
+        shutil.rmtree(data_home, ignore_errors=True)
     passed, problems, check_output = check(run_dir)
     nudged = attempts[:-1]
     result = {
@@ -211,6 +288,9 @@ def run_one(mode: str, model: str, image: pathlib.Path, provider: str, timeout_m
         # retomadas por motivo (uma retomada pode ter varios): final_json, required_file, tools_json, reproduce, inspection
         "nudges_by_reason": {r: sum(r in a.get("problems", []) for a in nudged) for r in sorted({r for a in nudged for r in a.get("problems", [])})},
         "contract_first_attempt": bool(attempts[0].get("check_passed")),
+        # parada antecipada da ultima tentativa: refusal_loop, stalled, startup_hang ou timed_out (vazio se terminou sozinha)
+        "early_stop": attempts[-1].get("stopped") or "",
+        "startup_restarts": startup_restarts,
         "attempts": attempts,
         "final_json_written": final_json.exists(),
         "elapsed_s": round(elapsed, 1),
