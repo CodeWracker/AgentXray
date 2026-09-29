@@ -27,6 +27,7 @@ Como roda sob tools/py, o opencode herda o env.sh: configuração, sessões, cac
 """
 
 import argparse
+import fcntl
 import json
 import os
 import pathlib
@@ -54,6 +55,9 @@ NUDGE = (
 # (laco de recusas); as mesmas pendencias em tantas tentativas seguidas encerram as retomadas (pendencia estagnada)
 STARTUP_TIMEOUT_S = 600
 STARTUP_RETRIES = 3
+# muitas sessoes do opencode inicializando ao mesmo tempo travam (maquina carregada): no maximo tantas inicializacoes
+# simultaneas em toda a maquina, do inicio do processo ate a primeira requisicao ao modelo
+STARTUP_SLOTS = 4
 REFUSAL_LOOP = 30
 STALL_ATTEMPTS = 3
 REFUSALS = {"blocked", "log_rejected", "path_blocked"}
@@ -179,10 +183,26 @@ def harness_events(run_dir: pathlib.Path, offset: int) -> tuple[list[str], int]:
     return kinds, offset + end
 
 
+def startup_slot():
+    """Trava uma das vagas de inicializacao (arquivos em .sandbox/startup-slots, compartilhados entre processos)."""
+    slots = pathlib.Path(os.environ["SANDBOX"]) / "startup-slots"
+    slots.mkdir(parents=True, exist_ok=True)
+    while True:
+        for i in range(STARTUP_SLOTS):
+            f = open(slots / f"slot{i}", "w")
+            try:
+                fcntl.flock(f, fcntl.LOCK_EX | fcntl.LOCK_NB)
+                return f
+            except BlockingIOError:
+                f.close()
+        time.sleep(3)
+
+
 def run_attempt(cmd: list[str], run_dir: pathlib.Path, env: dict, events: pathlib.Path, deadline: float) -> dict:
     """Uma sessão do opencode, vigiada: prazo total, travamento na inicialização e laço de recusas do plugin."""
     log = run_dir / "harness_log.jsonl"
     offset = log.stat().st_size if log.exists() else 0
+    slot = startup_slot()
     begin, requests, streak = time.time(), 0, 0
     with open(events, "a") as out, open(run_dir / "opencode_stderr.log", "a") as err:
         # grupo de processos próprio: ao encerrar, nenhum filho do opencode fica para trás
@@ -195,6 +215,9 @@ def run_attempt(cmd: list[str], run_dir: pathlib.Path, env: dict, events: pathli
             for kind in kinds:
                 requests += kind == "chat_params"
                 streak = streak + 1 if kind in REFUSALS else (0 if kind == "tool_start" else streak)
+            if requests and slot:
+                slot.close()  # a sessao ja conversa com o modelo: libera a vaga de inicializacao
+                slot = None
             if time.time() >= deadline:
                 stop = "timed_out"
             elif not requests and time.time() - begin > STARTUP_TIMEOUT_S:
@@ -208,11 +231,13 @@ def run_attempt(cmd: list[str], run_dir: pathlib.Path, env: dict, events: pathli
                     pass
                 proc.wait()
                 break
+    if slot:
+        slot.close()
     return {"exit_code": None if stop else proc.returncode, "stopped": stop, "model_requests": requests}
 
 
 def run_one(mode: str, model: str, image: pathlib.Path, provider: str, timeout_min: int, label: str,
-            max_nudges: int, version: str = "v2", results_name: str | None = None, workers: int = 1) -> pathlib.Path:
+            max_nudges: int, version: str = "v2", results_name: str | None = None, workers: int = 1) -> pathlib.Path | None:
     dest_mode_dir = EVAL / "results" / (results_name or version) / MODES[mode] / model
     if dest_mode_dir.exists():
         for existing in dest_mode_dir.glob(f"*-{label}"):
@@ -260,11 +285,21 @@ def run_one(mode: str, model: str, image: pathlib.Path, provider: str, timeout_m
             startup_restarts += 1
             print(f"    reinicio: sessao sem requisicao ao modelo em {STARTUP_TIMEOUT_S}s", flush=True)
             continue
+        if attempt["stopped"] == "startup_hang":
+            # a sessao (primeira ou retomada) nunca chegou ao modelo: falha de infraestrutura, nao do modelo. A rodada fica sem
+            # harness_result.json, e a fila a refaz ao ser religada
+            print(f"    INFRA: sessao travou na inicializacao {STARTUP_RETRIES + 1} vezes; rodada nao conta e sera refeita", flush=True)
+            (run_dir / "infra_failure.json").write_text(json.dumps({"reason": "startup_hang", "restarts": startup_restarts}) + "\n")
+            dest = EVAL / "results" / "descartadas-infra" / run_dir.relative_to(EVAL / "results")
+            dest.parent.mkdir(parents=True, exist_ok=True)
+            shutil.move(str(run_dir), dest)
+            shutil.rmtree(data_home, ignore_errors=True)
+            return None
         attempt["ended_at_s"] = round(time.time() - started, 1)
         if attempt["stopped"] == "timed_out":
             attempt["timed_out"] = True
         attempts.append(attempt)
-        if attempt["stopped"] in ("timed_out", "startup_hang"):
+        if attempt["stopped"] == "timed_out":
             break
         # a sessão terminou: o verificador decide se o contrato foi cumprido; se não, retoma com as pendências (a sessão
         # pode ter parado cedo, esquecido um arquivo ou emitido uma chamada de ferramenta como texto)
@@ -363,8 +398,14 @@ def main() -> int:
 
     def run(job):
         image, label = job
-        return run_one(args.mode, args.model, image.resolve(), args.provider, args.timeout, label, effective_nudges,
-                       args.version, results_name, args.workers)
+        # falha de infraestrutura (sessao que nunca chegou ao modelo): o caso e refeito do zero, ate 3 vezes
+        for _ in range(3):
+            done = run_one(args.mode, args.model, image.resolve(), args.provider, args.timeout, label, effective_nudges,
+                           args.version, results_name, args.workers)
+            if done:
+                return done
+            time.sleep(120)
+        print(f"[{time.strftime('%H:%M:%S')}] INFRA: {label} desistiu depois de 3 falhas de infraestrutura", flush=True)
 
     # cada caso roda em processos opencode próprios; as threads só esperam por eles
     with ThreadPoolExecutor(max_workers=max(args.workers, 1)) as pool:
