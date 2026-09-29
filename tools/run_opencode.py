@@ -222,6 +222,13 @@ def run_one(mode: str, model: str, image: pathlib.Path, provider: str, timeout_m
                 print(f"[{time.strftime('%H:%M:%S')}] Pula {image.name}: rodada ja concluida em {existing.name}", flush=True)
                 return existing
 
+    # pausa coordenada com o servidor (por exemplo, para trocar a configuracao do modelo): nenhum caso novo comeca
+    # enquanto existir .sandbox/pause/<modelo>; os casos em andamento terminam normalmente
+    pause = pathlib.Path(os.environ["SANDBOX"]) / "pause" / model
+    if pause.exists():
+        print(f"[{time.strftime('%H:%M:%S')}] pausa: {image.name} espera {pause}", flush=True)
+        while pause.exists():
+            time.sleep(30)
     run_dir = create_run(mode, model, [image], version=version, harness="opencode", label=label,
                          results_name=results_name)
     if not (run_dir / "opencode.json").exists():  # na v4 o new_run ja escreveu o harness completo da rodada
