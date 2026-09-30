@@ -53,8 +53,8 @@ NUDGE = (
 # paradas antecipadas: uma sessao sem nenhuma requisicao ao modelo nesse tempo travou na inicializacao e e reiniciada
 # (nao conta como tentativa do modelo); recusas seguidas do plugin sem nenhuma acao aceita entre elas encerram a sessao
 # (laco de recusas); as mesmas pendencias em tantas tentativas seguidas encerram as retomadas (pendencia estagnada)
-STARTUP_TIMEOUT_S = 600
-STARTUP_RETRIES = 3
+STARTUP_TIMEOUT_S = 60  # uma inicializacao saudavel faz a primeira requisicao em ate 5 s (p99 4,7 s em 247 casos)
+STARTUP_RETRIES = 5
 # muitas sessoes do opencode inicializando ao mesmo tempo travam (maquina carregada): no maximo tantas inicializacoes
 # simultaneas em toda a maquina, do inicio do processo ate a primeira requisicao ao modelo
 STARTUP_SLOTS = 4
