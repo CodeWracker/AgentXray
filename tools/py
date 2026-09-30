@@ -8,6 +8,13 @@ if [ "${XRAY_ONLINE:-0}" != 1 ]; then
     export HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1 YOLO_OFFLINE=1
 fi
 export PYTHONHASHSEED=0
+# a avaliacao e so em CPU: GPUs invisiveis (sao dos servidores dos modelos e de outros usuarios), e cada processo com
+# poucos threads. Sem limite, cada script dos agentes abria um thread por nucleo (224), dezenas de agentes saturavam a
+# maquina e o vLLM ficava sem CPU para alimentar as GPUs
+export CUDA_VISIBLE_DEVICES=""
+XRAY_THREADS="${XRAY_THREADS:-8}"
+export OMP_NUM_THREADS="$XRAY_THREADS" MKL_NUM_THREADS="$XRAY_THREADS" OPENBLAS_NUM_THREADS="$XRAY_THREADS" \
+    NUMEXPR_NUM_THREADS="$XRAY_THREADS" VECLIB_MAXIMUM_THREADS="$XRAY_THREADS"
 export CUBLAS_WORKSPACE_CONFIG=:4096:8
 UV="$(command -v uv)"
 # HOME só muda para o processo Python: qualquer biblioteca que grave em ~ grava no sandbox
