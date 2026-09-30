@@ -1,0 +1,123 @@
+[
+  {
+    "image": "00022416_019.png",
+    "finding_labels": [
+      "Atelectasis",
+      "Consolidation",
+      "Effusion",
+      "Infiltration"
+    ],
+    "view_position": "AP",
+    "patient_id": "22416",
+    "patient_age": "51",
+    "patient_gender": "M"
+  },
+  {
+    "image": "00006304_004.png",
+    "finding_labels": [
+      "Atelectasis",
+      "Cardiomegaly"
+    ],
+    "view_position": "AP",
+    "patient_id": "6304",
+    "patient_age": "66",
+    "patient_gender": "F"
+  },
+  {
+    "image": "00001075_047.png",
+    "finding_labels": [
+      "Atelectasis",
+      "Cardiomegaly"
+    ],
+    "view_position": "PA",
+    "patient_id": "1075",
+    "patient_age": "59",
+    "patient_gender": "F"
+  },
+  {
+    "image": "00013249_045.png",
+    "finding_labels": [
+      "Cardiomegaly",
+      "Infiltration"
+    ],
+    "view_position": "AP",
+    "patient_id": "13249",
+    "patient_age": "14",
+    "patient_gender": "M"
+  },
+  {
+    "image": "00029588_004.png",
+    "finding_labels": [
+      "Cardiomegaly",
+      "Consolidation",
+      "Effusion"
+    ],
+    "view_position": "AP",
+    "patient_id": "29588",
+    "patient_age": "46",
+    "patient_gender": "M"
+  },
+  {
+    "image": "00003072_028.png",
+    "finding_labels": [
+      "Effusion",
+      "Emphysema",
+      "Fibrosis",
+      "Nodule",
+      "Pneumothorax"
+    ],
+    "view_position": "PA",
+    "patient_id": "3072",
+    "patient_age": "51",
+    "patient_gender": "M"
+  },
+  {
+    "image": "00013659_029.png",
+    "finding_labels": [
+      "Fibrosis",
+      "Infiltration",
+      "Pleural_Thickening"
+    ],
+    "view_position": "AP",
+    "patient_id": "13659",
+    "patient_age": "64",
+    "patient_gender": "F"
+  },
+  {
+    "image": "00021463_005.png",
+    "finding_labels": [
+      "Atelectasis",
+      "Edema",
+      "Effusion",
+      "Hernia",
+      "Infiltration"
+    ],
+    "view_position": "AP",
+    "patient_id": "21463",
+    "patient_age": "63",
+    "patient_gender": "F"
+  },
+  {
+    "image": "00013648_018.png",
+    "finding_labels": [
+      "No Finding"
+    ],
+    "view_position": "PA",
+    "patient_id": "13648",
+    "patient_age": "33",
+    "patient_gender": "M"
+  },
+  {
+    "image": "00014731_016.png",
+    "finding_labels": [
+      "Emphysema",
+      "Mass",
+      "Pneumonia",
+      "Pneumothorax"
+    ],
+    "view_position": "PA",
+    "patient_id": "14731",
+    "patient_age": "54",
+    "patient_gender": "M"
+  }
+]
