@@ -3,7 +3,7 @@ gemma4-26b:zeroshot,0,0,0,40
 gemma4-26b:clf_all,0,0,0,22
 gemma4-26b:clf_pc,0,0,0,25
 gemma4-26b:single,0,0,0,26
-gemma4-26b:council,0,0,0,5
+gemma4-26b:council,0,0,0,17
 qwen3.6-27b:zeroshot,0,0,0,27
 qwen3.6-27b:clf_all,0,0,0,17
 qwen3.6-27b:clf_pc,0,0,0,19
@@ -13,3 +13,4 @@ qwen3.8-27b:zeroshot,0,0,0,20
 qwen3.8-27b:clf_all,0,0,0,7
 qwen3.8-27b:clf_pc,0,0,0,5
 qwen3.8-27b:single,0,0,0,18
+gemma4-26b:council:closed,0,0,0,1

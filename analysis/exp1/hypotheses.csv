@@ -1641,9 +1641,60 @@ gemma4-26b:council,00003803_002.png,3,Atelectasis,Atelectasis,,incorrect
 gemma4-26b:council,00003072_028.png,1,Large pleural effusion,Effusion,,correct
 gemma4-26b:council,00003072_028.png,2,"Right lower lobe consolidation (e.g., pneumonia)",Consolidation|Pneumonia,,incorrect
 gemma4-26b:council,00003072_028.png,3,Atelectasis with associated effusion,Atelectasis|Effusion,,correct
+gemma4-26b:council,00008911_026.png,1,Right-sided pleural effusion or consolidation,Effusion|Consolidation,,incorrect
+gemma4-26b:council,00008911_026.png,2,Right-sided pneumothorax with associated subcutaneous emphysema,Pneumothorax|Emphysema,,correct
+gemma4-26b:council,00008911_026.png,3,Traumatic injury with rib fracture and subcutaneous emphysema,Emphysema,,correct
 gemma4-26b:council,00005089_007.png,1,Large left pleural effusion,Effusion,,incorrect
 gemma4-26b:council,00005089_007.png,2,"Pulmonary consolidation (e.g., pneumonia)",Consolidation|Pneumonia,,incorrect
 gemma4-26b:council,00005089_007.png,3,Atelectasis secondary to underlying mass or lesion,Atelectasis|Mass,,incorrect
+gemma4-26b:council,00013659_029.png,1,Large pleural effusion,Effusion,,incorrect
+gemma4-26b:council,00013659_029.png,2,Massive consolidation,Consolidation,,incorrect
+gemma4-26b:council,00013659_029.png,3,Multifocal pneumonia with effusion,Pneumonia|Effusion,,incorrect
+gemma4-26b:council,00000003_004.png,1,Post-surgical state (based on visible metallic clips),,,oov
+gemma4-26b:council,00000003_004.png,2,Atelectasis (secondary to low lung volumes),Atelectasis,,incorrect
+gemma4-26b:council,00000003_004.png,3,Mild emphysema (supported by DenseNet score),Emphysema,,incorrect
+gemma4-26b:council,00010120_019.png,1,Normal / No acute finding,No Finding,,incorrect
+gemma4-26b:council,00010120_019.png,2,Subtle interstitial lung disease (less likely),,,oov
+gemma4-26b:council,00010120_019.png,3,Early pulmonary congestion (less likely),,,oov
+gemma4-26b:council,00029159_015.png,1,Pulmonary edema,Edema,,incorrect
+gemma4-26b:council,00029159_015.png,2,Multifocal pneumonia,Pneumonia,,incorrect
+gemma4-26b:council,00029159_015.png,3,Atelectasis,Atelectasis,,incorrect
+gemma4-26b:council,00026194_000.png,1,Pulmonary infiltration or consolidation,Infiltration|Consolidation,,correct
+gemma4-26b:council,00026194_000.png,2,Pleural effusion,Effusion,,incorrect
+gemma4-26b:council,00026194_000.png,3,Atelectasis,Atelectasis,,incorrect
+gemma4-26b:council,00017403_002.png,1,Left-sided consolidation or pleural effusion,Consolidation|Effusion,,incorrect
+gemma4-26b:council,00017403_002.png,2,Atelectasis,Atelectasis,,correct
+gemma4-26b:council,00017403_002.png,3,Hilar lymphadenopathy or pulmonary edema,Edema,,incorrect
+gemma4-26b:council,00014822_025.png,1,Pulmonary edema,Edema,,incorrect
+gemma4-26b:council,00014822_025.png,2,Pneumonia,Pneumonia,,incorrect
+gemma4-26b:council,00014822_025.png,3,Atelectasis,Atelectasis,,incorrect
+gemma4-26b:council,00013648_018.png,1,Normal / No acute finding,No Finding,,correct
+gemma4-26b:council,00013648_018.png,2,Port-a-cath malposition,,,oov
+gemma4-26b:council,00013648_018.png,3,Subtle pulmonary opacity,,,oov
+gemma4-26b:council,00013670_049.png,1,Pneumonia,Pneumonia,,incorrect
+gemma4-26b:council,00013670_049.png,2,Pulmonary edema,Edema,,incorrect
+gemma4-26b:council,00013670_049.png,3,Atelectasis,Atelectasis,,incorrect
+gemma4-26b:council,00000733_000.png,1,Normal chest radiograph,No Finding,,incorrect
+gemma4-26b:council,00000733_000.png,2,Subtle interstitial lung disease (unlikely given BiomedCLIP and visual inspection),,,oov
+gemma4-26b:council,00000733_000.png,3,Subtle hilar lymphadenopathy (uncertainty noted due to rotation and segmentation failure),,,oov
+gemma4-26b:council,00029159_003.png,1,Pneumoperitoneum,,,oov
+gemma4-26b:council,00029159_003.png,2,Chilaiditi syndrome,,,oov
+gemma4-26b:council,00029159_003.png,3,Normal / No acute finding,No Finding,,incorrect
+gemma4-26b:council,00010007_062.png,1,Pulmonary edema and cardiomegaly,Edema|Cardiomegaly,,incorrect
+gemma4-26b:council,00010007_062.png,2,Bilateral pneumonia,Pneumonia,,incorrect
+gemma4-26b:council,00010007_062.png,3,Pleural effusion,Effusion,,correct
+gemma4-26b:council,00018253_048.png,1,Pneumonia with parapneumonic effusion,Pneumonia|Effusion,,correct
+gemma4-26b:council,00018253_048.png,2,Isolated pleural effusion,Effusion,,correct
+gemma4-26b:council,00018253_048.png,3,Pure parenchymal consolidation,Consolidation,,incorrect
+gemma4-26b:council,00014731_016.png,1,Metastatic disease,,,oov
+gemma4-26b:council,00014731_016.png,2,Granulomatous disease,,,oov
+gemma4-26b:council,00014731_016.png,3,Infection,,,oov
+gemma4-26b:council,00011237_112.png,1,Pneumonia,Pneumonia,,correct
+gemma4-26b:council,00011237_112.png,2,Pulmonary edema,Edema,,correct
+gemma4-26b:council,00011237_112.png,3,Atelectasis,Atelectasis,,incorrect
+gemma4-26b:council,00007750_008.png,1,Pleural effusion,Effusion,,correct
+gemma4-26b:council,00007750_008.png,2,Consolidation,Consolidation,,incorrect
+gemma4-26b:council,00007750_008.png,3,Combined pleural effusion and consolidation,Effusion|Consolidation,,correct
 qwen3.6-27b:zeroshot,00022416_019.png,1,Pulmonary Edema (Cardiogenic),Edema,,incorrect
 qwen3.6-27b:zeroshot,00022416_019.png,2,Acute Respiratory Distress Syndrome (ARDS),,,oov
 qwen3.6-27b:zeroshot,00022416_019.png,3,Bilateral Pneumonia,Pneumonia,,incorrect
@@ -2857,6 +2908,33 @@ qwen3.8-27b:council,00022416_019.png,3,Bilateral pulmonary edema/ARDS with asymm
 qwen3.8-27b:council,00006304_004.png,1,"Bilateral basilar atelectasis (left retrocardiac predominant) in a supine AP film of a monitored patient, with borderline cardiothoracic ratio from AP magnification and low lung volumes",Atelectasis,,correct
 qwen3.8-27b:council,00006304_004.png,2,Early pulmonary edema / fluid overload with possible small pleural effusions (costophrenic angles only partly assessable on this overexposed supine film),Edema|Effusion,,incorrect
 qwen3.8-27b:council,00006304_004.png,3,"Hazy left lower lobe consolidation (early pneumonia), with the carinal rounded opacity a small mediastinal mass/lymph node or en-face tubular structure (bronchus/vessel or coiled tube)",Consolidation|Pneumonia|Mass,,incorrect
+qwen3.8-27b:council,00001075_047.png,1,Normal / no acute finding - the left lower zone linear opacity is a normal oblique (major) fissure and the right mid-zone ring is a pulmonary vessel in cross-section.,No Finding,,incorrect
+qwen3.8-27b:council,00001075_047.png,2,"Plate-like (discoid) atelectasis in the left lower zone with a tiny bulla at the right mid-zone ring - minor, likely-benign findings.",Atelectasis,,correct
+qwen3.8-27b:council,00001075_047.png,3,Borderline cardiomegaly (cardiothoracic ratio ~0.49-0.50) or AP-projection magnification - not supported by the pathology classifiers; cardiac size remains borderline rather than definitively enlarged.,Cardiomegaly,,correct
+qwen3.8-27b:council,00013249_045.png,1,"Neonate/young infant with bilateral diffuse hazy opacities (transient tachypnea of the newborn, early respiratory distress syndrome, or pneumonia/bronchiolitis) and an enlarged cardiomediastinal silhouette from a prominent normal thymus",Pneumonia|No Finding,,incorrect
+qwen3.8-27b:council,00013249_045.png,2,Mild cardiomegaly with early congestive heart failure / pulmonary edema and a prominent thymus,Cardiomegaly|Edema,,correct
+qwen3.8-27b:council,00013249_045.png,3,Diffuse pneumonia / bronchiolitis with a prominent thymus,Pneumonia,,incorrect
+qwen3.8-27b:council,00011702_072.png,1,Left pleural effusion with adjacent atelectasis (left basilar/retrocardiac opacity),Effusion|Atelectasis,,incorrect
+qwen3.8-27b:council,00011702_072.png,2,"Left lower lobe collapse (atelectasis), possibly with a small effusion",Atelectasis|Effusion,,incorrect
+qwen3.8-27b:council,00011702_072.png,3,Left lower lobe pneumonia/consolidation (not excluded; no air bronchograms),Pneumonia|Consolidation,,incorrect
+qwen3.8-27b:council,00010447_027.png,1,Multifocal bilateral pneumonia (diffuse bilateral airspace and interstitial opacities),Pneumonia,,incorrect
+qwen3.8-27b:council,00010447_027.png,2,Pulmonary edema (cardiogenic or non-cardiogenic) with bilateral airspace opacities,Edema,,incorrect
+qwen3.8-27b:council,00010447_027.png,3,Elevated right hemidiaphragm (eventration or phrenic-nerve palsy) over a high-riding liver with adjacent basal atelectasis,Atelectasis,,incorrect
+qwen3.8-27b:council,00007322_007.png,1,"Multifocal pneumonia (bilateral patchy airspace opacities, left mid-zone most confluent)",Pneumonia,,incorrect
+qwen3.8-27b:council,00007322_007.png,2,"Pulmonary edema / ARDS (bilateral patchy opacities in a monitored, likely intubated patient)",Edema,,incorrect
+qwen3.8-27b:council,00007322_007.png,3,Atelectasis +/- aspiration (dependent patchy/reticular opacities on a supine film),Atelectasis,,incorrect
+qwen3.8-27b:council,00022416_056.png,1,"Left pleural effusion (being drained by the pigtail catheter) with adjacent atelectasis, and a right basal effusion/consolidation coexisting with the liver dome",Effusion|Atelectasis|Consolidation,,correct
+qwen3.8-27b:council,00022416_056.png,2,Bilateral basal consolidation / pneumonia accounting for the dense basal opacities,Consolidation|Pneumonia,,correct
+qwen3.8-27b:council,00022416_056.png,3,Bilateral basal atelectasis in a supine ICU patient accounting for the basal opacities,Atelectasis,,incorrect
+qwen3.8-27b:council,00029588_004.png,1,Multifocal pneumonia (right mid-lower zone predominant) with right basal pleural effusion and/or atelectasis,Pneumonia|Effusion|Atelectasis,,correct
+qwen3.8-27b:council,00029588_004.png,2,Pulmonary edema / fluid overload (cardiogenic or non-cardiogenic) with bilateral patchy airspace opacities and a right basilar effusion,Edema|Effusion,,correct
+qwen3.8-27b:council,00029588_004.png,3,Acute respiratory distress syndrome / mixed airspace disease with bilateral pleural effusions,Infiltration|Effusion,,correct
+qwen3.8-27b:council,00003072_028.png,1,"Large left pneumothorax (visceral pleural line with avascular air in ~25% of the left hemithorax) with a left chest tube in situ, plus a large right pleural effusion.",Pneumothorax|Effusion,,correct
+qwen3.8-27b:council,00003072_028.png,2,"Giant bulla / bullous emphysema of the left lung mimicking pneumothorax (less likely: continuous pleural line, avascular air, and the presence of a chest tube placed for it favor true pneumothorax; cannot be fully excluded on a single frontal film).",Emphysema|Pneumothorax,,correct
+qwen3.8-27b:council,00003072_028.png,3,"Right lower lobe collapse with pleural effusion (atelectasis/consolidation superimposed on the effusion) rather than a simple effusion, as the cause of the right basal opacity and the tracheal shift to the left.",Effusion|Atelectasis|Consolidation,,correct
+qwen3.8-27b:council,00013659_029.png,1,Massive left pleural effusion (+/- compressive atelectasis),Effusion|Atelectasis,,incorrect
+qwen3.8-27b:council,00013659_029.png,2,Complete left lung collapse (white-out) with volume loss,Atelectasis,,incorrect
+qwen3.8-27b:council,00013659_029.png,3,"Dense left lung consolidation (e.g., large pneumonia) with associated effusion",Consolidation|Pneumonia|Effusion,,incorrect
 gemma4-26b:zeroshot:closed,00022416_019.png,1,Edema,Edema,,incorrect
 gemma4-26b:zeroshot:closed,00022416_019.png,2,Cardiomegaly,Cardiomegaly,,incorrect
 gemma4-26b:zeroshot:closed,00022416_019.png,3,Effusion,Effusion,,correct
@@ -3252,6 +3330,184 @@ gemma4-26b:clf_pc:closed,00008295_022.png,3,Effusion,Effusion,,correct
 gemma4-26b:clf_pc:closed,00007750_008.png,1,Pneumonia,Pneumonia,,incorrect
 gemma4-26b:clf_pc:closed,00007750_008.png,2,Infiltration,Infiltration,,incorrect
 gemma4-26b:clf_pc:closed,00007750_008.png,3,Consolidation,Consolidation,,incorrect
+gemma4-26b:single:closed,00022416_019.png,1,Effusion,Effusion,,correct
+gemma4-26b:single:closed,00022416_019.png,2,Edema,Edema,,incorrect
+gemma4-26b:single:closed,00022416_019.png,3,Pneumonia,Pneumonia,,incorrect
+gemma4-26b:single:closed,00006304_004.png,1,Edema,Edema,,incorrect
+gemma4-26b:single:closed,00006304_004.png,2,Atelectasis,Atelectasis,,correct
+gemma4-26b:single:closed,00006304_004.png,3,Pneumonia,Pneumonia,,incorrect
+gemma4-26b:single:closed,00001075_047.png,1,Cardiomegaly,Cardiomegaly,,correct
+gemma4-26b:single:closed,00001075_047.png,2,No Finding,No Finding,,incorrect
+gemma4-26b:single:closed,00013249_045.png,1,Pneumonia,Pneumonia,,incorrect
+gemma4-26b:single:closed,00013249_045.png,2,Edema,Edema,,incorrect
+gemma4-26b:single:closed,00013249_045.png,3,Consolidation,Consolidation,,incorrect
+gemma4-26b:single:closed,00011702_072.png,1,Edema,Edema,,incorrect
+gemma4-26b:single:closed,00011702_072.png,2,Cardiomegaly,Cardiomegaly,,correct
+gemma4-26b:single:closed,00011702_072.png,3,Effusion,Effusion,,incorrect
+gemma4-26b:single:closed,00010447_027.png,1,Pneumonia,Pneumonia,,incorrect
+gemma4-26b:single:closed,00010447_027.png,2,Infiltration,Infiltration,,correct
+gemma4-26b:single:closed,00010447_027.png,3,Edema,Edema,,incorrect
+gemma4-26b:single:closed,00007322_007.png,1,Effusion,Effusion,,incorrect
+gemma4-26b:single:closed,00007322_007.png,2,Consolidation,Consolidation,,correct
+gemma4-26b:single:closed,00007322_007.png,3,Pneumonia,Pneumonia,,incorrect
+gemma4-26b:single:closed,00022416_056.png,1,Pneumonia,Pneumonia,,incorrect
+gemma4-26b:single:closed,00022416_056.png,2,Consolidation,Consolidation,,correct
+gemma4-26b:single:closed,00022416_056.png,3,Effusion,Effusion,,correct
+gemma4-26b:single:closed,00004911_016.png,1,Consolidation,Consolidation,,correct
+gemma4-26b:single:closed,00004911_016.png,2,Infiltration,Infiltration,,incorrect
+gemma4-26b:single:closed,00004911_016.png,3,Pneumonia,Pneumonia,,incorrect
+gemma4-26b:single:closed,00019651_003.png,1,Mass,Mass,,correct
+gemma4-26b:single:closed,00019651_003.png,2,Consolidation,Consolidation,,incorrect
+gemma4-26b:single:closed,00019651_003.png,3,Nodule,Nodule,,incorrect
+gemma4-26b:single:closed,00022084_000.png,1,Pneumonia,Pneumonia,,correct
+gemma4-26b:single:closed,00022084_000.png,2,Edema,Edema,,correct
+gemma4-26b:single:closed,00022084_000.png,3,Effusion,Effusion,,incorrect
+gemma4-26b:single:closed,00029469_012.png,1,Pneumonia,Pneumonia,,correct
+gemma4-26b:single:closed,00029469_012.png,2,Consolidation,Consolidation,,incorrect
+gemma4-26b:single:closed,00029469_012.png,3,Effusion,Effusion,,correct
+gemma4-26b:single:closed,00029588_004.png,1,Pneumonia,Pneumonia,,incorrect
+gemma4-26b:single:closed,00029588_004.png,2,Consolidation,Consolidation,,correct
+gemma4-26b:single:closed,00029588_004.png,3,Edema,Edema,,incorrect
+gemma4-26b:single:closed,00007632_013.png,1,No Finding,No Finding,,incorrect
+gemma4-26b:single:closed,00022098_007.png,1,No Finding,No Finding,,incorrect
+gemma4-26b:single:closed,00003803_002.png,1,Pneumonia,Pneumonia,,incorrect
+gemma4-26b:single:closed,00003803_002.png,2,Consolidation,Consolidation,,incorrect
+gemma4-26b:single:closed,00003803_002.png,3,Effusion,Effusion,,correct
+gemma4-26b:single:closed,00003072_028.png,1,Effusion,Effusion,,correct
+gemma4-26b:single:closed,00003072_028.png,2,Consolidation,Consolidation,,incorrect
+gemma4-26b:single:closed,00003072_028.png,3,Atelectasis,Atelectasis,,incorrect
+gemma4-26b:single:closed,00008911_026.png,1,Pneumothorax,Pneumothorax,,incorrect
+gemma4-26b:single:closed,00008911_026.png,2,Consolidation,Consolidation,,incorrect
+gemma4-26b:single:closed,00008911_026.png,3,Effusion,Effusion,,incorrect
+gemma4-26b:single:closed,00005089_007.png,1,Effusion,Effusion,,incorrect
+gemma4-26b:single:closed,00005089_007.png,2,Consolidation,Consolidation,,incorrect
+gemma4-26b:single:closed,00005089_007.png,3,Atelectasis,Atelectasis,,incorrect
+gemma4-26b:single:closed,00005609_025.png,1,Effusion,Effusion,,incorrect
+gemma4-26b:single:closed,00005609_025.png,2,Consolidation,Consolidation,,incorrect
+gemma4-26b:single:closed,00005609_025.png,3,Pneumonia,Pneumonia,,incorrect
+gemma4-26b:single:closed,00013659_029.png,1,Effusion,Effusion,,incorrect
+gemma4-26b:single:closed,00013659_029.png,2,Consolidation,Consolidation,,incorrect
+gemma4-26b:single:closed,00013659_029.png,3,Mass,Mass,,incorrect
+gemma4-26b:single:closed,00021463_005.png,1,Infiltration,Infiltration,,correct
+gemma4-26b:single:closed,00021463_005.png,2,Edema,Edema,,correct
+gemma4-26b:single:closed,00021463_005.png,3,Pneumonia,Pneumonia,,incorrect
+gemma4-26b:single:closed,00000003_004.png,1,Effusion,Effusion,,incorrect
+gemma4-26b:single:closed,00000003_004.png,2,Atelectasis,Atelectasis,,incorrect
+gemma4-26b:single:closed,00000003_004.png,3,Infiltration,Infiltration,,incorrect
+gemma4-26b:single:closed,00020915_000.png,1,No Finding,No Finding,,incorrect
+gemma4-26b:single:closed,00010120_019.png,1,No Finding,No Finding,,incorrect
+gemma4-26b:single:closed,00029159_015.png,1,Pneumonia,Pneumonia,,incorrect
+gemma4-26b:single:closed,00029159_015.png,2,Edema,Edema,,incorrect
+gemma4-26b:single:closed,00029159_015.png,3,Consolidation,Consolidation,,incorrect
+gemma4-26b:single:closed,00026194_000.png,1,Pneumonia,Pneumonia,,incorrect
+gemma4-26b:single:closed,00026194_000.png,2,Infiltration,Infiltration,,correct
+gemma4-26b:single:closed,00026194_000.png,3,Atelectasis,Atelectasis,,incorrect
+gemma4-26b:single:closed,00022726_011.png,1,Nodule,Nodule,,correct
+gemma4-26b:single:closed,00022726_011.png,2,Mass,Mass,,correct
+gemma4-26b:single:closed,00022726_011.png,3,Consolidation,Consolidation,,incorrect
+gemma4-26b:single:closed,00017403_002.png,1,Pneumonia,Pneumonia,,incorrect
+gemma4-26b:single:closed,00017403_002.png,2,Infiltration,Infiltration,,incorrect
+gemma4-26b:single:closed,00017403_002.png,3,Atelectasis,Atelectasis,,correct
+gemma4-26b:single:closed,00014822_025.png,1,Pneumonia,Pneumonia,,incorrect
+gemma4-26b:single:closed,00014822_025.png,2,Effusion,Effusion,,incorrect
+gemma4-26b:single:closed,00014822_025.png,3,Consolidation,Consolidation,,incorrect
+gemma4-26b:single:closed,00013648_018.png,1,No Finding,No Finding,,correct
+gemma4-26b:single:closed,00027726_005.png,1,No Finding,No Finding,,correct
+gemma4-26b:single:closed,00030557_000.png,1,No Finding,No Finding,,correct
+gemma4-26b:single:closed,00013670_049.png,1,Pneumonia,Pneumonia,,incorrect
+gemma4-26b:single:closed,00013670_049.png,2,Edema,Edema,,incorrect
+gemma4-26b:single:closed,00013670_049.png,3,Atelectasis,Atelectasis,,incorrect
+gemma4-26b:single:closed,00000733_000.png,1,No Finding,No Finding,,incorrect
+gemma4-26b:single:closed,00029159_003.png,1,No Finding,No Finding,,incorrect
+gemma4-26b:single:closed,00010007_062.png,1,Pneumonia,Pneumonia,,incorrect
+gemma4-26b:single:closed,00010007_062.png,2,Consolidation,Consolidation,,incorrect
+gemma4-26b:single:closed,00010007_062.png,3,Effusion,Effusion,,correct
+gemma4-26b:single:closed,00021463_004.png,1,Effusion,Effusion,,incorrect
+gemma4-26b:single:closed,00021463_004.png,2,Atelectasis,Atelectasis,,incorrect
+gemma4-26b:single:closed,00021463_004.png,3,Consolidation,Consolidation,,incorrect
+gemma4-26b:single:closed,00018253_048.png,1,Effusion,Effusion,,correct
+gemma4-26b:single:closed,00018253_048.png,2,Consolidation,Consolidation,,incorrect
+gemma4-26b:single:closed,00018253_048.png,3,Atelectasis,Atelectasis,,correct
+gemma4-26b:single:closed,00014731_016.png,1,Nodule,Nodule,,incorrect
+gemma4-26b:single:closed,00014731_016.png,2,Mass,Mass,,correct
+gemma4-26b:single:closed,00014731_016.png,3,Pneumothorax,Pneumothorax,,correct
+gemma4-26b:single:closed,00011237_112.png,1,Pneumonia,Pneumonia,,correct
+gemma4-26b:single:closed,00011237_112.png,2,Consolidation,Consolidation,,incorrect
+gemma4-26b:single:closed,00011237_112.png,3,Edema,Edema,,correct
+gemma4-26b:single:closed,00013391_005.png,1,Effusion,Effusion,,incorrect
+gemma4-26b:single:closed,00013391_005.png,2,Pneumonia,Pneumonia,,correct
+gemma4-26b:single:closed,00013391_005.png,3,Consolidation,Consolidation,,incorrect
+gemma4-26b:single:closed,00017747_053.png,1,Consolidation,Consolidation,,incorrect
+gemma4-26b:single:closed,00017747_053.png,2,Infiltration,Infiltration,,incorrect
+gemma4-26b:single:closed,00017747_053.png,3,Atelectasis,Atelectasis,,incorrect
+gemma4-26b:single:closed,00008295_022.png,1,No Finding,No Finding,,incorrect
+gemma4-26b:single:closed,00007750_008.png,1,Effusion,Effusion,,correct
+gemma4-26b:single:closed,00007750_008.png,2,Consolidation,Consolidation,,incorrect
+gemma4-26b:single:closed,00007750_008.png,3,Atelectasis,Atelectasis,,correct
+gemma4-26b:council:closed,00022416_019.png,1,Edema,Edema,,incorrect
+gemma4-26b:council:closed,00022416_019.png,2,Effusion,Effusion,,correct
+gemma4-26b:council:closed,00022416_019.png,3,Consolidation,Consolidation,,correct
+gemma4-26b:council:closed,00001075_047.png,1,Hilar lymphadenopathy,,,oov
+gemma4-26b:council:closed,00001075_047.png,2,Pulmonary vascular congestion,Edema,,incorrect
+gemma4-26b:council:closed,00001075_047.png,3,Cardiomegaly,Cardiomegaly,,correct
+gemma4-26b:council:closed,00011702_072.png,1,Edema,Edema,,incorrect
+gemma4-26b:council:closed,00011702_072.png,2,Effusion,Effusion,,incorrect
+gemma4-26b:council:closed,00011702_072.png,3,Consolidation,Consolidation,,incorrect
+gemma4-26b:council:closed,00010447_027.png,1,Pneumonia,Pneumonia,,incorrect
+gemma4-26b:council:closed,00010447_027.png,2,Infiltration,Infiltration,,correct
+gemma4-26b:council:closed,00010447_027.png,3,Edema,Edema,,incorrect
+gemma4-26b:council:closed,00004911_016.png,1,Nodule,Nodule,,correct
+gemma4-26b:council:closed,00004911_016.png,2,Mass,Mass,,incorrect
+gemma4-26b:council:closed,00004911_016.png,3,Infiltration,Infiltration,,incorrect
+gemma4-26b:council:closed,00019651_003.png,1,Mass,Mass,,correct
+gemma4-26b:council:closed,00019651_003.png,2,Consolidation,Consolidation,,incorrect
+gemma4-26b:council:closed,00019651_003.png,3,Cardiomegaly,Cardiomegaly,,incorrect
+gemma4-26b:council:closed,00022084_000.png,1,Pneumonia,Pneumonia,,correct
+gemma4-26b:council:closed,00022084_000.png,2,Edema,Edema,,correct
+gemma4-26b:council:closed,00022084_000.png,3,Effusion,Effusion,,incorrect
+gemma4-26b:council:closed,00029469_012.png,1,Pneumonia,Pneumonia,,correct
+gemma4-26b:council:closed,00029469_012.png,2,Consolidation,Consolidation,,incorrect
+gemma4-26b:council:closed,00029469_012.png,3,Effusion,Effusion,,correct
+gemma4-26b:council:closed,00029588_004.png,1,Pneumonia,Pneumonia,,incorrect
+gemma4-26b:council:closed,00029588_004.png,2,Edema,Edema,,incorrect
+gemma4-26b:council:closed,00029588_004.png,3,Effusion,Effusion,,correct
+gemma4-26b:council:closed,00022098_007.png,1,Effusion,Effusion,,correct
+gemma4-26b:council:closed,00022098_007.png,2,Consolidation,Consolidation,,incorrect
+gemma4-26b:council:closed,00022098_007.png,3,Atelectasis,Atelectasis,,incorrect
+gemma4-26b:council:closed,00003803_002.png,1,Consolidation,Consolidation,,incorrect
+gemma4-26b:council:closed,00003803_002.png,2,Mass,Mass,,incorrect
+gemma4-26b:council:closed,00003803_002.png,3,Pneumonia,Pneumonia,,incorrect
+gemma4-26b:council:closed,00003072_028.png,1,Effusion,Effusion,,correct
+gemma4-26b:council:closed,00003072_028.png,2,Consolidation,Consolidation,,incorrect
+gemma4-26b:council:closed,00003072_028.png,3,Atelectasis,Atelectasis,,incorrect
+gemma4-26b:council:closed,00008911_026.png,1,Effusion,Effusion,,incorrect
+gemma4-26b:council:closed,00008911_026.png,2,Pneumothorax,Pneumothorax,,incorrect
+gemma4-26b:council:closed,00008911_026.png,3,Consolidation,Consolidation,,incorrect
+gemma4-26b:council:closed,00005089_007.png,1,Effusion,Effusion,,incorrect
+gemma4-26b:council:closed,00005089_007.png,2,Consolidation,Consolidation,,incorrect
+gemma4-26b:council:closed,00005089_007.png,3,Pneumonia,Pneumonia,,incorrect
+gemma4-26b:council:closed,00005609_025.png,1,Effusion,Effusion,,incorrect
+gemma4-26b:council:closed,00005609_025.png,2,Consolidation,Consolidation,,incorrect
+gemma4-26b:council:closed,00005609_025.png,3,Pneumonia,Pneumonia,,incorrect
+gemma4-26b:council:closed,00013659_029.png,1,Mass,Mass,,incorrect
+gemma4-26b:council:closed,00013659_029.png,2,Pneumonia,Pneumonia,,incorrect
+gemma4-26b:council:closed,00013659_029.png,3,Edema,Edema,,incorrect
+gemma4-26b:council:closed,00021463_005.png,1,Edema,Edema,,correct
+gemma4-26b:council:closed,00021463_005.png,2,Pneumonia,Pneumonia,,incorrect
+gemma4-26b:council:closed,00021463_005.png,3,Infiltration,Infiltration,,correct
+gemma4-26b:council:closed,00000003_004.png,1,Consolidation,Consolidation,,incorrect
+gemma4-26b:council:closed,00000003_004.png,2,Atelectasis,Atelectasis,,incorrect
+gemma4-26b:council:closed,00000003_004.png,3,Effusion,Effusion,,incorrect
+gemma4-26b:council:closed,00020915_000.png,1,No Finding,No Finding,,incorrect
+gemma4-26b:council:closed,00020915_000.png,2,Infiltration,Infiltration,,incorrect
+gemma4-26b:council:closed,00020915_000.png,3,Fibrosis,Fibrosis,,incorrect
+gemma4-26b:council:closed,00010120_019.png,1,No Finding,No Finding,,incorrect
+gemma4-26b:council:closed,00029159_015.png,1,Edema,Edema,,incorrect
+gemma4-26b:council:closed,00029159_015.png,2,Pneumonia,Pneumonia,,incorrect
+gemma4-26b:council:closed,00029159_015.png,3,Effusion,Effusion,,correct
+gemma4-26b:council:closed,00022726_011.png,1,Mass,Mass,,correct
+gemma4-26b:council:closed,00022726_011.png,2,Nodule,Nodule,,correct
+gemma4-26b:council:closed,00022726_011.png,3,Infiltration,Infiltration,,incorrect
 qwen3.6-27b:zeroshot:closed,00022416_019.png,1,Effusion,Effusion,,correct
 qwen3.6-27b:zeroshot:closed,00022416_019.png,2,Atelectasis,Atelectasis,,correct
 qwen3.6-27b:zeroshot:closed,00022416_019.png,3,Cardiomegaly,Cardiomegaly,,incorrect
@@ -3655,6 +3911,246 @@ qwen3.6-27b:clf_pc:closed,00008295_022.png,3,Consolidation,Consolidation,,incorr
 qwen3.6-27b:clf_pc:closed,00007750_008.png,1,Pneumonia,Pneumonia,,incorrect
 qwen3.6-27b:clf_pc:closed,00007750_008.png,2,Infiltration,Infiltration,,incorrect
 qwen3.6-27b:clf_pc:closed,00007750_008.png,3,Consolidation,Consolidation,,incorrect
+qwen3.6-27b:single:closed,00022416_019.png,1,Infiltration,Infiltration,,correct
+qwen3.6-27b:single:closed,00022416_019.png,2,Effusion,Effusion,,correct
+qwen3.6-27b:single:closed,00022416_019.png,3,Edema,Edema,,incorrect
+qwen3.6-27b:single:closed,00006304_004.png,1,Cardiomegaly,Cardiomegaly,,correct
+qwen3.6-27b:single:closed,00006304_004.png,2,Atelectasis,Atelectasis,,correct
+qwen3.6-27b:single:closed,00006304_004.png,3,Effusion,Effusion,,incorrect
+qwen3.6-27b:single:closed,00001075_047.png,1,Atelectasis,Atelectasis,,correct
+qwen3.6-27b:single:closed,00001075_047.png,2,No Finding,No Finding,,incorrect
+qwen3.6-27b:single:closed,00013249_045.png,1,Cardiomegaly,Cardiomegaly,,correct
+qwen3.6-27b:single:closed,00013249_045.png,2,Edema,Edema,,incorrect
+qwen3.6-27b:single:closed,00013249_045.png,3,Atelectasis,Atelectasis,,incorrect
+qwen3.6-27b:single:closed,00011702_072.png,1,Effusion,Effusion,,incorrect
+qwen3.6-27b:single:closed,00011702_072.png,2,Infiltration,Infiltration,,correct
+qwen3.6-27b:single:closed,00011702_072.png,3,Consolidation,Consolidation,,incorrect
+qwen3.6-27b:single:closed,00010447_027.png,1,Edema,Edema,,incorrect
+qwen3.6-27b:single:closed,00010447_027.png,2,Pneumonia,Pneumonia,,incorrect
+qwen3.6-27b:single:closed,00010447_027.png,3,Effusion,Effusion,,correct
+qwen3.6-27b:single:closed,00007322_007.png,1,Atelectasis,Atelectasis,,incorrect
+qwen3.6-27b:single:closed,00007322_007.png,2,Effusion,Effusion,,incorrect
+qwen3.6-27b:single:closed,00007322_007.png,3,Consolidation,Consolidation,,correct
+qwen3.6-27b:single:closed,00022416_056.png,1,Effusion,Effusion,,correct
+qwen3.6-27b:single:closed,00022416_056.png,2,Pneumonia,Pneumonia,,incorrect
+qwen3.6-27b:single:closed,00022416_056.png,3,Atelectasis,Atelectasis,,incorrect
+qwen3.6-27b:single:closed,00004911_016.png,1,Mass,Mass,,incorrect
+qwen3.6-27b:single:closed,00004911_016.png,2,Nodule,Nodule,,correct
+qwen3.6-27b:single:closed,00004911_016.png,3,Consolidation,Consolidation,,correct
+qwen3.6-27b:single:closed,00019651_003.png,1,Mass,Mass,,correct
+qwen3.6-27b:single:closed,00019651_003.png,2,Atelectasis,Atelectasis,,incorrect
+qwen3.6-27b:single:closed,00019651_003.png,3,No Finding,No Finding,,incorrect
+qwen3.6-27b:single:closed,00022084_000.png,1,Infiltration,Infiltration,,incorrect
+qwen3.6-27b:single:closed,00022084_000.png,2,Edema,Edema,,correct
+qwen3.6-27b:single:closed,00022084_000.png,3,Effusion,Effusion,,incorrect
+qwen3.6-27b:single:closed,00029469_012.png,1,Pneumonia,Pneumonia,,correct
+qwen3.6-27b:single:closed,00029469_012.png,2,Infiltration,Infiltration,,correct
+qwen3.6-27b:single:closed,00029469_012.png,3,Effusion,Effusion,,correct
+qwen3.6-27b:single:closed,00029588_004.png,1,Consolidation,Consolidation,,correct
+qwen3.6-27b:single:closed,00029588_004.png,2,Effusion,Effusion,,correct
+qwen3.6-27b:single:closed,00029588_004.png,3,Pneumonia,Pneumonia,,incorrect
+qwen3.6-27b:single:closed,00007632_013.png,1,No Finding,No Finding,,incorrect
+qwen3.6-27b:single:closed,00022098_007.png,1,Effusion,Effusion,,correct
+qwen3.6-27b:single:closed,00022098_007.png,2,Atelectasis,Atelectasis,,incorrect
+qwen3.6-27b:single:closed,00022098_007.png,3,No Finding,No Finding,,incorrect
+qwen3.6-27b:single:closed,00003803_002.png,1,Atelectasis,Atelectasis,,incorrect
+qwen3.6-27b:single:closed,00003803_002.png,2,Consolidation,Consolidation,,incorrect
+qwen3.6-27b:single:closed,00003803_002.png,3,Effusion,Effusion,,correct
+qwen3.6-27b:single:closed,00003072_028.png,1,Effusion,Effusion,,correct
+qwen3.6-27b:single:closed,00003072_028.png,2,Pneumothorax,Pneumothorax,,correct
+qwen3.6-27b:single:closed,00003072_028.png,3,Emphysema,Emphysema,,correct
+qwen3.6-27b:single:closed,00008911_026.png,1,Pneumothorax,Pneumothorax,,incorrect
+qwen3.6-27b:single:closed,00008911_026.png,2,Effusion,Effusion,,incorrect
+qwen3.6-27b:single:closed,00008911_026.png,3,Atelectasis,Atelectasis,,incorrect
+qwen3.6-27b:single:closed,00005089_007.png,1,Effusion,Effusion,,incorrect
+qwen3.6-27b:single:closed,00005089_007.png,2,Atelectasis,Atelectasis,,incorrect
+qwen3.6-27b:single:closed,00005089_007.png,3,Pleural Thickening,Pleural_Thickening,,incorrect
+qwen3.6-27b:single:closed,00005609_025.png,1,Effusion,Effusion,,incorrect
+qwen3.6-27b:single:closed,00005609_025.png,2,Atelectasis,Atelectasis,,incorrect
+qwen3.6-27b:single:closed,00005609_025.png,3,Infiltration,Infiltration,,incorrect
+qwen3.6-27b:single:closed,00013659_029.png,1,Effusion,Effusion,,incorrect
+qwen3.6-27b:single:closed,00013659_029.png,2,Atelectasis,Atelectasis,,incorrect
+qwen3.6-27b:single:closed,00013659_029.png,3,Consolidation,Consolidation,,incorrect
+qwen3.6-27b:single:closed,00021463_005.png,1,Atelectasis,Atelectasis,,correct
+qwen3.6-27b:single:closed,00021463_005.png,2,Edema,Edema,,correct
+qwen3.6-27b:single:closed,00021463_005.png,3,Infiltration,Infiltration,,correct
+qwen3.6-27b:single:closed,00000003_004.png,1,No Finding,No Finding,,incorrect
+qwen3.6-27b:single:closed,00000003_004.png,2,Atelectasis,Atelectasis,,incorrect
+qwen3.6-27b:single:closed,00020915_000.png,1,Hernia,Hernia,,correct
+qwen3.6-27b:single:closed,00020915_000.png,2,No Finding,No Finding,,incorrect
+qwen3.6-27b:single:closed,00010120_019.png,1,No Finding,No Finding,,incorrect
+qwen3.6-27b:single:closed,00029159_015.png,1,Pneumonia,Pneumonia,,incorrect
+qwen3.6-27b:single:closed,00029159_015.png,2,Consolidation,Consolidation,,incorrect
+qwen3.6-27b:single:closed,00029159_015.png,3,Edema,Edema,,incorrect
+qwen3.6-27b:single:closed,00026194_000.png,1,Atelectasis,Atelectasis,,incorrect
+qwen3.6-27b:single:closed,00026194_000.png,2,No Finding,No Finding,,incorrect
+qwen3.6-27b:single:closed,00026194_000.png,3,Infiltration,Infiltration,,correct
+qwen3.6-27b:single:closed,00022726_011.png,1,Mass,Mass,,correct
+qwen3.6-27b:single:closed,00022726_011.png,2,Nodule,Nodule,,correct
+qwen3.6-27b:single:closed,00022726_011.png,3,Infiltration,Infiltration,,incorrect
+qwen3.6-27b:single:closed,00017403_002.png,1,Consolidation,Consolidation,,incorrect
+qwen3.6-27b:single:closed,00017403_002.png,2,Atelectasis,Atelectasis,,correct
+qwen3.6-27b:single:closed,00017403_002.png,3,Pneumonia,Pneumonia,,incorrect
+qwen3.6-27b:single:closed,00014822_025.png,1,Consolidation,Consolidation,,incorrect
+qwen3.6-27b:single:closed,00014822_025.png,2,Effusion,Effusion,,incorrect
+qwen3.6-27b:single:closed,00014822_025.png,3,Pneumonia,Pneumonia,,incorrect
+qwen3.6-27b:single:closed,00013648_018.png,1,No Finding,No Finding,,correct
+qwen3.6-27b:single:closed,00027726_005.png,1,No Finding,No Finding,,correct
+qwen3.6-27b:single:closed,00030557_000.png,1,No Finding,No Finding,,correct
+qwen3.6-27b:single:closed,00013670_049.png,1,Consolidation,Consolidation,,correct
+qwen3.6-27b:single:closed,00013670_049.png,2,Pneumonia,Pneumonia,,incorrect
+qwen3.6-27b:single:closed,00013670_049.png,3,Atelectasis,Atelectasis,,incorrect
+qwen3.6-27b:single:closed,00000733_000.png,1,No Finding,No Finding,,incorrect
+qwen3.6-27b:single:closed,00029159_003.png,1,Atelectasis,Atelectasis,,incorrect
+qwen3.6-27b:single:closed,00029159_003.png,2,Mass,Mass,,incorrect
+qwen3.6-27b:single:closed,00029159_003.png,3,Nodule,Nodule,,correct
+qwen3.6-27b:single:closed,00010007_062.png,1,Atelectasis,Atelectasis,,incorrect
+qwen3.6-27b:single:closed,00010007_062.png,2,Effusion,Effusion,,correct
+qwen3.6-27b:single:closed,00010007_062.png,3,Infiltration,Infiltration,,correct
+qwen3.6-27b:single:closed,00021463_004.png,1,Effusion,Effusion,,incorrect
+qwen3.6-27b:single:closed,00021463_004.png,2,Atelectasis,Atelectasis,,incorrect
+qwen3.6-27b:single:closed,00021463_004.png,3,Consolidation,Consolidation,,incorrect
+qwen3.6-27b:single:closed,00018253_048.png,1,Effusion,Effusion,,correct
+qwen3.6-27b:single:closed,00018253_048.png,2,Atelectasis,Atelectasis,,correct
+qwen3.6-27b:single:closed,00018253_048.png,3,Consolidation,Consolidation,,incorrect
+qwen3.6-27b:single:closed,00014731_016.png,1,Pneumothorax,Pneumothorax,,correct
+qwen3.6-27b:single:closed,00014731_016.png,2,Atelectasis,Atelectasis,,incorrect
+qwen3.6-27b:single:closed,00014731_016.png,3,Nodule,Nodule,,incorrect
+qwen3.6-27b:single:closed,00011237_112.png,1,Pneumonia,Pneumonia,,correct
+qwen3.6-27b:single:closed,00011237_112.png,2,Edema,Edema,,correct
+qwen3.6-27b:single:closed,00011237_112.png,3,Effusion,Effusion,,incorrect
+qwen3.6-27b:single:closed,00013391_005.png,1,Pneumonia,Pneumonia,,correct
+qwen3.6-27b:single:closed,00013391_005.png,2,Consolidation,Consolidation,,incorrect
+qwen3.6-27b:single:closed,00013391_005.png,3,Effusion,Effusion,,incorrect
+qwen3.6-27b:single:closed,00017747_053.png,1,Pneumothorax,Pneumothorax,,correct
+qwen3.6-27b:single:closed,00017747_053.png,2,Atelectasis,Atelectasis,,incorrect
+qwen3.6-27b:single:closed,00008295_022.png,1,Pneumothorax,Pneumothorax,,correct
+qwen3.6-27b:single:closed,00008295_022.png,2,Effusion,Effusion,,correct
+qwen3.6-27b:single:closed,00008295_022.png,3,Atelectasis,Atelectasis,,correct
+qwen3.6-27b:single:closed,00007750_008.png,1,Consolidation,Consolidation,,incorrect
+qwen3.6-27b:single:closed,00007750_008.png,2,Effusion,Effusion,,correct
+qwen3.6-27b:single:closed,00007750_008.png,3,Atelectasis,Atelectasis,,correct
+qwen3.6-27b:council:closed,00022416_019.png,1,Edema,Edema,,incorrect
+qwen3.6-27b:council:closed,00022416_019.png,2,Effusion,Effusion,,correct
+qwen3.6-27b:council:closed,00022416_019.png,3,Atelectasis,Atelectasis,,correct
+qwen3.6-27b:council:closed,00006304_004.png,1,Atelectasis,Atelectasis,,correct
+qwen3.6-27b:council:closed,00006304_004.png,2,Effusion,Effusion,,incorrect
+qwen3.6-27b:council:closed,00006304_004.png,3,No Finding,No Finding,,incorrect
+qwen3.6-27b:council:closed,00001075_047.png,1,Atelectasis,Atelectasis,,correct
+qwen3.6-27b:council:closed,00001075_047.png,2,No Finding,No Finding,,incorrect
+qwen3.6-27b:council:closed,00013249_045.png,1,Cardiomegaly,Cardiomegaly,,correct
+qwen3.6-27b:council:closed,00013249_045.png,2,Edema,Edema,,incorrect
+qwen3.6-27b:council:closed,00013249_045.png,3,Atelectasis,Atelectasis,,incorrect
+qwen3.6-27b:council:closed,00011702_072.png,1,Effusion,Effusion,,incorrect
+qwen3.6-27b:council:closed,00011702_072.png,2,Atelectasis,Atelectasis,,incorrect
+qwen3.6-27b:council:closed,00011702_072.png,3,Consolidation,Consolidation,,incorrect
+qwen3.6-27b:council:closed,00010447_027.png,1,Edema,Edema,,incorrect
+qwen3.6-27b:council:closed,00010447_027.png,2,Infiltration,Infiltration,,correct
+qwen3.6-27b:council:closed,00010447_027.png,3,Atelectasis,Atelectasis,,incorrect
+qwen3.6-27b:council:closed,00007322_007.png,1,Edema,Edema,,incorrect
+qwen3.6-27b:council:closed,00007322_007.png,2,Atelectasis,Atelectasis,,incorrect
+qwen3.6-27b:council:closed,00007322_007.png,3,Effusion,Effusion,,incorrect
+qwen3.6-27b:council:closed,00022416_056.png,1,Effusion,Effusion,,correct
+qwen3.6-27b:council:closed,00022416_056.png,2,Atelectasis,Atelectasis,,incorrect
+qwen3.6-27b:council:closed,00022416_056.png,3,Consolidation,Consolidation,,correct
+qwen3.6-27b:council:closed,00004911_016.png,1,Nodule,Nodule,,correct
+qwen3.6-27b:council:closed,00004911_016.png,2,Mass,Mass,,incorrect
+qwen3.6-27b:council:closed,00004911_016.png,3,No Finding,No Finding,,incorrect
+qwen3.6-27b:council:closed,00019651_003.png,1,Mass,Mass,,correct
+qwen3.6-27b:council:closed,00019651_003.png,2,Atelectasis,Atelectasis,,incorrect
+qwen3.6-27b:council:closed,00019651_003.png,3,Infiltration,Infiltration,,incorrect
+qwen3.6-27b:council:closed,00022084_000.png,1,Consolidation,Consolidation,,incorrect
+qwen3.6-27b:council:closed,00022084_000.png,2,Infiltration,Infiltration,,incorrect
+qwen3.6-27b:council:closed,00022084_000.png,3,Edema,Edema,,correct
+qwen3.6-27b:council:closed,00029469_012.png,1,Effusion,Effusion,,correct
+qwen3.6-27b:council:closed,00029469_012.png,2,Atelectasis,Atelectasis,,incorrect
+qwen3.6-27b:council:closed,00029469_012.png,3,Consolidation,Consolidation,,incorrect
+qwen3.6-27b:council:closed,00029588_004.png,1,Consolidation,Consolidation,,correct
+qwen3.6-27b:council:closed,00029588_004.png,2,Effusion,Effusion,,correct
+qwen3.6-27b:council:closed,00029588_004.png,3,Edema,Edema,,incorrect
+qwen3.6-27b:council:closed,00007632_013.png,1,No Finding,No Finding,,incorrect
+qwen3.6-27b:council:closed,00022098_007.png,1,Effusion,Effusion,,correct
+qwen3.6-27b:council:closed,00022098_007.png,2,Atelectasis,Atelectasis,,incorrect
+qwen3.6-27b:council:closed,00022098_007.png,3,Consolidation,Consolidation,,incorrect
+qwen3.6-27b:council:closed,00003803_002.png,1,Pneumothorax,Pneumothorax,,correct
+qwen3.6-27b:council:closed,00003803_002.png,2,Consolidation,Consolidation,,incorrect
+qwen3.6-27b:council:closed,00003803_002.png,3,Atelectasis,Atelectasis,,incorrect
+qwen3.6-27b:council:closed,00003072_028.png,1,Pneumothorax,Pneumothorax,,correct
+qwen3.6-27b:council:closed,00003072_028.png,2,Effusion,Effusion,,correct
+qwen3.6-27b:council:closed,00003072_028.png,3,Atelectasis,Atelectasis,,incorrect
+qwen3.6-27b:council:closed,00008911_026.png,1,Pneumothorax,Pneumothorax,,incorrect
+qwen3.6-27b:council:closed,00008911_026.png,2,Atelectasis,Atelectasis,,incorrect
+qwen3.6-27b:council:closed,00008911_026.png,3,Effusion,Effusion,,incorrect
+qwen3.6-27b:council:closed,00005089_007.png,1,Effusion,Effusion,,incorrect
+qwen3.6-27b:council:closed,00005089_007.png,2,Atelectasis,Atelectasis,,incorrect
+qwen3.6-27b:council:closed,00005089_007.png,3,Consolidation,Consolidation,,incorrect
+qwen3.6-27b:council:closed,00005609_025.png,1,Effusion,Effusion,,incorrect
+qwen3.6-27b:council:closed,00005609_025.png,2,Atelectasis,Atelectasis,,incorrect
+qwen3.6-27b:council:closed,00005609_025.png,3,Consolidation,Consolidation,,incorrect
+qwen3.6-27b:council:closed,00013659_029.png,1,Atelectasis,Atelectasis,,incorrect
+qwen3.6-27b:council:closed,00013659_029.png,2,Effusion,Effusion,,incorrect
+qwen3.6-27b:council:closed,00013659_029.png,3,Consolidation,Consolidation,,incorrect
+qwen3.6-27b:council:closed,00021463_005.png,1,Edema,Edema,,correct
+qwen3.6-27b:council:closed,00021463_005.png,2,Atelectasis,Atelectasis,,correct
+qwen3.6-27b:council:closed,00021463_005.png,3,Effusion,Effusion,,correct
+qwen3.6-27b:council:closed,00000003_004.png,1,No Finding,No Finding,,incorrect
+qwen3.6-27b:council:closed,00000003_004.png,2,Atelectasis,Atelectasis,,incorrect
+qwen3.6-27b:council:closed,00000003_004.png,3,Effusion,Effusion,,incorrect
+qwen3.6-27b:council:closed,00020915_000.png,1,Hernia,Hernia,,correct
+qwen3.6-27b:council:closed,00020915_000.png,2,No Finding,No Finding,,incorrect
+qwen3.6-27b:council:closed,00010120_019.png,1,No Finding,No Finding,,incorrect
+qwen3.6-27b:council:closed,00010120_019.png,2,Atelectasis,Atelectasis,,correct
+qwen3.6-27b:council:closed,00010120_019.png,3,Infiltration,Infiltration,,correct
+qwen3.6-27b:council:closed,00029159_015.png,1,Pneumonia,Pneumonia,,incorrect
+qwen3.6-27b:council:closed,00029159_015.png,2,Consolidation,Consolidation,,incorrect
+qwen3.6-27b:council:closed,00029159_015.png,3,Edema,Edema,,incorrect
+qwen3.6-27b:council:closed,00026194_000.png,1,Infiltration,Infiltration,,correct
+qwen3.6-27b:council:closed,00026194_000.png,2,Atelectasis,Atelectasis,,incorrect
+qwen3.6-27b:council:closed,00026194_000.png,3,No Finding,No Finding,,incorrect
+qwen3.6-27b:council:closed,00022726_011.png,1,Mass,Mass,,correct
+qwen3.6-27b:council:closed,00022726_011.png,2,Nodule,Nodule,,correct
+qwen3.6-27b:council:closed,00022726_011.png,3,Infiltration,Infiltration,,incorrect
+qwen3.6-27b:council:closed,00017403_002.png,1,Atelectasis,Atelectasis,,correct
+qwen3.6-27b:council:closed,00017403_002.png,2,Pneumonia,Pneumonia,,incorrect
+qwen3.6-27b:council:closed,00017403_002.png,3,No Finding,No Finding,,incorrect
+qwen3.6-27b:council:closed,00014822_025.png,1,Pneumonia,Pneumonia,,incorrect
+qwen3.6-27b:council:closed,00014822_025.png,2,Effusion,Effusion,,incorrect
+qwen3.6-27b:council:closed,00014822_025.png,3,Consolidation,Consolidation,,incorrect
+qwen3.6-27b:council:closed,00013648_018.png,1,No Finding,No Finding,,correct
+qwen3.6-27b:council:closed,00027726_005.png,1,No Finding,No Finding,,correct
+qwen3.6-27b:council:closed,00030557_000.png,1,No Finding,No Finding,,correct
+qwen3.6-27b:council:closed,00013670_049.png,1,Consolidation,Consolidation,,correct
+qwen3.6-27b:council:closed,00013670_049.png,2,Pneumonia,Pneumonia,,incorrect
+qwen3.6-27b:council:closed,00013670_049.png,3,Atelectasis,Atelectasis,,incorrect
+qwen3.6-27b:council:closed,00000733_000.png,1,No Finding,No Finding,,incorrect
+qwen3.6-27b:council:closed,00029159_003.png,1,No Finding,No Finding,,incorrect
+qwen3.6-27b:council:closed,00010007_062.png,1,Effusion,Effusion,,correct
+qwen3.6-27b:council:closed,00010007_062.png,2,Atelectasis,Atelectasis,,incorrect
+qwen3.6-27b:council:closed,00010007_062.png,3,Consolidation,Consolidation,,incorrect
+qwen3.6-27b:council:closed,00021463_004.png,1,Effusion,Effusion,,incorrect
+qwen3.6-27b:council:closed,00021463_004.png,2,Atelectasis,Atelectasis,,incorrect
+qwen3.6-27b:council:closed,00021463_004.png,3,Consolidation,Consolidation,,incorrect
+qwen3.6-27b:council:closed,00018253_048.png,1,Effusion,Effusion,,correct
+qwen3.6-27b:council:closed,00018253_048.png,2,Atelectasis,Atelectasis,,correct
+qwen3.6-27b:council:closed,00018253_048.png,3,Consolidation,Consolidation,,incorrect
+qwen3.6-27b:council:closed,00014731_016.png,1,Nodule,Nodule,,incorrect
+qwen3.6-27b:council:closed,00014731_016.png,2,Pneumothorax,Pneumothorax,,correct
+qwen3.6-27b:council:closed,00014731_016.png,3,Consolidation,Consolidation,,incorrect
+qwen3.6-27b:council:closed,00011237_112.png,1,Pneumonia,Pneumonia,,correct
+qwen3.6-27b:council:closed,00011237_112.png,2,Atelectasis,Atelectasis,,incorrect
+qwen3.6-27b:council:closed,00011237_112.png,3,Edema,Edema,,correct
+qwen3.6-27b:council:closed,00013391_005.png,1,Effusion,Effusion,,incorrect
+qwen3.6-27b:council:closed,00013391_005.png,2,Consolidation,Consolidation,,incorrect
+qwen3.6-27b:council:closed,00013391_005.png,3,Atelectasis,Atelectasis,,incorrect
+qwen3.6-27b:council:closed,00017747_053.png,1,Pneumothorax,Pneumothorax,,correct
+qwen3.6-27b:council:closed,00017747_053.png,2,Atelectasis,Atelectasis,,incorrect
+qwen3.6-27b:council:closed,00017747_053.png,3,Effusion,Effusion,,incorrect
+qwen3.6-27b:council:closed,00008295_022.png,1,Effusion,Effusion,,correct
+qwen3.6-27b:council:closed,00008295_022.png,2,Atelectasis,Atelectasis,,correct
+qwen3.6-27b:council:closed,00008295_022.png,3,Consolidation,Consolidation,,incorrect
+qwen3.6-27b:council:closed,00007750_008.png,1,Effusion,Effusion,,correct
+qwen3.6-27b:council:closed,00007750_008.png,2,Atelectasis,Atelectasis,,correct
+qwen3.6-27b:council:closed,00007750_008.png,3,Consolidation,Consolidation,,incorrect
 qwen3.8-27b:zeroshot:closed,00022416_019.png,1,Effusion,Effusion,,correct
 qwen3.8-27b:zeroshot:closed,00022416_019.png,2,Atelectasis,Atelectasis,,correct
 qwen3.8-27b:zeroshot:closed,00022416_019.png,3,Edema,Edema,,incorrect
@@ -4054,3 +4550,132 @@ qwen3.8-27b:clf_pc:closed,00008295_022.png,3,Pneumonia,Pneumonia,,incorrect
 qwen3.8-27b:clf_pc:closed,00007750_008.png,1,Infiltration,Infiltration,,incorrect
 qwen3.8-27b:clf_pc:closed,00007750_008.png,2,Pneumonia,Pneumonia,,incorrect
 qwen3.8-27b:clf_pc:closed,00007750_008.png,3,Consolidation,Consolidation,,incorrect
+qwen3.8-27b:single:closed,00022416_019.png,1,Effusion,Effusion,,correct
+qwen3.8-27b:single:closed,00022416_019.png,2,Edema,Edema,,incorrect
+qwen3.8-27b:single:closed,00022416_019.png,3,Atelectasis,Atelectasis,,correct
+qwen3.8-27b:single:closed,00006304_004.png,1,Atelectasis,Atelectasis,,correct
+qwen3.8-27b:single:closed,00006304_004.png,2,Effusion,Effusion,,incorrect
+qwen3.8-27b:single:closed,00006304_004.png,3,Infiltration,Infiltration,,incorrect
+qwen3.8-27b:single:closed,00001075_047.png,1,Atelectasis,Atelectasis,,correct
+qwen3.8-27b:single:closed,00001075_047.png,2,No Finding,No Finding,,incorrect
+qwen3.8-27b:single:closed,00001075_047.png,3,Cardiomegaly,Cardiomegaly,,correct
+qwen3.8-27b:single:closed,00013249_045.png,1,Edema,Edema,,incorrect
+qwen3.8-27b:single:closed,00013249_045.png,2,Pneumonia,Pneumonia,,incorrect
+qwen3.8-27b:single:closed,00013249_045.png,3,Cardiomegaly,Cardiomegaly,,correct
+qwen3.8-27b:single:closed,00011702_072.png,1,Effusion,Effusion,,incorrect
+qwen3.8-27b:single:closed,00011702_072.png,2,Atelectasis,Atelectasis,,incorrect
+qwen3.8-27b:single:closed,00011702_072.png,3,Edema,Edema,,incorrect
+qwen3.8-27b:single:closed,00010447_027.png,1,Pneumonia,Pneumonia,,incorrect
+qwen3.8-27b:single:closed,00010447_027.png,2,Edema,Edema,,incorrect
+qwen3.8-27b:single:closed,00010447_027.png,3,Atelectasis,Atelectasis,,incorrect
+qwen3.8-27b:single:closed,00007322_007.png,1,No Finding,No Finding,,incorrect
+qwen3.8-27b:single:closed,00007322_007.png,2,Atelectasis,Atelectasis,,incorrect
+qwen3.8-27b:single:closed,00007322_007.png,3,Pneumothorax,Pneumothorax,,incorrect
+qwen3.8-27b:single:closed,00022416_056.png,1,Effusion,Effusion,,correct
+qwen3.8-27b:single:closed,00022416_056.png,2,Consolidation,Consolidation,,correct
+qwen3.8-27b:single:closed,00022416_056.png,3,Atelectasis,Atelectasis,,incorrect
+qwen3.8-27b:single:closed,00004911_016.png,1,No Finding,No Finding,,incorrect
+qwen3.8-27b:single:closed,00004911_016.png,2,Nodule,Nodule,,correct
+qwen3.8-27b:single:closed,00004911_016.png,3,Effusion,Effusion,,incorrect
+qwen3.8-27b:single:closed,00019651_003.png,1,Mass,Mass,,correct
+qwen3.8-27b:single:closed,00019651_003.png,2,Nodule,Nodule,,incorrect
+qwen3.8-27b:single:closed,00019651_003.png,3,Consolidation,Consolidation,,incorrect
+qwen3.8-27b:single:closed,00022084_000.png,1,Edema,Edema,,correct
+qwen3.8-27b:single:closed,00022084_000.png,2,Infiltration,Infiltration,,incorrect
+qwen3.8-27b:single:closed,00022084_000.png,3,Pneumonia,Pneumonia,,correct
+qwen3.8-27b:single:closed,00029469_012.png,1,Effusion,Effusion,,correct
+qwen3.8-27b:single:closed,00029469_012.png,2,Edema,Edema,,correct
+qwen3.8-27b:single:closed,00029469_012.png,3,Pneumonia,Pneumonia,,correct
+qwen3.8-27b:single:closed,00029588_004.png,1,Infiltration,Infiltration,,incorrect
+qwen3.8-27b:single:closed,00029588_004.png,2,Pneumonia,Pneumonia,,incorrect
+qwen3.8-27b:single:closed,00029588_004.png,3,Edema,Edema,,incorrect
+qwen3.8-27b:single:closed,00007632_013.png,1,Infiltration,Infiltration,,incorrect
+qwen3.8-27b:single:closed,00007632_013.png,2,Atelectasis,Atelectasis,,incorrect
+qwen3.8-27b:single:closed,00007632_013.png,3,Consolidation,Consolidation,,incorrect
+qwen3.8-27b:single:closed,00022098_007.png,1,Cardiomegaly,Cardiomegaly,,incorrect
+qwen3.8-27b:single:closed,00022098_007.png,2,Atelectasis,Atelectasis,,incorrect
+qwen3.8-27b:single:closed,00022098_007.png,3,Effusion,Effusion,,correct
+qwen3.8-27b:single:closed,00003803_002.png,1,Infiltration,Infiltration,,correct
+qwen3.8-27b:single:closed,00003803_002.png,2,Consolidation,Consolidation,,incorrect
+qwen3.8-27b:single:closed,00003803_002.png,3,Atelectasis,Atelectasis,,incorrect
+qwen3.8-27b:single:closed,00003072_028.png,1,Pneumothorax,Pneumothorax,,correct
+qwen3.8-27b:single:closed,00003072_028.png,2,Effusion,Effusion,,correct
+qwen3.8-27b:single:closed,00003072_028.png,3,Atelectasis,Atelectasis,,incorrect
+qwen3.8-27b:single:closed,00008911_026.png,1,Pneumothorax,Pneumothorax,,incorrect
+qwen3.8-27b:single:closed,00008911_026.png,2,Effusion,Effusion,,incorrect
+qwen3.8-27b:single:closed,00008911_026.png,3,Atelectasis,Atelectasis,,incorrect
+qwen3.8-27b:single:closed,00005089_007.png,1,Effusion,Effusion,,incorrect
+qwen3.8-27b:single:closed,00005089_007.png,2,Atelectasis,Atelectasis,,incorrect
+qwen3.8-27b:single:closed,00005089_007.png,3,Pleural Thickening,Pleural_Thickening,,incorrect
+qwen3.8-27b:single:closed,00005609_025.png,1,Effusion,Effusion,,incorrect
+qwen3.8-27b:single:closed,00005609_025.png,2,Atelectasis,Atelectasis,,incorrect
+qwen3.8-27b:single:closed,00005609_025.png,3,Consolidation,Consolidation,,incorrect
+qwen3.8-27b:single:closed,00013659_029.png,1,Atelectasis,Atelectasis,,incorrect
+qwen3.8-27b:single:closed,00013659_029.png,2,Effusion,Effusion,,incorrect
+qwen3.8-27b:single:closed,00013659_029.png,3,Consolidation,Consolidation,,incorrect
+qwen3.8-27b:single:closed,00021463_005.png,1,Edema,Edema,,correct
+qwen3.8-27b:single:closed,00021463_005.png,2,Cardiomegaly,Cardiomegaly,,incorrect
+qwen3.8-27b:single:closed,00021463_005.png,3,Infiltration,Infiltration,,correct
+qwen3.8-27b:single:closed,00000003_004.png,1,No Finding,No Finding,,incorrect
+qwen3.8-27b:single:closed,00000003_004.png,2,Atelectasis,Atelectasis,,incorrect
+qwen3.8-27b:single:closed,00000003_004.png,3,Effusion,Effusion,,incorrect
+qwen3.8-27b:single:closed,00020915_000.png,1,Hernia,Hernia,,correct
+qwen3.8-27b:single:closed,00020915_000.png,2,Mass,Mass,,incorrect
+qwen3.8-27b:single:closed,00020915_000.png,3,Cardiomegaly,Cardiomegaly,,incorrect
+qwen3.8-27b:single:closed,00010120_019.png,1,No Finding,No Finding,,incorrect
+qwen3.8-27b:single:closed,00010120_019.png,2,Nodule,Nodule,,incorrect
+qwen3.8-27b:single:closed,00010120_019.png,3,Infiltration,Infiltration,,correct
+qwen3.8-27b:single:closed,00029159_015.png,1,Pneumonia,Pneumonia,,incorrect
+qwen3.8-27b:single:closed,00029159_015.png,2,Edema,Edema,,incorrect
+qwen3.8-27b:single:closed,00029159_015.png,3,Infiltration,Infiltration,,correct
+qwen3.8-27b:single:closed,00026194_000.png,1,No Finding,No Finding,,incorrect
+qwen3.8-27b:single:closed,00026194_000.png,2,Infiltration,Infiltration,,correct
+qwen3.8-27b:single:closed,00026194_000.png,3,Atelectasis,Atelectasis,,incorrect
+qwen3.8-27b:single:closed,00022726_011.png,1,No Finding,No Finding,,incorrect
+qwen3.8-27b:single:closed,00022726_011.png,2,Nodule,Nodule,,correct
+qwen3.8-27b:single:closed,00022726_011.png,3,Mass,Mass,,correct
+qwen3.8-27b:single:closed,00017403_002.png,1,Atelectasis,Atelectasis,,correct
+qwen3.8-27b:single:closed,00017403_002.png,2,Effusion,Effusion,,incorrect
+qwen3.8-27b:single:closed,00017403_002.png,3,Consolidation,Consolidation,,incorrect
+qwen3.8-27b:single:closed,00014822_025.png,1,Atelectasis,Atelectasis,,incorrect
+qwen3.8-27b:single:closed,00014822_025.png,2,Effusion,Effusion,,incorrect
+qwen3.8-27b:single:closed,00014822_025.png,3,Infiltration,Infiltration,,incorrect
+qwen3.8-27b:single:closed,00013648_018.png,1,No Finding,No Finding,,correct
+qwen3.8-27b:single:closed,00027726_005.png,1,No Finding,No Finding,,correct
+qwen3.8-27b:single:closed,00030557_000.png,1,No Finding,No Finding,,correct
+qwen3.8-27b:single:closed,00030557_000.png,2,Infiltration,Infiltration,,incorrect
+qwen3.8-27b:single:closed,00030557_000.png,3,Atelectasis,Atelectasis,,incorrect
+qwen3.8-27b:single:closed,00013670_049.png,1,Pneumonia,Pneumonia,,incorrect
+qwen3.8-27b:single:closed,00013670_049.png,2,Infiltration,Infiltration,,incorrect
+qwen3.8-27b:single:closed,00013670_049.png,3,Consolidation,Consolidation,,correct
+qwen3.8-27b:single:closed,00000733_000.png,1,No Finding,No Finding,,incorrect
+qwen3.8-27b:single:closed,00029159_003.png,1,No Finding,No Finding,,incorrect
+qwen3.8-27b:single:closed,00029159_003.png,2,Nodule,Nodule,,correct
+qwen3.8-27b:single:closed,00029159_003.png,3,Atelectasis,Atelectasis,,incorrect
+qwen3.8-27b:single:closed,00010007_062.png,1,Atelectasis,Atelectasis,,incorrect
+qwen3.8-27b:single:closed,00010007_062.png,2,Effusion,Effusion,,correct
+qwen3.8-27b:single:closed,00010007_062.png,3,Edema,Edema,,incorrect
+qwen3.8-27b:single:closed,00021463_004.png,1,Effusion,Effusion,,incorrect
+qwen3.8-27b:single:closed,00021463_004.png,2,Atelectasis,Atelectasis,,incorrect
+qwen3.8-27b:single:closed,00021463_004.png,3,Consolidation,Consolidation,,incorrect
+qwen3.8-27b:single:closed,00018253_048.png,1,Effusion,Effusion,,correct
+qwen3.8-27b:single:closed,00018253_048.png,2,Atelectasis,Atelectasis,,correct
+qwen3.8-27b:single:closed,00018253_048.png,3,Consolidation,Consolidation,,incorrect
+qwen3.8-27b:single:closed,00014731_016.png,1,Pneumothorax,Pneumothorax,,correct
+qwen3.8-27b:single:closed,00014731_016.png,2,Nodule,Nodule,,incorrect
+qwen3.8-27b:single:closed,00014731_016.png,3,Atelectasis,Atelectasis,,incorrect
+qwen3.8-27b:single:closed,00011237_112.png,1,Infiltration,Infiltration,,correct
+qwen3.8-27b:single:closed,00011237_112.png,2,Pneumonia,Pneumonia,,correct
+qwen3.8-27b:single:closed,00011237_112.png,3,Edema,Edema,,correct
+qwen3.8-27b:single:closed,00013391_005.png,1,Pneumonia,Pneumonia,,correct
+qwen3.8-27b:single:closed,00013391_005.png,2,Effusion,Effusion,,incorrect
+qwen3.8-27b:single:closed,00013391_005.png,3,Atelectasis,Atelectasis,,incorrect
+qwen3.8-27b:single:closed,00017747_053.png,1,Pneumothorax,Pneumothorax,,correct
+qwen3.8-27b:single:closed,00017747_053.png,2,Atelectasis,Atelectasis,,incorrect
+qwen3.8-27b:single:closed,00017747_053.png,3,Emphysema,Emphysema,,correct
+qwen3.8-27b:single:closed,00008295_022.png,1,Effusion,Effusion,,correct
+qwen3.8-27b:single:closed,00008295_022.png,2,Atelectasis,Atelectasis,,correct
+qwen3.8-27b:single:closed,00008295_022.png,3,Consolidation,Consolidation,,incorrect
+qwen3.8-27b:single:closed,00007750_008.png,1,Effusion,Effusion,,correct
+qwen3.8-27b:single:closed,00007750_008.png,2,Atelectasis,Atelectasis,,correct
+qwen3.8-27b:single:closed,00007750_008.png,3,Infiltration,Infiltration,,incorrect
